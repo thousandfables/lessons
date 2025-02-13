@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 1,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Let you know more about us about the company they having process about the kind of contract that we offer so you can have more information about us.",
+                    "corrected": "Let me tell you more about the company and the kind of contracts we offer so you can have more information about us.",
+                    "explanation": "The phrase 'they having process' is incorrect; it should be 'we offer.' Also, 'let you know' should be 'let me tell you.'",
+                    "context": "I want to provide you with more details about our company. Let me tell you more about the company and the kind of contracts we offer so you can have more information about us."
+                },
+                {
+                    "original": "I create a lot of Integrations I make a piece API and I have I work with Docker and sometimes I work with kubernetes.",
+                    "corrected": "I create a lot of integrations, I make APIs, and I work with Docker and sometimes with Kubernetes.",
+                    "explanation": "The sentence lacks proper punctuation and structure; 'piece API' should be 'APIs' and 'I have I work' is redundant.",
+                    "context": "I have extensive experience as a Python developer. I create a lot of integrations, I make APIs, and I work with Docker and sometimes with Kubernetes."
+                },
+                {
+                    "original": "I pray that Alex for them and Collect information for Machine learning guys.",
+                    "corrected": "I worked with Alex and collected information for the machine learning team.",
+                    "explanation": "'Pray' is incorrect; it should be 'worked with.' Also, 'Collect' should be in past tense.",
+                    "context": "In my previous job, I collaborated with a team. I worked with Alex and collected information for the machine learning team."
+                },
+                {
+                    "original": "My main challenge were in creation.",
+                    "corrected": "My main challenge was in creation.",
+                    "explanation": "'Were' is incorrect; it should be 'was' to agree with the singular subject 'challenge.'",
+                    "context": "I faced various challenges in my previous roles. My main challenge was in creation."
+                },
+                {
+                    "original": "I create the interesting I create a created.",
+                    "corrected": "I created an interesting integration.",
+                    "explanation": "The phrase is confusing and contains redundancy; it should be simplified to 'I created an interesting integration.'",
+                    "context": "During my time at the company, I worked on various projects. I created an interesting integration."
+                },
+                {
+                    "original": "I create immigrate the project from C sharp to the Brighton without documentation without without everything.",
+                    "corrected": "I migrated the project from C# to Python without documentation.",
+                    "explanation": "'Create immigrate' is incorrect; it should be 'migrated.' 'Brighton' is likely a typo for 'Python.'",
+                    "context": "I have experience transitioning projects to new technologies. I migrated the project from C# to Python without documentation."
+                },
+                {
+                    "original": "I prefer work to work with front-end developers.",
+                    "corrected": "I prefer to work with front-end developers.",
+                    "explanation": "The phrase 'prefer work to work' is incorrect; it should be 'prefer to work.'",
+                    "context": "Collaboration is important to me in development. I prefer to work with front-end developers."
+                },
+                {
+                    "original": "I think AI technologist is interesting for me.",
+                    "corrected": "I think AI technology is interesting to me.",
+                    "explanation": "'Technologist' is incorrect in this context; it should be 'technology.'",
+                    "context": "I have a strong interest in emerging technologies. I think AI technology is interesting to me."
+                },
+                {
+                    "original": "I think (очень много денег) is my comfortable expected salary and (поменьше денег) is my minimum acceptable salary.",
+                    "corrected": "I think my comfortable expected salary is (очень много денег) and my minimum acceptable salary is (поменьше денег).",
+                    "explanation": "The sentence structure is awkward; it should clarify the salary expectations more clearly.",
+                    "context": "When discussing salary, clarity is key. I think my comfortable expected salary is (очень много денег) and my minimum acceptable salary is (поменьше денег)."
+                },
+                {
+                    "original": "In which team you need to Which team need the python developer.",
+                    "corrected": "In which team do you need a Python developer?",
+                    "explanation": "The sentence structure is incorrect; it should be a question and use 'do you need.'",
+                    "context": "I want to understand the team dynamics better. In which team do you need a Python developer?"
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Remote",
+                    "definition": "Working from a location away from the company's physical office.",
+                    "context": {
+                        "Context 1": "The company is fully remote, allowing employees to work from anywhere.",
+                        "Context 2": "He prefers remote control cars over traditional ones.",
+                        "Context 3": "The remote island was only accessible by boat."
+                    }
+                },
+                {
+                    "word": "Integration",
+                    "definition": "The process of combining different systems or components to work together.",
+                    "context": {
+                        "Context 1": "I created several integrations to connect various software applications.",
+                        "Context 2": "The integration of different cultures can lead to a richer community.",
+                        "Context 3": "He struggled with the integration of flavors in his new recipe."
+                    }
+                },
+                {
+                    "word": "Microservices",
+                    "definition": "An architectural style that structures an application as a collection of loosely coupled services.",
+                    "context": {
+                        "Context 1": "I often work with microservices to build scalable applications.",
+                        "Context 2": "Microservices in the ocean are vital for maintaining marine biodiversity.",
+                        "Context 3": "She loves microservices, especially when they come with a side of fries."
+                    }
+                },
+                {
+                    "word": "Challenge",
+                    "definition": "A task or situation that tests someone's abilities.",
+                    "context": {
+                        "Context 1": "The main challenge for the developer was to create a secure system.",
+                        "Context 2": "He accepted the challenge to climb the highest mountain in the region.",
+                        "Context 3": "The challenge of finding a parking spot in the city can be daunting."
+                    }
+                },
+                {
+                    "word": "Data Lake",
+                    "definition": "A storage repository that holds a vast amount of raw data in its native format.",
+                    "context": {
+                        "Context 1": "I created the biggest data lake to store information from various universities.",
+                        "Context 2": "The data lake in the park is home to many species of fish.",
+                        "Context 3": "She found a data lake while hiking, filled with beautiful reflections."
+                    }
+                },
+                {
+                    "word": "Kubernetes",
+                    "definition": "An open-source system for automating the deployment, scaling, and management of containerized applications.",
+                    "context": {
+                        "Context 1": "I worked with Kubernetes to manage our containerized applications.",
+                        "Context 2": "Kubernetes is a popular choice for managing cloud resources.",
+                        "Context 3": "He built a model of a Kubernetes ship for his school project."
+                    }
+                },
+                {
+                    "word": "Ownership",
+                    "definition": "The act of taking responsibility for something.",
+                    "context": {
+                        "Context 1": "I took ownership of my projects to ensure their success.",
+                        "Context 2": "Ownership of a pet comes with many responsibilities.",
+                        "Context 3": "He felt a sense of ownership over the team's achievements."
+                    }
+                },
+                {
+                    "word": "Profitability",
+                    "definition": "The ability of a company to generate more revenue than expenses.",
+                    "context": {
+                        "Context 1": "The company is profitable, meaning it runs on its own earnings.",
+                        "Context 2": "Profitability is crucial for any business to survive.",
+                        "Context 3": "He calculated the profitability of his lemonade stand."
+                    }
+                },
+                {
+                    "word": "Motivation",
+                    "definition": "The reason or reasons one has for acting or behaving in a particular way.",
+                    "context": {
+                        "Context 1": "My motivation for joining the company is to improve my AI skills.",
+                        "Context 2": "Her motivation to run a marathon stems from her love of fitness.",
+                        "Context 3": "He found motivation in the support of his friends."
+                    }
+                },
+                {
+                    "word": "Assessment",
+                    "definition": "The evaluation or estimation of the nature, quality, or ability of someone or something.",
+                    "context": {
+                        "Context 1": "The take-home assessment will help evaluate your skills.",
+                        "Context 2": "The teacher gave an assessment to measure the students' progress.",
+                        "Context 3": "He completed an assessment of his garden's health."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Kubernetes",
+                    "fact": "The name 'Kubernetes' comes from the Greek word for 'helmsman' or 'pilot'—perfect for steering your containers!"
+                },
+                {
+                    "word": "Data Lake",
+                    "fact": "Data lakes are not actually filled with water; they are just a lot of data waiting to be fished out!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the developer go broke?",
+                    "answer": "Because he lost his domain in a bet!"
+                },
+                {
+                    "question": "Why was the computer cold?",
+                    "answer": "Because it left its Windows open!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to survive the Monday blues. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I can’t believe the weekend went by so fast. Did you do anything fun?"
+                },
+                {
+                    "Person 2": "Yeah, I went hiking with some friends. The weather was perfect! How about you?"
+                },
+                {
+                    "Person 1": "I just relaxed at home, caught up on some shows. I finally started that series everyone’s been talking about."
+                },
+                {
+                    "Person 2": "Oh nice! Which one? I need some new recommendations."
+                },
+                {
+                    "Person 1": "It’s called 'The Last of Us.' It’s really good! Have you seen it?"
+                },
+                {
+                    "Person 2": "Not yet, but I’ve heard great things. I’ll have to check it out. What do you like about it?"
+                },
+                {
+                    "Person 1": "The storytelling is amazing, and the characters are really well developed. Plus, the cinematography is stunning!"
+                },
+                {
+                    "Person 2": "Sounds awesome! I love a good story. I’ll add it to my watchlist. Any other shows you’re into?"
+                },
+                {
+                    "Person 1": "I just finished 'Stranger Things' too. It’s such a fun ride!"
+                },
+                {
+                    "Person 2": "I love that one! The nostalgia is real. Did you watch the latest season?"
+                },
+                {
+                    "Person 1": "Yes! I was on the edge of my seat the whole time. Can’t wait for the next one!"
+                },
+                {
+                    "Person 2": "Same here! It’s going to be a long wait, though. What are you planning to watch next?"
+                },
+                {
+                    "Person 1": "I might start 'Breaking Bad' next. I know, I’m late to the party!"
+                },
+                {
+                    "Person 2": "You’re in for a treat! It’s one of the best shows ever. You’ll binge it for sure."
+                },
+                {
+                    "Person 1": "I can’t wait! Thanks for the recommendation. Let’s catch up later this week?"
+                },
+                {
+                    "Person 2": "Definitely! Let’s plan for it. Have a good one!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
