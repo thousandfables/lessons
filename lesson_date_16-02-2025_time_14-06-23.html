@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "It was a hard work.",
+                    "corrected": "It was hard work.",
+                    "explanation": "The phrase 'hard work' is an uncountable noun, so 'a' should not be used.",
+                    "context": "We had a lot of patients who wanted treatment. It was hard work. But I find it rewarding."
+                },
+                {
+                    "original": "Because my studies as a physician Doesn't give me money.",
+                    "corrected": "Because my studies as a physician don't give me money.",
+                    "explanation": "The subject 'studies' is plural, so 'doesn't' should be 'don't.'",
+                    "context": "I want to become a physician. But my studies as a physician don't give me money. That's why I work as a nurse."
+                },
+                {
+                    "original": "I have seen my colleagues rarely.",
+                    "corrected": "I have rarely seen my colleagues.",
+                    "explanation": "The adverb 'rarely' should come before the verb 'seen' for correct word order.",
+                    "context": "I don't know my colleagues well. I have rarely seen my colleagues. I only work three times a month."
+                },
+                {
+                    "original": "There is a morally difficult work.",
+                    "corrected": "There is morally difficult work.",
+                    "explanation": "'Morally difficult work' is uncountable, so 'a' should be omitted.",
+                    "context": "Sometimes my job can be challenging. There is morally difficult work. It can be tough to handle."
+                },
+                {
+                    "original": "I embrace it.",
+                    "corrected": "I put up with it.",
+                    "explanation": "'Embrace' suggests acceptance, while 'put up with' implies tolerating something difficult.",
+                    "context": "I have to deal with many challenges at work. I put up with it for money. It's not always easy."
+                },
+                {
+                    "original": "I tried to prepare the presentation This is artificial intelligence work.",
+                    "corrected": "I tried to prepare the presentation; this is artificial intelligence work.",
+                    "explanation": "A semicolon or period is needed to separate two independent clauses.",
+                    "context": "Last week, I was quite busy. I tried to prepare the presentation; this is artificial intelligence work. It requires a lot of focus."
+                },
+                {
+                    "original": "I just type to this program.",
+                    "corrected": "I just type into this program.",
+                    "explanation": "The correct preposition is 'into' when referring to entering data into a program.",
+                    "context": "I use a specific program for my work. I just type into this program. It helps me organize my research."
+                },
+                {
+                    "original": "The first step is exploring on the database.",
+                    "corrected": "The first step is exploring the database.",
+                    "explanation": "'On the database' is incorrect; the correct phrase is 'exploring the database.'",
+                    "context": "When conducting research, I follow a process. The first step is exploring the database. This helps me find relevant articles."
+                },
+                {
+                    "original": "This is a dye which can dye.",
+                    "corrected": "This is a dye that can stain.",
+                    "explanation": "Using 'dye' twice is redundant; 'stain' is a more appropriate verb for this context.",
+                    "context": "In my research, I study various substances. This is a dye that can stain. It helps visualize certain organs."
+                },
+                {
+                    "original": "We surgeons can see.",
+                    "corrected": "We surgeons can see it.",
+                    "explanation": "The sentence is incomplete; it needs an object to clarify what is being seen.",
+                    "context": "During surgeries, we need to be precise. We surgeons can see it clearly. This is crucial for successful outcomes."
+                },
+                {
+                    "original": "I suffer through this job for money.",
+                    "corrected": "I endure this job for money.",
+                    "explanation": "'Suffer through' implies extreme distress, while 'endure' conveys tolerating something difficult.",
+                    "context": "My job can be quite challenging. I endure this job for money. It's necessary for my livelihood."
+                },
+                {
+                    "original": "I think that I speak more easier.",
+                    "corrected": "I think that I speak more easily.",
+                    "explanation": "'Easier' is a comparative adjective; 'easily' is the correct adverb form.",
+                    "context": "As I practice more, I notice improvements. I think that I speak more easily. It's encouraging to see progress."
+                },
+                {
+                    "original": "You have to speak for one hour.",
+                    "corrected": "You should speak for one hour.",
+                    "explanation": "'Have to' implies obligation, while 'should' suggests a recommendation.",
+                    "context": "To improve your skills, practice is essential. You should speak for one hour. This will help you gain confidence."
+                },
+                {
+                    "original": "If you listen for three hours to some video, speaking is much easier.",
+                    "corrected": "If you listen to some video for three hours, speaking is much easier.",
+                    "explanation": "The correct order is 'listen to' followed by the object, then the duration.",
+                    "context": "Listening is a key part of learning a language. If you listen to some video for three hours, speaking is much easier. It helps reinforce what you've learned."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I will listen today in the evening.",
+                    "corrected": "I will listen this evening.",
+                    "explanation": "'Today in the evening' is awkward; 'this evening' is more idiomatic.",
+                    "context": "I have some time set aside for listening. I will listen this evening. I hope to find something interesting."
+                },
+                {
+                    "original": "I will listen in the next week.",
+                    "corrected": "I will listen next week.",
+                    "explanation": "'In the next week' is incorrect; 'next week' is the proper phrase.",
+                    "context": "I have a busy schedule ahead. I will listen next week. I want to catch up on my podcasts."
+                },
+                {
+                    "original": "I read the instruction.",
+                    "corrected": "I read the instructions.",
+                    "explanation": "The term 'instruction' is typically pluralized as 'instructions' when referring to guidelines.",
+                    "context": "I was trying to understand the assignment. I read the instructions carefully. They were quite detailed."
+                },
+                {
+                    "original": "I always, usually I read the book about surgery.",
+                    "corrected": "I usually read books about surgery.",
+                    "explanation": "The phrase 'always, usually' is contradictory; choose one adverb for clarity.",
+                    "context": "I have a routine for my studies. I usually read books about surgery. It helps me a lot with my understanding."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Electrocardiography",
+                    "definition": "A medical test that records the electrical activity of the heart.",
+                    "context": {
+                        "Context 1": "During my night shift, we performed several electrocardiography tests on patients.",
+                        "Context 2": "The artist used electrocardiography to create a visual representation of heartbeats.",
+                        "Context 3": "In a sci-fi movie, electrocardiography was used to communicate with aliens."
+                    }
+                },
+                {
+                    "word": "Morally",
+                    "definition": "In a way that relates to principles of right and wrong behavior.",
+                    "context": {
+                        "Context 1": "The night shift was morally difficult due to the tough decisions we had to make.",
+                        "Context 2": "He acted morally by returning the lost wallet to its owner.",
+                        "Context 3": "The superhero always fights morally, even when faced with tough choices."
+                    }
+                },
+                {
+                    "word": "Patience",
+                    "definition": "The capacity to accept or tolerate delay, trouble, or suffering without getting angry or upset.",
+                    "context": {
+                        "Context 1": "Working in a hospital requires a lot of patience, especially with difficult patients.",
+                        "Context 2": "She showed great patience while teaching her younger brother how to ride a bike.",
+                        "Context 3": "The chef's patience was tested when the oven broke down right before dinner service."
+                    }
+                },
+                {
+                    "word": "Diagnostic",
+                    "definition": "Related to the identification of the nature of an illness or other problem.",
+                    "context": {
+                        "Context 1": "We used diagnostic tools to determine the patients' health issues.",
+                        "Context 2": "The detective had a diagnostic approach to solving the mystery.",
+                        "Context 3": "The car mechanic performed a diagnostic test to find out why the engine was malfunctioning."
+                    }
+                },
+                {
+                    "word": "Simulation",
+                    "definition": "The imitation of a situation or process for training or testing purposes.",
+                    "context": {
+                        "Context 1": "This is not a simulation; we are dealing with real patients tonight.",
+                        "Context 2": "The flight school uses a simulation to train pilots in emergency situations.",
+                        "Context 3": "In the video game, players can engage in a simulation of running a farm."
+                    }
+                },
+                {
+                    "word": "Input",
+                    "definition": "Information or data that is put into a system for processing.",
+                    "context": {
+                        "Context 1": "I want to emphasize the importance of input for language learning.",
+                        "Context 2": "The computer requires input from the user to function properly.",
+                        "Context 3": "In a cooking class, the chef asked for input on which dish to prepare next."
+                    }
+                },
+                {
+                    "word": "Exhausting",
+                    "definition": "Causing extreme tiredness; very tiring.",
+                    "context": {
+                        "Context 1": "The night shift was exhausting, but we managed to help many patients.",
+                        "Context 2": "Running a marathon can be exhausting, but it's also very rewarding.",
+                        "Context 3": "The exhausting hike left us all ready for a long nap."
+                    }
+                },
+                {
+                    "word": "Rewarding",
+                    "definition": "Providing satisfaction or a sense of achievement.",
+                    "context": {
+                        "Context 1": "Despite the hard work, being a nurse can be very rewarding.",
+                        "Context 2": "Volunteering at the animal shelter was a rewarding experience for her.",
+                        "Context 3": "Completing a challenging puzzle can be a rewarding activity."
+                    }
+                },
+                {
+                    "word": "Colleagues",
+                    "definition": "People with whom one works, especially in a profession or business.",
+                    "context": {
+                        "Context 1": "I don't know my colleagues well because I only work a few days a month.",
+                        "Context 2": "She enjoys having lunch with her colleagues after meetings.",
+                        "Context 3": "The colleagues in the art department collaborated on a new project."
+                    }
+                },
+                {
+                    "word": "Systematic",
+                    "definition": "Done or acting according to a fixed plan or system; methodical.",
+                    "context": {
+                        "Context 1": "The systematic approach to research helps ensure accuracy.",
+                        "Context 2": "He followed a systematic routine to improve his fitness.",
+                        "Context 3": "The systematic cleaning of the house made it look brand new."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Electrocardiography",
+                    "fact": "The first electrocardiogram was recorded in 1903, and it looked like a squiggly line drawn by a toddler!"
+                },
+                {
+                    "word": "Simulation",
+                    "fact": "The word 'simulation' comes from the Latin 'simulatio,' which means 'to make similar.' So, when you play a simulation game, you're just practicing to be a professional procrastinator!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the doctor carry a red pen?",
+                    "answer": "In case they needed to draw blood!"
+                },
+                {
+                    "question": "Why did the nurse bring a ladder to work?",
+                    "answer": "Because they wanted to reach new heights in their career!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Listen",
+                    "definition": "To pay attention to sound or to hear something.",
+                    "context": {
+                        "Context 1": "I will listen to the podcast later this evening.",
+                        "Context 2": "She decided to listen to the birds singing in the park.",
+                        "Context 3": "He couldn't listen to his favorite song because the radio was broken."
+                    }
+                },
+                {
+                    "word": "Interesting",
+                    "definition": "Arousing curiosity or interest; holding or catching the attention.",
+                    "context": {
+                        "Context 1": "The true crime podcast was really interesting to me.",
+                        "Context 2": "The documentary about space exploration was incredibly interesting.",
+                        "Context 3": "She found the lecture on ancient history very interesting."
+                    }
+                },
+                {
+                    "word": "Time",
+                    "definition": "The indefinite continued progress of existence and events in the past, present, and future.",
+                    "context": {
+                        "Context 1": "I need to find time to study for my exams.",
+                        "Context 2": "He spent a lot of time cooking dinner for his friends.",
+                        "Context 3": "Time flies when you're having fun at the amusement park."
+                    }
+                },
+                {
+                    "word": "Study",
+                    "definition": "To devote time and attention to acquiring knowledge on a subject.",
+                    "context": {
+                        "Context 1": "I spent the other part of my studying reviewing medical articles.",
+                        "Context 2": "She decided to study art history in college.",
+                        "Context 3": "He likes to study the behavior of animals in their natural habitats."
+                    }
+                },
+                {
+                    "word": "Free time",
+                    "definition": "Time that is not taken up by obligations; leisure time.",
+                    "context": {
+                        "Context 1": "I have a lot of free time to read books about surgery.",
+                        "Context 2": "During my free time, I enjoy painting and drawing.",
+                        "Context 3": "She uses her free time to volunteer at the local animal shelter."
+                    }
+                },
+                {
+                    "word": "Review",
+                    "definition": "To go over or examine something again.",
+                    "context": {
+                        "Context 1": "I had a lot of work with my review for the upcoming test.",
+                        "Context 2": "He plans to review his notes before the big meeting.",
+                        "Context 3": "She likes to review her favorite movies every few months."
+                    }
+                },
+                {
+                    "word": "Article",
+                    "definition": "A piece of writing included with others in a newspaper, magazine, or other publication.",
+                    "context": {
+                        "Context 1": "I read several articles about health and wellness.",
+                        "Context 2": "The article on climate change was very informative.",
+                        "Context 3": "He wrote an article about his travels around the world."
+                    }
+                },
+                {
+                    "word": "Instruction",
+                    "definition": "Detailed information on how something should be done or operated.",
+                    "context": {
+                        "Context 1": "I read the instructions carefully before assembling the furniture.",
+                        "Context 2": "The teacher gave clear instructions for the group project.",
+                        "Context 3": "He followed the cooking instructions to make the perfect soufflé."
+                    }
+                },
+                {
+                    "word": "Podcast",
+                    "definition": "A digital audio file made available on the internet for downloading, often part of a series.",
+                    "context": {
+                        "Context 1": "I listened to a fascinating podcast about true crime.",
+                        "Context 2": "She started her own podcast about healthy living.",
+                        "Context 3": "He enjoys listening to comedy podcasts during his commute."
+                    }
+                },
+                {
+                    "word": "Boring",
+                    "definition": "Not interesting; tedious.",
+                    "context": {
+                        "Context 1": "It's hard to listen to something that is boring.",
+                        "Context 2": "The lecture was so boring that many students fell asleep.",
+                        "Context 3": "He found the movie boring and left halfway through."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Podcast",
+                    "fact": "The term 'podcast' is a blend of 'iPod' and 'broadcast,' but you don’t need an iPod to enjoy them anymore!"
+                },
+                {
+                    "word": "Interesting",
+                    "fact": "The word 'interesting' has been used in literature for centuries, but it was once considered a compliment to say something was 'curious' instead!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes of anxiety!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going? Did you get enough sleep last night?"
+                },
+                {
+                    "Person 2": "Not really! I had a night shift at the hospital. It was pretty hectic."
+                },
+                {
+                    "Person 1": "Oh man, that sounds rough. What was going on?"
+                },
+                {
+                    "Person 2": "We had a lot of patients needing treatment. It was non-stop!"
+                },
+                {
+                    "Person 1": "Yikes! I can’t imagine how tiring that must be. Do you get to take breaks?"
+                },
+                {
+                    "Person 2": "Not really. It’s pretty much go, go, go. But I love what I do, so it makes it worth it."
+                },
+                {
+                    "Person 1": "That’s great to hear! What’s your favorite part of the job?"
+                },
+                {
+                    "Person 2": "Honestly, it’s the moments when I can really help someone. It feels rewarding."
+                },
+                {
+                    "Person 1": "I bet! Do you work with the same team every time?"
+                },
+                {
+                    "Person 2": "Not really. I only work a few days a month, so I don’t get to know my colleagues well."
+                },
+                {
+                    "Person 1": "That must be tough. Do you like the people you work with?"
+                },
+                {
+                    "Person 2": "They’re okay, but it’s hard to build a connection when you see them so rarely."
+                },
+                {
+                    "Person 1": "Totally understand. So, what are you up to this weekend?"
+                },
+                {
+                    "Person 2": "I’m hoping to relax and maybe catch up on some shows. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I’ve been meaning to watch that new series everyone’s talking about."
+                },
+                {
+                    "Person 2": "Oh, which one? I’ve heard a lot of buzz lately."
+                },
+                {
+                    "Person 1": "It’s called 'The Last Stand.' I’ve heard it’s really good!"
+                },
+                {
+                    "Person 2": "I’ll have to check it out! Let’s plan to discuss it next week."
+                },
+                {
+                    "Person 1": "Definitely! I can’t wait to hear your thoughts."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you listened to any good podcasts lately?"
+                },
+                {
+                    "Person 2": "Yeah, actually! I just finished a true crime series. It was super interesting!"
+                },
+                {
+                    "Person 1": "Nice! I love true crime. Sometimes I find it hard to focus on podcasts, though."
+                },
+                {
+                    "Person 2": "I get that. If it’s boring, I just zone out. But if it’s engaging, I can listen for hours."
+                },
+                {
+                    "Person 1": "Exactly! I tried listening to something about history, but it just didn’t grab me."
+                },
+                {
+                    "Person 2": "Same here! I usually stick to topics I’m really into, like medicine or psychology."
+                },
+                {
+                    "Person 1": "Oh, that makes sense! I’ve been meaning to read more articles about health."
+                },
+                {
+                    "Person 2": "You should! There’s so much out there. I always find time to read during my breaks."
+                },
+                {
+                    "Person 1": "I have a bit of free time too, but I often just scroll through social media."
+                },
+                {
+                    "Person 2": "Yeah, it’s easy to get distracted. Maybe we should set aside some time just for reading or listening."
+                },
+                {
+                    "Person 1": "That sounds like a plan! I’ll try to find a good podcast to start with."
+                },
+                {
+                    "Person 2": "Great! Let me know if you find something good. I’m always looking for recommendations."
+                },
+                {
+                    "Person 1": "Will do! And I’ll try to focus more on interesting stuff rather than mindless scrolling."
+                },
+                {
+                    "Person 2": "Same here! Let’s hold each other accountable."
+                },
+                {
+                    "Person 1": "Deal! I’m excited to see what we discover."
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
