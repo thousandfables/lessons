@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I will buy Bess and I will give you a very good deal.",
+                    "corrected": "I will buy Bess and give you a very good deal.",
+                    "explanation": "The second 'I will' is unnecessary; it can be omitted for smoother sentence flow.",
+                    "context": "Jack met an old man who expressed interest in buying his cow. The man said he would buy Bess and give Jack a very good deal."
+                },
+                {
+                    "original": "The beans really are magic!",
+                    "corrected": "The beans are really magic!",
+                    "explanation": "The placement of 'really' is awkward; it sounds more natural to say 'The beans are really magic.'",
+                    "context": "After Jack discovered the beanstalk, he was amazed. He thought to himself that the beans are really magic."
+                },
+                {
+                    "original": "He was enjoying it so much that he didn't notice when the kitchen table started to shake.",
+                    "corrected": "He enjoyed it so much that he didn't notice when the kitchen table started to shake.",
+                    "explanation": "The past continuous 'was enjoying' is less appropriate here; simple past 'enjoyed' fits better.",
+                    "context": "Jack was very hungry and was given some vegetable stew by the giantess. He enjoyed it so much that he didn't notice when the kitchen table started to shake."
+                },
+                {
+                    "original": "If I had that money, I could fix our house.",
+                    "corrected": "If I have that money, I can fix our house.",
+                    "explanation": "The conditional should use present tense 'have' and 'can' instead of past 'had' and 'could' for a real possibility.",
+                    "context": "While hiding in the pantry, Jack saw the giant with gold coins. He thought that if he had that money, he could fix their house."
+                },
+                {
+                    "original": "This is all I need, thought Jack.",
+                    "corrected": "This is all I need, Jack thought.",
+                    "explanation": "The placement of 'thought Jack' should be after the quote for clarity.",
+                    "context": "After stealing the five gold coins, Jack felt relieved. He thought that this is all he needed."
+                },
+                {
+                    "original": "But this time Jack was less lucky.",
+                    "corrected": "But this time Jack was unlucky.",
+                    "explanation": "'Less lucky' is awkward; 'unlucky' is a more straightforward expression.",
+                    "context": "Jack had successfully stolen treasures before, but this time he faced trouble. He realized that this time Jack was unlucky."
+                },
+                {
+                    "original": "He chopped the beanstalk.",
+                    "corrected": "He chopped down the beanstalk.",
+                    "explanation": "The phrasal verb 'chopped down' is more commonly used when referring to cutting down a plant.",
+                    "context": "As the giant chased him, Jack knew he had to act fast. He chopped down the beanstalk to prevent the giant from following him."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "Jack married a rich and famous woman, and together they had ten children.",
+                    "corrected": "Jack married a rich and famous woman, and they had ten children together.",
+                    "explanation": "The placement of 'together' is awkward; it should be at the end of the sentence for clarity.",
+                    "context": "Jack's life seemed perfect after marrying a rich and famous woman. They had ten children together. However, despite this, Jack was never truly happy."
+                },
+                {
+                    "original": "Every time the wind blew, Jack heard the giant calling for his wife.",
+                    "corrected": "Every time the wind blew, Jack could hear the giant calling for his wife.",
+                    "explanation": "Using 'could hear' instead of 'heard' indicates a continuous ability rather than a one-time event.",
+                    "context": "Jack often felt a connection to the giant. Every time the wind blew, Jack could hear the giant calling for his wife. This made him feel sad and guilty."
+                },
+                {
+                    "original": "If he could find the giant, he could also apologise for being so greedy.",
+                    "corrected": "If he could find the giant, he could also apologize for being so greedy.",
+                    "explanation": "The word 'apologise' is the British spelling; 'apologize' is the American spelling. Consistency in spelling is important.",
+                    "context": "Jack had many regrets about his past actions. If he could find the giant, he could also apologize for being so greedy. He hoped this would bring him some peace."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Furious",
+                    "definition": "Extremely angry.",
+                    "context": {
+                        "Context 1": "Jack's mother was furious when she found out he traded their cow for beans.",
+                        "Context 2": "The teacher was furious when she discovered the students had not done their homework.",
+                        "Context 3": "He was furious when he lost the game after leading for most of it."
+                    }
+                },
+                {
+                    "word": "Devastated",
+                    "definition": "Severely shocked or distressed.",
+                    "context": {
+                        "Context 1": "Jack was devastated after his mother threw the beans out the window.",
+                        "Context 2": "She felt devastated when she learned her favorite store was closing down.",
+                        "Context 3": "The team was devastated after losing the championship match."
+                    }
+                },
+                {
+                    "word": "Magic",
+                    "definition": "The power of apparently influencing events using mysterious or supernatural forces.",
+                    "context": {
+                        "Context 1": "Jack discovered the beans were magic when he saw the beanstalk grow.",
+                        "Context 2": "The magician performed a magic trick that left the audience in awe.",
+                        "Context 3": "The movie was filled with magic and wonder, captivating children and adults alike."
+                    }
+                },
+                {
+                    "word": "Treasure",
+                    "definition": "A quantity of precious metals, gems, or other valuable items.",
+                    "context": {
+                        "Context 1": "Jack was looking for treasure in the giant's castle.",
+                        "Context 2": "The pirate's map led to a hidden treasure buried on a deserted island.",
+                        "Context 3": "She considered her family and friends to be her greatest treasure."
+                    }
+                },
+                {
+                    "word": "Stomp",
+                    "definition": "To tread heavily or noisily.",
+                    "context": {
+                        "Context 1": "The giant stomped into the kitchen, causing the floor to shake.",
+                        "Context 2": "The children stomped through the puddles on a rainy day.",
+                        "Context 3": "He stomped his feet in frustration when he couldn't find his keys."
+                    }
+                },
+                {
+                    "word": "Whisper",
+                    "definition": "To speak very softly using one's breath rather than one's vocal cords.",
+                    "context": {
+                        "Context 1": "Jack whispered in excitement when he saw the giant beanstalk.",
+                        "Context 2": "She whispered a secret to her friend during class.",
+                        "Context 3": "The librarian asked them to whisper so they wouldn't disturb others."
+                    }
+                },
+                {
+                    "word": "Chop",
+                    "definition": "To cut something into pieces with a sharp tool.",
+                    "context": {
+                        "Context 1": "Jack chopped the beanstalk to stop the giant from following him.",
+                        "Context 2": "She chopped vegetables for the salad.",
+                        "Context 3": "He learned how to chop wood for the fireplace."
+                    }
+                },
+                {
+                    "word": "Echo",
+                    "definition": "A sound that is reflected off a surface and heard again.",
+                    "context": {
+                        "Context 1": "The loud footsteps of the giant echoed down the hallway.",
+                        "Context 2": "The echo of her voice could be heard in the empty cave.",
+                        "Context 3": "He enjoyed shouting into the canyon and hearing the echo return."
+                    }
+                },
+                {
+                    "word": "Husband",
+                    "definition": "A married man.",
+                    "context": {
+                        "Context 1": "The giantess worried about her husband coming home.",
+                        "Context 2": "Her husband surprised her with flowers on their anniversary.",
+                        "Context 3": "He often helped his husband with household chores."
+                    }
+                },
+                {
+                    "word": "Giantess",
+                    "definition": "A female giant.",
+                    "context": {
+                        "Context 1": "Jack met a giantess who was kind and offered him food.",
+                        "Context 2": "In the story, the giantess had a warm smile despite her size.",
+                        "Context 3": "The giantess in folklore often protects the forest and its creatures."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Magic",
+                    "fact": "The word 'magic' comes from the Greek word 'magike,' which refers to the art of the Magi, who were ancient priests and scholars!"
+                },
+                {
+                    "word": "Giantess",
+                    "fact": "In some cultures, giantesses are seen as protectors of nature, while in others, they are feared as monsters!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did Jack climb the beanstalk?",
+                    "answer": "Because he heard the grass was greener on the other side!"
+                },
+                {
+                    "question": "What did the giant say when he lost his beanstalk?",
+                    "answer": "That's just beanstalk-tastic!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Giant",
+                    "definition": "A very large and powerful being, often found in folklore and fairy tales.",
+                    "context": {
+                        "Context 1": "In the story, Jack encounters a giant who lives in the clouds.",
+                        "Context 2": "The giant of the mountain was known for his strength and size.",
+                        "Context 3": "In mythology, giants often represent chaos and destruction."
+                    }
+                },
+                {
+                    "word": "Comfortable",
+                    "definition": "Providing physical ease and relaxation; free from stress or worry.",
+                    "context": {
+                        "Context 1": "Jack and his mother lived a very comfortable life after finding the golden hen.",
+                        "Context 2": "The couch was so comfortable that I fell asleep while watching TV.",
+                        "Context 3": "She felt comfortable speaking in front of large audiences."
+                    }
+                },
+                {
+                    "word": "Apologise",
+                    "definition": "To express regret for something that one has done wrong.",
+                    "context": {
+                        "Context 1": "Jack decided to apologise to the giant for being greedy.",
+                        "Context 2": "He had to apologise to his friend for forgetting her birthday.",
+                        "Context 3": "The company issued a public apology for the mistake in their product."
+                    }
+                },
+                {
+                    "word": "Shriveled",
+                    "definition": "To become wrinkled and reduced in size, often due to loss of moisture.",
+                    "context": {
+                        "Context 1": "Jack pulled out one last shriveled magic bean from the box.",
+                        "Context 2": "The shriveled apple sat forgotten at the bottom of the bag.",
+                        "Context 3": "After the drought, the leaves on the trees looked shriveled and dry."
+                    }
+                },
+                {
+                    "word": "Foggy",
+                    "definition": "Filled with or covered by fog; difficult to see through.",
+                    "context": {
+                        "Context 1": "Jack walked into the foggy mountains in search of the giant.",
+                        "Context 2": "The foggy weather made it hard to drive safely.",
+                        "Context 3": "On foggy mornings, the lake looked like a scene from a ghost story."
+                    }
+                },
+                {
+                    "word": "Millionaire",
+                    "definition": "A person whose assets are worth one million dollars or more.",
+                    "context": {
+                        "Context 1": "The golden hen made Jack a millionaire.",
+                        "Context 2": "After winning the lottery, she became a millionaire overnight.",
+                        "Context 3": "Many millionaires invest in real estate to grow their wealth."
+                    }
+                },
+                {
+                    "word": "Tears",
+                    "definition": "Drops of clear, salty liquid that come from the eyes, often as a result of emotion.",
+                    "context": {
+                        "Context 1": "Jack felt sad and guilty every time he heard the giant's wife's tears falling.",
+                        "Context 2": "She wiped away her tears after watching the emotional movie.",
+                        "Context 3": "Tears of joy streamed down his face during the wedding ceremony."
+                    }
+                },
+                {
+                    "word": "Rumbling",
+                    "definition": "A deep, heavy, continuous sound, often associated with thunder or machinery.",
+                    "context": {
+                        "Context 1": "People say you can hear the rumbling sound of two giants dancing together in the clouds.",
+                        "Context 2": "The rumbling of the train could be heard from miles away.",
+                        "Context 3": "His stomach was rumbling after skipping breakfast."
+                    }
+                },
+                {
+                    "word": "Greedy",
+                    "definition": "Having an excessive desire for more than one needs or deserves, especially regarding wealth or food.",
+                    "context": {
+                        "Context 1": "Jack decided to apologise for being so greedy.",
+                        "Context 2": "The greedy raccoon rummaged through the trash for food.",
+                        "Context 3": "She was greedy for knowledge, always wanting to learn more."
+                    }
+                },
+                {
+                    "word": "Castle",
+                    "definition": "A large building, often fortified, that served as a residence for royalty or nobility.",
+                    "context": {
+                        "Context 1": "The giant lived in a castle in the clouds.",
+                        "Context 2": "The children played pretend in their fort, imagining it was a castle.",
+                        "Context 3": "The castle was built hundreds of years ago and still stands today."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Giant",
+                    "fact": "In folklore, giants are often depicted as being not just big, but also a bit clumsy!"
+                },
+                {
+                    "word": "Millionaire",
+                    "fact": "Did you know that the word 'millionaire' was first used in the 18th century? It was a big deal back then!"
+                },
+                {
+                    "word": "Foggy",
+                    "fact": "In San Francisco, there’s a famous fog named 'Karl' that has its own Twitter account!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did Jack climb the beanstalk?",
+                    "answer": "Because he heard the giant had a great sense of humor!"
+                },
+                {
+                    "question": "What did the giant say to Jack?",
+                    "answer": "‘You’re not so small, just vertically challenged!’"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new movie that just came out?"
+                },
+                {
+                    "Person 2": "Yeah, I saw the trailer! It looks awesome. Are you planning to watch it?"
+                },
+                {
+                    "Person 1": "Definitely! I was thinking of going this weekend. Want to join?"
+                },
+                {
+                    "Person 2": "Absolutely! I could use a good movie night. What time were you thinking?"
+                },
+                {
+                    "Person 1": "How about the 7 PM show? We can grab some popcorn too!"
+                },
+                {
+                    "Person 2": "Sounds perfect! I’ll bring some candy. You know, to balance out the popcorn."
+                },
+                {
+                    "Person 1": "Haha, good idea! We need the sugar rush for the action scenes."
+                },
+                {
+                    "Person 2": "For sure! I can’t wait to see the special effects. They looked amazing in the trailer."
+                },
+                {
+                    "Person 1": "Right? I love when movies have those epic visuals. Makes everything more exciting."
+                },
+                {
+                    "Person 2": "Exactly! Plus, it’s always fun to watch movies with friends."
+                },
+                {
+                    "Person 1": "Totally! It’s like a mini event. We should make it a regular thing."
+                },
+                {
+                    "Person 2": "I’m in! Maybe we can pick a different genre each time?"
+                },
+                {
+                    "Person 1": "Great idea! Next time, we could do a comedy or a horror film."
+                },
+                {
+                    "Person 2": "Oh, I love horror! Just as long as I can sit next to you for the scary parts."
+                },
+                {
+                    "Person 1": "Deal! I’ll be your shield. Can’t wait for this weekend!"
+                },
+                {
+                    "Person 2": "Me too! It’s going to be a blast!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you hear about that new movie coming out this weekend?"
+                },
+                {
+                    "Person 2": "No, I haven't! What's it about?"
+                },
+                {
+                    "Person 1": "It's a fantasy adventure, kind of like a modern twist on the classic fairy tales."
+                },
+                {
+                    "Person 2": "That sounds interesting! I love a good twist on old stories. Who's in it?"
+                },
+                {
+                    "Person 1": "I think it stars that actor from that superhero movie, you know, the one with the guy in the suit?"
+                },
+                {
+                    "Person 2": "Oh, you mean Chris Evans? He's great! I’ll definitely check it out."
+                },
+                {
+                    "Person 1": "Yeah, and the trailer looks amazing! Lots of special effects and action."
+                },
+                {
+                    "Person 2": "Nice! I could use a fun movie night. Are you planning to go see it?"
+                },
+                {
+                    "Person 1": "I was thinking about it. Maybe we could go together?"
+                },
+                {
+                    "Person 2": "That sounds like a plan! Popcorn and all?"
+                },
+                {
+                    "Person 1": "Of course! Can't have a movie without popcorn."
+                },
+                {
+                    "Person 2": "Perfect! Let’s check the showtimes later."
+                },
+                {
+                    "Person 1": "Definitely! I’m excited already."
+                },
+                {
+                    "Person 2": "Me too! It’ll be a fun way to kick off the weekend."
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
