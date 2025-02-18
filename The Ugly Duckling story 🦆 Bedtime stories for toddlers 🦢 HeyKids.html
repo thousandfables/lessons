@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Could be heard from all directions, the ducklings came to life and took their first steps, said the mother duck.",
+                    "corrected": "From all directions, the ducklings could be heard coming to life and taking their first steps, said the mother duck.",
+                    "explanation": "The original sentence structure is awkward; the subject should precede the verb for clarity.",
+                    "context": "The mother duck was watching her ducklings closely. From all directions, the ducklings could be heard coming to life and taking their first steps. She was filled with joy at this moment."
+                },
+                {
+                    "original": "She can't be a chicken, not even a turkey.",
+                    "corrected": "She can't be a chicken or even a turkey.",
+                    "explanation": "The phrase 'not even a turkey' is less idiomatic; 'or even a turkey' is more natural in this context.",
+                    "context": "The mother duck was puzzled by the appearance of the strange duckling. She can't be a chicken or even a turkey. It was clear that this duckling was different."
+                },
+                {
+                    "original": "It's true that perhaps she's not the prettiest duckling, but she's good natured and she can swim as well as the others, maybe even better.",
+                    "corrected": "It's true that she may not be the prettiest duckling, but she's good-natured and can swim as well as the others, maybe even better.",
+                    "explanation": "The phrase 'perhaps she's not' is less direct; 'she may not be' is more concise. 'Good natured' should be hyphenated.",
+                    "context": "The mother duck defended her offspring against the other ducks. It's true that she may not be the prettiest duckling, but she's good-natured and can swim as well as the others, maybe even better."
+                },
+                {
+                    "original": "The poor duckling didn't know where to hide and what to do.",
+                    "corrected": "The poor duckling didn't know where to hide or what to do.",
+                    "explanation": "The conjunction 'and' should be replaced with 'or' to correctly connect the two clauses.",
+                    "context": "The ugly duckling felt lost and alone. The poor duckling didn't know where to hide or what to do. She was overwhelmed by her situation."
+                },
+                {
+                    "original": "I was lucky they didn't get me this time.",
+                    "corrected": "I was lucky that they didn't get me this time.",
+                    "explanation": "The word 'that' is needed to introduce the clause for clarity.",
+                    "context": "After a close encounter with the hunting dogs, the duckling felt relieved. I was lucky that they didn't get me this time. She took a moment to catch her breath."
+                },
+                {
+                    "original": "The ugly duckling was overcome by a strange restlessness.",
+                    "corrected": "The ugly duckling felt a strange restlessness overcome her.",
+                    "explanation": "The original phrasing is awkward; reordering the sentence makes it clearer.",
+                    "context": "As she watched the beautiful swans, the ugly duckling felt a strange restlessness overcome her. She longed to be part of their world."
+                },
+                {
+                    "original": "Wow, I wonder who are those wonderful birds?",
+                    "corrected": "Wow, I wonder who those wonderful birds are?",
+                    "explanation": "The word order is incorrect in the original; the subject should come before the verb in a statement.",
+                    "context": "The ugly duckling gazed at the majestic swans. Wow, I wonder who those wonderful birds are? She felt a deep yearning to belong."
+                },
+                {
+                    "original": "The old woman noticed the duckling and asked her, Who are you?",
+                    "corrected": "The old woman noticed the duckling and asked her, 'Who are you?'",
+                    "explanation": "Direct speech should be enclosed in quotation marks for clarity.",
+                    "context": "As the duckling entered the warm house, she caught the old woman's attention. The old woman noticed the duckling and asked her, 'Who are you?' She was curious about the newcomer."
+                },
+                {
+                    "original": "But a long time had passed and the duckling hadn't laid any eggs.",
+                    "corrected": "But a long time had passed, and the duckling hadn't laid any eggs.",
+                    "explanation": "A comma is needed before 'and' to separate the two independent clauses.",
+                    "context": "The old woman expected the duckling to lay eggs. But a long time had passed, and the duckling hadn't laid any eggs. This made the old woman puzzled."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I am the most important one here.",
+                    "corrected": "I am the most important person here.",
+                    "explanation": "Using 'one' is vague; 'person' is more specific and appropriate in this context.",
+                    "context": "In this moment, I feel a strong sense of self-importance. I am the most important person here. I want to make sure everyone knows that."
+                },
+                {
+                    "original": "Can you cuddle, purr?",
+                    "corrected": "Can you cuddle and purr?",
+                    "explanation": "The conjunction 'and' is needed to connect the two actions properly.",
+                    "context": "The tomcat was curious about the duckling's abilities. Can you cuddle and purr? I want to know what you can do."
+                },
+                {
+                    "original": "What kind of activity is that?",
+                    "corrected": "What kind of activity is that supposed to be?",
+                    "explanation": "The phrase 'supposed to be' adds clarity to the question about the activity.",
+                    "context": "The chicken was puzzled by the duckling's desire to float. What kind of activity is that supposed to be? It seems unusual to me."
+                },
+                {
+                    "original": "You don't understand me.",
+                    "corrected": "You don't understand me, do you?",
+                    "explanation": "Adding 'do you?' turns the statement into a rhetorical question, emphasizing the speaker's frustration.",
+                    "context": "The duckling felt misunderstood by the chicken. You don't understand me, do you? I wish you could see my perspective."
+                },
+                {
+                    "original": "Learn to do what is asked of you.",
+                    "corrected": "Learn to do what is asked of you, please.",
+                    "explanation": "Adding 'please' softens the command and makes it more polite.",
+                    "context": "The chicken was trying to encourage the duckling to conform. Learn to do what is asked of you, please. It will make life easier."
+                },
+                {
+                    "original": "I think that I'll go into the big wide world.",
+                    "corrected": "I think I'll go out into the big wide world.",
+                    "explanation": "Using 'out' is more idiomatic when referring to leaving a familiar place.",
+                    "context": "The duckling felt a strong desire for adventure. I think I'll go out into the big wide world. I need to explore beyond my corner."
+                },
+                {
+                    "original": "There were flowers everywhere.",
+                    "corrected": "There were flowers all around.",
+                    "explanation": "'All around' is a more vivid expression than 'everywhere' in this context.",
+                    "context": "As spring arrived, the landscape transformed beautifully. There were flowers all around. It felt like a dream."
+                },
+                {
+                    "original": "She had turned into a very beautiful white bird.",
+                    "corrected": "She had turned into a beautiful white swan.",
+                    "explanation": "Using 'swan' specifies the type of bird and enhances clarity.",
+                    "context": "The duckling was astonished by her reflection. She had turned into a beautiful white swan. It was a moment of pure joy."
+                },
+                {
+                    "original": "We haven't seen you around.",
+                    "corrected": "We haven't seen you here before.",
+                    "explanation": "'Here before' is more precise than 'around' in this context.",
+                    "context": "The other swans were welcoming the duckling. We haven't seen you here before. We’d love to get to know you."
+                },
+                {
+                    "original": "I couldn't have ever dreamed of such happiness before.",
+                    "corrected": "I could never have dreamed of such happiness before.",
+                    "explanation": "The phrase 'could never have dreamed' is a more natural construction in English.",
+                    "context": "The swan reflected on her transformation. I could never have dreamed of such happiness before. This feels like a fairy tale."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Brood",
+                    "definition": "To sit on eggs to hatch them.",
+                    "context": {
+                        "Context 1": "The mother duck was brooding her eggs patiently until they hatched.",
+                        "Context 2": "The hen decided to brood over her nest of eggs for several weeks.",
+                        "Context 3": "He liked to brood over his thoughts while sitting by the lake."
+                    }
+                },
+                {
+                    "word": "Crack",
+                    "definition": "To break something so that it does not separate into pieces.",
+                    "context": {
+                        "Context 1": "The eggs began to crack open, revealing the ducklings inside.",
+                        "Context 2": "She accidentally cracked her phone screen when she dropped it.",
+                        "Context 3": "The magician made a loud crack sound with his wand to impress the audience."
+                    }
+                },
+                {
+                    "word": "Siblings",
+                    "definition": "Brothers and sisters.",
+                    "context": {
+                        "Context 1": "The mother duck was worried about her duckling not looking like her siblings.",
+                        "Context 2": "He has three siblings, and they all love to play soccer together.",
+                        "Context 3": "The siblings decided to start a band and perform at local events."
+                    }
+                },
+                {
+                    "word": "Ugly",
+                    "definition": "Unpleasant or repulsive in appearance.",
+                    "context": {
+                        "Context 1": "The ugly duckling felt sad because she was different from the others.",
+                        "Context 2": "He thought the painting was ugly, but others found it beautiful.",
+                        "Context 3": "The villain in the movie was portrayed as ugly to emphasize his bad nature."
+                    }
+                },
+                {
+                    "word": "Pinch",
+                    "definition": "To squeeze or compress with fingers.",
+                    "context": {
+                        "Context 1": "One of the ducks pinched the ugly duckling, making her feel unwelcome.",
+                        "Context 2": "She pinched her brother's arm playfully during the game.",
+                        "Context 3": "The chef pinched a bit of salt into the dish to enhance the flavor."
+                    }
+                },
+                {
+                    "word": "Huddle",
+                    "definition": "To gather closely together.",
+                    "context": {
+                        "Context 1": "The ugly duckling huddled near the forest lake to keep warm.",
+                        "Context 2": "The children huddled together under the blanket during the storm.",
+                        "Context 3": "The penguins huddle together to stay warm in the freezing temperatures."
+                    }
+                },
+                {
+                    "word": "Voyage",
+                    "definition": "A long journey involving travel by sea or in space.",
+                    "context": {
+                        "Context 1": "The swans continued their voyage to warmer climates.",
+                        "Context 2": "The explorers set out on a voyage to discover new lands.",
+                        "Context 3": "She read a book about a voyage across the galaxy."
+                    }
+                },
+                {
+                    "word": "Reeds",
+                    "definition": "Tall, slender-leaved plants that grow in water or marshy areas.",
+                    "context": {
+                        "Context 1": "The ugly duckling found peace in the reeds by the pond.",
+                        "Context 2": "The artist used reeds to create a beautiful basket.",
+                        "Context 3": "The children played hide and seek among the tall reeds near the river."
+                    }
+                },
+                {
+                    "word": "Puddle",
+                    "definition": "A small pool of liquid, especially rainwater.",
+                    "context": {
+                        "Context 1": "The duck made her nest at the edge of a puddle.",
+                        "Context 2": "After the rain, the kids jumped in the puddles with their boots.",
+                        "Context 3": "The dog splashed in the puddle, getting everyone around him wet."
+                    }
+                },
+                {
+                    "word": "Strange",
+                    "definition": "Unusual or surprising in a way that is unsettling.",
+                    "context": {
+                        "Context 1": "The duckling looked strange compared to her siblings.",
+                        "Context 2": "He had a strange feeling that something was not right.",
+                        "Context 3": "The strange noise coming from the attic scared the children."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Ugly",
+                    "fact": "Did you know that the term 'ugly' was once used to describe things that were just unusual or different, not necessarily bad?"
+                },
+                {
+                    "word": "Brood",
+                    "fact": "In some cultures, people believe that if a bird broods over its eggs too long, it will hatch a chicken instead of a duck!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the ugly duckling bring a ladder to the pond?",
+                    "answer": "Because it wanted to reach new heights!"
+                },
+                {
+                    "question": "What did the mother duck say to the ugly duckling?",
+                    "answer": "Don't worry, beauty is just a quack away!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Cuddle",
+                    "definition": "To hold close in one's arms as a way of showing love or affection.",
+                    "context": {
+                        "Context 1": "The tomcat asked the duckling, 'Can you cuddle?'",
+                        "Context 2": "After a long day, I love to cuddle with my blanket on the couch.",
+                        "Context 3": "The puppy curled up next to its owner, wanting to cuddle."
+                    }
+                },
+                {
+                    "word": "Purr",
+                    "definition": "The low, continuous, vibrating sound made by a cat when it is happy.",
+                    "context": {
+                        "Context 1": "The tomcat asked the duckling, 'Can you purr?'",
+                        "Context 2": "My cat always purrs when I scratch behind her ears.",
+                        "Context 3": "The sound of a car engine can sometimes mimic a cat's purr."
+                    }
+                },
+                {
+                    "word": "Carefree",
+                    "definition": "Free from worries or responsibilities.",
+                    "context": {
+                        "Context 1": "The chicken told the duckling, 'If you lay eggs or purr, you'll see that you have a carefree life.'",
+                        "Context 2": "Children often have a carefree attitude during summer vacation.",
+                        "Context 3": "After finishing her exams, she felt carefree and ready to travel."
+                    }
+                },
+                {
+                    "word": "Urge",
+                    "definition": "A strong desire or impulse to do something.",
+                    "context": {
+                        "Context 1": "The duckling felt the urge to swim.",
+                        "Context 2": "He had an urge to eat ice cream on a hot day.",
+                        "Context 3": "The urge to explore new places can be overwhelming for some travelers."
+                    }
+                },
+                {
+                    "word": "Reflect",
+                    "definition": "To throw back light or heat; to think deeply about something.",
+                    "context": {
+                        "Context 1": "The duckling looked in the water and saw a reflection of herself.",
+                        "Context 2": "She took a moment to reflect on her choices before making a decision.",
+                        "Context 3": "Mirrors reflect images, allowing us to see ourselves."
+                    }
+                },
+                {
+                    "word": "Accept",
+                    "definition": "To receive or agree to something offered.",
+                    "context": {
+                        "Context 1": "The duckling hoped the swans would accept her for who she was.",
+                        "Context 2": "He was nervous about asking her out, but he hoped she would accept his invitation.",
+                        "Context 3": "The committee decided to accept the proposal after much discussion."
+                    }
+                },
+                {
+                    "word": "Courage",
+                    "definition": "The ability to confront fear or adversity.",
+                    "context": {
+                        "Context 1": "The duckling gathered her courage and flew towards the swans.",
+                        "Context 2": "It takes courage to stand up for what you believe in.",
+                        "Context 3": "She showed great courage by speaking in front of the large crowd."
+                    }
+                },
+                {
+                    "word": "Beautiful",
+                    "definition": "Pleasant to look at; attractive.",
+                    "context": {
+                        "Context 1": "The ugly duckling saw that she had turned into a very beautiful white bird.",
+                        "Context 2": "The sunset over the ocean was a beautiful sight.",
+                        "Context 3": "She wore a beautiful dress to the party."
+                    }
+                },
+                {
+                    "word": "Home",
+                    "definition": "The place where one lives permanently, especially as a member of a family or household.",
+                    "context": {
+                        "Context 1": "The ugly duckling felt that she was finally home with the other swans.",
+                        "Context 2": "After traveling for months, he was happy to return home.",
+                        "Context 3": "Home is where the heart is, they say."
+                    }
+                },
+                {
+                    "word": "Circle",
+                    "definition": "A round plane figure whose boundary consists of points equidistant from a fixed center.",
+                    "context": {
+                        "Context 1": "The other swans welcomed her into their circle.",
+                        "Context 2": "The children sat in a circle for storytime.",
+                        "Context 3": "He drew a perfect circle on the paper."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Cuddle",
+                    "fact": "Did you know that some animals, like otters, hold hands while they cuddle to keep from drifting apart?"
+                },
+                {
+                    "word": "Purr",
+                    "fact": "Cats can purr at a frequency that has been shown to promote healing in their bones!"
+                },
+                {
+                    "word": "Reflect",
+                    "fact": "The word 'reflect' comes from the Latin 'reflectere,' which means 'to bend back.' So, when you reflect, you're bending your thoughts back to consider them!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the duckling bring a ladder to the lake?",
+                    "answer": "Because it wanted to reach new heights!"
+                },
+                {
+                    "question": "What did the swan say to the ugly duckling?",
+                    "answer": "Don't worry, we all have our 'quack' moments!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new park they opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I saw some pictures online! It looks amazing with all those green spaces."
+                },
+                {
+                    "Person 1": "Right? I can't wait to check it out. I heard they have a pond and even a little playground."
+                },
+                {
+                    "Person 2": "That sounds perfect for a picnic! We should plan a day to go."
+                },
+                {
+                    "Person 1": "Definitely! Maybe we can bring some sandwiches and snacks."
+                },
+                {
+                    "Person 2": "I’ll bring my famous potato salad! You know, the one everyone loves."
+                },
+                {
+                    "Person 1": "Oh, that sounds delicious! I’ll bring some drinks to go with it."
+                },
+                {
+                    "Person 2": "Awesome! What day are you thinking?"
+                },
+                {
+                    "Person 1": "How about Saturday? The weather looks nice."
+                },
+                {
+                    "Person 2": "Saturday works for me! I’ll bring a frisbee too, just in case we want to play."
+                },
+                {
+                    "Person 1": "Perfect! I’m looking forward to it. It’ll be nice to relax outdoors."
+                },
+                {
+                    "Person 2": "For sure! It’s been a while since we had a fun day out."
+                },
+                {
+                    "Person 1": "Yeah, and we can take some pictures to remember the day."
+                },
+                {
+                    "Person 2": "Absolutely! Can’t wait to hang out!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new park they opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I did! I heard it has a lake and everything. Have you been yet?"
+                },
+                {
+                    "Person 1": "Not yet, but I really want to check it out. I love being outdoors."
+                },
+                {
+                    "Person 2": "Same here! I think it would be nice to go for a walk or maybe have a picnic."
+                },
+                {
+                    "Person 1": "A picnic sounds awesome! We could bring some sandwiches and snacks."
+                },
+                {
+                    "Person 2": "Definitely! And maybe some drinks too. What’s your favorite picnic drink?"
+                },
+                {
+                    "Person 1": "I’m a big fan of lemonade. It’s so refreshing on a warm day!"
+                },
+                {
+                    "Person 2": "Lemonade it is! I’ll bring some cookies too. Can’t have a picnic without dessert!"
+                },
+                {
+                    "Person 1": "Perfect! Let’s plan for this weekend then."
+                },
+                {
+                    "Person 2": "Sounds good to me! I’ll check the weather to make sure it’s nice."
+                },
+                {
+                    "Person 1": "Great idea! I can’t wait to relax by the lake."
+                },
+                {
+                    "Person 2": "Me neither! It’ll be fun to just hang out and enjoy the sunshine."
+                },
+                {
+                    "Person 1": "For sure! Plus, we can take some cool pictures while we’re there."
+                },
+                {
+                    "Person 2": "Absolutely! I’ll bring my camera. This is going to be a blast!"
+                },
+                {
+                    "Person 1": "I’m really looking forward to it. It’s been a while since we had a fun day out."
+                },
+                {
+                    "Person 2": "Yeah, it’ll be nice to catch up and enjoy some time outside. See you this weekend!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
