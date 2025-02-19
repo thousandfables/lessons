@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 1,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Chatter PT works like a pile of garbage.",
+                    "corrected": "ChatGPT works poorly.",
+                    "explanation": "The phrase 'like a pile of garbage' is informal and not appropriate for academic writing; 'poorly' is a more suitable term.",
+                    "context": "In discussing the effectiveness of ChatGPT, I mentioned that it works poorly. This is important to highlight in my essay."
+                },
+                {
+                    "original": "If your arm is, this means that local businesses can harm somebody.",
+                    "corrected": "If your argument is that local businesses can harm somebody.",
+                    "explanation": "The phrase 'if your arm is' is a typographical error; it should refer to 'argument' instead.",
+                    "context": "I was explaining the implications of local businesses in my essay. If your argument is that local businesses can harm somebody, it needs to be clearly stated."
+                },
+                {
+                    "original": "Why safety better than monopoly?",
+                    "corrected": "Why is safety better than monopoly?",
+                    "explanation": "The sentence is missing the verb 'is,' making it grammatically incorrect.",
+                    "context": "I was questioning the relationship between safety and monopoly. Why is safety better than monopoly? This is a crucial point in my argument."
+                },
+                {
+                    "original": "Because safety is our priority prior need.",
+                    "corrected": "Because safety is our primary need.",
+                    "explanation": "'Prior need' is not a standard phrase; 'primary need' is the correct term.",
+                    "context": "In my essay, I emphasized the importance of safety. Because safety is our primary need, it should be prioritized over other concerns."
+                },
+                {
+                    "original": "Money is always the secondary thing.",
+                    "corrected": "Money is always secondary.",
+                    "explanation": "The phrase 'the secondary thing' is awkward; 'secondary' suffices.",
+                    "context": "When discussing priorities, I noted that money is always secondary. This helps clarify my stance on the importance of safety."
+                },
+                {
+                    "original": "This is called cohesion.",
+                    "corrected": "This is what we call cohesion.",
+                    "explanation": "The original sentence lacks clarity; adding 'what we call' improves understanding.",
+                    "context": "I was explaining the concept of cohesion in writing. This is what we call cohesion, which connects ideas effectively."
+                },
+                {
+                    "original": "If something doesn't make sense, that's called incoherent.",
+                    "corrected": "If something doesn't make sense, that's called incoherence.",
+                    "explanation": "The term 'incoherent' should be used as a noun here; 'incoherence' is the correct noun form.",
+                    "context": "While discussing clarity in writing, I mentioned that if something doesn't make sense, that's called incoherence. This is crucial for effective communication."
+                },
+                {
+                    "original": "Health and safety is more important than potential.",
+                    "corrected": "Health and safety are more important than potential.",
+                    "explanation": "The subject 'health and safety' is plural, so the verb should be 'are' instead of 'is.'",
+                    "context": "In my argument, I asserted that health and safety are more important than potential financial risks. This supports my overall thesis."
+                },
+                {
+                    "original": "You said risk, singular risks, plural.",
+                    "corrected": "You said 'risk,' which is singular; 'risks' is plural.",
+                    "explanation": "The original sentence lacks clarity; it should specify the distinction between singular and plural forms.",
+                    "context": "I was correcting a misunderstanding about terminology. You said 'risk,' which is singular; 'risks' is plural, and it's important to use the correct form."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Implementation",
+                    "definition": "The process of putting a decision or plan into effect.",
+                    "context": {
+                        "Context 1": "The implementation of the new policy was smooth and efficient.",
+                        "Context 2": "The chef's implementation of the recipe resulted in a delicious dish.",
+                        "Context 3": "The implementation of the new video game was delayed due to technical issues."
+                    }
+                },
+                {
+                    "word": "Cohesion",
+                    "definition": "The action or fact of forming a united whole.",
+                    "context": {
+                        "Context 1": "Cohesion in the essay helped the ideas flow logically.",
+                        "Context 2": "The cohesion of the team was evident during the project presentation.",
+                        "Context 3": "The cohesion of the jelly was perfect for spreading on toast."
+                    }
+                },
+                {
+                    "word": "Coherence",
+                    "definition": "The quality of being logical and consistent.",
+                    "context": {
+                        "Context 1": "The coherence of her argument made it very persuasive.",
+                        "Context 2": "The coherence of the dance routine impressed the judges.",
+                        "Context 3": "The coherence of the soup was improved by blending it thoroughly."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "From her perspective, the project was a success.",
+                        "Context 2": "The artist's perspective in the painting gave it depth.",
+                        "Context 3": "His perspective on the movie was influenced by his love for action films."
+                    }
+                },
+                {
+                    "word": "Monopoly",
+                    "definition": "The exclusive possession or control of the supply of or trade in a commodity or service.",
+                    "context": {
+                        "Context 1": "The monopoly on local markets harmed small businesses.",
+                        "Context 2": "He won the game of Monopoly after buying all the properties.",
+                        "Context 3": "The monopoly of the internet provider led to higher prices for consumers."
+                    }
+                },
+                {
+                    "word": "Optimization",
+                    "definition": "The action of making the best or most effective use of a situation or resource.",
+                    "context": {
+                        "Context 1": "The optimization of the website improved its loading speed.",
+                        "Context 2": "Optimization of the garden layout allowed for more sunlight.",
+                        "Context 3": "The optimization of the recipe made it healthier without losing flavor."
+                    }
+                },
+                {
+                    "word": "Disadvantage",
+                    "definition": "An unfavorable circumstance or condition that reduces the chances of success or effectiveness.",
+                    "context": {
+                        "Context 1": "One disadvantage of the plan is its high cost.",
+                        "Context 2": "The disadvantage of being late is missing important information.",
+                        "Context 3": "The disadvantage of the new phone is its short battery life."
+                    }
+                },
+                {
+                    "word": "Argument",
+                    "definition": "An exchange of diverging or opposite views, typically a heated or angry one.",
+                    "context": {
+                        "Context 1": "His argument was well-structured and convincing.",
+                        "Context 2": "The argument between the two friends ended in laughter.",
+                        "Context 3": "The argument in the movie added tension to the plot."
+                    }
+                },
+                {
+                    "word": "Health",
+                    "definition": "The state of being free from illness or injury.",
+                    "context": {
+                        "Context 1": "Maintaining good health is essential for a happy life.",
+                        "Context 2": "The health of the environment is crucial for future generations.",
+                        "Context 3": "Health insurance can help cover medical expenses."
+                    }
+                },
+                {
+                    "word": "Risk",
+                    "definition": "A situation involving exposure to danger.",
+                    "context": {
+                        "Context 1": "Investing in stocks carries a certain level of risk.",
+                        "Context 2": "The risk of rain made us reconsider our picnic plans.",
+                        "Context 3": "The risk of eating expired food can lead to food poisoning."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Monopoly",
+                    "fact": "The longest game of Monopoly ever played lasted 70 straight days!"
+                },
+                {
+                    "word": "Implementation",
+                    "fact": "In programming, implementation can sometimes feel like trying to fix a car while it's still moving!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the essay break up with the thesis?",
+                    "answer": "Because it found someone more coherent!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to reach new heights in their essays!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh, totally! What a finish, right? I was on the edge of my seat!"
+                },
+                {
+                    "Person 1": "I know! I thought they were done for, but then that last-minute goal was insane!"
+                },
+                {
+                    "Person 2": "Right? And the crowd went wild! I could hear them cheering from my living room."
+                },
+                {
+                    "Person 1": "Same here! I had my friends over, and we were all jumping around like crazy."
+                },
+                {
+                    "Person 2": "That sounds like a blast! I just watched it alone, but I was yelling at the TV like a maniac."
+                },
+                {
+                    "Person 1": "Haha! I think we all do that. So, what do you think about their chances in the playoffs?"
+                },
+                {
+                    "Person 2": "Honestly, I think they have a good shot. If they keep playing like that, they could go all the way!"
+                },
+                {
+                    "Person 1": "I hope so! It would be great to see them win the championship after all these years."
+                },
+                {
+                    "Person 2": "For sure! And the city would go wild. We should plan a watch party for the next game!"
+                },
+                {
+                    "Person 1": "Absolutely! I’ll bring snacks, and we can make it a whole event."
+                },
+                {
+                    "Person 2": "Sounds perfect! I’ll set up the TV outside if the weather’s nice."
+                },
+                {
+                    "Person 1": "Awesome! Let’s keep our fingers crossed for a win!"
+                },
+                {
+                    "Person 2": "Definitely! Can’t wait for the next game!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
