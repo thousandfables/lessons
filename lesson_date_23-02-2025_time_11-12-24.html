@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I need to I woke up very early for me at 6.",
+                    "corrected": "I woke up very early at 6 a.m.",
+                    "explanation": "The phrase 'I need to' is unnecessary and disrupts the sentence structure.",
+                    "context": "I had to wake up early because I had a dentist appointment. I woke up very early at 6 a.m. to prepare for the day."
+                },
+                {
+                    "original": "if I went to shopping outside my dentist we back to my home to to late.",
+                    "corrected": "if I went shopping after my dentist appointment, I would get home too late.",
+                    "explanation": "The phrase 'to shopping' should be 'shopping,' and 'we back' is incorrect; it should be 'I would get back.'",
+                    "context": "I had to plan my day carefully. If I went shopping after my dentist appointment, I would get home too late."
+                },
+                {
+                    "original": "I need to walk up also it's a 6 a.m.",
+                    "corrected": "I need to wake up at 6 a.m. as well.",
+                    "explanation": "'Walk up' is incorrect; it should be 'wake up,' and 'also it's' is awkward phrasing.",
+                    "context": "I have a busy schedule. I need to wake up at 6 a.m. as well to get everything done."
+                },
+                {
+                    "original": "I feel like I need to sleep but after I just I also want to sleep.",
+                    "corrected": "I feel like I need to sleep, but after a while, I also want to sleep.",
+                    "explanation": "The sentence is repetitive and lacks clarity; 'after a while' adds context.",
+                    "context": "Sometimes I struggle to stay awake. I feel like I need to sleep, but after a while, I also want to sleep."
+                },
+                {
+                    "original": "I can more I do more things.",
+                    "corrected": "I can do more things.",
+                    "explanation": "The phrase 'I can more' is incorrect; it should simply be 'I can do more.'",
+                    "context": "When I get enough sleep, I feel productive. I can do more things throughout the day."
+                },
+                {
+                    "original": "I hate don't like to wake up too early.",
+                    "corrected": "I don't like to wake up too early.",
+                    "explanation": "The phrase 'I hate don't like' is incorrect; it should be 'I don't like.'",
+                    "context": "Waking up early is tough for me. I don't like to wake up too early."
+                },
+                {
+                    "original": "I go to my bed very late went to my bed very late.",
+                    "corrected": "I went to bed very late.",
+                    "explanation": "The phrase 'go to my bed' is awkward; 'went to bed' is the correct past tense.",
+                    "context": "I had a long day yesterday. I went to bed very late."
+                },
+                {
+                    "original": "I wake up at 9 a.m. without like alarm clock.",
+                    "corrected": "I wake up at 9 a.m. without an alarm clock.",
+                    "explanation": "The phrase 'without like alarm clock' is incorrect; it should be 'without an alarm clock.'",
+                    "context": "I prefer to wake up naturally. I wake up at 9 a.m. without an alarm clock."
+                },
+                {
+                    "original": "I told it for you.",
+                    "corrected": "I told you.",
+                    "explanation": "The phrase 'told it for you' is incorrect; it should simply be 'told you.'",
+                    "context": "I remember our previous conversation. I told you about my preferences."
+                },
+                {
+                    "original": "it's too a lot of energy for me.",
+                    "corrected": "it's too much energy for me.",
+                    "explanation": "'Too a lot of' is incorrect; it should be 'too much.'",
+                    "context": "I have my preferences when it comes to drinks. Coffee gives me too much energy."
+                },
+                {
+                    "original": "I see that you have a new shelf a new bookshelf.",
+                    "corrected": "I see that you have a new bookshelf.",
+                    "explanation": "The phrase 'a new shelf a new bookshelf' is redundant; it should be 'a new bookshelf.'",
+                    "context": "I noticed some changes in your room. I see that you have a new bookshelf."
+                },
+                {
+                    "original": "my another books in another room.",
+                    "corrected": "my other books are in another room.",
+                    "explanation": "'Another' should be 'other' for plural nouns, and 'are' is needed for correct verb structure.",
+                    "context": "I need to organize my study space. My other books are in another room."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "they're just um on their shelters",
+                    "corrected": "they're just um on their shelves",
+                    "explanation": "The word 'shelters' refers to a place for hiding or safety, while 'shelves' are used for storing books.",
+                    "context": "I was wondering what my friends were doing with my books. They're just um on their shelves. I hope they are taking care of them."
+                },
+                {
+                    "original": "I just my mother will buy me two more books",
+                    "corrected": "I just know my mother will buy me two more books",
+                    "explanation": "The original sentence is missing a verb; 'know' is necessary to convey understanding.",
+                    "context": "I don't worry about my books. I just know my mother will buy me two more books. It's better for me to have more books."
+                },
+                {
+                    "original": "I never try to break the stiff edges",
+                    "corrected": "I never try to break the stiff edges.",
+                    "explanation": "The sentence is missing a period at the end, which is necessary for proper punctuation.",
+                    "context": "When I buy a new book, I like to keep it in good condition. I never try to break the stiff edges. I read it as it is."
+                },
+                {
+                    "original": "I um give my books to another people",
+                    "corrected": "I um give my books to other people",
+                    "explanation": "'Another' is used for singular nouns, while 'other' is appropriate for plural nouns.",
+                    "context": "I don't mind lending my books. I um give my books to other people. I trust my best friends to take care of them."
+                },
+                {
+                    "original": "I don't sure that they're very careful careful",
+                    "corrected": "I'm not sure that they're very careful",
+                    "explanation": "The phrase 'I don't sure' is incorrect; it should be 'I'm not sure.'",
+                    "context": "I only lend my books to people I trust. I don't give my books to people that I'm not sure that they're very careful. I want to keep them in good shape."
+                },
+                {
+                    "original": "it's my sister's books",
+                    "corrected": "it's my sister's book",
+                    "explanation": "The possessive form should match the singular noun; 'book' should be singular.",
+                    "context": "I have a few books on the shelf. One of them is my sister's book. It's a story she really enjoys."
+                },
+                {
+                    "original": "I don't like Shakespeare very much to be honest because nothing you know they",
+                    "corrected": "I don't like Shakespeare very much, to be honest, because you know nothing.",
+                    "explanation": "The sentence lacks proper punctuation and structure, making it confusing.",
+                    "context": "I have my preferences when it comes to literature. I don't like Shakespeare very much, to be honest, because you know nothing. I prefer books that explain everything."
+                },
+                {
+                    "original": "it's um too a lot of um things that uh they don't about story",
+                    "corrected": "there are too many things that don't relate to the story",
+                    "explanation": "The phrase 'too a lot of' is incorrect; it should be 'too many.'",
+                    "context": "When I read, I prefer stories that focus on the plot. I find that there are too many things that don't relate to the story. It can be distracting."
+                },
+                {
+                    "original": "it's a tree and left to story",
+                    "corrected": "it's a tree and left to the story",
+                    "explanation": "The phrase 'left to story' is missing the article 'the.'",
+                    "context": "Some books can be overly descriptive. For example, in one book, it's a tree and left to the story. It can feel unnecessary."
+                },
+                {
+                    "original": "I got a project for literature project literature literature yes",
+                    "corrected": "I got a project for a literature project.",
+                    "explanation": "The repetition of 'literature' is unnecessary, and the sentence lacks clarity.",
+                    "context": "In school, we have to complete various projects. I got a project for a literature project. It's quite interesting."
+                },
+                {
+                    "original": "what kind of project is that what kind of project is that",
+                    "corrected": "What kind of project is that?",
+                    "explanation": "The sentence is repetitive and lacks proper punctuation.",
+                    "context": "When discussing my schoolwork, someone asked me about my project. What kind of project is that? I'm excited to share it."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "it's my project about um um the little things in books",
+                    "corrected": "it's my project about the little things in books",
+                    "explanation": "The phrase 'um um' is unnecessary and disrupts the flow of the sentence.",
+                    "context": "I'm working on a project for school. It's my project about the little things in books. I want to explore what readers pay attention to."
+                },
+                {
+                    "original": "when they are read",
+                    "corrected": "when they read",
+                    "explanation": "'Are read' is passive and incorrect here; 'read' is the correct form for active voice.",
+                    "context": "I have a project about little things that people pay attention to when they read books. It's important to understand why we read."
+                },
+                {
+                    "original": "why like why reading books",
+                    "corrected": "why, like, why do we read books",
+                    "explanation": "The structure is incomplete; it needs a verb to form a proper question.",
+                    "context": "I'm exploring the reasons behind our reading habits. I wonder why, like, why do we read books in the first place?"
+                },
+                {
+                    "original": "people needs to have",
+                    "corrected": "people need to have",
+                    "explanation": "The subject 'people' is plural, so the verb should be 'need' instead of 'needs.'",
+                    "context": "In my project, I discuss the importance of independent thought. I believe people need to have their own opinions when reading."
+                },
+                {
+                    "original": "that's um author um author author author give you",
+                    "corrected": "that's the opinion the author gives you",
+                    "explanation": "The repetition of 'author' is unnecessary, and the structure is awkward; it should be clearer.",
+                    "context": "When reading a book, you often encounter the author's perspective. That's the opinion the author gives you, but it's important to form your own."
+                },
+                {
+                    "original": "not all sorts of opinion",
+                    "corrected": "not just any opinion",
+                    "explanation": "'All sorts of opinion' is awkward; 'just any opinion' is more idiomatic.",
+                    "context": "It's crucial to have your own perspective. People need their opinion, not just any opinion that comes from everywhere."
+                },
+                {
+                    "original": "there are different kind of kinds of books",
+                    "corrected": "there are different kinds of books",
+                    "explanation": "'Kind of kinds' is redundant; it should be 'kinds' to refer to multiple types.",
+                    "context": "In literature, variety is essential. There are different kinds of books that serve various purposes and convey different messages."
+                },
+                {
+                    "original": "what the author opinion is",
+                    "corrected": "what the author's opinion is",
+                    "explanation": "The possessive form 'author's' is needed to indicate ownership of the opinion.",
+                    "context": "When reading, it's important to discern the author's message. I often wonder what the author's opinion is on certain topics."
+                },
+                {
+                    "original": "the completely different thing",
+                    "corrected": "a completely different thing",
+                    "explanation": "The article 'the' is incorrect here; 'a' is needed to indicate one of many possibilities.",
+                    "context": "Interpretation can vary widely among readers. Some might think the author intended a completely different thing than what others perceive."
+                },
+                {
+                    "original": "it's a russian word i think that it's not in english",
+                    "corrected": "it's a Russian word; I think that it's not in English",
+                    "explanation": "Proper nouns like 'Russian' and 'English' should be capitalized; a semicolon is needed for clarity.",
+                    "context": "In discussing literature, I sometimes encounter terms that don't translate well. It's a Russian word; I think that it's not in English."
+                },
+                {
+                    "original": "it's why we're writing books",
+                    "corrected": "it's why we write books",
+                    "explanation": "The present simple 'write' is more appropriate than the present continuous 'writing' in this context.",
+                    "context": "I believe that books serve various purposes. It's why we write books—to convey ideas and emotions."
+                },
+                {
+                    "original": "not a sick wisdom",
+                    "corrected": "not to seek wisdom",
+                    "explanation": "'Sick wisdom' is incorrect and likely a miscommunication; the intended phrase should indicate not seeking wisdom.",
+                    "context": "In my view, readers often overthink. They don't need to seek wisdom in every little detail of a book."
+                },
+                {
+                    "original": "it's how also in trees that uh live at all story",
+                    "corrected": "it's also about trees that live in the story",
+                    "explanation": "The structure is confusing and unclear; it should be simplified for clarity.",
+                    "context": "Literature often includes various elements. It's also about trees that live in the story, which can symbolize deeper meanings."
+                },
+                {
+                    "original": "we don't pay attention for it",
+                    "corrected": "we don't pay attention to it",
+                    "explanation": "The correct preposition is 'to' instead of 'for' in this context.",
+                    "context": "Sometimes, we overlook significant details in literature. We don't pay attention to it, even if it holds meaning."
+                },
+                {
+                    "original": "it's better it's good but um when it just relax",
+                    "corrected": "it's good, but we should just relax",
+                    "explanation": "The structure is awkward; it needs to be rephrased for clarity.",
+                    "context": "Reading should be enjoyable. It's good, but we should just relax and not overthink every aspect."
+                },
+                {
+                    "original": "some people some people just don't relax",
+                    "corrected": "some people just don't relax",
+                    "explanation": "The repetition of 'some people' is unnecessary and disrupts the flow.",
+                    "context": "In discussing reading habits, I've noticed a trend. Some people just don't relax when reading because they seek deeper meanings."
+                },
+                {
+                    "original": "that's overthinking in my in my mind",
+                    "corrected": "that's overthinking in my opinion",
+                    "explanation": "The phrase 'in my mind' is awkward; 'in my opinion' is more idiomatic.",
+                    "context": "I often see this in discussions about literature. That's overthinking in my opinion; sometimes, a story is just meant to be enjoyed."
+                },
+                {
+                    "original": "they are not for us to think very very deeply about them",
+                    "corrected": "they are not for us to think very deeply about",
+                    "explanation": "The repetition of 'very' is unnecessary; the sentence should be more concise.",
+                    "context": "When reading, it's essential to enjoy the narrative. They are not for us to think very deeply about; sometimes, we just need to appreciate them."
+                },
+                {
+                    "original": "just enjoy the series yeah just don't overthink it",
+                    "corrected": "just enjoy the series; yeah, just don't overthink it",
+                    "explanation": "A semicolon is needed for clarity between two independent clauses.",
+                    "context": "In discussing shows, I often emphasize enjoyment. Just enjoy the series; yeah, just don't overthink it."
+                },
+                {
+                    "original": "author author author um give us a good examples",
+                    "corrected": "the author gives us good examples",
+                    "explanation": "The repetition of 'author' is unnecessary, and the verb tense should be corrected.",
+                    "context": "When reading, we often learn from the narrative. The author gives us good examples of life experiences through characters."
+                },
+                {
+                    "original": "and we see it and we understand how um example",
+                    "corrected": "and we see it and understand how, for example, ",
+                    "explanation": "The phrase needs to be restructured for clarity and flow.",
+                    "context": "Literature often reflects real-life experiences. We see it and understand how, for example, characters navigate their challenges."
+                },
+                {
+                    "original": "what you said imagine boards",
+                    "corrected": "what you said about imagined words",
+                    "explanation": "The phrase 'imagine boards' is incorrect; it should refer to 'imagined words.'",
+                    "context": "In discussing literature, we often talk about language. What you said about imagined words really resonates with me."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I think also I am just um will um continue uh this serial series.",
+                    "corrected": "I also think I will just continue this series.",
+                    "explanation": "The phrase 'I think also I am just um will um continue' is awkward and contains unnecessary filler words. It should be simplified.",
+                    "context": "During the break, I want to watch something. I also think I will just continue this series. It's been really enjoyable so far."
+                },
+                {
+                    "original": "They want to go to swimming pool today.",
+                    "corrected": "They want to go to the swimming pool today.",
+                    "explanation": "The article 'the' is missing before 'swimming pool.'",
+                    "context": "My parents are planning their day. They want to go to the swimming pool today. They are just packing their stuff right now."
+                },
+                {
+                    "original": "They have a break for a swimming pool.",
+                    "corrected": "They have a break from the swimming pool.",
+                    "explanation": "'Break for' is incorrect in this context; it should be 'break from' to indicate a pause from an activity.",
+                    "context": "My parents are preparing for their outing. They have a break from the swimming pool. They might go later in the evening."
+                },
+                {
+                    "original": "Another people is not singular.",
+                    "corrected": "Another people are not singular.",
+                    "explanation": "'Another' is singular, so it cannot be used with 'people,' which is plural. The correct form would be 'other people.'",
+                    "context": "In our discussion about grammar, we talked about how to use 'another' and 'other.' Another people is not singular. Instead, we should say 'other people.'"
+                },
+                {
+                    "original": "Can I say another children in the yard?",
+                    "corrected": "Can I say other children in the yard?",
+                    "explanation": "'Another' cannot be used with plural nouns like 'children.' Instead, 'other' should be used.",
+                    "context": "We were practicing how to refer to groups of people. Can I say other children in the yard? That sounds correct, right?"
+                },
+                {
+                    "original": "I see the other five people people exactly.",
+                    "corrected": "I see the other five people exactly.",
+                    "explanation": "The word 'people' is repeated unnecessarily.",
+                    "context": "When I look outside, I can see some kids. I see the other five people exactly. They are playing in the yard."
+                },
+                {
+                    "original": "We are seeing and see you soon in three hours.",
+                    "corrected": "We will see you soon in three hours.",
+                    "explanation": "The phrase 'we are seeing and see you' is incorrect; it should be 'we will see you' to indicate a future action.",
+                    "context": "As our lesson comes to an end, I want to wrap things up. We will see you soon in three hours. I'm looking forward to it!"
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Appointment",
+                    "definition": "A scheduled meeting or arrangement to see someone, often for a specific purpose.",
+                    "context": {
+                        "Context 1": "I have a dentist appointment at 2 p.m. today.",
+                        "Context 2": "She made an appointment to meet with her professor next week.",
+                        "Context 3": "The doctor had to reschedule his appointment due to an emergency."
+                    }
+                },
+                {
+                    "word": "Routine",
+                    "definition": "A regular way of doing things in a particular order.",
+                    "context": {
+                        "Context 1": "I have a morning routine that helps me start my day.",
+                        "Context 2": "His exercise routine includes running and weightlifting.",
+                        "Context 3": "The cat has a routine of sleeping on the couch every afternoon."
+                    }
+                },
+                {
+                    "word": "Sleepy",
+                    "definition": "Feeling tired and ready to sleep.",
+                    "context": {
+                        "Context 1": "I feel sleepy after waking up early this morning.",
+                        "Context 2": "The warm sun made everyone feel sleepy at the picnic.",
+                        "Context 3": "After reading for an hour, I became very sleepy."
+                    }
+                },
+                {
+                    "word": "Recover",
+                    "definition": "To return to a normal state of health, mind, or strength.",
+                    "context": {
+                        "Context 1": "I need some time to recover after waking up so early.",
+                        "Context 2": "He took a week off work to recover from his illness.",
+                        "Context 3": "The athlete worked hard to recover from his injury."
+                    }
+                },
+                {
+                    "word": "Ideal",
+                    "definition": "Perfectly suitable or most suitable for a particular purpose.",
+                    "context": {
+                        "Context 1": "My ideal time to wake up is around 9 a.m.",
+                        "Context 2": "She found the ideal dress for the wedding.",
+                        "Context 3": "The ideal temperature for growing tomatoes is between 70-85°F."
+                    }
+                },
+                {
+                    "word": "Countable",
+                    "definition": "Referring to nouns that can be counted as individual items.",
+                    "context": {
+                        "Context 1": "Cups of coffee are countable nouns.",
+                        "Context 2": "There are many countable objects in this room, like chairs and tables.",
+                        "Context 3": "In math, countable sets can be listed one by one."
+                    }
+                },
+                {
+                    "word": "Uncountable",
+                    "definition": "Referring to nouns that cannot be counted as individual items.",
+                    "context": {
+                        "Context 1": "Coffee is an uncountable noun.",
+                        "Context 2": "Water is uncountable, so we say 'some water' instead of 'two waters.'",
+                        "Context 3": "Information is uncountable; you can't say 'informations.'"
+                    }
+                },
+                {
+                    "word": "Distort",
+                    "definition": "To twist out of shape or alter the original form.",
+                    "context": {
+                        "Context 1": "The camera might distort the image, making it look crooked.",
+                        "Context 2": "The sound was distorted due to a faulty speaker.",
+                        "Context 3": "He tried to distort the truth during the argument."
+                    }
+                },
+                {
+                    "word": "Shelf",
+                    "definition": "A flat board or surface used for storing or displaying items.",
+                    "context": {
+                        "Context 1": "I need to buy more books for my shelf.",
+                        "Context 2": "The shelf in the kitchen is filled with spices.",
+                        "Context 3": "She placed her trophies on the shelf for everyone to see."
+                    }
+                },
+                {
+                    "word": "Calm",
+                    "definition": "Free from excitement or anxiety; peaceful.",
+                    "context": {
+                        "Context 1": "Tea helps me feel calm and relaxed.",
+                        "Context 2": "The calm waters of the lake were perfect for fishing.",
+                        "Context 3": "He took a deep breath to calm his nerves before the presentation."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Appointment",
+                    "fact": "Did you know that the word 'appointment' comes from the Latin 'ad punctum,' meaning 'to a point'? So, it literally means to meet at a specific point in time!"
+                },
+                {
+                    "word": "Routine",
+                    "fact": "The word 'routine' originally referred to a 'route' or 'path' in French, showing how habits can lead us down familiar paths!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the coffee file a police report?",
+                    "answer": "It got mugged!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Shelf",
+                    "definition": "A flat, horizontal surface used for storing or displaying items.",
+                    "context": {
+                        "Context 1": "The books were neatly arranged on the shelf in the living room.",
+                        "Context 2": "He placed his trophy on the shelf to show it off to his friends.",
+                        "Context 3": "The shelf in the kitchen was filled with spices and jars."
+                    }
+                },
+                {
+                    "word": "Stiff",
+                    "definition": "Rigid or firm; not easily bent or moved.",
+                    "context": {
+                        "Context 1": "The pages of the new book were stiff and difficult to turn.",
+                        "Context 2": "After the workout, my muscles felt stiff and sore.",
+                        "Context 3": "The stiff collar of his shirt made him feel uncomfortable."
+                    }
+                },
+                {
+                    "word": "Carefully",
+                    "definition": "In a cautious or meticulous manner.",
+                    "context": {
+                        "Context 1": "She handled the fragile vase carefully to avoid breaking it.",
+                        "Context 2": "He carefully crossed the busy street, looking both ways.",
+                        "Context 3": "The chef carefully measured the ingredients for the recipe."
+                    }
+                },
+                {
+                    "word": "Broken",
+                    "definition": "Damaged or not functioning properly.",
+                    "context": {
+                        "Context 1": "The book was returned to me with a broken spine.",
+                        "Context 2": "He had to fix the broken window after the storm.",
+                        "Context 3": "The broken clock on the wall hasn't worked in years."
+                    }
+                },
+                {
+                    "word": "Well-known",
+                    "definition": "Widely recognized or familiar to many people.",
+                    "context": {
+                        "Context 1": "The author is well-known for her bestselling novels.",
+                        "Context 2": "He is a well-known chef who has appeared on television.",
+                        "Context 3": "The well-known landmark attracts tourists from all over the world."
+                    }
+                },
+                {
+                    "word": "Boring",
+                    "definition": "Not interesting; dull.",
+                    "context": {
+                        "Context 1": "He found the lecture boring and struggled to stay awake.",
+                        "Context 2": "The movie was so boring that many people left the theater early.",
+                        "Context 3": "She thought the book was boring and decided not to finish it."
+                    }
+                },
+                {
+                    "word": "Project",
+                    "definition": "A planned set of tasks to achieve a specific goal.",
+                    "context": {
+                        "Context 1": "The students worked on their science project for weeks.",
+                        "Context 2": "He presented his art project at the school exhibition.",
+                        "Context 3": "The company launched a new project to improve customer service."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Knowledge or skill gained through involvement in or exposure to something.",
+                    "context": {
+                        "Context 1": "She gained valuable experience during her internship.",
+                        "Context 2": "Traveling abroad was a life-changing experience for him.",
+                        "Context 3": "His experience in the industry made him a sought-after consultant."
+                    }
+                },
+                {
+                    "word": "Disturbing",
+                    "definition": "Causing anxiety or worry; upsetting.",
+                    "context": {
+                        "Context 1": "The disturbing news left everyone in shock.",
+                        "Context 2": "She found the horror movie too disturbing to watch.",
+                        "Context 3": "The disturbing sounds coming from the basement made him uneasy."
+                    }
+                },
+                {
+                    "word": "Literature",
+                    "definition": "Written works, especially those considered to have artistic or intellectual value.",
+                    "context": {
+                        "Context 1": "She is studying English literature at university.",
+                        "Context 2": "The literature of the 19th century includes many famous novels.",
+                        "Context 3": "He enjoys reading classic literature in his free time."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Shelf",
+                    "fact": "The world's largest bookshelf is located in a library in Germany, holding over 1.5 million books!"
+                },
+                {
+                    "word": "Stiff",
+                    "fact": "Did you know that the stiffest material known to man is a type of carbon called graphene? It's only one atom thick!"
+                },
+                {
+                    "word": "Boring",
+                    "fact": "In 2013, a study found that reading boring material can actually help improve focus and concentration!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the book join the gym?",
+                    "answer": "Because it wanted to get its spine in shape!"
+                },
+                {
+                    "question": "What do you call a book that’s always cold?",
+                    "answer": "A chill-er!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "In my project, I want to explore different perspectives on why people read books.",
+                        "Context 2": "From his perspective, the movie was a masterpiece, but others disagreed.",
+                        "Context 3": "The artist's perspective on life is reflected in her vibrant paintings."
+                    }
+                },
+                {
+                    "word": "Independent opinion",
+                    "definition": "A personal viewpoint that is formed without influence from others.",
+                    "context": {
+                        "Context 1": "It's important to develop an independent opinion when reading literature.",
+                        "Context 2": "His independent opinion on the matter surprised everyone at the meeting.",
+                        "Context 3": "She values independent opinions, especially when it comes to fashion choices."
+                    }
+                },
+                {
+                    "word": "Relax",
+                    "definition": "To make or become less tense or anxious; to rest.",
+                    "context": {
+                        "Context 1": "Reading books can help people relax after a long day.",
+                        "Context 2": "He likes to relax by listening to music and enjoying a cup of tea.",
+                        "Context 3": "After a stressful week, they decided to relax by going on a weekend getaway."
+                    }
+                },
+                {
+                    "word": "Wisdom",
+                    "definition": "The quality of having experience, knowledge, and good judgment.",
+                    "context": {
+                        "Context 1": "Books often contain wisdom that can guide us in our lives.",
+                        "Context 2": "Her grandmother's wisdom helped her make important life decisions.",
+                        "Context 3": "The wise old man shared his wisdom with the villagers during the festival."
+                    }
+                },
+                {
+                    "word": "Overthink",
+                    "definition": "To think about something too much or for too long.",
+                    "context": {
+                        "Context 1": "Sometimes, people overthink the messages in books and miss the enjoyment.",
+                        "Context 2": "He tends to overthink his choices, which makes decision-making difficult.",
+                        "Context 3": "Don't overthink the recipe; just follow the steps and it will turn out fine."
+                    }
+                },
+                {
+                    "word": "Complex ideas",
+                    "definition": "Thoughts or concepts that are intricate and not easily understood.",
+                    "context": {
+                        "Context 1": "The book presents complex ideas that require deep reflection.",
+                        "Context 2": "She explained the complex ideas of quantum physics in a simple way.",
+                        "Context 3": "The artist's work often explores complex ideas about identity and culture."
+                    }
+                },
+                {
+                    "word": "Sophisticated",
+                    "definition": "Having a refined knowledge of the world; complex or intricate.",
+                    "context": {
+                        "Context 1": "The author's writing style is sophisticated, appealing to advanced readers.",
+                        "Context 2": "He wore a sophisticated suit to the gala, impressing everyone there.",
+                        "Context 3": "The technology used in the new smartphone is incredibly sophisticated."
+                    }
+                },
+                {
+                    "word": "Imagination",
+                    "definition": "The ability of the mind to be creative or resourceful.",
+                    "context": {
+                        "Context 1": "Books stimulate our imagination and transport us to different worlds.",
+                        "Context 2": "Her imagination ran wild as she envisioned her dream vacation.",
+                        "Context 3": "The children's play was filled with imagination and creativity."
+                    }
+                },
+                {
+                    "word": "Characters",
+                    "definition": "The individuals in a story, play, or other narrative work.",
+                    "context": {
+                        "Context 1": "The characters in the novel each represent different aspects of society.",
+                        "Context 2": "He dressed up as his favorite character from the movie for Halloween.",
+                        "Context 3": "The characters in the play were well-developed and relatable."
+                    }
+                },
+                {
+                    "word": "Attention to detail",
+                    "definition": "The careful consideration of the small elements of something.",
+                    "context": {
+                        "Context 1": "The author’s attention to detail makes the story more immersive.",
+                        "Context 2": "Her attention to detail in her artwork is what makes it so special.",
+                        "Context 3": "In cooking, attention to detail can make a big difference in flavor."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Perspective",
+                    "fact": "Did you know that the phrase 'the glass is half full' or 'half empty' is a classic way to show perspective? It’s all about how you look at it!"
+                },
+                {
+                    "word": "Overthink",
+                    "fact": "Overthinking is like a rocking chair: it gives you something to do but gets you nowhere!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the book join the gym?",
+                    "answer": "Because it wanted to work on its spine!"
+                },
+                {
+                    "question": "Why don’t authors ever get lost?",
+                    "answer": "Because they always have a plot to follow!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Watching the series changed my perspective on how I view relationships.",
+                        "Context 2": "From his perspective, the project was a complete failure.",
+                        "Context 3": "The artist's unique perspective is what makes her work so captivating."
+                    }
+                },
+                {
+                    "word": "Overthink",
+                    "definition": "To think about something too much or for too long.",
+                    "context": {
+                        "Context 1": "You shouldn't overthink your decisions; sometimes it's better to go with your gut.",
+                        "Context 2": "He tends to overthink every little detail of his presentations.",
+                        "Context 3": "When planning a surprise party, it's easy to overthink the guest list."
+                    }
+                },
+                {
+                    "word": "Relax",
+                    "definition": "To make or become less tense or anxious.",
+                    "context": {
+                        "Context 1": "I just want to relax and enjoy the show without any stress.",
+                        "Context 2": "After a long day at work, I like to relax with a good book.",
+                        "Context 3": "She decided to relax by taking a long walk in the park."
+                    }
+                },
+                {
+                    "word": "Options",
+                    "definition": "A thing that is or may be chosen; a choice.",
+                    "context": {
+                        "Context 1": "I have several options for what to watch during the break.",
+                        "Context 2": "The restaurant offers a variety of options for vegetarians.",
+                        "Context 3": "When planning a vacation, it's important to consider all your options."
+                    }
+                },
+                {
+                    "word": "Plans",
+                    "definition": "A detailed proposal for doing or achieving something.",
+                    "context": {
+                        "Context 1": "They have plans to go to the swimming pool later.",
+                        "Context 2": "His plans for the weekend include hiking and camping.",
+                        "Context 3": "The company has ambitious plans for expansion next year."
+                    }
+                },
+                {
+                    "word": "Specific",
+                    "definition": "Clearly defined or identified.",
+                    "context": {
+                        "Context 1": "I was referring to specific children when I mentioned them.",
+                        "Context 2": "The instructions were too vague; I need specific details.",
+                        "Context 3": "She has a specific taste in music that not everyone understands."
+                    }
+                },
+                {
+                    "word": "General",
+                    "definition": "Relating to or affecting all or most people, places, or things.",
+                    "context": {
+                        "Context 1": "In general, there are people who believe in different things.",
+                        "Context 2": "The general consensus is that exercise is beneficial for health.",
+                        "Context 3": "He made a general statement about the weather without any specifics."
+                    }
+                },
+                {
+                    "word": "Children",
+                    "definition": "Young human beings below the age of puberty or below the legal age of majority.",
+                    "context": {
+                        "Context 1": "There are other children playing in the yard.",
+                        "Context 2": "The school organized a fun day for all the children.",
+                        "Context 3": "She volunteers to help children learn to read."
+                    }
+                },
+                {
+                    "word": "Another",
+                    "definition": "Used to refer to an additional person or thing of the same type as one already mentioned.",
+                    "context": {
+                        "Context 1": "Can I have another glass of cola, please?",
+                        "Context 2": "He decided to buy another car after selling his old one.",
+                        "Context 3": "She always orders another dessert when dining out."
+                    }
+                },
+                {
+                    "word": "Uncountable",
+                    "definition": "Not able to be counted; referring to something that cannot be quantified.",
+                    "context": {
+                        "Context 1": "We don’t say 'another people' because 'people' is uncountable.",
+                        "Context 2": "Water is an uncountable noun; you wouldn't say 'two waters.'",
+                        "Context 3": "Information is uncountable, so we say 'some information' instead of 'informations.'"
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Perspective",
+                    "fact": "The word 'perspective' comes from the Latin 'perspectivus,' which means 'to look through.'"
+                },
+                {
+                    "word": "Overthink",
+                    "fact": "Studies show that overthinking can actually lead to more problems than solutions!"
+                },
+                {
+                    "word": "Relax",
+                    "fact": "Did you know that laughing can help you relax? It's like a mini workout for your heart!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going today?"
+                },
+                {
+                    "Person 2": "Not too bad! Just woke up a little while ago. How about you?"
+                },
+                {
+                    "Person 1": "I woke up at 9 a.m. today. I usually prefer sleeping in on weekends."
+                },
+                {
+                    "Person 2": "Yeah, I get that. I had to wake up super early yesterday for a dentist appointment. I was up at 6 a.m.!"
+                },
+                {
+                    "Person 1": "Wow, that’s early! Was the appointment at least worth it?"
+                },
+                {
+                    "Person 2": "It was! But I had to do some shopping first, so I had to get up even earlier."
+                },
+                {
+                    "Person 1": "Shopping before the dentist? That’s a lot to fit in before noon!"
+                },
+                {
+                    "Person 2": "I know, right? I had to make sure I didn’t run out of time. The dentist is two hours away!"
+                },
+                {
+                    "Person 1": "Two hours? That’s quite a drive. Do you feel tired after all that?"
+                },
+                {
+                    "Person 2": "A little, but I usually wake up pretty quickly after about 12 minutes of being up."
+                },
+                {
+                    "Person 1": "Nice! I wish I could do that. I usually need at least half an hour to feel awake."
+                },
+                {
+                    "Person 2": "Yeah, waking up early gives me more time to get things done, but I still need my sleep."
+                },
+                {
+                    "Person 1": "What’s your ideal wake-up time then?"
+                },
+                {
+                    "Person 2": "I think around 10 a.m. is perfect for me. But during the school week, I have to get up at 6 a.m."
+                },
+                {
+                    "Person 1": "That’s rough! Do you feel well-rested when you wake up at 9 a.m.?"
+                },
+                {
+                    "Person 2": "Not really, I still feel a bit sleepy. I think I need to go to bed earlier tonight."
+                },
+                {
+                    "Person 1": "What time did you go to bed last night?"
+                },
+                {
+                    "Person 2": "I hit the sack around midnight. I should’ve gone to bed earlier!"
+                },
+                {
+                    "Person 1": "Yeah, I usually feel better if I go to bed by 11 p.m. or so."
+                },
+                {
+                    "Person 2": "Same here! I just need to get better at sticking to a schedule."
+                },
+                {
+                    "Person 1": "Maybe a cup of coffee would help? Or do you prefer tea?"
+                },
+                {
+                    "Person 2": "I actually don’t like coffee at all. I’m more of a tea person."
+                },
+                {
+                    "Person 1": "Really? I love coffee, especially with sugar and milk."
+                },
+                {
+                    "Person 2": "I can’t handle the energy boost from coffee. Tea is just more calming for me."
+                },
+                {
+                    "Person 1": "That makes sense! Whatever works for you, right?"
+                },
+                {
+                    "Person 2": "Exactly! So, what’s on your agenda for today?"
+                },
+                {
+                    "Person 1": "Just some chores and maybe binge-watch a show later. How about you?"
+                },
+                {
+                    "Person 2": "I might do some reading and then relax a bit. Sounds like a good day!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you read any good books lately?"
+                },
+                {
+                    "Person 2": "Actually, I just finished 'The Little Prince.' It was really touching!"
+                },
+                {
+                    "Person 1": "Oh, I love that one! The way it talks about friendship is so beautiful."
+                },
+                {
+                    "Person 2": "Exactly! And the illustrations are just charming. What about you? What are you reading?"
+                },
+                {
+                    "Person 1": "I’m currently reading 'If I Stay.' It’s kind of a tearjerker."
+                },
+                {
+                    "Person 2": "I’ve heard of that one! It’s about choices and family, right?"
+                },
+                {
+                    "Person 1": "Yeah, it really makes you think about what matters most in life."
+                },
+                {
+                    "Person 2": "For sure! I sometimes lend my books to friends, but I worry they’ll return them all messed up."
+                },
+                {
+                    "Person 1": "I get that! I’m super careful with my books. I don’t want them to get damaged."
+                },
+                {
+                    "Person 2": "Same here! I only lend them to my best friends because I know they’ll take care of them."
+                },
+                {
+                    "Person 1": "Exactly! I once lent a book to someone I didn’t know well, and it came back all bent."
+                },
+                {
+                    "Person 2": "Oh no! That’s the worst. I’d rather keep my books safe than risk that."
+                },
+                {
+                    "Person 1": "Right? By the way, have you ever read any plays? I’m not a big fan."
+                },
+                {
+                    "Person 2": "I like plays! They’re more about the dialogue and emotions, which I find interesting."
+                },
+                {
+                    "Person 1": "I guess that’s true. I just prefer when a book describes everything in detail."
+                },
+                {
+                    "Person 2": "Totally understandable! Different styles for different tastes."
+                },
+                {
+                    "Person 1": "So, what’s your next read going to be?"
+                },
+                {
+                    "Person 2": "I’m thinking about diving into 'Dandelion Wine.' I’ve heard it’s a classic."
+                },
+                {
+                    "Person 1": "Nice choice! I’ve been meaning to read that one too. Let me know how you like it!"
+                },
+                {
+                    "Person 2": "Will do! And maybe we can discuss it over coffee once I finish."
+                },
+                {
+                    "Person 1": "Sounds like a plan! I’m looking forward to it."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going? Working on any projects lately?"
+                },
+                {
+                    "Person 2": "Hey! Yeah, I've got a few projects for school. One's for literature, and it's kind of tricky."
+                },
+                {
+                    "Person 1": "Oh really? What's it about?"
+                },
+                {
+                    "Person 2": "It's about the little things in books that people often overlook. Like, why do we even read them?"
+                },
+                {
+                    "Person 1": "That sounds interesting! So, what do you think? Why do people read?"
+                },
+                {
+                    "Person 2": "Well, I think people read to relax, but also to gain wisdom. It’s like a mix of both."
+                },
+                {
+                    "Person 1": "Yeah, I get that. Some books are just meant to be enjoyed, while others make you think."
+                },
+                {
+                    "Person 2": "Exactly! Some authors are really clear about their opinions, while others leave it open to interpretation."
+                },
+                {
+                    "Person 1": "Right! It can be confusing sometimes. Like, do you think readers overthink things?"
+                },
+                {
+                    "Person 2": "Totally! I know people who try to find deep meanings in everything, even when it’s just a simple story."
+                },
+                {
+                    "Person 1": "Yeah, like that show 'Rick and Morty.' Some people say it’s super philosophical, while others just enjoy the humor."
+                },
+                {
+                    "Person 2": "Exactly! It’s like, sometimes you just need to relax and enjoy the ride without digging too deep."
+                },
+                {
+                    "Person 1": "For sure! So, what’s your favorite part about reading?"
+                },
+                {
+                    "Person 2": "I love the beautiful language and the way authors create characters. It’s like living in another world."
+                },
+                {
+                    "Person 1": "That’s a great way to put it! I think that’s what keeps us coming back to books."
+                },
+                {
+                    "Person 2": "Absolutely! So, have you read anything good lately?"
+                },
+                {
+                    "Person 1": "I just finished a mystery novel. It was so gripping! I couldn’t put it down."
+                },
+                {
+                    "Person 2": "Nice! I love a good mystery. I might need to check it out."
+                },
+                {
+                    "Person 1": "Definitely! Let me know what you think once you read it."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you finish watching that series we talked about?"
+                },
+                {
+                    "Person 2": "Yeah, I just wrapped up the second season. It was amazing!"
+                },
+                {
+                    "Person 1": "Nice! Did it change your perspective on anything?"
+                },
+                {
+                    "Person 2": "Definitely! It made me think about some things differently. I just found it really relaxing."
+                },
+                {
+                    "Person 1": "That’s a good approach. Sometimes you just need to unwind and not overthink."
+                },
+                {
+                    "Person 2": "Exactly! So, what are you planning to watch during the break?"
+                },
+                {
+                    "Person 1": "I’m not sure yet. I might just continue with that series too."
+                },
+                {
+                    "Person 2": "Sounds like a plan! Have you had lunch yet?"
+                },
+                {
+                    "Person 1": "Not yet, but I had a good breakfast. My parents are just getting ready to go to the pool."
+                },
+                {
+                    "Person 2": "Oh, nice! Are they going today?"
+                },
+                {
+                    "Person 1": "I think they’re just packing up. They might go later or tomorrow."
+                },
+                {
+                    "Person 2": "Sounds like they’re taking it easy today."
+                },
+                {
+                    "Person 1": "Yeah, it’s one of those lazy days."
+                },
+                {
+                    "Person 2": "Totally! By the way, I was thinking about grammar earlier. You know how we use 'another' and 'other'?"
+                },
+                {
+                    "Person 1": "Yeah, I remember. 'Another' is for singular, right?"
+                },
+                {
+                    "Person 2": "Exactly! Like, you can say 'another book' but not 'another people.'"
+                },
+                {
+                    "Person 1": "Right! It's 'other people' for plural."
+                },
+                {
+                    "Person 2": "You got it! And if you’re talking about specific people, you say 'the other people.'"
+                },
+                {
+                    "Person 1": "Exactly! It’s all about being clear."
+                },
+                {
+                    "Person 2": "For sure! Anyway, let’s catch up again in a bit."
+                },
+                {
+                    "Person 1": "Sounds good! See you soon!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
