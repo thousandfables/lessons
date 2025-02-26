@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I haven't been thought, taught to do this.",
+                    "corrected": "I haven't been taught to do this.",
+                    "explanation": "The word 'thought' is incorrect here; the correct form is 'taught,' which refers to the act of teaching.",
+                    "context": "I can't perform that advanced skiing technique. I haven't been taught to do this. The only way I know is the pizza stop."
+                },
+                {
+                    "original": "I was like, okay, let's do it. Let's go for it.",
+                    "corrected": "I was like, okay, let's do it.",
+                    "explanation": "'Let's go for it' is redundant after 'let's do it.'",
+                    "context": "I thought going to the forest would be interesting. I was like, okay, let's do it. I trusted my friends' judgment."
+                },
+                {
+                    "original": "I guess I w won't, maybe I will, but I don't have enough time for it.",
+                    "corrected": "I guess I won't, maybe I will, but I don't have enough time for it.",
+                    "explanation": "The extra 'w' in 'w won't' is a typographical error.",
+                    "context": "I wanted to go skiing with my family this year. I guess I won't, maybe I will, but I don't have enough time for it."
+                },
+                {
+                    "original": "She's on duty. How do you say it? She's on duty on weekends.",
+                    "corrected": "She's on call on weekends.",
+                    "explanation": "'On duty' is not the correct phrase in this context; 'on call' is more appropriate for remote work.",
+                    "context": "My mom works from home in IT. She's on call on weekends. She has to upload files and check for bugs."
+                },
+                {
+                    "original": "It's like, uh, how do I say it? Not freelance, but remote work.",
+                    "corrected": "It's not freelance, but remote work.",
+                    "explanation": "The phrase 'it's like' is unnecessary and makes the sentence less clear.",
+                    "context": "My mom works in IT. It's not freelance, but remote work. She has to manage tasks from home."
+                },
+                {
+                    "original": "Not a hard work, like for 30 minutes or so, or for an hour.",
+                    "corrected": "It's not hard work, like for 30 minutes or so, or for an hour.",
+                    "explanation": "'Not a hard work' should be 'not hard work' as 'work' is an uncountable noun.",
+                    "context": "Her tasks aren't too demanding. It's not hard work, like for 30 minutes or so. She just needs to check files."
+                },
+                {
+                    "original": "This is like the general argument.",
+                    "corrected": "This is the general argument.",
+                    "explanation": "'Like' is unnecessary and makes the sentence informal.",
+                    "context": "I have structured my essays carefully. This is the general argument. Each part follows a clear format."
+                },
+                {
+                    "original": "I think I didn't really know about this, but I can say maybe the second one.",
+                    "corrected": "I think I didn't really know about this, but I can say that maybe the second one.",
+                    "explanation": "The phrase 'that maybe' clarifies the uncertainty in the statement.",
+                    "context": "When asked about my essay, I hesitated. I think I didn't really know about this, but I can say that maybe the second one is better."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I have the example is used.",
+                    "corrected": "I have an example that is used.",
+                    "explanation": "The original sentence lacks proper structure; 'an example that is used' is grammatically correct.",
+                    "context": "I was thinking about how to clarify my point. I have an example that is used to illustrate my argument. It helps to make my explanation clearer."
+                },
+                {
+                    "original": "I can just, um, replace it, um, here.",
+                    "corrected": "I can just replace it here.",
+                    "explanation": "The use of 'um' is unnecessary and makes the sentence awkward; it can be omitted for clarity.",
+                    "context": "While discussing my ideas, I realized I could improve my explanation. I can just replace it here to make my point stronger."
+                },
+                {
+                    "original": "This one, this one.",
+                    "corrected": "This one.",
+                    "explanation": "Repetition of 'this one' is redundant; one instance is sufficient.",
+                    "context": "I was trying to emphasize a particular point. This one is crucial for understanding the argument about mental health."
+                },
+                {
+                    "original": "If you're saying that anonymity encourages innovation, like, okay, explanation is I can see where you're poor kind of see where you're pointed.",
+                    "corrected": "If you're saying that anonymity encourages innovation, I can see where you're pointing.",
+                    "explanation": "The phrase 'poor kind of see where you're pointed' is unclear and awkward; it should be simplified.",
+                    "context": "I was trying to understand the connection between anonymity and innovation. If you're saying that anonymity encourages innovation, I can see where you're pointing."
+                },
+                {
+                    "original": "I can't say about the weapon, industry because maybe many weapons came from these forums.",
+                    "corrected": "I can't talk about the weapons industry because many weapons may have come from these forums.",
+                    "explanation": "The phrase 'say about' is incorrect; 'talk about' is the appropriate expression. Also, 'maybe many weapons came' should be 'many weapons may have come' for proper tense.",
+                    "context": "I was considering examples of innovation. I can't talk about the weapons industry because many weapons may have come from these forums."
+                },
+                {
+                    "original": "I think this is closer.",
+                    "corrected": "I think this is getting closer.",
+                    "explanation": "The phrase 'this is closer' is vague; 'this is getting closer' provides a clearer sense of progress.",
+                    "context": "While refining my argument, I felt I was making progress. I think this is getting closer to what I want to convey."
+                },
+                {
+                    "original": "The main problem here is that you are overcomplicating the things.",
+                    "corrected": "The main problem here is that you are overcomplicating things.",
+                    "explanation": "The phrase 'the things' is unnecessary; 'things' alone suffices.",
+                    "context": "During our discussion, I noticed a tendency to complicate the argument. The main problem here is that you are overcomplicating things."
+                },
+                {
+                    "original": "This is actually something that should be avoided, often because you see how, you see that it does really work, in real life and you're confused.",
+                    "corrected": "This is actually something that should often be avoided because you see that it really works in real life, and you're confused.",
+                    "explanation": "The placement of 'often' and the comma usage makes the sentence awkward; restructuring improves clarity.",
+                    "context": "I was trying to guide the discussion towards clarity. This is actually something that should often be avoided because you see that it really works in real life, and you're confused."
+                },
+                {
+                    "original": "I heard something about it.",
+                    "corrected": "I've heard something about it.",
+                    "explanation": "The present perfect tense 'I've heard' is more appropriate for experiences relevant to the present.",
+                    "context": "In discussing the platform, I wanted to express my limited knowledge. I've heard something about it, but I'm not well-informed."
+                },
+                {
+                    "original": "Many groundbreaking ideas, not like this, but, um, I will rewrite it in, I don't know, 1994, no, 19. No, 20, 20 or five.",
+                    "corrected": "Many groundbreaking ideas emerged in the 2000s.",
+                    "explanation": "The original sentence is overly convoluted and unclear; simplifying it makes the point clearer.",
+                    "context": "I was trying to pinpoint a time frame for my examples. Many groundbreaking ideas emerged in the 2000s."
+                },
+                {
+                    "original": "I cannot refer to cult because maybe, um, a lot of cults, like religious cults or, um, kind of political car, cults, have been emerged from the for chan.",
+                    "corrected": "I cannot refer to cults because many cults, like religious or political cults, have emerged from 4chan.",
+                    "explanation": "The phrase 'have been emerged' is incorrect; it should be 'have emerged.' Additionally, 'for chan' should be '4chan' for accuracy.",
+                    "context": "While considering examples, I realized some topics were too sensitive. I cannot refer to cults because many cults, like religious or political cults, have emerged from 4chan."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "there is a lot of advancements now, uh, in, uh, advancements regarding like, limitating, uh, limitating, uh, illegal immigration to the United States.",
+                    "corrected": "there are a lot of advancements now in limiting illegal immigration to the United States.",
+                    "explanation": "The word 'advancements' is repeated unnecessarily, and 'limitating' is incorrect; the correct term is 'limiting.'",
+                    "context": "There has been significant progress in addressing the issue of illegal immigration. There are a lot of advancements now in limiting illegal immigration to the United States. However, the situation remains complex and requires careful consideration."
+                },
+                {
+                    "original": "it will take enormous amount of effort to political to make it work.",
+                    "corrected": "it will take an enormous amount of effort politically to make it work.",
+                    "explanation": "The article 'an' is missing before 'enormous,' and 'to political' should be 'politically' to correctly modify the verb.",
+                    "context": "The challenges surrounding immigration policy are significant. It will take an enormous amount of effort politically to make it work. Everyone involved needs to be on the same page to see real change."
+                },
+                {
+                    "original": "if your political views does not, uh, match, uh, those of the examiner, there might be some sort of bias against you.",
+                    "corrected": "if your political views do not match those of the examiner, there might be some sort of bias against you.",
+                    "explanation": "'Does' should be 'do' to agree with the plural subject 'views.'",
+                    "context": "It's important to consider how personal beliefs can affect evaluations. If your political views do not match those of the examiner, there might be some sort of bias against you. This is why it's best to choose neutral topics."
+                },
+                {
+                    "original": "many innovative, no, like many new, um, innovations, like constructs yet.",
+                    "corrected": "many innovations, like constructs, have emerged.",
+                    "explanation": "The phrase is awkward and repetitive; simplifying it improves clarity.",
+                    "context": "Innovation is a key driver of progress. Many innovations, like constructs, have emerged. These developments shape our understanding of technology and society."
+                },
+                {
+                    "original": "because there are many reasons why people can choose to be anonymous to like, to bully other people and to, uh, steal money from banks and so on and so forth and so forth.",
+                    "corrected": "because there are many reasons why people choose to be anonymous, such as bullying others or stealing money from banks.",
+                    "explanation": "The phrase 'to like, to bully' is awkward and unnecessary; it can be streamlined for clarity.",
+                    "context": "Anonymity can serve various purposes. Because there are many reasons why people choose to be anonymous, such as bullying others or stealing money from banks, it’s a complex issue. Not all anonymity is malicious, though."
+                },
+                {
+                    "original": "the fallacious tech, the oil had been then 2010s was warrant of fallacious tax obligations from his government.",
+                    "corrected": "the fallacious tax obligations from his government had been present since the 2010s.",
+                    "explanation": "The sentence structure is confusing and contains errors; it should be clarified and simplified.",
+                    "context": "Tax obligations can be a contentious issue. The fallacious tax obligations from his government had been present since the 2010s. This has led to many debates about fairness and legality."
+                },
+                {
+                    "original": "the inventor of the, um, new crypto.",
+                    "corrected": "the inventor of the new cryptocurrency.",
+                    "explanation": "The term 'crypto' is informal; 'cryptocurrency' is the correct term.",
+                    "context": "The world of digital currency is fascinating. The inventor of the new cryptocurrency has changed the landscape of finance. Understanding their motivations is key to grasping the bigger picture."
+                },
+                {
+                    "original": "if you don't remember the exact year, just refer to this period.",
+                    "corrected": "if you don't remember the exact year, just refer to that period.",
+                    "explanation": "'This' should be 'that' to refer back to a previously mentioned time frame.",
+                    "context": "When discussing historical events, precision is important. If you don't remember the exact year, just refer to that period. This helps maintain clarity in your argument."
+                },
+                {
+                    "original": "only explanation. maybe we can use the example of statistics.",
+                    "corrected": "only explanations. Maybe we can use examples from statistics.",
+                    "explanation": "The plural form 'explanations' is needed, and 'the example of statistics' should be 'examples from statistics' for clarity.",
+                    "context": "In academic writing, examples strengthen arguments. Only explanations are not enough; maybe we can use examples from statistics. This will provide a solid foundation for our claims."
+                },
+                {
+                    "original": "criminality rates have, um, not reason, but, um, have discarded, not, not is current, have fallen down.",
+                    "corrected": "criminality rates have not risen but have fallen.",
+                    "explanation": "The original sentence is convoluted and contains incorrect phrases; it should be simplified.",
+                    "context": "Understanding crime trends is essential for policy-making. Criminality rates have not risen but have fallen. This data can inform future strategies for law enforcement."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I will choose one of your chains here and make a full essay with it and show it to you as an example.",
+                    "corrected": "I will choose one of your ideas here and make a full essay with it and show it to you as an example.",
+                    "explanation": "\"Chains\" is incorrect in this context; \"ideas\" is more appropriate to refer to the concepts the students have created.",
+                    "context": "I want to help you understand how to develop your ideas into essays. I will choose one of your ideas here and make a full essay with it and show it to you as an example. This will clarify the process for you."
+                },
+                {
+                    "original": "And your home task for the next week will be to every map that you created, every draft that you created, you need to make a full essay.",
+                    "corrected": "And your home task for the next week will be to take every map that you created, every draft that you created, and make a full essay.",
+                    "explanation": "The phrase \"to every map\" is incorrect; it should be \"to take every map\" to indicate the action needed.",
+                    "context": "I want to ensure you are prepared for the next lesson. And your home task for the next week will be to take every map that you created, every draft that you created, and make a full essay. This will help reinforce your learning."
+                },
+                {
+                    "original": "And don't forget that you have ChowdpT.",
+                    "corrected": "And don't forget that you have ChatGPT.",
+                    "explanation": "The name \"ChowdpT\" is a misspelling; the correct name is \"ChatGPT.\"",
+                    "context": "I want to remind you of the resources available to you. And don't forget that you have ChatGPT. It's a great tool to help you with your writing."
+                },
+                {
+                    "original": "It is, yeah, because it gives me the same advice.",
+                    "corrected": "It is, yeah, because it gives me similar advice.",
+                    "explanation": "\"The same advice\" implies exactness; \"similar advice\" is more appropriate for comparing the guidance received.",
+                    "context": "I find it helpful to use different resources for learning. It is, yeah, because it gives me similar advice. This way, I can see things from different perspectives."
+                },
+                {
+                    "original": "Kind of gives me the same advice and even if I pay, it could teach me like an oral type by talking to me.",
+                    "corrected": "It kind of gives me similar advice, and even if I pay, it could teach me in an oral way by talking to me.",
+                    "explanation": "The phrase \"like an oral type\" is awkward; \"in an oral way\" is clearer and more idiomatic.",
+                    "context": "I appreciate the interactive nature of the tool. It kind of gives me similar advice, and even if I pay, it could teach me in an oral way by talking to me. This interaction helps reinforce my learning."
+                },
+                {
+                    "original": "But it's not that good as paid version, I agree.",
+                    "corrected": "But it's not as good as the paid version, I agree.",
+                    "explanation": "The phrase \"that good as paid version\" is incorrect; it should be \"as good as the paid version\" for proper comparison.",
+                    "context": "I have tried both versions of the tool. But it's not as good as the paid version, I agree. The paid version offers more features that enhance my learning experience."
+                },
+                {
+                    "original": "So chat more with it in English, yeah, and both just both chats like in voice chats.",
+                    "corrected": "So chat more with it in English, yeah, and use both text and voice chats.",
+                    "explanation": "The phrase \"both just both chats like in voice chats\" is unclear; it should be \"use both text and voice chats\" for clarity.",
+                    "context": "I encourage you to practice your language skills. So chat more with it in English, yeah, and use both text and voice chats. This will help you improve your fluency."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Fiddling",
+                    "definition": "To touch or manipulate something in a restless or nervous way.",
+                    "context": {
+                        "Context 1": "I was fiddling with the microphone cable, trying to get it to work properly.",
+                        "Context 2": "He spent the afternoon fiddling with his model airplane, making adjustments.",
+                        "Context 3": "She was fiddling with her hair while waiting for the interview to start."
+                    }
+                },
+                {
+                    "word": "Reinforce",
+                    "definition": "To strengthen or support an idea, behavior, or structure.",
+                    "context": {
+                        "Context 1": "Practicing regularly can reinforce your skiing skills.",
+                        "Context 2": "The teacher used games to reinforce the students' understanding of math concepts.",
+                        "Context 3": "The new evidence will reinforce the theory proposed by the scientists."
+                    }
+                },
+                {
+                    "word": "Slope",
+                    "definition": "A surface of which one end or side is at a higher level than another; an incline.",
+                    "context": {
+                        "Context 1": "The ski slope was too steep for beginners.",
+                        "Context 2": "The children enjoyed rolling down the grassy slope in the park.",
+                        "Context 3": "The artist painted a beautiful landscape featuring a snowy slope."
+                    }
+                },
+                {
+                    "word": "Accident",
+                    "definition": "An unfortunate incident that happens unexpectedly and unintentionally.",
+                    "context": {
+                        "Context 1": "I had a skiing accident when I fell and landed on my friends.",
+                        "Context 2": "The car accident caused a major traffic jam on the highway.",
+                        "Context 3": "She tripped over her own feet, but thankfully it was just a minor accident."
+                    }
+                },
+                {
+                    "word": "Adrenaline",
+                    "definition": "A hormone released in response to stress or excitement, often increasing heart rate and energy.",
+                    "context": {
+                        "Context 1": "Skiing in the forest gave me a rush of adrenaline.",
+                        "Context 2": "The roller coaster ride was filled with adrenaline and excitement.",
+                        "Context 3": "He felt a surge of adrenaline as he prepared to jump out of the airplane."
+                    }
+                },
+                {
+                    "word": "Risk taker",
+                    "definition": "A person who is willing to take chances or engage in risky activities.",
+                    "context": {
+                        "Context 1": "I'm not much of a risk taker when it comes to skiing.",
+                        "Context 2": "As a risk taker, she often tries extreme sports like skydiving.",
+                        "Context 3": "Being a risk taker in business can lead to great rewards or significant losses."
+                    }
+                },
+                {
+                    "word": "Engage",
+                    "definition": "To participate or become involved in something.",
+                    "context": {
+                        "Context 1": "My friends engaged me to go skiing in the forest.",
+                        "Context 2": "The teacher encouraged students to engage in discussions during class.",
+                        "Context 3": "He decided to engage in volunteer work to help the community."
+                    }
+                },
+                {
+                    "word": "Maintain",
+                    "definition": "To keep something in a particular state or condition.",
+                    "context": {
+                        "Context 1": "We should maintain the ski slopes to ensure safety for all skiers.",
+                        "Context 2": "It's important to maintain a healthy diet for overall wellness.",
+                        "Context 3": "The gardener worked hard to maintain the beauty of the flower beds."
+                    }
+                },
+                {
+                    "word": "Remote work",
+                    "definition": "A work arrangement where employees do not commute to a central place of work.",
+                    "context": {
+                        "Context 1": "My mom does remote work in the IT sphere.",
+                        "Context 2": "Many companies have adopted remote work policies since the pandemic.",
+                        "Context 3": "He enjoys remote work because it allows him to travel while still being productive."
+                    }
+                },
+                {
+                    "word": "Cognitive",
+                    "definition": "Related to the mental processes of perception, memory, judgment, and reasoning.",
+                    "context": {
+                        "Context 1": "The ability to be left in cognitive social networks should be allowed to users.",
+                        "Context 2": "Cognitive development is crucial during early childhood.",
+                        "Context 3": "She studied cognitive psychology to understand how people think and learn."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Fiddling",
+                    "fact": "Did you know that fiddling with a pen can actually help you concentrate better during meetings?"
+                },
+                {
+                    "word": "Adrenaline",
+                    "fact": "Adrenaline is sometimes called the 'fight or flight' hormone, but it can also make you dance like nobody's watching!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the skier bring a ladder?",
+                    "answer": "Because they heard the slopes were on another level!"
+                },
+                {
+                    "question": "What do you call a snowman with a six-pack?",
+                    "answer": "An abdominal snowman!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Innovation",
+                    "definition": "The act of introducing something new or different.",
+                    "context": {
+                        "Context 1": "The company is known for its innovation in technology, constantly releasing new products.",
+                        "Context 2": "The chef's innovation in combining flavors led to a unique dish that impressed everyone.",
+                        "Context 3": "In the world of fashion, innovation is key to staying relevant and appealing to customers."
+                    }
+                },
+                {
+                    "word": "Anonymity",
+                    "definition": "The condition of being anonymous; not identified by name.",
+                    "context": {
+                        "Context 1": "Anonymity on online forums allows users to express their opinions without fear of judgment.",
+                        "Context 2": "The artist chose to maintain anonymity to keep their personal life private.",
+                        "Context 3": "In a game of charades, anonymity can add to the fun as players guess who is acting."
+                    }
+                },
+                {
+                    "word": "Mental Health",
+                    "definition": "A person's emotional, psychological, and social well-being.",
+                    "context": {
+                        "Context 1": "Discussing mental health openly can help reduce stigma and encourage others to seek help.",
+                        "Context 2": "The new policy at work focuses on promoting mental health among employees.",
+                        "Context 3": "After a long day, practicing yoga can be beneficial for mental health."
+                    }
+                },
+                {
+                    "word": "Stigma",
+                    "definition": "A mark of disgrace associated with a particular circumstance, quality, or person.",
+                    "context": {
+                        "Context 1": "There is often a stigma attached to seeking help for mental health issues.",
+                        "Context 2": "The stigma surrounding certain medical conditions can prevent people from getting treatment.",
+                        "Context 3": "In the world of sports, the stigma of losing can sometimes overshadow the joy of playing."
+                    }
+                },
+                {
+                    "word": "Expression",
+                    "definition": "The process of making known one's thoughts or feelings.",
+                    "context": {
+                        "Context 1": "Art is a powerful form of expression that can convey deep emotions.",
+                        "Context 2": "He used poetry as a means of expression during difficult times.",
+                        "Context 3": "Facial expression can often reveal more than words can say."
+                    }
+                },
+                {
+                    "word": "Forums",
+                    "definition": "Online platforms where people can discuss various topics.",
+                    "context": {
+                        "Context 1": "Many groundbreaking ideas have emerged from discussions on online forums.",
+                        "Context 2": "The community forum provided a space for neighbors to share local news and events.",
+                        "Context 3": "In ancient Rome, the forum was a public space for political discussions and commerce."
+                    }
+                },
+                {
+                    "word": "Radical",
+                    "definition": "Relating to or affecting the fundamental nature of something; far-reaching or thorough.",
+                    "context": {
+                        "Context 1": "Some radical ideas can lead to significant changes in society.",
+                        "Context 2": "The radical design of the new building has drawn both praise and criticism.",
+                        "Context 3": "In the world of science, radical theories often challenge established beliefs."
+                    }
+                },
+                {
+                    "word": "Groundbreaking",
+                    "definition": "Innovative and pioneering; introducing new ideas or methods.",
+                    "context": {
+                        "Context 1": "The scientist's groundbreaking research changed the way we understand genetics.",
+                        "Context 2": "Her groundbreaking novel tackled issues that were previously considered taboo.",
+                        "Context 3": "The groundbreaking technology promises to revolutionize the way we communicate."
+                    }
+                },
+                {
+                    "word": "Political Views",
+                    "definition": "Opinions or beliefs about how a government should be run or how society should be organized.",
+                    "context": {
+                        "Context 1": "Online anonymity allows individuals to share their political views without fear of repercussions.",
+                        "Context 2": "His political views were shaped by his experiences growing up in a diverse community.",
+                        "Context 3": "The debate highlighted the stark differences in political views among the candidates."
+                    }
+                },
+                {
+                    "word": "Encourage",
+                    "definition": "To give support, confidence, or hope to someone.",
+                    "context": {
+                        "Context 1": "Teachers encourage students to think critically and express their ideas.",
+                        "Context 2": "The coach's words were meant to encourage the team before the big game.",
+                        "Context 3": "Parents often encourage their children to pursue their passions."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Anonymity",
+                    "fact": "Did you know that in ancient Greece, people would often write their complaints on pots and leave them anonymously for others to read?"
+                },
+                {
+                    "word": "Stigma",
+                    "fact": "In some cultures, it's considered a stigma to admit you can't cook, leading to some very interesting dinner parties!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes of emotional baggage!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Political Pressure",
+                    "definition": "Influence exerted by individuals or groups to sway political decisions or actions.",
+                    "context": {
+                        "Context 1": "There was a lot of political pressure on the government to address the immigration crisis.",
+                        "Context 2": "The political pressure from the community led to a change in the school’s dress code policy.",
+                        "Context 3": "Political pressure can often be seen in sports, where players advocate for social justice."
+                    }
+                },
+                {
+                    "word": "Advancement",
+                    "definition": "A development or improvement in a particular field.",
+                    "context": {
+                        "Context 1": "There are many advancements in technology that help limit illegal immigration.",
+                        "Context 2": "The advancements in medical research have led to new treatments for diseases.",
+                        "Context 3": "Advancements in agriculture have increased food production worldwide."
+                    }
+                },
+                {
+                    "word": "Bias",
+                    "definition": "A tendency to favor one side over another, often in an unfair way.",
+                    "context": {
+                        "Context 1": "There might be some bias against you if your political views do not match those of the examiner.",
+                        "Context 2": "The journalist was accused of bias in her reporting on the election.",
+                        "Context 3": "Bias in scientific research can lead to misleading conclusions."
+                    }
+                },
+                {
+                    "word": "Anonymous",
+                    "definition": "Not identified by name; of unknown name.",
+                    "context": {
+                        "Context 1": "Many people choose to remain anonymous when discussing sensitive topics online.",
+                        "Context 2": "The anonymous donor contributed a large sum to the charity.",
+                        "Context 3": "In a game of trivia, players can choose to answer anonymously to avoid embarrassment."
+                    }
+                },
+                {
+                    "word": "Innovation",
+                    "definition": "The introduction of new ideas, products, or methods.",
+                    "context": {
+                        "Context 1": "We should focus on innovation rather than political discussions.",
+                        "Context 2": "The innovation of electric cars has changed the automotive industry.",
+                        "Context 3": "Innovation in education can lead to more effective teaching methods."
+                    }
+                },
+                {
+                    "word": "Fallacious",
+                    "definition": "Based on a mistaken belief; misleading.",
+                    "context": {
+                        "Context 1": "The term fallacious was used to describe incorrect tax obligations.",
+                        "Context 2": "His fallacious argument did not convince anyone in the debate.",
+                        "Context 3": "The fallacious claims about the product led to a lawsuit."
+                    }
+                },
+                {
+                    "word": "Cryptocurrency",
+                    "definition": "A digital or virtual currency that uses cryptography for security.",
+                    "context": {
+                        "Context 1": "Bitcoin is a well-known cryptocurrency that was created by an anonymous individual.",
+                        "Context 2": "Many investors are exploring cryptocurrency as a new asset class.",
+                        "Context 3": "Cryptocurrency transactions are often faster than traditional banking methods."
+                    }
+                },
+                {
+                    "word": "Tax Obligation",
+                    "definition": "A legal requirement to pay taxes to the government.",
+                    "context": {
+                        "Context 1": "He expressed concerns about his fallacious tax obligations to the government.",
+                        "Context 2": "Understanding your tax obligations is crucial for financial planning.",
+                        "Context 3": "Many people seek professional help to manage their tax obligations."
+                    }
+                },
+                {
+                    "word": "Cautious",
+                    "definition": "Careful to avoid potential problems or dangers.",
+                    "context": {
+                        "Context 1": "You should be cautious when discussing well-known facts about Bitcoin.",
+                        "Context 2": "The cautious driver avoided an accident by maintaining a safe distance.",
+                        "Context 3": "She was cautious about sharing personal information online."
+                    }
+                },
+                {
+                    "word": "Discourse",
+                    "definition": "Written or spoken communication or debate.",
+                    "context": {
+                        "Context 1": "The discourse surrounding immigration can be quite heated.",
+                        "Context 2": "Academic discourse often involves rigorous analysis and critique.",
+                        "Context 3": "The discourse in the meeting was productive and led to several actionable ideas."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Bitcoin",
+                    "fact": "Bitcoin was created in 2009 by an unknown person or group using the name Satoshi Nakamoto, and no one knows who they are!"
+                },
+                {
+                    "word": "Anonymous",
+                    "fact": "The word 'anonymous' comes from the Greek word 'anōnymos,' which means 'without a name.' So, technically, if you’re anonymous, you’re just nameless!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes of emotional baggage!"
+                },
+                {
+                    "question": "Why don’t scientists trust atoms?",
+                    "answer": "Because they make up everything!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Essay",
+                    "definition": "A short piece of writing on a particular subject.",
+                    "context": {
+                        "Context 1": "I will choose one of your chains here and make a full essay with it.",
+                        "Context 2": "The teacher assigned an essay on the importance of recycling.",
+                        "Context 3": "She wrote an essay about her summer vacation and received an A."
+                    }
+                },
+                {
+                    "word": "Draft",
+                    "definition": "A preliminary version of a piece of writing.",
+                    "context": {
+                        "Context 1": "Every draft that you created needs to be made into a full essay.",
+                        "Context 2": "He submitted his first draft to the editor for feedback.",
+                        "Context 3": "The architect presented a draft of the new building design to the committee."
+                    }
+                },
+                {
+                    "word": "Pitch",
+                    "definition": "To present an idea or proposal in a persuasive manner.",
+                    "context": {
+                        "Context 1": "You can use it to pitch new ideas as well.",
+                        "Context 2": "She had to pitch her startup idea to a panel of investors.",
+                        "Context 3": "During the meeting, he pitched a new marketing strategy to his team."
+                    }
+                },
+                {
+                    "word": "Crucial",
+                    "definition": "Extremely important or necessary.",
+                    "context": {
+                        "Context 1": "It's crucial for education these times at the moment.",
+                        "Context 2": "Good communication is crucial for a successful relationship.",
+                        "Context 3": "The doctor said that timely treatment is crucial for recovery."
+                    }
+                },
+                {
+                    "word": "Tutor",
+                    "definition": "A private teacher who gives additional instruction.",
+                    "context": {
+                        "Context 1": "Actually, it should be your second tutor.",
+                        "Context 2": "She hired a tutor to help her prepare for the math exam.",
+                        "Context 3": "The tutor provided personalized lessons to improve his writing skills."
+                    }
+                },
+                {
+                    "word": "Advice",
+                    "definition": "Guidance or recommendations concerning prudent future action.",
+                    "context": {
+                        "Context 1": "It gives me the same advice.",
+                        "Context 2": "He sought advice from his mentor before making the decision.",
+                        "Context 3": "The travel guide offered useful advice on local customs."
+                    }
+                },
+                {
+                    "word": "Overlook",
+                    "definition": "To fail to notice something.",
+                    "context": {
+                        "Context 1": "Don't overlook that as well.",
+                        "Context 2": "She overlooked the deadline and submitted her project late.",
+                        "Context 3": "It's easy to overlook small details when you're in a hurry."
+                    }
+                },
+                {
+                    "word": "Practice",
+                    "definition": "To perform an activity repeatedly to improve skill.",
+                    "context": {
+                        "Context 1": "It will help you practice.",
+                        "Context 2": "He needs to practice his guitar skills for the upcoming concert.",
+                        "Context 3": "The coach emphasized the importance of practice for the team."
+                    }
+                },
+                {
+                    "word": "Voice chat",
+                    "definition": "A real-time audio communication over the internet.",
+                    "context": {
+                        "Context 1": "There is a free voice chat option.",
+                        "Context 2": "They used voice chat to discuss their project while working remotely.",
+                        "Context 3": "Voice chat has become popular for gaming and socializing."
+                    }
+                },
+                {
+                    "word": "Limited",
+                    "definition": "Restricted in size, amount, or extent.",
+                    "context": {
+                        "Context 1": "It has limited users.",
+                        "Context 2": "The restaurant has a limited menu for the winter season.",
+                        "Context 3": "Due to limited resources, the project was put on hold."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Essay",
+                    "fact": "The longest essay ever written was about 1,200 pages long and was titled 'The History of the World.'"
+                },
+                {
+                    "word": "Draft",
+                    "fact": "The word 'draft' comes from the Old English word 'dragan,' which means 'to pull or draw.'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to figure out my plans for the weekend. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I was thinking about hitting the slopes if the weather holds up."
+                },
+                {
+                    "Person 2": "Oh nice! Do you ski often?"
+                },
+                {
+                    "Person 1": "I try to go every winter, but I haven't been in a couple of years. How about you?"
+                },
+                {
+                    "Person 2": "I love skiing! I went last year, but I’m definitely rusty. Last time I went, I fell a few times."
+                },
+                {
+                    "Person 1": "Falling is part of the fun, right? At least it makes for good stories!"
+                },
+                {
+                    "Person 2": "Exactly! I remember one time I fell right into a snowbank. It was hilarious!"
+                },
+                {
+                    "Person 1": "That sounds like a blast! Do you prefer skiing or snowboarding?"
+                },
+                {
+                    "Person 2": "I’ve only skied, but I’ve always wanted to try snowboarding. It looks challenging!"
+                },
+                {
+                    "Person 1": "It is! I tried it once and spent more time on the ground than on my feet."
+                },
+                {
+                    "Person 2": "Haha! I can imagine. So, do you have a favorite ski resort?"
+                },
+                {
+                    "Person 1": "I really like Aspen. The views are amazing, and the slopes are great for all levels."
+                },
+                {
+                    "Person 2": "Aspen is beautiful! I’ve heard the nightlife there is pretty fun too."
+                },
+                {
+                    "Person 1": "Yeah, it’s a good mix of skiing and après-ski activities. What about you?"
+                },
+                {
+                    "Person 2": "I usually go to Vail. It’s got a nice variety of runs, and the atmosphere is really friendly."
+                },
+                {
+                    "Person 1": "Sounds perfect! We should plan a trip together sometime."
+                },
+                {
+                    "Person 2": "Absolutely! Let’s make it happen!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that new series everyone’s talking about?"
+                },
+                {
+                    "Person 2": "Oh, you mean the one about the detective in the small town? Yeah, I started it last night!"
+                },
+                {
+                    "Person 1": "Nice! What do you think so far?"
+                },
+                {
+                    "Person 2": "I’m really into it! The plot twists are crazy. I didn’t see that coming at all!"
+                },
+                {
+                    "Person 1": "Right? I love when a show keeps you guessing. It makes it so much more fun to watch."
+                },
+                {
+                    "Person 2": "Exactly! And the characters are really well-developed too. I feel like I know them already."
+                },
+                {
+                    "Person 1": "Totally! I think that’s what makes a good show. You get invested in their stories."
+                },
+                {
+                    "Person 2": "For sure! I can’t wait to see how it all unfolds. I heard it gets even better."
+                },
+                {
+                    "Person 1": "Oh, I hope so! I love binge-watching, but I have to pace myself. I don’t want to finish it too quickly."
+                },
+                {
+                    "Person 2": "Same here! I’ve been trying to watch just one episode a night, but it’s tough!"
+                },
+                {
+                    "Person 1": "Yeah, especially when you’re hooked! Maybe we should have a watch party this weekend."
+                },
+                {
+                    "Person 2": "That sounds like a blast! I’ll bring snacks!"
+                },
+                {
+                    "Person 1": "Perfect! I’ll set up the couch for maximum comfort."
+                },
+                {
+                    "Person 2": "Awesome! Can’t wait to see what happens next!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that new documentary about the immigration situation in the U.S.?"
+                },
+                {
+                    "Person 2": "Yeah, I saw it! It was pretty intense. There’s so much to unpack there."
+                },
+                {
+                    "Person 1": "For sure. I feel like it’s such a hot topic, but people are scared to talk about it openly."
+                },
+                {
+                    "Person 2": "Right? It’s like everyone has an opinion, but no one wants to share it for fear of backlash."
+                },
+                {
+                    "Person 1": "Exactly! I think it’s important to have discussions, but it can get really political."
+                },
+                {
+                    "Person 2": "True! Sometimes it feels safer to stick to lighter topics, like movies or music."
+                },
+                {
+                    "Person 1": "Totally! Speaking of movies, have you seen anything good lately?"
+                },
+                {
+                    "Person 2": "I just watched that new sci-fi film. It was mind-blowing! The visuals were incredible."
+                },
+                {
+                    "Person 1": "Nice! I love a good sci-fi flick. I might check it out this weekend."
+                },
+                {
+                    "Person 2": "You should! And we can talk about it afterward. I love discussing plot twists."
+                },
+                {
+                    "Person 1": "Sounds like a plan! By the way, have you heard about the new tech innovations coming out?"
+                },
+                {
+                    "Person 2": "Yeah, I read something about advancements in AI. It’s fascinating but a little scary too."
+                },
+                {
+                    "Person 1": "I know what you mean. It’s amazing what they can do, but I worry about privacy."
+                },
+                {
+                    "Person 2": "Same here! It’s a double-edged sword. We want innovation, but at what cost?"
+                },
+                {
+                    "Person 1": "Exactly! Maybe we should just focus on the fun stuff for now."
+                },
+                {
+                    "Person 2": "Agreed! Let’s keep it light. So, what’s your favorite movie genre?"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you started working on that essay we talked about?"
+                },
+                {
+                    "Person 2": "Not yet, but I’m planning to dive into it this weekend. How about you?"
+                },
+                {
+                    "Person 1": "I started a bit earlier today. I picked one of my drafts to expand on."
+                },
+                {
+                    "Person 2": "Nice! I need to remember to use that AI tool you mentioned. It could really help with organizing my ideas."
+                },
+                {
+                    "Person 1": "Definitely! It’s super useful for brainstorming and even correcting your work."
+                },
+                {
+                    "Person 2": "Yeah, I’ve heard it can give you feedback like a tutor. That sounds awesome!"
+                },
+                {
+                    "Person 1": "Exactly! It’s like having a study buddy who’s always available."
+                },
+                {
+                    "Person 2": "I should probably start using it more. I tend to forget about it."
+                },
+                {
+                    "Person 1": "Same here! I often overlook it, but it really can make a difference."
+                },
+                {
+                    "Person 2": "Do you think I should try the voice chat option too?"
+                },
+                {
+                    "Person 1": "For sure! It’s a great way to practice speaking and get comfortable with the language."
+                },
+                {
+                    "Person 2": "I’ll give it a shot. I just need to set some time aside for it."
+                },
+                {
+                    "Person 1": "Yeah, maybe we can check in next week and see how it’s going?"
+                },
+                {
+                    "Person 2": "Sounds like a plan! I’ll make sure to have some progress by then."
+                },
+                {
+                    "Person 1": "Awesome! Looking forward to it. Good luck with your writing!"
+                },
+                {
+                    "Person 2": "Thanks! You too! Catch you later!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
