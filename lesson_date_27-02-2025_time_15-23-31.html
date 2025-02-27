@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Just before 9. Before the 9.",
+                    "corrected": "Just before 9. Before 9.",
+                    "explanation": "The article 'the' is unnecessary before '9' in this context.",
+                    "context": "I was working on my essays. Just before 9, I finished writing. Before 9, I was still making adjustments."
+                },
+                {
+                    "original": "It is important to get a job. To get it, what is our form?",
+                    "corrected": "It is important to get a job. To get a job, what is our form?",
+                    "explanation": "The phrase 'to get it' is unclear; 'to get a job' clarifies what is being referred to.",
+                    "context": "We discussed the importance of job acquisition. It is important to get a job. To get a job, what is our form?"
+                },
+                {
+                    "original": "Have you ever thrown materials on the existence of or without existence?",
+                    "corrected": "Have you ever read materials on the existence of or non-existence?",
+                    "explanation": "'Thrown' is incorrect; 'read' is the appropriate verb for engaging with materials.",
+                    "context": "We were discussing philosophical concepts. Have you ever read materials on the existence of or non-existence? It can be quite thought-provoking."
+                },
+                {
+                    "original": "Because we say it for the first time.",
+                    "corrected": "Because we are saying it for the first time.",
+                    "explanation": "The present continuous tense 'are saying' is needed to indicate an ongoing action.",
+                    "context": "We were clarifying the use of articles. Because we are saying it for the first time, we need to use an article."
+                },
+                {
+                    "original": "There is a face, it does an action, there is.",
+                    "corrected": "There is a subject, it performs an action.",
+                    "explanation": "'Face' is not the correct term; 'subject' is the proper grammatical term.",
+                    "context": "We were discussing sentence structure. There is a subject, it performs an action. This is essential for proper grammar."
+                },
+                {
+                    "original": "There is a subordinate in English.",
+                    "corrected": "There is a subordinate clause in English.",
+                    "explanation": "The term 'subordinate' needs clarification; 'subordinate clause' specifies the grammatical structure.",
+                    "context": "We were analyzing sentence types. There is a subordinate clause in English, which adds complexity to sentences."
+                },
+                {
+                    "original": "If we say have then we do not connect the word have with the subordinate.",
+                    "corrected": "If we say 'have,' then we do not connect 'have' with the subordinate clause.",
+                    "explanation": "The term 'subordinate' needs to be specified as 'subordinate clause' for clarity.",
+                    "context": "We were discussing verb forms. If we say 'have,' then we do not connect 'have' with the subordinate clause."
+                },
+                {
+                    "original": "That is, has a learned.",
+                    "corrected": "That is, has learned.",
+                    "explanation": "'A learned' is incorrect; 'learned' should be used as a past participle.",
+                    "context": "We were discussing verb forms. That is, has learned. This indicates completed action."
+                },
+                {
+                    "original": "If this is in the future or in the past, there is also well, the appropriate form how we should do it.",
+                    "corrected": "If this is in the future or in the past, there is also the appropriate form we should use.",
+                    "explanation": "The phrase is awkward; 'the appropriate form we should use' is more idiomatic.",
+                    "context": "We were discussing verb tenses. If this is in the future or in the past, there is also the appropriate form we should use."
+                },
+                {
+                    "original": "Is the university calculated or not?",
+                    "corrected": "Is the university countable or not?",
+                    "explanation": "'Calculated' is incorrect; 'countable' is the correct term in this context.",
+                    "context": "We were discussing nouns and articles. Is the university countable or not? This affects article usage."
+                },
+                {
+                    "original": "We use it simply as an abstract designation of a place.",
+                    "corrected": "We use it simply as an abstract designation of a concept.",
+                    "explanation": "'Place' is too specific; 'concept' better captures the abstract nature.",
+                    "context": "We were analyzing the use of the word 'university.' We use it simply as an abstract designation of a concept."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "the word end is a connecting word, right?",
+                    "corrected": "The word 'end' is a connecting word, right?",
+                    "explanation": "The sentence should start with a capital letter, and 'end' should be enclosed in quotation marks to indicate it's a word being discussed.",
+                    "context": "I was discussing the function of the word 'end' in a sentence. The word 'end' is a connecting word, right? It links two verbs together."
+                },
+                {
+                    "original": "Graduated and end. And get.",
+                    "corrected": "Graduated and 'end' and 'get'.",
+                    "explanation": "The list of verbs should be clearly separated and enclosed in quotation marks for clarity.",
+                    "context": "I was trying to clarify which verbs the word 'end' connects. It connects 'graduated' and 'end' and 'get'. They should be in one form."
+                },
+                {
+                    "original": "Ah, it turns out, get good, got.",
+                    "corrected": "Ah, it turns out, 'get' is good, 'got'.",
+                    "explanation": "'Get good' is awkward; it should clarify that 'get' is the verb and 'good' is an adjective.",
+                    "context": "I was reflecting on the forms of the verb 'get'. Ah, it turns out, 'get' is good, 'got'. Yes, if it is an American form, then 'got'."
+                },
+                {
+                    "original": "If it is an American form, then got.",
+                    "corrected": "If it is in American English, then it's 'got'.",
+                    "explanation": "The phrase should specify 'in American English' for clarity, and 'it's' should be used to indicate possession.",
+                    "context": "I was explaining the differences in verb forms between American and British English. If it is in American English, then it's 'got'. If it is British, no, British is 'got', American is 'got'."
+                },
+                {
+                    "original": "If it is British, no, British is got, American is got.",
+                    "corrected": "If it's British, then it's 'got', and if it's American, it's also 'got'.",
+                    "explanation": "The sentence structure is confusing; it should clarify that both forms are the same in this case.",
+                    "context": "I was trying to clarify the use of 'got' in different English varieties. If it's British, then it's 'got', and if it's American, it's also 'got'. I like it better."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Convenient",
+                    "definition": "Fitting in well with a person's needs, activities, and plans.",
+                    "context": {
+                        "Context 1": "It was convenient for Anna to join the conference from home.",
+                        "Context 2": "The new app makes it convenient to order groceries online.",
+                        "Context 3": "He found a convenient parking spot right in front of the store."
+                    }
+                },
+                {
+                    "word": "Adjust",
+                    "definition": "To change something slightly to achieve the desired fit, appearance, or result.",
+                    "context": {
+                        "Context 1": "Anna tried to adjust her microphone so everyone could hear her.",
+                        "Context 2": "She had to adjust her schedule to fit in her new job.",
+                        "Context 3": "He adjusted the recipe by adding more spices for flavor."
+                    }
+                },
+                {
+                    "word": "Progress",
+                    "definition": "Forward or onward movement toward a destination or goal.",
+                    "context": {
+                        "Context 1": "Anna asked if there was any progress with her essays.",
+                        "Context 2": "The team made significant progress on the project this week.",
+                        "Context 3": "He was excited to see his progress in learning to play the guitar."
+                    }
+                },
+                {
+                    "word": "Proposal",
+                    "definition": "A plan or suggestion put forward for consideration or discussion.",
+                    "context": {
+                        "Context 1": "They discussed the proposal for prioritizing skills over formal education.",
+                        "Context 2": "The proposal for the new park was well-received by the community.",
+                        "Context 3": "She submitted a proposal for a new marketing strategy to her boss."
+                    }
+                },
+                {
+                    "word": "Subject",
+                    "definition": "The person or thing that is being discussed, described, or dealt with.",
+                    "context": {
+                        "Context 1": "In the lesson, they identified the subject of the proposal.",
+                        "Context 2": "The subject of the painting was a beautiful landscape.",
+                        "Context 3": "In school, math was her favorite subject."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "Anna mentioned having enough experience for the job.",
+                        "Context 2": "Traveling abroad gave him a wealth of experience.",
+                        "Context 3": "She gained valuable experience while volunteering at the shelter."
+                    }
+                },
+                {
+                    "word": "Skills",
+                    "definition": "The ability to do something well, usually gained through training or experience.",
+                    "context": {
+                        "Context 1": "They discussed the importance of skills in the job market.",
+                        "Context 2": "He showcased his cooking skills at the competition.",
+                        "Context 3": "Her skills in graphic design helped her land the job."
+                    }
+                },
+                {
+                    "word": "Graduate",
+                    "definition": "To move up to a new level of education or to complete a degree.",
+                    "context": {
+                        "Context 1": "They talked about what it means to graduate from university.",
+                        "Context 2": "She plans to graduate next year with honors.",
+                        "Context 3": "After he graduated, he traveled for a year before starting work."
+                    }
+                },
+                {
+                    "word": "Article",
+                    "definition": "A piece of writing included with others in a newspaper, magazine, or other publication.",
+                    "context": {
+                        "Context 1": "They discussed the use of an article before the word 'person.'",
+                        "Context 2": "She wrote an article about climate change for the school newspaper.",
+                        "Context 3": "The article on technology trends was very informative."
+                    }
+                },
+                {
+                    "word": "Indefinite",
+                    "definition": "Not clearly defined or determined; not specific.",
+                    "context": {
+                        "Context 1": "They used an indefinite article before the word 'person.'",
+                        "Context 2": "He had an indefinite plan for his future, wanting to explore many options.",
+                        "Context 3": "The indefinite nature of the project made it difficult to estimate costs."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Graduate",
+                    "fact": "Did you know that the word 'graduate' comes from the Latin word 'gradus,' which means 'step'? So every graduation is a step up!"
+                },
+                {
+                    "word": "Indefinite",
+                    "fact": "In grammar, the indefinite article 'a' is used before words that start with a consonant sound, while 'an' is used before vowel sounds. So, 'an honor' is correct because the 'h' is silent!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Connect",
+                    "definition": "To join or link together.",
+                    "context": {
+                        "Context 1": "The word 'end' connects the verbs 'graduated' and 'get'.",
+                        "Context 2": "I need to connect my phone to the Wi-Fi network.",
+                        "Context 3": "The teacher tried to connect the lesson to real-life examples."
+                    }
+                },
+                {
+                    "word": "Form",
+                    "definition": "The shape or structure of something.",
+                    "context": {
+                        "Context 1": "The verbs should be in one form.",
+                        "Context 2": "She filled out the form to apply for a scholarship.",
+                        "Context 3": "The artist created a sculpture in the form of a tree."
+                    }
+                },
+                {
+                    "word": "Graduate",
+                    "definition": "To receive a degree or diploma after completing a course of study.",
+                    "context": {
+                        "Context 1": "She will graduate from university next year.",
+                        "Context 2": "The caterpillar will graduate into a butterfly after metamorphosis.",
+                        "Context 3": "He plans to graduate high school with honors."
+                    }
+                },
+                {
+                    "word": "American",
+                    "definition": "Relating to the United States or its culture.",
+                    "context": {
+                        "Context 1": "In American English, the past tense of 'get' is 'got'.",
+                        "Context 2": "American football is different from soccer.",
+                        "Context 3": "She loves American movies and often watches them on weekends."
+                    }
+                },
+                {
+                    "word": "British",
+                    "definition": "Relating to Great Britain or its culture.",
+                    "context": {
+                        "Context 1": "In British English, the past tense of 'get' is also 'got'.",
+                        "Context 2": "British tea culture is famous worldwide.",
+                        "Context 3": "He enjoys British literature, especially the works of Shakespeare."
+                    }
+                },
+                {
+                    "word": "Article",
+                    "definition": "A piece of writing included with others in a newspaper, magazine, or other publication.",
+                    "context": {
+                        "Context 1": "I have to work on the article for our class project.",
+                        "Context 2": "The article about climate change was very informative.",
+                        "Context 3": "She wrote an article on the benefits of yoga."
+                    }
+                },
+                {
+                    "word": "Turn on",
+                    "definition": "To activate or switch on a device.",
+                    "context": {
+                        "Context 1": "Should I turn it on then?",
+                        "Context 2": "Please turn on the lights; it’s getting dark.",
+                        "Context 3": "He forgot to turn on the oven before baking."
+                    }
+                },
+                {
+                    "word": "Call back",
+                    "definition": "To return a phone call.",
+                    "context": {
+                        "Context 1": "I’ll call you back after I finish my work.",
+                        "Context 2": "She promised to call back with the information.",
+                        "Context 3": "He had to call back the customer to clarify the order."
+                    }
+                },
+                {
+                    "word": "Work on",
+                    "definition": "To spend time improving or developing something.",
+                    "context": {
+                        "Context 1": "I have to work on the article.",
+                        "Context 2": "She decided to work on her painting skills.",
+                        "Context 3": "They need to work on their teamwork for the project."
+                    }
+                },
+                {
+                    "word": "Good",
+                    "definition": "Of high quality or standard.",
+                    "context": {
+                        "Context 1": "He wants to get good grades this semester.",
+                        "Context 2": "The restaurant is known for its good food.",
+                        "Context 3": "She received a good review for her performance."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Graduate",
+                    "fact": "In some countries, students throw their hats in the air when they graduate, but in others, they just throw their parents' money!"
+                },
+                {
+                    "word": "Article",
+                    "fact": "Did you know that the longest article ever written was about the history of the word 'the'? It was a real page-turner!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student eat his homework?",
+                    "answer": "Because the teacher said it was a piece of cake!"
+                },
+                {
+                    "question": "What do you call a teacher who never farts in public?",
+                    "answer": "A private tutor!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh, totally! It was intense! I can't believe how close it was."
+                },
+                {
+                    "Person 1": "Right? I was on the edge of my seat! That last-minute goal was insane."
+                },
+                {
+                    "Person 2": "For real! I thought they were going to lose for sure. What a comeback!"
+                },
+                {
+                    "Person 1": "Yeah, and the crowd went wild! I could hear them cheering from my living room."
+                },
+                {
+                    "Person 2": "Same here! I had to turn the volume down a bit. My neighbors probably thought I was hosting a party."
+                },
+                {
+                    "Person 1": "Haha! I know the feeling. So, are you planning to watch the next game?"
+                },
+                {
+                    "Person 2": "Absolutely! I wouldn’t miss it for the world. Are you coming over to watch?"
+                },
+                {
+                    "Person 1": "Count me in! I’ll bring some snacks."
+                },
+                {
+                    "Person 2": "Perfect! I’ll make some wings. It’ll be a great time!"
+                },
+                {
+                    "Person 1": "Sounds like a plan! Can’t wait!"
+                },
+                {
+                    "Person 2": "Me too! Let’s hope for another exciting game!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you finish that article for work yet?"
+                },
+                {
+                    "Person 2": "Not yet! I keep getting distracted. I really need to focus."
+                },
+                {
+                    "Person 1": "I totally get that. It's hard to stay on task sometimes."
+                },
+                {
+                    "Person 2": "Right? I started working on it, but then I ended up scrolling through social media."
+                },
+                {
+                    "Person 1": "Ah, the classic trap! Maybe you should set a timer or something."
+                },
+                {
+                    "Person 2": "That's a good idea! Like, work for 25 minutes, then take a break?"
+                },
+                {
+                    "Person 1": "Exactly! It’s called the Pomodoro Technique. It really helps me."
+                },
+                {
+                    "Person 2": "I’ve heard of that! I should definitely give it a shot."
+                },
+                {
+                    "Person 1": "Yeah, and when you take a break, you can grab a snack or something."
+                },
+                {
+                    "Person 2": "Ooh, snacks! Now you’re speaking my language."
+                },
+                {
+                    "Person 1": "Haha! Just don’t let the snacks distract you too much!"
+                },
+                {
+                    "Person 2": "No promises! But I’ll try to stay focused."
+                },
+                {
+                    "Person 1": "Good luck! Let me know how it goes."
+                },
+                {
+                    "Person 2": "Will do! Thanks for the motivation!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
