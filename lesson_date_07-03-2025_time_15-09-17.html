@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "my documents is crazy day.",
+                    "corrected": "my documents are crazy.",
+                    "explanation": "The subject 'documents' is plural, so the verb should be 'are' instead of 'is.'",
+                    "context": "I have been dealing with a lot of paperwork lately. My documents are crazy. It's been overwhelming trying to get everything sorted."
+                },
+                {
+                    "original": "they chanced on the Russian language.",
+                    "corrected": "they changed the Russian language.",
+                    "explanation": "'Chanced on' means to discover something by chance, while 'changed' indicates that something was altered.",
+                    "context": "When I moved to Latvia, I noticed some changes. They changed the Russian language on every government website. It made things a bit more complicated for me."
+                },
+                {
+                    "original": "we make some documents for them.",
+                    "corrected": "we made some documents for them.",
+                    "explanation": "The verb 'make' should be in the past tense 'made' to match the context of a completed action.",
+                    "context": "When we went to the government center, we had a lot to do. We made some documents for them. It took longer than expected."
+                },
+                {
+                    "original": "somebody have debts for my mother.",
+                    "corrected": "somebody has debts to my mother.",
+                    "explanation": "'Somebody' is singular, so the verb should be 'has.' Additionally, 'debts to' is the correct preposition to indicate who is owed money.",
+                    "context": "In our small town, relationships are complicated. Somebody has debts to my mother. She runs a baby clothes shop, and people often owe her money."
+                },
+                {
+                    "original": "it's better to be king in a small city, than to be an average guy in a big city.",
+                    "corrected": "it's better to be a king in a small city than to be an average guy in a big city.",
+                    "explanation": "The article 'a' should be added before 'king,' and the comma before 'than' is unnecessary.",
+                    "context": "I often reflect on life choices. I believe it's better to be a king in a small city than to be an average guy in a big city. You have more influence and recognition."
+                },
+                {
+                    "original": "my grand-granddad had a lot of bees in his bicycle.",
+                    "corrected": "my grand-granddad had a lot of bees in his apiary.",
+                    "explanation": "'In his bicycle' is incorrect; bees are kept in an 'apiary,' which is the correct term for a place where bees are kept.",
+                    "context": "My family has a history of beekeeping. My grand-granddad had a lot of bees in his apiary. He was quite skilled at it."
+                },
+                {
+                    "original": "he eat a lot of honey.",
+                    "corrected": "he ate a lot of honey.",
+                    "explanation": "The verb 'eat' should be in the past tense 'ate' to match the context of a completed action.",
+                    "context": "Growing up, my uncle had a unique diet. He ate a lot of honey. It was a staple in our family."
+                },
+                {
+                    "original": "it's better, yes, in our small town.",
+                    "corrected": "it's better, yes, in our small town.",
+                    "explanation": "This sentence is correct but could be more idiomatic by removing 'yes' for clarity.",
+                    "context": "When discussing the advantages of living in a small town, I often conclude that it's better in our small town. The community is tight-knit."
+                },
+                {
+                    "original": "I told my parents that we gotta move.",
+                    "corrected": "I told my parents that we have to move.",
+                    "explanation": "'Gotta' is informal; 'have to' is more appropriate in this context.",
+                    "context": "When the situation in our country worsened, I felt it was necessary to act. I told my parents that we have to move. It was a tough conversation."
+                },
+                {
+                    "original": "it's like intelligence service.",
+                    "corrected": "it's like an intelligence service.",
+                    "explanation": "The article 'an' is needed before 'intelligence service' to indicate it is a singular noun.",
+                    "context": "In our small town, everyone knows each other's business. It's like an intelligence service. Information travels fast."
+                },
+                {
+                    "original": "I can... Took or not took their offer.",
+                    "corrected": "I can... take or not take their offer.",
+                    "explanation": "The verbs should be in the base form 'take' instead of 'took' to express the ability to choose.",
+                    "context": "When considering job offers, I weigh my options carefully. I can... take or not take their offer. It's important to make the right decision."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I feel myself like a potato.",
+                    "corrected": "I feel like a potato.",
+                    "explanation": "The reflexive pronoun 'myself' is unnecessary here; 'feel' should be followed directly by the adjective.",
+                    "context": "After visiting the doctor with my toddler, I feel like a potato. The vaccine shot has made me feel quite tired."
+                },
+                {
+                    "original": "He understands how to work with things.",
+                    "corrected": "He understands how to interact with things.",
+                    "explanation": "'Work with things' is vague; 'interact' is more precise in this context.",
+                    "context": "My son is very curious and active. He understands how to interact with things around him, but he doesn't grasp the concept of vaccinations."
+                },
+                {
+                    "original": "Because vaccine shots don't hurt.",
+                    "corrected": "Because vaccine shots do hurt.",
+                    "explanation": "The original statement contradicts the context; vaccine shots can cause pain.",
+                    "context": "I know that vaccine shots can be uncomfortable. Because vaccine shots do hurt, my son is nervous about them."
+                },
+                {
+                    "original": "This cabinet is very uncomfortable environment.",
+                    "corrected": "This cabinet is a very uncomfortable environment.",
+                    "explanation": "The article 'a' is needed before 'very uncomfortable environment' to make it grammatically correct.",
+                    "context": "The doctor's office can be quite stressful. This cabinet is a very uncomfortable environment for both children and adults."
+                },
+                {
+                    "original": "These chains were not so big.",
+                    "corrected": "These changes were not so big.",
+                    "explanation": "'Chains' is incorrect; 'changes' is the appropriate word in this context.",
+                    "context": "In Yaroslavl, many doctors have moved away. These changes were not so big, but they affected the availability of good doctors."
+                },
+                {
+                    "original": "I made the surgery.",
+                    "corrected": "I had the surgery.",
+                    "explanation": "'Made' is incorrect; 'had' is the proper verb to indicate undergoing a surgical procedure.",
+                    "context": "I needed to take care of my health. I had the surgery to remove some teeth that were causing problems."
+                },
+                {
+                    "original": "Isportyls.",
+                    "corrected": "Corrupted.",
+                    "explanation": "'Isportyls' is a misspelling or incorrect word; 'corrupted' is the correct term.",
+                    "context": "After my son was born, I had some dental issues. One tooth was corrupted, which led to further dental work."
+                },
+                {
+                    "original": "He was sawing.",
+                    "corrected": "He was using a saw.",
+                    "explanation": "'Sawing' is not used correctly here; 'using a saw' clarifies the action.",
+                    "context": "During my dental procedure, it was quite intense. He was using a saw to remove my teeth, which was quite an experience."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "His dentist were perfect.",
+                    "corrected": "His dentist was perfect.",
+                    "explanation": "The subject 'dentist' is singular, so the verb should be 'was' instead of 'were.'",
+                    "context": "I was talking about my friend's experience with his dentist. His dentist was perfect. He was happy because I..."
+                },
+                {
+                    "original": "He were happy because I...",
+                    "corrected": "He was happy because I...",
+                    "explanation": "The subject 'he' is singular, so the verb should be 'was' instead of 'were.'",
+                    "context": "I mentioned how my friend felt after visiting the dentist. He was happy because I..."
+                },
+                {
+                    "original": "I have to strong immunity and everything healing on me like on a dog.",
+                    "corrected": "I have a strong immunity and everything heals on me like it does on a dog.",
+                    "explanation": "The phrase should include 'a' before 'strong immunity,' and 'healing' should be 'heals' to match the subject.",
+                    "context": "I was explaining my health. I have a strong immunity and everything heals on me like it does on a dog."
+                },
+                {
+                    "original": "I need to work in brain all time.",
+                    "corrected": "I need to work my brain all the time.",
+                    "explanation": "The phrase should be 'work my brain' and 'all the time' instead of 'all time.'",
+                    "context": "As a programmer, I need to keep my mind sharp. I need to work my brain all the time."
+                },
+                {
+                    "original": "They take drugs. Took. Took. Drunk alcohol or took the drugs.",
+                    "corrected": "They take drugs. They drank alcohol or took drugs.",
+                    "explanation": "The past tense of 'drink' is 'drank,' and 'drunk' is the participle form, which is incorrect here.",
+                    "context": "I was discussing my colleagues' habits. They take drugs. They drank alcohol or took drugs."
+                },
+                {
+                    "original": "I need to... Strong health for my brain.",
+                    "corrected": "I need to maintain strong health for my brain.",
+                    "explanation": "The sentence is missing a verb; 'maintain' should be added for clarity.",
+                    "context": "I was emphasizing the importance of health. I need to maintain strong health for my brain."
+                },
+                {
+                    "original": "I can fix this, but not now.",
+                    "corrected": "I can fix this later, but not now.",
+                    "explanation": "Adding 'later' clarifies when the speaker intends to fix the issue.",
+                    "context": "I was talking about my concentration issues. I can fix this later, but not now."
+                },
+                {
+                    "original": "I can take nut drops for concentrate.",
+                    "corrected": "I can take nut drops for concentration.",
+                    "explanation": "'Concentrate' is a verb; 'concentration' is the noun needed here.",
+                    "context": "I mentioned a method to help with focus. I can take nut drops for concentration."
+                },
+                {
+                    "original": "I need to... Good food, vegetables.",
+                    "corrected": "I need to eat good food, vegetables.",
+                    "explanation": "The sentence is missing the verb 'eat' to complete the thought.",
+                    "context": "I was discussing my dietary needs. I need to eat good food, vegetables."
+                },
+                {
+                    "original": "I learned how to make... My friend teached me how to make...",
+                    "corrected": "I learned how to make... My friend taught me how to make...",
+                    "explanation": "The past tense of 'teach' is 'taught,' not 'teached.'",
+                    "context": "I was sharing a cooking tip. I learned how to make... My friend taught me how to make..."
+                },
+                {
+                    "original": "It's only because we forget our coffee machines in Moscow.",
+                    "corrected": "It's only because we forgot our coffee machines in Moscow.",
+                    "explanation": "The verb should be in the past tense 'forgot' to match the context.",
+                    "context": "I was explaining why I can't make coffee. It's only because we forgot our coffee machines in Moscow."
+                },
+                {
+                    "original": "I stay lactose intolerant person.",
+                    "corrected": "I am a lactose intolerant person.",
+                    "explanation": "The sentence needs 'am' to link the subject and the predicate.",
+                    "context": "I was discussing my dietary restrictions. I am a lactose intolerant person."
+                },
+                {
+                    "original": "They can't digest the lactose.",
+                    "corrected": "They can't digest lactose.",
+                    "explanation": "The article 'the' is unnecessary before 'lactose' in this context.",
+                    "context": "I was explaining why babies have issues with milk. They can't digest lactose."
+                },
+                {
+                    "original": "This happened only like 10.000 years ago.",
+                    "corrected": "This happened only about 10,000 years ago.",
+                    "explanation": "The phrase 'like' is informal; 'about' is more appropriate, and the comma is needed in the number.",
+                    "context": "I was discussing the history of lactose tolerance. This happened only about 10,000 years ago."
+                },
+                {
+                    "original": "Do you hear me, Alena?",
+                    "corrected": "Can you hear me, Alena?",
+                    "explanation": "'Can you hear me' is the correct form to ask if someone can hear you.",
+                    "context": "I was checking if Alena could hear me during our conversation. Can you hear me, Alena?"
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I say them guided by my intuition only.",
+                    "corrected": "I only say them guided by my intuition.",
+                    "explanation": "The placement of 'only' is awkward; it should come before the verb for clarity.",
+                    "context": "I often rely on my intuition when speaking. I only say them guided by my intuition. This approach sometimes leads to uncertainty about the correctness of my phrases."
+                },
+                {
+                    "original": "A lot of things that I studied there I realized that I know them.",
+                    "corrected": "A lot of things that I studied there, I realized that I knew them.",
+                    "explanation": "The tense is inconsistent; 'know' should be 'knew' to match the past context.",
+                    "context": "While reflecting on my studies, I recognized many concepts. A lot of things that I studied there, I realized that I knew them. This realization came from my unconscious use of the language."
+                },
+                {
+                    "original": "You just have to remember them to remember that this thing is being used this way.",
+                    "corrected": "You just have to remember them and recognize that this thing is used this way.",
+                    "explanation": "The repetition of 'remember' is unnecessary; 'recognize' provides clarity.",
+                    "context": "Learning a language involves a lot of memorization. You just have to remember them and recognize that this thing is used this way. This helps in understanding the nuances."
+                },
+                {
+                    "original": "But the problem, you can't really solve this problem this way.",
+                    "corrected": "But the problem is that you can't really solve it this way.",
+                    "explanation": "The sentence structure is awkward; 'is that' clarifies the statement.",
+                    "context": "When discussing learning methods, I often encounter challenges. But the problem is that you can't really solve it this way. This leads to frustration for many learners."
+                },
+                {
+                    "original": "I don't use this word from exams because in real life people don't use this word.",
+                    "corrected": "I don't use this word from exams because people don't use it in real life.",
+                    "explanation": "The sentence is awkwardly structured; reordering improves clarity.",
+                    "context": "In my experience, exam language often differs from everyday speech. I don't use this word from exams because people don't use it in real life. This highlights the gap between academic and conversational language."
+                },
+                {
+                    "original": "To learn everything unconsciously we have to live in the native speaking environment.",
+                    "corrected": "To learn everything unconsciously, we have to live in a native-speaking environment.",
+                    "explanation": "Missing comma after 'unconsciously' and 'native-speaking' should be hyphenated.",
+                    "context": "Language acquisition is heavily influenced by immersion. To learn everything unconsciously, we have to live in a native-speaking environment. This exposure is crucial for fluency."
+                },
+                {
+                    "original": "So yes, sometimes we have to study something consciously.",
+                    "corrected": "So yes, sometimes we have to study things consciously.",
+                    "explanation": "The word 'something' is too vague; 'things' is more appropriate in this context.",
+                    "context": "While immersion is key, structured learning is also necessary. So yes, sometimes we have to study things consciously. This balance is essential for mastering a language."
+                },
+                {
+                    "original": "But still, after reading a grammar book, there are many things that you don't understand or forget.",
+                    "corrected": "But still, after reading a grammar book, there are many things that you might not understand or might forget.",
+                    "explanation": "Using 'might' adds nuance to the uncertainty of understanding.",
+                    "context": "Even after thorough study, confusion can persist. But still, after reading a grammar book, there are many things that you might not understand or might forget. This is a common experience for learners."
+                },
+                {
+                    "original": "If they use similar questions, it can be easy.",
+                    "corrected": "If they use similar questions, it could be easy.",
+                    "explanation": "Using 'could' implies a hypothetical situation, which is more appropriate here.",
+                    "context": "When discussing exam difficulty, I consider the types of questions. If they use similar questions, it could be easy. This can affect how students prepare."
+                },
+                {
+                    "original": "Because mostly difficult text is when some Indian person talking with monkey scream and you need to understand.",
+                    "corrected": "Because mostly, a difficult text is when some Indian person is talking while monkeys are screaming, and you need to understand.",
+                    "explanation": "The sentence lacks clarity and proper structure; adding 'is' and 'while' improves it.",
+                    "context": "Understanding spoken language can be challenging in noisy environments. Because mostly, a difficult text is when some Indian person is talking while monkeys are screaming, and you need to understand. This scenario illustrates the complexities of communication."
+                },
+                {
+                    "original": "I had real problems understanding them.",
+                    "corrected": "I had real problems understanding them.",
+                    "explanation": "No correction needed; this sentence is correct.",
+                    "context": "Despite my efforts, comprehension can be difficult. I had real problems understanding them. This highlights the challenges of language learning."
+                },
+                {
+                    "original": "If I if I wanted to increase my understanding of Indian accent, I would just hear them more and eventually I would understand them better.",
+                    "corrected": "If I wanted to increase my understanding of the Indian accent, I would just listen to them more, and eventually, I would understand them better.",
+                    "explanation": "Repetition of 'if I' is unnecessary; 'listen to' is more appropriate than 'hear them.'",
+                    "context": "Improving comprehension requires exposure. If I wanted to increase my understanding of the Indian accent, I would just listen to them more, and eventually, I would understand them better. This is key to becoming proficient."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Bureaucracy",
+                    "definition": "A system of government or management characterized by excessive red tape and routine.",
+                    "context": {
+                        "Context 1": "The bureaucracy in the government office made it difficult to get my documents processed quickly.",
+                        "Context 2": "The new restaurant faced challenges due to the local bureaucracy regarding health regulations.",
+                        "Context 3": "In a large corporation, bureaucracy can slow down decision-making processes."
+                    }
+                },
+                {
+                    "word": "Documentation",
+                    "definition": "The materials that provide official information or evidence, especially in written form.",
+                    "context": {
+                        "Context 1": "I had to gather all the necessary documentation for my visa application.",
+                        "Context 2": "The documentation for the new software update was very detailed and helpful.",
+                        "Context 3": "He forgot to bring the documentation for his car registration, so he couldn't complete the process."
+                    }
+                },
+                {
+                    "word": "Connections",
+                    "definition": "Relationships or associations that can be beneficial, especially in a professional context.",
+                    "context": {
+                        "Context 1": "Having connections in the local government helped her expedite the process of getting her permits.",
+                        "Context 2": "He used his connections in the film industry to land a role in the new movie.",
+                        "Context 3": "In the world of sports, connections can often lead to better sponsorship deals."
+                    }
+                },
+                {
+                    "word": "Ambitious",
+                    "definition": "Having a strong desire for success or achievement.",
+                    "context": {
+                        "Context 1": "Her ambitious nature drove her to start her own business at a young age.",
+                        "Context 2": "The ambitious student aimed to graduate at the top of her class.",
+                        "Context 3": "He was ambitious enough to run a marathon despite never having trained for one."
+                    }
+                },
+                {
+                    "word": "Ex",
+                    "definition": "A prefix meaning former, often used to refer to a previous partner or spouse.",
+                    "context": {
+                        "Context 1": "She ran into her ex at the grocery store and felt a mix of emotions.",
+                        "Context 2": "His ex-colleague now works for a competing company.",
+                        "Context 3": "The ex-president gave a speech at the charity event."
+                    }
+                },
+                {
+                    "word": "Migration",
+                    "definition": "The movement of people from one place to another, often for the purpose of settling in a new location.",
+                    "context": {
+                        "Context 1": "The migration of people from rural areas to cities has increased over the years.",
+                        "Context 2": "Bird migration is a fascinating phenomenon that occurs every spring and fall.",
+                        "Context 3": "The migration of data to the cloud has become a common practice for many businesses."
+                    }
+                },
+                {
+                    "word": "Obligatory",
+                    "definition": "Required by law or rule; mandatory.",
+                    "context": {
+                        "Context 1": "In many countries, military service is obligatory for young men.",
+                        "Context 2": "Wearing a helmet is obligatory when riding a motorcycle in this state.",
+                        "Context 3": "The obligatory reading list for the course includes several classic novels."
+                    }
+                },
+                {
+                    "word": "Surprise",
+                    "definition": "An unexpected event or fact that causes astonishment.",
+                    "context": {
+                        "Context 1": "It was a surprise to see her at the party after she said she couldn't come.",
+                        "Context 2": "The magician's tricks were full of surprise and wonder.",
+                        "Context 3": "He planned a surprise birthday party for his best friend."
+                    }
+                },
+                {
+                    "word": "Intelligence",
+                    "definition": "The ability to acquire and apply knowledge and skills; also refers to information about an enemy or potential enemy.",
+                    "context": {
+                        "Context 1": "The intelligence gathered by the agency helped prevent a disaster.",
+                        "Context 2": "She showed great intelligence in solving complex math problems.",
+                        "Context 3": "The intelligence of dolphins is often compared to that of primates."
+                    }
+                },
+                {
+                    "word": "Cliche",
+                    "definition": "An overused phrase or idea that has lost its originality or impact.",
+                    "context": {
+                        "Context 1": "Saying 'time heals all wounds' is a common cliche that many people use.",
+                        "Context 2": "The movie was filled with cliches that made it predictable.",
+                        "Context 3": "Using cliches in writing can make your work feel less authentic."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Bureaucracy",
+                    "fact": "The word 'bureaucracy' comes from the French word 'bureau,' meaning desk, and the Greek word 'kratos,' meaning power. So, it literally means 'power of the desk!'"
+                },
+                {
+                    "word": "Ex",
+                    "fact": "Did you know that the term 'ex' is often used in pop culture, like in the song 'Ex-Factor' by Lauryn Hill? It's a catchy way to refer to past relationships!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the document go to therapy?",
+                    "answer": "Because it had too many issues!"
+                },
+                {
+                    "question": "Why don’t scientists trust atoms?",
+                    "answer": "Because they make up everything!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Analyze",
+                    "definition": "To examine something in detail in order to understand it better or draw conclusions.",
+                    "context": {
+                        "Context 1": "Before making a decision, it's important to analyze all the available data.",
+                        "Context 2": "The detective needed to analyze the evidence to solve the case.",
+                        "Context 3": "In science class, we analyze different types of rocks to learn about geology."
+                    }
+                },
+                {
+                    "word": "Vaccine",
+                    "definition": "A substance used to stimulate the production of antibodies and provide immunity against one or several diseases.",
+                    "context": {
+                        "Context 1": "The vaccine for the flu is recommended every year.",
+                        "Context 2": "Some people are hesitant to get the vaccine due to misinformation.",
+                        "Context 3": "The scientist developed a new vaccine to combat a rare disease."
+                    }
+                },
+                {
+                    "word": "Syringe",
+                    "definition": "A medical instrument used to inject or withdraw fluids.",
+                    "context": {
+                        "Context 1": "The nurse used a syringe to administer the vaccine.",
+                        "Context 2": "He filled the syringe with ink to start his tattoo.",
+                        "Context 3": "The chef used a syringe to inject flavor into the meat."
+                    }
+                },
+                {
+                    "word": "Toddler",
+                    "definition": "A young child, typically between the ages of one and three.",
+                    "context": {
+                        "Context 1": "The toddler was afraid of the doctor during the check-up.",
+                        "Context 2": "The toddler built a tall tower with colorful blocks.",
+                        "Context 3": "At the park, the toddler chased after butterflies with joy."
+                    }
+                },
+                {
+                    "word": "Injection",
+                    "definition": "The act of putting a substance into the body using a syringe.",
+                    "context": {
+                        "Context 1": "The doctor gave her an injection to prevent illness.",
+                        "Context 2": "He felt a sharp pain during the injection but quickly recovered.",
+                        "Context 3": "The chef's secret ingredient was injected into the dish for extra flavor."
+                    }
+                },
+                {
+                    "word": "Nervous",
+                    "definition": "Feeling anxious or apprehensive about something.",
+                    "context": {
+                        "Context 1": "She felt nervous before her speaking test.",
+                        "Context 2": "The cat was nervous during the thunderstorm.",
+                        "Context 3": "He was nervous about asking his crush out on a date."
+                    }
+                },
+                {
+                    "word": "Cabinet",
+                    "definition": "A piece of furniture with shelves or drawers for storing items.",
+                    "context": {
+                        "Context 1": "The medical cabinet in the doctor's office was filled with supplies.",
+                        "Context 2": "She organized her books in a cabinet by genre.",
+                        "Context 3": "The cabinet in the kitchen held all the spices and cooking utensils."
+                    }
+                },
+                {
+                    "word": "Corrupted",
+                    "definition": "Damaged or impaired in integrity or purity.",
+                    "context": {
+                        "Context 1": "The wisdom tooth became corrupted and needed to be removed.",
+                        "Context 2": "The data was corrupted during the transfer process.",
+                        "Context 3": "The corrupted file could not be opened on the computer."
+                    }
+                },
+                {
+                    "word": "Environment",
+                    "definition": "The surrounding conditions or influences affecting the growth or development of someone or something.",
+                    "context": {
+                        "Context 1": "The doctor's office was an uncomfortable environment for the child.",
+                        "Context 2": "The forest provides a natural environment for many animals.",
+                        "Context 3": "In a healthy environment, plants can thrive and grow."
+                    }
+                },
+                {
+                    "word": "Medical Insurance",
+                    "definition": "A type of insurance that pays for medical expenses.",
+                    "context": {
+                        "Context 1": "She was grateful for her medical insurance when she needed surgery.",
+                        "Context 2": "Without medical insurance, many people struggle to afford healthcare.",
+                        "Context 3": "He checked his medical insurance to see if it covered the new treatment."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Syringe",
+                    "fact": "The world's largest syringe is used to inject concrete into buildings!"
+                },
+                {
+                    "word": "Vaccine",
+                    "fact": "The word 'vaccine' comes from the Latin 'vacca,' meaning cow, because the first vaccine was made from cowpox!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the toddler bring a ladder to the doctor's office?",
+                    "answer": "Because they heard the doctor was going to give them a 'high' five!"
+                },
+                {
+                    "question": "What did the doctor say to the patient who was afraid of needles?",
+                    "answer": "Don't worry, it's just a little prick... like your sense of humor!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Immunity",
+                    "definition": "The ability of an organism to resist infection or disease.",
+                    "context": {
+                        "Context 1": "He has strong immunity, which helps him stay healthy.",
+                        "Context 2": "The immunity of the superhero allowed him to withstand any attack.",
+                        "Context 3": "Immunity can be boosted by eating a balanced diet and exercising regularly."
+                    }
+                },
+                {
+                    "word": "Concentration",
+                    "definition": "The ability to focus one's attention on a particular task or subject.",
+                    "context": {
+                        "Context 1": "He needs good concentration to complete his programming tasks.",
+                        "Context 2": "The concentration of the solution was too high, causing it to bubble over.",
+                        "Context 3": "She practiced meditation to improve her concentration and mindfulness."
+                    }
+                },
+                {
+                    "word": "Stimulants",
+                    "definition": "Substances that raise levels of physiological or nervous activity in the body.",
+                    "context": {
+                        "Context 1": "He uses stimulants like coffee to keep his brain active.",
+                        "Context 2": "Some athletes use stimulants to enhance their performance during competitions.",
+                        "Context 3": "Stimulants can be found in many energy drinks marketed to students."
+                    }
+                },
+                {
+                    "word": "Lactose Intolerant",
+                    "definition": "A condition that results in the inability to digest lactose, a sugar found in milk.",
+                    "context": {
+                        "Context 1": "After her pregnancy, she became lactose intolerant and had to avoid milk.",
+                        "Context 2": "The lactose intolerant cat refused to drink the milk offered to it.",
+                        "Context 3": "Many people are lactose intolerant, which means they can't enjoy ice cream."
+                    }
+                },
+                {
+                    "word": "Foam",
+                    "definition": "A mass of small bubbles formed on or in a liquid.",
+                    "context": {
+                        "Context 1": "She learned how to make a big milk foam for her coffee.",
+                        "Context 2": "The foam from the ocean waves crashed against the shore.",
+                        "Context 3": "He used foam to create a soft cushion for his new chair."
+                    }
+                },
+                {
+                    "word": "Herbal Teas",
+                    "definition": "Beverages made by infusing herbs, spices, or other plant materials in hot water.",
+                    "context": {
+                        "Context 1": "She prefers herbal teas as a stimulant instead of coffee.",
+                        "Context 2": "Herbal teas can be made from a variety of plants, including chamomile and peppermint.",
+                        "Context 3": "He brewed herbal teas to soothe his sore throat."
+                    }
+                },
+                {
+                    "word": "Vending",
+                    "definition": "The act of selling goods, typically through machines.",
+                    "context": {
+                        "Context 1": "He created a website for vending coffee machines.",
+                        "Context 2": "The vending machine dispensed snacks and drinks at the train station.",
+                        "Context 3": "Vending services have expanded to include healthy food options."
+                    }
+                },
+                {
+                    "word": "ADHD",
+                    "definition": "Attention Deficit Hyperactivity Disorder, a condition characterized by inattention, hyperactivity, and impulsiveness.",
+                    "context": {
+                        "Context 1": "He mentioned he has a little ADHD, which affects his concentration.",
+                        "Context 2": "ADHD is often diagnosed in childhood, but can continue into adulthood.",
+                        "Context 3": "Many successful people have ADHD and find ways to manage their symptoms."
+                    }
+                },
+                {
+                    "word": "Pregnancy",
+                    "definition": "The condition of carrying a developing fetus within the female body.",
+                    "context": {
+                        "Context 1": "After her pregnancy, she became lactose intolerant.",
+                        "Context 2": "Pregnancy can bring many changes to a woman's body and lifestyle.",
+                        "Context 3": "He read a book on pregnancy to support his partner during her journey."
+                    }
+                },
+                {
+                    "word": "Stability",
+                    "definition": "The state of being stable; firmness; steadiness.",
+                    "context": {
+                        "Context 1": "He prefers stability in his diet to maintain good health.",
+                        "Context 2": "The stability of the building was tested during the earthquake drill.",
+                        "Context 3": "Financial stability is important for planning a secure future."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Immunity",
+                    "fact": "Did you know that some animals, like the naked mole rat, have a unique immunity that allows them to live in harsh conditions?"
+                },
+                {
+                    "word": "Lactose Intolerant",
+                    "fact": "Interestingly, the ability to digest lactose is a relatively new trait in human evolution, appearing only about 10,000 years ago!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the coffee file a police report?",
+                    "answer": "It got mugged!"
+                },
+                {
+                    "question": "What do you call a sad coffee?",
+                    "answer": "A depresso!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Intuition",
+                    "definition": "The ability to understand something instinctively, without the need for conscious reasoning.",
+                    "context": {
+                        "Context 1": "I often rely on my intuition when making decisions about grammar.",
+                        "Context 2": "Her intuition told her that something was wrong, even before she had any evidence.",
+                        "Context 3": "The cat seemed to have an intuition about where the mouse would hide."
+                    }
+                },
+                {
+                    "word": "Input",
+                    "definition": "Information or material that is put into a system for processing.",
+                    "context": {
+                        "Context 1": "Receiving a lot of input from native speakers can help improve language skills.",
+                        "Context 2": "The computer needs more input to complete the task efficiently.",
+                        "Context 3": "He provided valuable input during the team meeting, which helped shape the project."
+                    }
+                },
+                {
+                    "word": "Consciously",
+                    "definition": "With full awareness or intentionality.",
+                    "context": {
+                        "Context 1": "Sometimes we have to study grammar consciously to understand its rules.",
+                        "Context 2": "She consciously decided to change her eating habits for better health.",
+                        "Context 3": "He was not consciously aware of the time passing while he was reading."
+                    }
+                },
+                {
+                    "word": "Patterns",
+                    "definition": "Repeated or regular forms, designs, or sequences.",
+                    "context": {
+                        "Context 1": "After enough exposure, I began to recognize grammar patterns in the language.",
+                        "Context 2": "The artist used geometric patterns to create a stunning mural.",
+                        "Context 3": "Birds often follow migratory patterns based on the seasons."
+                    }
+                },
+                {
+                    "word": "Proficient",
+                    "definition": "Competent or skilled in doing or using something.",
+                    "context": {
+                        "Context 1": "To be proficient in a language, you need to practice regularly.",
+                        "Context 2": "She is proficient in three different musical instruments.",
+                        "Context 3": "The chef is proficient at preparing traditional dishes from his homeland."
+                    }
+                },
+                {
+                    "word": "Exclusions",
+                    "definition": "Things that are not included or left out.",
+                    "context": {
+                        "Context 1": "Some grammar rules have exclusions that need to be memorized.",
+                        "Context 2": "The club has strict exclusions for members who do not follow the rules.",
+                        "Context 3": "Exclusions in the contract meant that certain services were not covered."
+                    }
+                },
+                {
+                    "word": "Accents",
+                    "definition": "Distinctive ways of pronouncing a language, often associated with a particular region or group.",
+                    "context": {
+                        "Context 1": "Being comfortable with different accents can enhance your language skills.",
+                        "Context 2": "He loved imitating various accents during his comedy routine.",
+                        "Context 3": "Accents can sometimes make it difficult to understand someone, especially in a foreign language."
+                    }
+                },
+                {
+                    "word": "Critical limit",
+                    "definition": "A threshold that, when reached, leads to a significant change or effect.",
+                    "context": {
+                        "Context 1": "Once the critical limit of input is reached, language skills improve dramatically.",
+                        "Context 2": "The scientist noted that the critical limit for the experiment was 100 degrees Celsius.",
+                        "Context 3": "In economics, reaching a critical limit can trigger a market crash."
+                    }
+                },
+                {
+                    "word": "Massive",
+                    "definition": "Very large or heavy; enormous.",
+                    "context": {
+                        "Context 1": "A massive amount of input is necessary for language acquisition.",
+                        "Context 2": "The massive boulder blocked the path completely.",
+                        "Context 3": "She received massive support from her friends during her campaign."
+                    }
+                },
+                {
+                    "word": "Guided",
+                    "definition": "Directed or influenced by someone or something.",
+                    "context": {
+                        "Context 1": "I am often guided by my intuition when speaking English.",
+                        "Context 2": "The tour guide guided us through the ancient ruins.",
+                        "Context 3": "He felt guided by his passion for art throughout his career."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Intuition",
+                    "fact": "Did you know that some people claim to have 'gut feelings' that are actually just their intuition at work?"
+                },
+                {
+                    "word": "Proficient",
+                    "fact": "The word 'proficient' comes from the Latin word 'proficere,' which means 'to make progress.' So, being proficient is all about making progress!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the grammar teacher break up with the math teacher?",
+                    "answer": "Because she found him too calculating!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going? You look a bit tired."
+                },
+                {
+                    "Person 2": "Oh man, it’s been a crazy couple of days. Took my son to the doctor for his shots."
+                },
+                {
+                    "Person 1": "Vaccines, right? I remember those days. Which ones did he get?"
+                },
+                {
+                    "Person 2": "Yeah, the usual ones. Not the COVID ones, though. Just the regular childhood vaccines."
+                },
+                {
+                    "Person 1": "Gotcha! Those can be a hassle. Did you have to deal with a lot of paperwork?"
+                },
+                {
+                    "Person 2": "Definitely! It’s like a whole process. I had to gather all these documents, and it felt overwhelming."
+                },
+                {
+                    "Person 1": "I can imagine! When I moved to a new city, I had to sort out so much stuff too."
+                },
+                {
+                    "Person 2": "Right? It’s like they want to make it as complicated as possible. I had to take my husband with me just to get through it all."
+                },
+                {
+                    "Person 1": "Smart move! It’s always easier with a partner. Did you guys have to go to a government office?"
+                },
+                {
+                    "Person 2": "Yep! Luckily, the staff there were pretty nice. They even spoke a bit of Russian, which helped."
+                },
+                {
+                    "Person 1": "That’s good to hear! It’s always nice when you can communicate easily."
+                },
+                {
+                    "Person 2": "For sure! Back in my hometown, everyone speaks Russian, so it’s a bit different here."
+                },
+                {
+                    "Person 1": "Yeah, I can see how that would be a challenge. But at least you have some connections, right?"
+                },
+                {
+                    "Person 2": "Exactly! My family knows a lot of people, so it makes things easier. Everyone knows everyone in a small town."
+                },
+                {
+                    "Person 1": "That’s true! It’s like having your own little network. But sometimes it feels a bit too close, doesn’t it?"
+                },
+                {
+                    "Person 2": "Totally! Everyone knows your business. Sometimes I just want to be a stranger in a new place."
+                },
+                {
+                    "Person 1": "I get that! It’s nice to have some privacy. So, what’s the plan now? More paperwork?"
+                },
+                {
+                    "Person 2": "Ugh, yes! But I’m hoping it’ll settle down soon. I just want to enjoy some downtime."
+                },
+                {
+                    "Person 1": "Fingers crossed! Maybe we can grab a coffee later and unwind?"
+                },
+                {
+                    "Person 2": "That sounds perfect! I could use a break."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just got back from taking my kid to the doctor for his vaccine."
+                },
+                {
+                    "Person 1": "Oh man, those can be tough. How did he handle it?"
+                },
+                {
+                    "Person 2": "He was a little nervous at first. I think he’s scared of the nurse."
+                },
+                {
+                    "Person 1": "Yeah, I get that. Kids can be so unpredictable. Did he cry?"
+                },
+                {
+                    "Person 2": "Not really, but he definitely didn’t want to go. He was more interested in the toys in the waiting room."
+                },
+                {
+                    "Person 1": "That’s a good distraction! I remember when I was a kid, I used to think the doctor’s office was like a mini adventure."
+                },
+                {
+                    "Person 2": "Right? But now, I just feel anxious every time I have to go. It’s like, why do they always smell like medicine?"
+                },
+                {
+                    "Person 1": "Totally! And don’t even get me started on the dentist. I dread those visits."
+                },
+                {
+                    "Person 2": "Same here! I always feel like I’m in a horror movie when I sit in that chair."
+                },
+                {
+                    "Person 1": "Exactly! And the sound of the drill? Ugh, gives me chills."
+                },
+                {
+                    "Person 2": "I know! I had to get a wisdom tooth removed once, and I was so nervous I could barely sit still."
+                },
+                {
+                    "Person 1": "Oof, I can relate. I had mine out too, and I felt like I was in a daze afterward."
+                },
+                {
+                    "Person 2": "Yeah, it’s like they put you in a whole different world. But hey, at least it’s over with!"
+                },
+                {
+                    "Person 1": "True! And now we can just focus on keeping our kids healthy, right?"
+                },
+                {
+                    "Person 2": "Absolutely! Just gotta keep reminding them that it’s for their own good."
+                },
+                {
+                    "Person 1": "For sure! Let’s hope they don’t freak out next time."
+                },
+                {
+                    "Person 2": "Fingers crossed! We can do this together!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to keep my brain sharp, you know?"
+                },
+                {
+                    "Person 1": "I hear you! What do you do to stay focused?"
+                },
+                {
+                    "Person 2": "Well, I try to eat healthy and exercise a bit. But honestly, it’s tough sometimes."
+                },
+                {
+                    "Person 1": "Yeah, I get that. I’ve been meaning to hit the gym more often."
+                },
+                {
+                    "Person 2": "Same here! I feel like I sit at my desk all day and forget to move."
+                },
+                {
+                    "Person 1": "Right? And then I just end up scrolling through my phone instead."
+                },
+                {
+                    "Person 2": "Exactly! I read somewhere that too much screen time can mess with our focus."
+                },
+                {
+                    "Person 1": "For sure! I’ve noticed I can’t even sit through a movie without checking my phone."
+                },
+                {
+                    "Person 2": "Same! I’ve been trying to limit my phone use, especially before bed."
+                },
+                {
+                    "Person 1": "That’s a good idea. I should probably do that too."
+                },
+                {
+                    "Person 2": "Yeah, maybe we can motivate each other to stick to it!"
+                },
+                {
+                    "Person 1": "Sounds like a plan! Let’s check in with each other next week."
+                },
+                {
+                    "Person 2": "Deal! And maybe we can go for a walk or something to get moving."
+                },
+                {
+                    "Person 1": "I’d love that! Fresh air always helps clear my mind."
+                },
+                {
+                    "Person 2": "Absolutely! Let’s make it happen."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to get through the week. How about you?"
+                },
+                {
+                    "Person 1": "Same here! Work's been a bit hectic, but I'm managing. Have you watched any good shows lately?"
+                },
+                {
+                    "Person 2": "Yeah! I just finished that new series on Netflix. It was so good! You should check it out."
+                },
+                {
+                    "Person 1": "Oh really? What's it about?"
+                },
+                {
+                    "Person 2": "It's a mystery thriller. Lots of twists and turns. I couldn't stop watching!"
+                },
+                {
+                    "Person 1": "Sounds intriguing! I love a good mystery. What's the name of it?"
+                },
+                {
+                    "Person 2": "It's called 'The Unseen.' Trust me, you won't regret it."
+                },
+                {
+                    "Person 1": "Got it! I'll add it to my watchlist. Any plans for the weekend?"
+                },
+                {
+                    "Person 2": "Thinking about going hiking if the weather's nice. How about you?"
+                },
+                {
+                    "Person 1": "That sounds fun! I might join you if you don't mind."
+                },
+                {
+                    "Person 2": "Of course! The more, the merrier. We can grab some lunch afterward."
+                },
+                {
+                    "Person 1": "Perfect! I’ll bring some snacks for the hike."
+                },
+                {
+                    "Person 2": "Awesome! Can't wait. It’ll be a nice break from all this work."
+                },
+                {
+                    "Person 1": "Absolutely! Looking forward to it!"
+                },
+                {
+                    "Person 2": "Me too! See you this weekend!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
