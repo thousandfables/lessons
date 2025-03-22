@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I stayed this night with the reals, with short videos from all the TV program.",
+                    "corrected": "I stayed up all night watching short videos from various TV programs.",
+                    "explanation": "The phrase 'stayed this night' is incorrect; it should be 'stayed up all night.' 'With the reals' is unclear and should be replaced with 'watching short videos.'",
+                    "context": "I prefer to stay without it. I stayed up all night watching short videos from various TV programs. I'm really tired now."
+                },
+                {
+                    "original": "I read the book, Martin, Martin Eden, written by Jack London.",
+                    "corrected": "I read the book 'Martin Eden,' written by Jack London.",
+                    "explanation": "The repetition of 'Martin' is unnecessary; it should be presented as 'the book 'Martin Eden.''",
+                    "context": "I want to tell you about a book I recently finished. I read the book 'Martin Eden,' written by Jack London. It was quite an experience."
+                },
+                {
+                    "original": "I opened it with light interest, interest.",
+                    "corrected": "I opened it with light interest.",
+                    "explanation": "The repetition of 'interest' is redundant and should be removed.",
+                    "context": "I began to read it after a recommendation from my coach. I opened it with light interest. But soon, I found it quite engaging."
+                },
+                {
+                    "original": "I read, usually I read it without, separately of my life.",
+                    "corrected": "I usually read it separately from my life.",
+                    "explanation": "The phrase 'without, separately of' is awkward; it should be 'separately from my life.'",
+                    "context": "I often immerse myself in books. I usually read it separately from my life. I like to escape into different stories."
+                },
+                {
+                    "original": "He can, he can be expressed. Impress. Impress, impressed.",
+                    "corrected": "He can be impressive.",
+                    "explanation": "The repetition and confusion between 'expressed' and 'impress' is incorrect; it should simply state 'he can be impressive.'",
+                    "context": "I was talking about my coach. He's a young man and I think he's very impressive. He can be impressive."
+                },
+                {
+                    "original": "He didn't told me the main line of this book.",
+                    "corrected": "He didn't tell me the main line of this book.",
+                    "explanation": "'Told' is the past tense; it should be 'tell' in this context.",
+                    "context": "My coach made a presentation about the book. He didn't tell me the main line of this book. I wanted to know more."
+                },
+                {
+                    "original": "He was he felt disappointed, suffering.",
+                    "corrected": "He felt disappointed and suffered.",
+                    "explanation": "The phrase 'he was he felt' is incorrect; it should be simplified to 'he felt disappointed and suffered.'",
+                    "context": "The protagonist had high hopes. He felt disappointed and suffered. It was a tough journey for him."
+                },
+                {
+                    "original": "He realized that his mind, his intellect is more God, wider take more volume he has no border in his mind.",
+                    "corrected": "He realized that his intellect is vast and has no boundaries.",
+                    "explanation": "The phrase is convoluted and unclear; it should be simplified to 'his intellect is vast and has no boundaries.'",
+                    "context": "As the story progressed, he discovered more about himself. He realized that his intellect is vast and has no boundaries. This realization changed him."
+                },
+                {
+                    "original": "And but she made everything that she could and broken, breaking and she breaking, she broke him in the sense that OK.",
+                    "corrected": "But she did everything she could and broke him.",
+                    "explanation": "The repetition and awkward phrasing make the sentence unclear; it should be streamlined to 'she did everything she could and broke him.'",
+                    "context": "The protagonist had a complicated relationship. But she did everything she could and broke him. This led to his downfall."
+                },
+                {
+                    "original": "You expect it to be a certain way.",
+                    "corrected": "You expect it to be a certain way.",
+                    "explanation": "This sentence is correct but lacks context; it could be clearer with additional information.",
+                    "context": "When discussing expectations, I said, 'You expect it to be a certain way.' It's important to understand how expectations can shape our experiences."
+                },
+                {
+                    "original": "I am. I'm noticed for that I have this. Habit.",
+                    "corrected": "I've noticed that I have this habit.",
+                    "explanation": "The phrase 'I am. I'm noticed for that' is awkward; it should be 'I've noticed that I have this habit.'",
+                    "context": "I've been reflecting on my communication style. I've noticed that I have this habit of changing topics quickly. It's something I want to work on."
+                },
+                {
+                    "original": "And when the partner doesn't expect it, woman change the team of topic.",
+                    "corrected": "And when the partner doesn't expect it, a woman changes the topic.",
+                    "explanation": "The subject-verb agreement is incorrect; 'woman' should be 'a woman' and 'change' should be 'changes.'",
+                    "context": "I read an article about communication styles. I noticed that when the partner doesn't expect it, a woman changes the topic. This can lead to confusion."
+                },
+                {
+                    "original": "And now, for example, we speaking about forced and after two minutes we speaking about book and after one minute we speaking about cat.",
+                    "corrected": "And now, for example, we're speaking about force, and after two minutes we're speaking about a book, and after one minute we're speaking about a cat.",
+                    "explanation": "The verb forms are incorrect; 'speaking' should be 'we're speaking' for proper tense.",
+                    "context": "In our discussion, I pointed out how conversations can shift. And now, for example, we're speaking about force, and after two minutes we're speaking about a book, and after one minute we're speaking about a cat. It can be quite chaotic!"
+                },
+                {
+                    "original": "I have worked with a lot of people who build software for programmers.",
+                    "corrected": "I have worked with a lot of people who build software for programmers.",
+                    "explanation": "This sentence is correct but could be clearer with additional context.",
+                    "context": "In my experience, I have worked with a lot of people who build software for programmers. It's interesting to see how different people approach the same problem."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "Google thinks that she's a man. Because men usually men usually give instructions to Google.",
+                    "corrected": "Google thinks that she's a man because men usually give instructions to Google.",
+                    "explanation": "The repetition of 'men usually' is unnecessary and makes the sentence awkward.",
+                    "context": "She mentioned that Google thinks she's a man. This happens because men usually give instructions to Google."
+                },
+                {
+                    "original": "I didn't type in some simple question. Sign questions in the end.",
+                    "corrected": "I didn't type in some simple questions with a question mark at the end.",
+                    "explanation": "The phrase 'some simple question' should be plural and 'sign questions' is unclear; it should specify 'with a question mark.'",
+                    "context": "I didn't type in some simple questions. I usually include a question mark at the end of my queries."
+                },
+                {
+                    "original": "I understand request. Query. It's the same as request.",
+                    "corrected": "I understand that a query is the same as a request.",
+                    "explanation": "The sentence lacks clarity; it should explicitly state that a query is synonymous with a request.",
+                    "context": "I understand that a query is the same as a request. They both serve the purpose of seeking information."
+                },
+                {
+                    "original": "Because I, we, we have no time for Excessive.",
+                    "corrected": "Because we have no time for excessive words.",
+                    "explanation": "The word 'excessive' should not be capitalized, and the sentence structure is awkward.",
+                    "context": "Because we have no time for excessive words in a query, we prefer to be straightforward."
+                },
+                {
+                    "original": "She did not order clothes. She did not search for new boots, new hats, new jackets, new coats.",
+                    "corrected": "She did not search for clothes like new boots, hats, jackets, or coats.",
+                    "explanation": "The repetition of 'new' is unnecessary; the sentence can be simplified.",
+                    "context": "She did not search for clothes like new boots, hats, jackets, or coats. Google assumed she was a man."
+                },
+                {
+                    "original": "She is winning in the fight with intelligent.",
+                    "corrected": "She is winning in the fight with artificial intelligence.",
+                    "explanation": "'Intelligent' is an adjective; it should be 'artificial intelligence' to convey the intended meaning.",
+                    "context": "She is winning in the fight with artificial intelligence. She has outsmarted it in her queries."
+                },
+                {
+                    "original": "I had reading. I read. I read it. Whole week.",
+                    "corrected": "I read it for a whole week.",
+                    "explanation": "The phrase 'I had reading' is incorrect; it should be 'I read it' and 'for a whole week' clarifies the duration.",
+                    "context": "I read it for a whole week. It was a very interesting book."
+                },
+                {
+                    "original": "To follow. For growing this main. Character.",
+                    "corrected": "To follow the development of the main character.",
+                    "explanation": "The original phrasing is fragmented and unclear; it should be a complete thought.",
+                    "context": "To follow the development of the main character was captivating. The author described various emotions."
+                },
+                {
+                    "original": "I read. I, I was pretty. I, I.",
+                    "corrected": "I read an article about the movie.",
+                    "explanation": "The repetition and disjointed phrases make the sentence unclear; it should be concise.",
+                    "context": "I read an article about the movie. I also saw a trailer for it."
+                },
+                {
+                    "original": "The movie doesn't. Doesn't. Doesn't consist.",
+                    "corrected": "The movie doesn't consist of the character's growth.",
+                    "explanation": "The repetition of 'doesn't' is unnecessary; it should be a single, clear statement.",
+                    "context": "The movie doesn't consist of the character's growth. Critics noted this in their reviews."
+                },
+                {
+                    "original": "Taking it. Behind of him. For. For. For. For remembering.",
+                    "corrected": "Taking it with him to remember.",
+                    "explanation": "The phrase is overly fragmented; it should be a complete thought.",
+                    "context": "He was taking it with him to remember. It was important for his character development."
+                },
+                {
+                    "original": "The author describing the hardest working processes.",
+                    "corrected": "The author describes the hardest working processes.",
+                    "explanation": "The verb tense is incorrect; it should be in the present tense to match the context.",
+                    "context": "The author describes the hardest working processes in the book. It's a significant aspect of the story."
+                },
+                {
+                    "original": "I think month or two months when Martin and Joe are working in the hotel.",
+                    "corrected": "I think it was a month or two when Martin and Joe were working in the hotel.",
+                    "explanation": "The sentence structure is awkward; it should clarify the time frame and use the correct verb tense.",
+                    "context": "I think it was a month or two when Martin and Joe were working in the hotel. This period was crucial for the plot."
+                },
+                {
+                    "original": "It's a book about Jack London. The part of this book is a biography of Jack London.",
+                    "corrected": "It's a book about Jack London, and part of it is a biography.",
+                    "explanation": "The original sentences are repetitive; they can be combined for clarity.",
+                    "context": "It's a book about Jack London, and part of it is a biography. His life greatly influenced the story."
+                },
+                {
+                    "original": "The bright and serious episodes could be included to the movie.",
+                    "corrected": "The bright and serious episodes could be included in the movie.",
+                    "explanation": "'Included to' is incorrect; it should be 'included in.'",
+                    "context": "The bright and serious episodes could be included in the movie. They are important for the narrative."
+                },
+                {
+                    "original": "But usually these little small details are of value only to those who have read the book.",
+                    "corrected": "But usually, these small details are only valuable to those who have read the book.",
+                    "explanation": "The phrase 'little small details' is redundant; it should be simplified.",
+                    "context": "But usually, these small details are only valuable to those who have read the book. They enhance the viewing experience."
+                },
+                {
+                    "original": "I did nothing about it.",
+                    "corrected": "I didn't do anything about it.",
+                    "explanation": "'Did nothing' is awkward; 'didn't do anything' is more idiomatic.",
+                    "context": "I didn't do anything about it for the last two years. I was busy with other shows."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "I left in Moscow in that period.",
+                    "corrected": "I lived in Moscow in that period.",
+                    "explanation": "The verb 'left' means to depart from a place, while 'lived' indicates residing in a location.",
+                    "context": "During that time, I lived in Moscow. I rented a flat and was waiting for a new episode of my favorite show."
+                },
+                {
+                    "original": "my favorite characters was dying.",
+                    "corrected": "my favorite characters were dying.",
+                    "explanation": "'Characters' is plural, so the verb should be 'were' instead of 'was.'",
+                    "context": "The show is very emotional. My favorite characters were dying, which was quite upsetting for me."
+                },
+                {
+                    "original": "this big thing with horses drawn by horses.",
+                    "corrected": "this big thing drawn by horses.",
+                    "explanation": "The phrase 'with horses drawn by horses' is redundant; 'drawn by horses' suffices.",
+                    "context": "The king's carriage was a huge thing drawn by horses. It was not just an ordinary carriage."
+                },
+                {
+                    "original": "they had to weave it.",
+                    "corrected": "they had to maneuver it.",
+                    "explanation": "'Weave' is incorrect in this context; 'maneuver' better describes the action of navigating the carriage.",
+                    "context": "The carriage was too large to fit through the gate. They had to maneuver it carefully to get it through."
+                },
+                {
+                    "original": "I couldn't make it like in English.",
+                    "corrected": "I couldn't read it in English.",
+                    "explanation": "The phrase 'make it like in English' is awkward; 'read it in English' is clearer.",
+                    "context": "I tried to read the books in Russian, but I realized I couldn't read them in English."
+                },
+                {
+                    "original": "this movie doesn't give me emotions like Game of Thrones.",
+                    "corrected": "this series doesn't give me the same emotions as Game of Thrones.",
+                    "explanation": "The term 'series' is more appropriate than 'movie' for a TV show, and 'as' is the correct comparative form.",
+                    "context": "I attempted to watch the previous story, House of Dragon, but this series doesn't give me the same emotions as Game of Thrones."
+                },
+                {
+                    "original": "I prefer wake up at eight or seven.",
+                    "corrected": "I prefer to wake up at eight or seven.",
+                    "explanation": "The infinitive form 'to wake up' is needed after 'prefer.'",
+                    "context": "I usually prefer to wake up at eight or seven. However, today I had to wake up at six a.m."
+                },
+                {
+                    "original": "I drive drive to I pick up me and my friend.",
+                    "corrected": "I drove to pick up my friend and me.",
+                    "explanation": "The repetition of 'drive' is incorrect, and the pronoun order should be 'my friend and me.'",
+                    "context": "I drove to pick up my friend and me, along with our dogs, to go to the forest."
+                },
+                {
+                    "original": "it's not help. Help me.",
+                    "corrected": "it didn't help me.",
+                    "explanation": "The phrase 'it's not help' is incorrect; 'it didn't help me' is the correct past tense.",
+                    "context": "After our morning journey, I tried to sleep for half an hour, but it didn't help me feel better."
+                },
+                {
+                    "original": "too many house surrounded me.",
+                    "corrected": "too many houses surrounded me.",
+                    "explanation": "'House' should be pluralized to 'houses' to match the context.",
+                    "context": "I felt overwhelmed because there were too many houses surrounding me, making it hard to work with the dogs."
+                },
+                {
+                    "original": "I prefer go to near nearest forest.",
+                    "corrected": "I prefer to go to the nearest forest.",
+                    "explanation": "The infinitive 'to go' is needed after 'prefer,' and 'near' is redundant.",
+                    "context": "I love my dog, and I prefer to go to the nearest forest where there are no people."
+                },
+                {
+                    "original": "I will open the door to the car.",
+                    "corrected": "I will open the car door.",
+                    "explanation": "The phrase 'the door to the car' is awkward; 'the car door' is more idiomatic.",
+                    "context": "I see a point in taking a break. I will open the car door to get some fresh air."
+                },
+                {
+                    "original": "it is supposed.",
+                    "corrected": "it is supposed to be.",
+                    "explanation": "The phrase is incomplete; 'to be' is necessary to complete the thought.",
+                    "context": "It's a special type of sound. It is supposed to be different from what I'm used to."
+                },
+                {
+                    "original": "you have to watch something.",
+                    "corrected": "you should watch something.",
+                    "explanation": "'Have to' implies obligation, while 'should' suggests a recommendation.",
+                    "context": "Even if you practice a lot, you should watch something after the lesson to reinforce your learning."
+                },
+                {
+                    "original": "I still forgot it.",
+                    "corrected": "I still forget it.",
+                    "explanation": "The present tense 'forget' is appropriate here, as it refers to a recurring issue.",
+                    "context": "Sometimes I forget words too, like the word 'laundry.' I heard it many times, but I still forget it."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "you must have been reading like all your free time, all your weekend like for throughout the whole week.",
+                    "corrected": "you must have been reading in all your free time, all your weekends, throughout the whole week.",
+                    "explanation": "The phrase 'like' is unnecessary and informal here; 'in' is the correct preposition for 'free time,' and 'weekend' should be plural to match 'all.'",
+                    "context": "I was talking about how much reading someone has done. You must have been reading in all your free time, all your weekends, throughout the whole week. It's impressive how dedicated you are!"
+                },
+                {
+                    "original": "I hope that the vacancy will be mined.",
+                    "corrected": "I hope that the vacancy will be mine.",
+                    "explanation": "'Mined' is incorrect; 'mine' indicates possession, while 'mined' refers to extracting minerals.",
+                    "context": "I was discussing my job application. I hope that the vacancy will be mine. I'm really excited about this opportunity!"
+                },
+                {
+                    "original": "I need to change my priority.",
+                    "corrected": "I need to change my priorities.",
+                    "explanation": "The word 'priority' should be plural ('priorities') when referring to multiple important tasks or goals.",
+                    "context": "I was reflecting on my focus in life. I need to change my priorities. It's important to balance everything better."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Expectations",
+                    "definition": "Beliefs about what will happen in the future; anticipations.",
+                    "context": {
+                        "Context 1": "His expectations about the outcome of the project were too high.",
+                        "Context 2": "She had low expectations for the movie, but it turned out to be great.",
+                        "Context 3": "The teacher's expectations for her students were always high, pushing them to excel."
+                    }
+                },
+                {
+                    "word": "Embarrass",
+                    "definition": "To cause someone to feel awkward or ashamed.",
+                    "context": {
+                        "Context 1": "He didn’t want to embarrass himself in front of his friends.",
+                        "Context 2": "The comedian's jokes sometimes embarrass the audience, but they laugh anyway.",
+                        "Context 3": "She tried to embarrass him by revealing his childhood secrets."
+                    }
+                },
+                {
+                    "word": "Motivation",
+                    "definition": "The reason or reasons one has for acting or behaving in a particular way.",
+                    "context": {
+                        "Context 1": "His motivation to succeed in life came from his family's struggles.",
+                        "Context 2": "The motivation behind her artwork was to express her emotions.",
+                        "Context 3": "He found motivation in the support of his friends during tough times."
+                    }
+                },
+                {
+                    "word": "Disappointed",
+                    "definition": "Sad or displeased because something did not happen as expected.",
+                    "context": {
+                        "Context 1": "She was disappointed when her favorite band canceled the concert.",
+                        "Context 2": "He felt disappointed after losing the game despite practicing hard.",
+                        "Context 3": "The children were disappointed when it rained on their picnic day."
+                    }
+                },
+                {
+                    "word": "Society",
+                    "definition": "A community of people living together in a more or less ordered community.",
+                    "context": {
+                        "Context 1": "He wanted to change his position in society to gain respect.",
+                        "Context 2": "The society of ants works together to build their colony.",
+                        "Context 3": "In ancient society, people relied heavily on agriculture for survival."
+                    }
+                },
+                {
+                    "word": "Impress",
+                    "definition": "To make someone feel admiration and respect.",
+                    "context": {
+                        "Context 1": "He hoped to impress his boss with his presentation skills.",
+                        "Context 2": "The magician's tricks never failed to impress the audience.",
+                        "Context 3": "She wanted to impress her friends with her cooking skills."
+                    }
+                },
+                {
+                    "word": "Behavior",
+                    "definition": "The way in which one acts or conducts oneself.",
+                    "context": {
+                        "Context 1": "His behavior at the party was quite unusual.",
+                        "Context 2": "The dog's behavior changed when it saw its owner.",
+                        "Context 3": "Children's behavior can often reflect their home environment."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Her perspective on the issue helped the team find a solution.",
+                        "Context 2": "From his perspective, the project was a success despite the challenges.",
+                        "Context 3": "Traveling can broaden your perspective on different cultures."
+                    }
+                },
+                {
+                    "word": "Recommendation",
+                    "definition": "A suggestion or proposal as to the best course of action.",
+                    "context": {
+                        "Context 1": "His recommendation to read the book changed her opinion about it.",
+                        "Context 2": "The restaurant received a recommendation from a popular food critic.",
+                        "Context 3": "She made a recommendation to her friend about a great movie."
+                    }
+                },
+                {
+                    "word": "Realize",
+                    "definition": "To become fully aware of something as a fact; to understand clearly.",
+                    "context": {
+                        "Context 1": "He didn’t realize how much he had grown until he looked at old photos.",
+                        "Context 2": "She realized she had forgotten her keys only after reaching the door.",
+                        "Context 3": "It took him a while to realize that he was lost in the city."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Expectations",
+                    "fact": "Did you know that the word 'expectation' comes from the Latin 'expectare,' which means 'to look out for'?"
+                },
+                {
+                    "word": "Embarrass",
+                    "fact": "The word 'embarrass' has a French origin, and it originally meant 'to block' or 'to hinder.'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the book join the police?",
+                    "answer": "Because it wanted to work on its 'case'!"
+                },
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes of emotional baggage!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Query",
+                    "definition": "A question, especially one addressed to an official or an organization.",
+                    "context": {
+                        "Context 1": "When I have a question about my account, I usually submit a query to customer service.",
+                        "Context 2": "The scientist had a query about the results of the experiment.",
+                        "Context 3": "During the meeting, she raised a query regarding the new policy changes."
+                    }
+                },
+                {
+                    "word": "Excessive",
+                    "definition": "More than is necessary, normal, or desirable; immoderate.",
+                    "context": {
+                        "Context 1": "His excessive use of social media distracted him from his studies.",
+                        "Context 2": "The excessive noise from the construction site made it hard to concentrate.",
+                        "Context 3": "She decided to cut back on her excessive spending to save money."
+                    }
+                },
+                {
+                    "word": "Character",
+                    "definition": "A person in a novel, play, or movie.",
+                    "context": {
+                        "Context 1": "The main character in the book undergoes significant development throughout the story.",
+                        "Context 2": "He created a character based on his childhood experiences.",
+                        "Context 3": "The character of the villain was portrayed as both charming and ruthless."
+                    }
+                },
+                {
+                    "word": "Plot",
+                    "definition": "The main events of a story, presented by the writer as an interrelated sequence.",
+                    "context": {
+                        "Context 1": "The plot of the movie was so engaging that I couldn't look away.",
+                        "Context 2": "She spent hours discussing the plot twists with her friends.",
+                        "Context 3": "The plot of the novel revolves around a mysterious disappearance."
+                    }
+                },
+                {
+                    "word": "Review",
+                    "definition": "A critical appraisal of a book, play, movie, or other work.",
+                    "context": {
+                        "Context 1": "I read a review of the film before deciding to watch it.",
+                        "Context 2": "The restaurant received a glowing review from the food critic.",
+                        "Context 3": "He wrote a detailed review of the book for his blog."
+                    }
+                },
+                {
+                    "word": "Biography",
+                    "definition": "An account of someone's life written by someone else.",
+                    "context": {
+                        "Context 1": "The biography of the famous author revealed many interesting facts about his life.",
+                        "Context 2": "She decided to write a biography of her grandmother.",
+                        "Context 3": "The biography was filled with anecdotes from the subject's childhood."
+                    }
+                },
+                {
+                    "word": "Critic",
+                    "definition": "A person who expresses an unfavorable opinion of something.",
+                    "context": {
+                        "Context 1": "The critic praised the film for its stunning visuals.",
+                        "Context 2": "As a food critic, she has high standards for every restaurant she visits.",
+                        "Context 3": "He became a well-known critic after publishing his first book review."
+                    }
+                },
+                {
+                    "word": "Intellect",
+                    "definition": "The faculty of reasoning and understanding objectively, especially with regard to abstract matters.",
+                    "context": {
+                        "Context 1": "Her intellect allowed her to solve complex problems quickly.",
+                        "Context 2": "He admired the intellect of the philosophers he studied.",
+                        "Context 3": "The debate showcased the intellect of both participants."
+                    }
+                },
+                {
+                    "word": "Assume",
+                    "definition": "To take for granted or without proof.",
+                    "context": {
+                        "Context 1": "I assumed he would be at the meeting since he always attends.",
+                        "Context 2": "Don't assume that everyone knows the rules; explain them clearly.",
+                        "Context 3": "She assumed the weather would be nice for the picnic."
+                    }
+                },
+                {
+                    "word": "Engage",
+                    "definition": "To participate or become involved in.",
+                    "context": {
+                        "Context 1": "The teacher encouraged students to engage in discussions.",
+                        "Context 2": "He decided to engage with the community by volunteering.",
+                        "Context 3": "The artist wanted to engage the audience with her performance."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Excessive",
+                    "fact": "Did you know that excessive laughter can actually be a sign of a serious medical condition? But don't worry, it's usually just a sign that you're having a good time!"
+                },
+                {
+                    "word": "Character",
+                    "fact": "In ancient Greece, characters in plays were often played by men, even female roles! Talk about commitment to the craft!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the book join the gym?",
+                    "answer": "Because it wanted to work on its spine!"
+                },
+                {
+                    "question": "Why don’t writers ever get lost?",
+                    "answer": "Because they always have a plot to follow!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Disgusting",
+                    "definition": "Causing a strong feeling of dislike or disapproval.",
+                    "context": {
+                        "Context 1": "The food was so disgusting that I couldn't finish my meal.",
+                        "Context 2": "He found the idea of eating insects disgusting, even though they are a delicacy in some cultures.",
+                        "Context 3": "The movie was filled with disgusting scenes that made some viewers leave the theater."
+                    }
+                },
+                {
+                    "word": "Emotional",
+                    "definition": "Relating to a person's feelings or emotions.",
+                    "context": {
+                        "Context 1": "The scene in the movie was very emotional, bringing tears to many viewers' eyes.",
+                        "Context 2": "She gave an emotional speech at her graduation ceremony.",
+                        "Context 3": "The emotional rollercoaster of the game had fans on the edge of their seats."
+                    }
+                },
+                {
+                    "word": "Budget",
+                    "definition": "An estimate of income and expenditure for a set period of time.",
+                    "context": {
+                        "Context 1": "The producers said they didn't have the budget to include that scene.",
+                        "Context 2": "He carefully planned his budget for the month to avoid overspending.",
+                        "Context 3": "The school had to stick to a strict budget for its annual events."
+                    }
+                },
+                {
+                    "word": "Journey",
+                    "definition": "An act of traveling from one place to another.",
+                    "context": {
+                        "Context 1": "The journey to Winterfell was long and arduous.",
+                        "Context 2": "Her journey to becoming a doctor took many years of hard work and dedication.",
+                        "Context 3": "The journey through the mountains was breathtaking and filled with adventure."
+                    }
+                },
+                {
+                    "word": "Disoriented",
+                    "definition": "Confused and unable to think clearly.",
+                    "context": {
+                        "Context 1": "After the long drive, I felt disoriented and needed a moment to gather my thoughts.",
+                        "Context 2": "He became disoriented after waking up from a deep sleep in an unfamiliar place.",
+                        "Context 3": "The sudden change in plans left her feeling disoriented and unsure of what to do next."
+                    }
+                },
+                {
+                    "word": "Warm up",
+                    "definition": "To prepare for an activity by gradually increasing the intensity.",
+                    "context": {
+                        "Context 1": "I need to warm up before I start speaking English in class.",
+                        "Context 2": "Athletes always warm up before a game to prevent injuries.",
+                        "Context 3": "The teacher suggested we warm up our voices before the choir practice."
+                    }
+                },
+                {
+                    "word": "Struggling",
+                    "definition": "Having difficulty in doing something.",
+                    "context": {
+                        "Context 1": "I'm still struggling with some English vocabulary.",
+                        "Context 2": "She was struggling to lift the heavy box by herself.",
+                        "Context 3": "The student was struggling to keep up with the fast-paced lesson."
+                    }
+                },
+                {
+                    "word": "Characters",
+                    "definition": "The people or beings in a story, play, or movie.",
+                    "context": {
+                        "Context 1": "My favorite characters in the series are the ones with the most depth.",
+                        "Context 2": "The characters in the book were well-developed and relatable.",
+                        "Context 3": "In cartoons, characters often have exaggerated features for comedic effect."
+                    }
+                },
+                {
+                    "word": "Detail",
+                    "definition": "An individual feature, fact, or item.",
+                    "context": {
+                        "Context 1": "He thought the detail about the carriage was very important.",
+                        "Context 2": "The artist paid attention to every detail in the painting.",
+                        "Context 3": "She included every detail in her report to ensure clarity."
+                    }
+                },
+                {
+                    "word": "Expect",
+                    "definition": "To regard something as likely to happen.",
+                    "context": {
+                        "Context 1": "We expect the new season of the show to be released next year.",
+                        "Context 2": "I expect to receive my package by the end of the week.",
+                        "Context 3": "They expect the weather to improve by the weekend."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Disgusting",
+                    "fact": "In some cultures, fermented shark is considered a delicacy, even though many find it disgusting!"
+                },
+                {
+                    "word": "Journey",
+                    "fact": "The longest journey ever taken by a person was a 10,000-mile trek across the world, but it probably felt shorter than waiting for a sequel!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What do you call a bear with no teeth?",
+                    "answer": "A gummy bear!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Opportunity",
+                    "definition": "A set of circumstances that makes it possible to do something.",
+                    "context": {
+                        "Context 1": "I know that I will eventually use this word later because I will have the opportunity to hear it in a movie.",
+                        "Context 2": "Winning the lottery was a once-in-a-lifetime opportunity for him.",
+                        "Context 3": "She seized the opportunity to travel abroad for her studies."
+                    }
+                },
+                {
+                    "word": "Upset",
+                    "definition": "To make someone unhappy or worried.",
+                    "context": {
+                        "Context 1": "It is a little bit more upsetting if you can't remember a word while speaking.",
+                        "Context 2": "He was upset when he found out he didn't get the job.",
+                        "Context 3": "The news of the storm upset the entire community."
+                    }
+                },
+                {
+                    "word": "Concentrate",
+                    "definition": "To focus all one's attention on a particular task.",
+                    "context": {
+                        "Context 1": "You can concentrate on something if you find it interesting.",
+                        "Context 2": "She found it hard to concentrate in the noisy café.",
+                        "Context 3": "He needs to concentrate on his studies to pass the exams."
+                    }
+                },
+                {
+                    "word": "Priority",
+                    "definition": "Something that is regarded as more important than another.",
+                    "context": {
+                        "Context 1": "I need to change my priorities to focus on my studies.",
+                        "Context 2": "Health should be a top priority for everyone.",
+                        "Context 3": "His priority was to finish the project before the deadline."
+                    }
+                },
+                {
+                    "word": "Vacancy",
+                    "definition": "An unoccupied position or job.",
+                    "context": {
+                        "Context 1": "I hope that the vacancy will be mine after I sent my CV.",
+                        "Context 2": "The hotel had a vacancy for a single room.",
+                        "Context 3": "There is a vacancy for a new teacher at the school."
+                    }
+                },
+                {
+                    "word": "Discuss",
+                    "definition": "To talk about something with someone in order to exchange ideas or opinions.",
+                    "context": {
+                        "Context 1": "We will discuss it in the next lesson.",
+                        "Context 2": "They discussed their travel plans over dinner.",
+                        "Context 3": "The committee will discuss the new policy next week."
+                    }
+                },
+                {
+                    "word": "Excited",
+                    "definition": "Very enthusiastic and eager.",
+                    "context": {
+                        "Context 1": "I'm looking forward to hearing great news; I'm so excited!",
+                        "Context 2": "The children were excited to see the circus.",
+                        "Context 3": "She was excited about her upcoming vacation."
+                    }
+                },
+                {
+                    "word": "Habit",
+                    "definition": "A settled or regular tendency or practice.",
+                    "context": {
+                        "Context 1": "It is a very good habit to read regularly.",
+                        "Context 2": "He has a habit of biting his nails when nervous.",
+                        "Context 3": "Brushing your teeth twice a day is a healthy habit."
+                    }
+                },
+                {
+                    "word": "Practice",
+                    "definition": "The repeated exercise of an activity or skill to acquire or maintain proficiency.",
+                    "context": {
+                        "Context 1": "You will get better with practice.",
+                        "Context 2": "She needs to practice her piano skills for the recital.",
+                        "Context 3": "He decided to practice yoga every morning."
+                    }
+                },
+                {
+                    "word": "Opportunity",
+                    "definition": "A favorable circumstance or chance for progress.",
+                    "context": {
+                        "Context 1": "I know that I will eventually use this word later because I will have the opportunity to hear it in a movie.",
+                        "Context 2": "The internship provided a great opportunity for networking.",
+                        "Context 3": "Finding a mentor can open up new opportunities in your career."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Opportunity",
+                    "fact": "Did you know that the word 'opportunity' comes from the Latin phrase 'ob portum veniens,' which means 'coming toward a port'?"
+                },
+                {
+                    "word": "Habit",
+                    "fact": "The average person takes about 66 days to form a new habit, but some habits can take much longer!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that new coffee shop that just opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I went there yesterday! The coffee is amazing, but the line was super long."
+                },
+                {
+                    "Person 1": "I heard they have some unique flavors. What did you try?"
+                },
+                {
+                    "Person 2": "I got a lavender latte. It sounds weird, but it was surprisingly good!"
+                },
+                {
+                    "Person 1": "Lavender? That’s interesting! I usually stick to the classics like vanilla or caramel."
+                },
+                {
+                    "Person 2": "Same here! But I thought I’d be adventurous this time. Plus, it was a hot day, so I needed something refreshing."
+                },
+                {
+                    "Person 1": "Good call! I could use a cold drink right now. What are your plans for the weekend?"
+                },
+                {
+                    "Person 2": "I’m thinking about going hiking if the weather holds up. How about you?"
+                },
+                {
+                    "Person 1": "That sounds fun! I might join you. I need to get outdoors more."
+                },
+                {
+                    "Person 2": "Absolutely! Fresh air does wonders. Plus, we can grab some coffee afterward."
+                },
+                {
+                    "Person 1": "Perfect! I’ll bring some snacks for the hike too."
+                },
+                {
+                    "Person 2": "Awesome! I’ll bring the good vibes and my new playlist."
+                },
+                {
+                    "Person 1": "Deal! Can’t wait for the adventure."
+                },
+                {
+                    "Person 2": "Me too! Let’s make it a great day!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new movie that just came out?"
+                },
+                {
+                    "Person 2": "Yeah, I saw the trailer! It looks really interesting. What do you think?"
+                },
+                {
+                    "Person 1": "I think it could be good, but I’m always skeptical about movie adaptations of books."
+                },
+                {
+                    "Person 2": "Right? They usually leave out so much from the book. It’s frustrating."
+                },
+                {
+                    "Person 1": "Exactly! I mean, sometimes they change the characters completely."
+                },
+                {
+                    "Person 2": "Totally! I remember when they adapted 'The Great Gatsby.' It was visually stunning, but it missed a lot of the depth from the book."
+                },
+                {
+                    "Person 1": "Yeah, I felt the same way. I read the book first, and then the movie just didn’t hit the same."
+                },
+                {
+                    "Person 2": "Same here! I prefer to read the book first, too. It gives me a better understanding of the characters."
+                },
+                {
+                    "Person 1": "For sure! Plus, you get to imagine the characters in your own way before seeing them on screen."
+                },
+                {
+                    "Person 2": "Exactly! And sometimes the movie just doesn’t match what I pictured."
+                },
+                {
+                    "Person 1": "So, are you planning to see this new movie?"
+                },
+                {
+                    "Person 2": "I might! But I think I’ll read the book first. I want to see how it compares."
+                },
+                {
+                    "Person 1": "Good idea! Let me know what you think after you read it."
+                },
+                {
+                    "Person 2": "Will do! And maybe we can watch the movie together after that."
+                },
+                {
+                    "Person 1": "Sounds like a plan! I’m looking forward to it."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch the latest episode of that show everyone's talking about?"
+                },
+                {
+                    "Person 2": "Oh, totally! I was on the edge of my seat the whole time. What did you think?"
+                },
+                {
+                    "Person 1": "I loved it! But man, some of those scenes were pretty intense. I felt so bad for the characters."
+                },
+                {
+                    "Person 2": "Right? It’s like they just love to put us through emotional rollercoasters. I was not ready for that twist!"
+                },
+                {
+                    "Person 1": "Seriously! And I heard the author is still working on the next book. It’s been ages!"
+                },
+                {
+                    "Person 2": "I know! I think he’s been writing it for like 15 years or something. It’s crazy!"
+                },
+                {
+                    "Person 1": "Do you think he’ll ever finish it? I mean, he’s getting up there in age."
+                },
+                {
+                    "Person 2": "Honestly, I’m starting to doubt it. But I keep hoping! I want to see how it all ends."
+                },
+                {
+                    "Person 1": "Same here! I tried watching that spin-off, but it just didn’t hit the same way."
+                },
+                {
+                    "Person 2": "Yeah, I felt the same. I think the cast just doesn’t have the same chemistry."
+                },
+                {
+                    "Person 1": "Exactly! It’s like they’re missing that spark. I guess it happens sometimes."
+                },
+                {
+                    "Person 2": "For sure! Speaking of missing things, I’ve been trying to get back into reading. It’s tough to focus sometimes."
+                },
+                {
+                    "Person 1": "Tell me about it! I can barely finish a chapter without getting distracted by my phone."
+                },
+                {
+                    "Person 2": "Right? I’ve started setting limits on my screen time. It’s helped a bit."
+                },
+                {
+                    "Person 1": "That’s a good idea! I should try that too. Maybe I’ll actually finish a book this year!"
+                },
+                {
+                    "Person 2": "Let’s hold each other accountable! We can check in on our progress."
+                },
+                {
+                    "Person 1": "Deal! And who knows, maybe by then we’ll have some new episodes to talk about too!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you seen any good movies lately?"
+                },
+                {
+                    "Person 2": "Yeah, I just watched that new action flick. It was pretty intense!"
+                },
+                {
+                    "Person 1": "Nice! I love a good action movie. What was it about?"
+                },
+                {
+                    "Person 2": "It’s about this spy who has to save the world from a secret organization. Lots of twists!"
+                },
+                {
+                    "Person 1": "Sounds exciting! I need to check it out. I’ve been stuck watching old series."
+                },
+                {
+                    "Person 2": "Old series can be great, but sometimes you just need something fresh, you know?"
+                },
+                {
+                    "Person 1": "Totally! I feel like I’ve seen everything on my watchlist."
+                },
+                {
+                    "Person 2": "Maybe try something outside your usual genre? It might surprise you!"
+                },
+                {
+                    "Person 1": "Good idea! I’ve been meaning to watch a comedy. Any recommendations?"
+                },
+                {
+                    "Person 2": "You should check out that new comedy on Netflix. It’s hilarious!"
+                },
+                {
+                    "Person 1": "Awesome! I’ll add it to my list. Thanks for the tip!"
+                },
+                {
+                    "Person 2": "No problem! Let me know what you think after you watch it."
+                },
+                {
+                    "Person 1": "Will do! By the way, are we still on for that game night this weekend?"
+                },
+                {
+                    "Person 2": "Absolutely! Can’t wait to see you there!"
+                },
+                {
+                    "Person 1": "Same here! It’s going to be a blast."
+                },
+                {
+                    "Person 2": "For sure! See you then!"
+                },
+                {
+                    "Person 1": "See you! Bye!"
+                },
+                {
+                    "Person 2": "Bye!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
