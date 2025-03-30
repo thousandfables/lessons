@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Do you made some essays?",
+                    "corrected": "Did you make some essays?",
+                    "explanation": "The auxiliary verb 'did' requires the base form of the main verb 'make' instead of the past form 'made.'",
+                    "context": "I was checking on Asya's progress with her assignments. Did you make some essays? I want to ensure she understands the task."
+                },
+                {
+                    "original": "I think I didn't do what you expect me to do.",
+                    "corrected": "I think I didn't do what you expected me to do.",
+                    "explanation": "The verb 'expect' should be in the past tense 'expected' to match the past context of the sentence.",
+                    "context": "Asya expressed her concerns about her essay. I think I didn't do what you expected me to do. I want to clarify my understanding of the assignment."
+                },
+                {
+                    "original": "Robots takes our place in when we write yes in the present simple at the end of the verb.",
+                    "corrected": "Robots take our place when we write in the present simple at the end of the verb.",
+                    "explanation": "The verb 'takes' should be 'take' to agree with the plural subject 'robots.'",
+                    "context": "We were discussing the grammatical rules related to the verb forms. Robots take our place when we write in the present simple."
+                },
+                {
+                    "original": "If we create a negative sentence, it does not play a big part in our society.",
+                    "corrected": "If we create a negative sentence, it does not play a big role in our society.",
+                    "explanation": "The phrase 'big part' should be 'big role' to convey the intended meaning more accurately.",
+                    "context": "I was explaining the importance of sentence structure. If we create a negative sentence, it does not play a big role in our society."
+                },
+                {
+                    "original": "I should compare.",
+                    "corrected": "I should compare it.",
+                    "explanation": "The sentence lacks a direct object; 'it' should be added to clarify what is being compared.",
+                    "context": "I was emphasizing the need to compare Asya's work with the original example. I should compare it to ensure she understands."
+                },
+                {
+                    "original": "There is just some small detail that's missing in your sentence.",
+                    "corrected": "There are just some small details that are missing in your sentence.",
+                    "explanation": "The subject 'details' is plural, so the verb should be 'are' instead of 'is,' and 'detail' should also be plural.",
+                    "context": "I was pointing out areas for improvement in Asya's writing. There are just some small details that are missing in your sentence."
+                },
+                {
+                    "original": "Just as a rule.",
+                    "corrected": "That's just a rule.",
+                    "explanation": "The phrase needs a subject and verb to form a complete sentence; 'that's' clarifies the statement.",
+                    "context": "I was explaining a grammatical rule regarding punctuation. That's just a rule we follow in English."
+                },
+                {
+                    "original": "Cannot that's an exclusion you just we just need to remember that.",
+                    "corrected": "Cannot is an exception; we just need to remember that.",
+                    "explanation": "The sentence structure is awkward; 'is an exception' clarifies the meaning and improves flow.",
+                    "context": "I was discussing the spelling of 'cannot.' Cannot is an exception; we just need to remember that."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "It very good.",
+                    "corrected": "It's very good.",
+                    "explanation": "The contraction 'it's' (it is) is needed here to form a complete sentence.",
+                    "context": "I was discussing the importance of small details in writing. It's very good. These details help improve the cohesion of our essay."
+                },
+                {
+                    "original": "Peoples.",
+                    "corrected": "People.",
+                    "explanation": "'Peoples' is incorrect in this context; 'people' is the correct plural form for a group of individuals.",
+                    "context": "We were talking about creative thinking and how it relates to human knowledge. People often have unique perspectives."
+                },
+                {
+                    "original": "Is it a dramatic is it prospective?",
+                    "corrected": "Is it dramatic or is it perspective?",
+                    "explanation": "The sentence structure is confusing; 'dramatic' and 'perspective' should be clearly separated with 'or.'",
+                    "context": "I was unsure about the correct term to use. Is it dramatic or is it perspective? I want to make sure I use the right word."
+                },
+                {
+                    "original": "From artist minds.",
+                    "corrected": "From artists' minds.",
+                    "explanation": "The possessive form 'artists'' is needed to indicate that the minds belong to the artists.",
+                    "context": "I was trying to express how artificial intelligence can learn from creativity. From artists' minds, it can absorb knowledge and create."
+                },
+                {
+                    "original": "I don't know from different artists what mind sounds.",
+                    "corrected": "I don't know what 'mind' sounds like from different artists.",
+                    "explanation": "The sentence structure is awkward; it needs rephrasing for clarity.",
+                    "context": "I was expressing my confusion about how to articulate a concept. I don't know what 'mind' sounds like from different artists."
+                },
+                {
+                    "original": "Do we need an apostrophe or not here?",
+                    "corrected": "Do we need an apostrophe here or not?",
+                    "explanation": "The placement of 'here' is awkward; it should be positioned before 'or not' for better flow.",
+                    "context": "I was questioning the rules of punctuation. Do we need an apostrophe here or not? I'm unsure about the rules."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "A painting like different artists.",
+                    "corrected": "A painting is like those of different artists.",
+                    "explanation": "The original sentence lacks a verb and clarity; adding 'is' and 'those of' makes it grammatically correct.",
+                    "context": "When discussing the similarities between art styles, I said, 'A painting is like those of different artists.' This highlights the comparison I want to make."
+                },
+                {
+                    "original": "Well, it's like, what does it mean from the position of another artist?",
+                    "corrected": "Well, what does it mean from the perspective of another artist?",
+                    "explanation": "'Position' is less idiomatic in this context; 'perspective' is more appropriate when discussing viewpoints.",
+                    "context": "I was trying to clarify a point about artistic interpretation. I asked, 'Well, what does it mean from the perspective of another artist?' This emphasizes understanding different viewpoints."
+                },
+                {
+                    "original": "He imitates, yes, and what exactly does he imitate?",
+                    "corrected": "He imitates, yes, but what exactly does he imitate?",
+                    "explanation": "The use of 'and' is incorrect here; 'but' is more suitable to contrast the ideas.",
+                    "context": "In discussing imitation in art, I said, 'He imitates, yes, but what exactly does he imitate?' This highlights the need for specificity in imitation."
+                },
+                {
+                    "original": "You can say very simply, paintings that the GPT artist draws are very similar to paintings of famous artists.",
+                    "corrected": "You can simply say that the paintings drawn by the GPT artist are very similar to those of famous artists.",
+                    "explanation": "The original sentence is awkwardly structured; rephrasing improves clarity and flow.",
+                    "context": "To simplify my explanation, I suggested, 'You can simply say that the paintings drawn by the GPT artist are very similar to those of famous artists.' This makes the comparison clearer."
+                },
+                {
+                    "original": "Even if there is some mistake, it doesn't matter.",
+                    "corrected": "Even if there are some mistakes, it doesn't matter.",
+                    "explanation": "The subject 'mistake' should be pluralized to 'mistakes' to agree with 'some.'",
+                    "context": "I reassured my students, 'Even if there are some mistakes, it doesn't matter.' This encourages them to focus on learning rather than perfection."
+                },
+                {
+                    "original": "When you don't know, you spend a lot of time thinking about it, making a grammatical mistake, making a lexical mistake.",
+                    "corrected": "When you don't know, you spend a lot of time thinking about it, which leads to grammatical and lexical mistakes.",
+                    "explanation": "The original structure is repetitive; using 'which leads to' improves sentence flow.",
+                    "context": "I explained the challenges of language learning, saying, 'When you don't know, you spend a lot of time thinking about it, which leads to grammatical and lexical mistakes.' This highlights the learning process."
+                },
+                {
+                    "original": "What words do you have here that... Without a?",
+                    "corrected": "What words do you have here that do not require 'a'?",
+                    "explanation": "The original sentence is incomplete and unclear; rephrasing clarifies the question.",
+                    "context": "I was guiding a discussion on articles, asking, 'What words do you have here that do not require 'a'?' This helps students understand article usage."
+                },
+                {
+                    "original": "Can do, everything that we do.",
+                    "corrected": "Can do everything that we do.",
+                    "explanation": "The phrase 'can do' is redundant here; removing 'everything' clarifies the meaning.",
+                    "context": "In discussing capabilities, I stated, 'Can do everything that we do.' This emphasizes the comparison of abilities."
+                },
+                {
+                    "original": "That sounds stupid.",
+                    "corrected": "That might sound silly.",
+                    "explanation": "'Stupid' is too harsh; 'silly' is a softer, more appropriate term in this context.",
+                    "context": "I was reflecting on the informal nature of some phrases, saying, 'That might sound silly.' This acknowledges the casual tone without being overly critical."
+                },
+                {
+                    "original": "When we're trying to correct these two mistakes and like rephrase the sentence and using words and spell complex words incorrectly, that is a mistake and a big mistake, a grammatical mistake.",
+                    "corrected": "When we're trying to correct these two mistakes and rephrase the sentence while using complex words incorrectly, that is a significant grammatical mistake.",
+                    "explanation": "The original sentence is overly repetitive and awkward; streamlining improves clarity.",
+                    "context": "I emphasized the importance of clarity, stating, 'When we're trying to correct these two mistakes and rephrase the sentence while using complex words incorrectly, that is a significant grammatical mistake.' This highlights the need for careful language use."
+                },
+                {
+                    "original": "Do we have like major problems, big problems here, like spelling problems or grammar problems?",
+                    "corrected": "Do we have major problems here, such as spelling or grammar issues?",
+                    "explanation": "The use of 'like' is informal and unnecessary; 'such as' is more appropriate in this context.",
+                    "context": "In assessing the work, I asked, 'Do we have major problems here, such as spelling or grammar issues?' This helps focus the discussion on specific concerns."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I think the word no.",
+                    "corrected": "I think the word is no.",
+                    "explanation": "The verb 'is' is needed to complete the sentence and clarify the subject.",
+                    "context": "We were discussing the missing elements in the sentences. I think the word is no. It seems like there's a lack of clarity in the expression."
+                },
+                {
+                    "original": "Will make.",
+                    "corrected": "We will make.",
+                    "explanation": "The subject 'we' is missing, making the sentence incomplete.",
+                    "context": "When discussing future tense, we need to specify the subject. We will make it a future tense. This helps clarify who is performing the action."
+                },
+                {
+                    "original": "It is approaches.",
+                    "corrected": "It approaches.",
+                    "explanation": "The verb 'is' is unnecessary and incorrect in this context; 'approaches' should stand alone.",
+                    "context": "In our discussion about tenses, I mentioned how certain verbs function. It approaches the topic of grammar. This helps in understanding the concept better."
+                },
+                {
+                    "original": "If it's present simple, is it the way we do present simple?",
+                    "corrected": "If it's present simple, is that how we use present simple?",
+                    "explanation": "The phrase 'the way we do' is awkward; 'how we use' is more idiomatic.",
+                    "context": "We were clarifying the rules of present simple tense. If it's present simple, is that how we use present simple? This ensures we're on the same page."
+                },
+                {
+                    "original": "I think that what the tense that you wanted to use here is present perfect.",
+                    "corrected": "I think the tense you wanted to use here is present perfect.",
+                    "explanation": "The phrase 'that what the tense that' is redundant; it can be simplified.",
+                    "context": "While analyzing the sentence structure, I realized there was confusion about tenses. I think the tense you wanted to use here is present perfect. This helps clarify the point."
+                },
+                {
+                    "original": "But I don't know how to use it.",
+                    "corrected": "But I don't know how to use the present perfect.",
+                    "explanation": "The sentence lacks specificity; adding 'the present perfect' clarifies what is being referred to.",
+                    "context": "We were discussing the challenges of using different tenses. But I don't know how to use the present perfect. This highlights my struggle with that tense."
+                },
+                {
+                    "original": "The thing is, you don't really know them if you don't know how to spell them correctly.",
+                    "corrected": "The thing is, you don't really know them if you can't spell them correctly.",
+                    "explanation": "Using 'can't' is more idiomatic and conveys inability more clearly than 'don't know how to spell.'",
+                    "context": "I was emphasizing the importance of spelling in language proficiency. The thing is, you don't really know them if you can't spell them correctly. This shows the connection between knowledge and application."
+                },
+                {
+                    "original": "The only thing the examiner is thinking, okay, I'm reading something, does that help me understand the main idea?",
+                    "corrected": "The only thing the examiner is thinking is, okay, I'm reading something; does that help me understand the main idea?",
+                    "explanation": "The sentence is missing 'is' after 'thinking,' and a semicolon is needed for clarity.",
+                    "context": "I was explaining what examiners look for in writing. The only thing the examiner is thinking is, okay, I'm reading something; does that help me understand the main idea? This captures the examiner's perspective."
+                },
+                {
+                    "original": "If they cannot find grammatical mistakes, if every sentence sounds easy, understandable, they will think that that's actually what they're looking for.",
+                    "corrected": "If they cannot find grammatical mistakes, and if every sentence sounds easy and understandable, they will think that’s actually what they’re looking for.",
+                    "explanation": "The sentence lacks conjunctions for clarity; 'and' should be used to connect similar ideas.",
+                    "context": "I was discussing how to achieve a high score in writing. If they cannot find grammatical mistakes, and if every sentence sounds easy and understandable, they will think that’s actually what they’re looking for. This emphasizes the importance of clarity."
+                },
+                {
+                    "original": "So your home task, first, read the material on Present Perfect Paths sample that I sent you.",
+                    "corrected": "So your homework is, first, to read the material on Present Perfect and Past Simple that I sent you.",
+                    "explanation": "The phrase 'home task' is less common; 'homework' is more idiomatic. Additionally, 'to' is needed before the verb 'read.'",
+                    "context": "I was assigning tasks for the next lesson. So your homework is, first, to read the material on Present Perfect and Past Simple that I sent you. This sets clear expectations."
+                },
+                {
+                    "original": "And again, you already know how to generate good relevant ideas.",
+                    "corrected": "And again, you already know how to generate good, relevant ideas.",
+                    "explanation": "A comma is needed to separate adjectives that describe the same noun.",
+                    "context": "I was encouraging the student about their writing skills. And again, you already know how to generate good, relevant ideas. This reinforces their strengths."
+                },
+                {
+                    "original": "When we started analyzing it sentence by sentence, it was you who found the mistakes, the obvious mistakes that you made.",
+                    "corrected": "When we started analyzing it sentence by sentence, you were the one who found the mistakes, the obvious mistakes you made.",
+                    "explanation": "The phrase 'it was you who' can be simplified to 'you were the one who' for clarity.",
+                    "context": "I was reflecting on the student's progress during the lesson. When we started analyzing it sentence by sentence, you were the one who found the mistakes, the obvious mistakes you made. This highlights their active participation."
+                },
+                {
+                    "original": "And like, sometimes it's very obvious sometimes.",
+                    "corrected": "And sometimes it's very obvious.",
+                    "explanation": "The word 'like' is unnecessary and makes the sentence awkward; it can be omitted.",
+                    "context": "I was discussing the clarity of certain mistakes. And sometimes it's very obvious. This emphasizes the ease of identifying those errors."
+                },
+                {
+                    "original": "Just write like paintings that Child GPT draws look very similar to those.",
+                    "corrected": "Just write that the paintings Child GPT draws look very similar to those.",
+                    "explanation": "The word 'like' is incorrectly used; 'that' is more appropriate to introduce the clause.",
+                    "context": "I was advising on how to simplify writing. Just write that the paintings Child GPT draws look very similar to those. This makes the sentence clearer."
+                },
+                {
+                    "original": "Yeah, that's it.",
+                    "corrected": "Yeah, that's it!",
+                    "explanation": "An exclamation mark can be used for emphasis in informal speech.",
+                    "context": "After clarifying a point, I wanted to express satisfaction. Yeah, that's it! This conveys a sense of completion."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Connection",
+                    "definition": "A relationship or link between two or more things.",
+                    "context": {
+                        "Context 1": "I had an issue with the connection during the conference call.",
+                        "Context 2": "The connection between the two friends grew stronger over the years.",
+                        "Context 3": "In a game of chess, the connection between pieces can determine the outcome."
+                    }
+                },
+                {
+                    "word": "Revise",
+                    "definition": "To review and make changes to something in order to improve it.",
+                    "context": {
+                        "Context 1": "Let's revise your essay sentence by sentence.",
+                        "Context 2": "I need to revise my plans for the weekend after hearing the weather forecast.",
+                        "Context 3": "The teacher asked the students to revise their math homework before submitting it."
+                    }
+                },
+                {
+                    "word": "Awkward",
+                    "definition": "Causing difficulty; hard to deal with; uncomfortable.",
+                    "context": {
+                        "Context 1": "Some phrases in your essay sound awkward.",
+                        "Context 2": "He felt awkward when he tripped in front of everyone at the party.",
+                        "Context 3": "The awkward silence after the joke fell flat was palpable."
+                    }
+                },
+                {
+                    "word": "Paraphrase",
+                    "definition": "To express the meaning of something using different words.",
+                    "context": {
+                        "Context 1": "You paraphrased the original sentence well.",
+                        "Context 2": "In a summary, it's important to paraphrase the main ideas.",
+                        "Context 3": "She had to paraphrase the poem for her literature class."
+                    }
+                },
+                {
+                    "word": "Natural",
+                    "definition": "Existing in or caused by nature; not made or caused by humankind.",
+                    "context": {
+                        "Context 1": "Using a more natural expression can improve your writing.",
+                        "Context 2": "The natural beauty of the landscape took my breath away.",
+                        "Context 3": "He prefers natural remedies over pharmaceutical drugs."
+                    }
+                },
+                {
+                    "word": "Structure",
+                    "definition": "The arrangement of and relations between the parts or elements of something complex.",
+                    "context": {
+                        "Context 1": "Do you like the structure of the sentence?",
+                        "Context 2": "The structure of the building was designed to withstand earthquakes.",
+                        "Context 3": "In biology, the structure of DNA is crucial for understanding genetics."
+                    }
+                },
+                {
+                    "word": "Linking word",
+                    "definition": "A word or phrase that connects ideas or sentences.",
+                    "context": {
+                        "Context 1": "We need to find a linking word for the sentence.",
+                        "Context 2": "In writing, linking words help to create a smooth flow of ideas.",
+                        "Context 3": "The linking word 'however' indicates a contrast between two statements."
+                    }
+                },
+                {
+                    "word": "Synonym",
+                    "definition": "A word that has the same or nearly the same meaning as another word.",
+                    "context": {
+                        "Context 1": "What is a synonym for the word 'and'?",
+                        "Context 2": "In English, 'happy' is a synonym for 'joyful'.",
+                        "Context 3": "Using synonyms can enhance your vocabulary and writing style."
+                    }
+                },
+                {
+                    "word": "Grammar",
+                    "definition": "The system and structure of a language, including rules of syntax and morphology.",
+                    "context": {
+                        "Context 1": "I sent you all the rules of grammar.",
+                        "Context 2": "Good grammar is essential for clear communication.",
+                        "Context 3": "He studied grammar to improve his writing skills."
+                    }
+                },
+                {
+                    "word": "Present simple",
+                    "definition": "A verb tense used to describe habits, unchanging situations, general truths, and fixed arrangements.",
+                    "context": {
+                        "Context 1": "We write in the present simple tense for facts.",
+                        "Context 2": "In the present simple, we say 'he runs' instead of 'he run'.",
+                        "Context 3": "The present simple is often used in recipes to give instructions."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Awkward",
+                    "fact": "The word 'awkward' is often used to describe situations, but it also has a unique spelling that can make it feel awkward to write!"
+                },
+                {
+                    "word": "Grammar",
+                    "fact": "Did you know that the longest sentence in the English language is over 1,200 words long? It was written by a famous author and is a great example of grammar gone wild!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the grammar teacher break up with the punctuation teacher?",
+                    "answer": "Because they just couldn't find common ground!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Independent Clause",
+                    "definition": "A group of words that can stand alone as a sentence, containing a subject and a verb.",
+                    "context": {
+                        "Context 1": "The sentence 'She enjoys reading' is an independent clause because it has both a subject and a verb.",
+                        "Context 2": "In the sentence 'Although it was raining, we went for a walk,' the first part is not an independent clause.",
+                        "Context 3": "An independent clause can be combined with other clauses to form complex sentences."
+                    }
+                },
+                {
+                    "word": "Dependent Clause",
+                    "definition": "A group of words that cannot stand alone as a sentence and relies on an independent clause.",
+                    "context": {
+                        "Context 1": "The phrase 'because it was raining' is a dependent clause and needs an independent clause to make sense.",
+                        "Context 2": "When I finish my homework is a dependent clause that requires more information.",
+                        "Context 3": "Dependent clauses often begin with words like 'although' or 'if.'"
+                    }
+                },
+                {
+                    "word": "Cohesion",
+                    "definition": "The quality of being logically connected and consistent in writing.",
+                    "context": {
+                        "Context 1": "Using transition words can improve the cohesion of your essay.",
+                        "Context 2": "The cohesion of the team was evident during the project presentation.",
+                        "Context 3": "A well-structured recipe has cohesion, making it easy to follow."
+                    }
+                },
+                {
+                    "word": "Phrasing",
+                    "definition": "The way in which words are arranged to express an idea.",
+                    "context": {
+                        "Context 1": "The phrasing of her argument made it more persuasive.",
+                        "Context 2": "He struggled with the phrasing of his speech, wanting it to sound just right.",
+                        "Context 3": "The song's phrasing gives it a unique rhythm."
+                    }
+                },
+                {
+                    "word": "Paraphrase",
+                    "definition": "To restate something using different words, often to clarify meaning.",
+                    "context": {
+                        "Context 1": "When you paraphrase, you should maintain the original meaning while changing the wording.",
+                        "Context 2": "He decided to paraphrase the article to make it easier for his classmates to understand.",
+                        "Context 3": "Paraphrasing a joke can sometimes make it funnier!"
+                    }
+                },
+                {
+                    "word": "Subject-Verb Agreement",
+                    "definition": "The grammatical rule that the subject and verb in a sentence must agree in number.",
+                    "context": {
+                        "Context 1": "In the sentence 'The dog barks,' the subject 'dog' and the verb 'barks' agree in number.",
+                        "Context 2": "Subject-verb agreement can be tricky when using collective nouns.",
+                        "Context 3": "In Spanish, subject-verb agreement is more complex due to gendered nouns."
+                    }
+                },
+                {
+                    "word": "Artificial Intelligence",
+                    "definition": "The simulation of human intelligence processes by machines, especially computer systems.",
+                    "context": {
+                        "Context 1": "Artificial intelligence is transforming industries by automating tasks.",
+                        "Context 2": "Some people worry that artificial intelligence could take over jobs.",
+                        "Context 3": "Artificial intelligence can help create personalized learning experiences."
+                    }
+                },
+                {
+                    "word": "Creative Thinking",
+                    "definition": "The ability to think in new and original ways to solve problems.",
+                    "context": {
+                        "Context 1": "Creative thinking is essential for innovation in technology.",
+                        "Context 2": "She used creative thinking to come up with a unique solution to the issue.",
+                        "Context 3": "Creative thinking can also be applied in cooking, leading to delicious new recipes."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude or way of considering something.",
+                    "context": {
+                        "Context 1": "Her perspective on the issue changed after she learned more about it.",
+                        "Context 2": "The artist's perspective is reflected in their unique style.",
+                        "Context 3": "From a historical perspective, the event had significant implications."
+                    }
+                },
+                {
+                    "word": "Updates",
+                    "definition": "New information or changes that are provided to keep something current.",
+                    "context": {
+                        "Context 1": "The software updates improved the program's performance.",
+                        "Context 2": "He received updates about the weather throughout the day.",
+                        "Context 3": "The updates on the project were shared during the team meeting."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Artificial Intelligence",
+                    "fact": "Did you know that AI once wrote a short story that was so good, it was almost published?"
+                },
+                {
+                    "word": "Perspective",
+                    "fact": "The word 'perspective' comes from the Latin 'perspectivus,' which means 'to look through.' So, in a way, we all have our own 'looking-through' lenses!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the grammar teacher break up with the punctuation teacher?",
+                    "answer": "Because they couldn't find common ground!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Imitate",
+                    "definition": "To copy or mimic someone or something.",
+                    "context": {
+                        "Context 1": "The actor can imitate famous personalities very well.",
+                        "Context 2": "Children often imitate their parents' behaviors.",
+                        "Context 3": "The parrot can imitate the sound of a ringing phone."
+                    }
+                },
+                {
+                    "word": "Maneuver",
+                    "definition": "To move skillfully or carefully.",
+                    "context": {
+                        "Context 1": "The artist had to maneuver the brush delicately to create fine details.",
+                        "Context 2": "He had to maneuver through the crowded streets to reach his destination.",
+                        "Context 3": "The cat tried to maneuver itself into a comfortable sleeping position."
+                    }
+                },
+                {
+                    "word": "Artificial Intelligence",
+                    "definition": "The simulation of human intelligence processes by machines, especially computer systems.",
+                    "context": {
+                        "Context 1": "Artificial intelligence can analyze data faster than humans.",
+                        "Context 2": "Some people worry that artificial intelligence will take over jobs.",
+                        "Context 3": "Artificial intelligence is often used in video games to create realistic characters."
+                    }
+                },
+                {
+                    "word": "Comparison",
+                    "definition": "The act of comparing two or more things.",
+                    "context": {
+                        "Context 1": "The comparison between the two paintings revealed their unique styles.",
+                        "Context 2": "In her essay, she made a comparison between summer and winter.",
+                        "Context 3": "The comparison of prices helped him find the best deal."
+                    }
+                },
+                {
+                    "word": "Coherence",
+                    "definition": "The quality of being logical and consistent.",
+                    "context": {
+                        "Context 1": "The coherence of her argument made it very convincing.",
+                        "Context 2": "The coherence of the story was lost due to poor editing.",
+                        "Context 3": "In mathematics, coherence is important for proving theorems."
+                    }
+                },
+                {
+                    "word": "Lexical",
+                    "definition": "Relating to the words or vocabulary of a language.",
+                    "context": {
+                        "Context 1": "Her lexical choices in the essay were impressive.",
+                        "Context 2": "The lexical analysis of the text revealed its complexity.",
+                        "Context 3": "Lexical items can change meaning based on context."
+                    }
+                },
+                {
+                    "word": "Grammatical",
+                    "definition": "Relating to the rules of grammar.",
+                    "context": {
+                        "Context 1": "He made a grammatical error in his sentence structure.",
+                        "Context 2": "Grammatical rules can vary between languages.",
+                        "Context 3": "Understanding grammatical concepts is essential for language learners."
+                    }
+                },
+                {
+                    "word": "Casual",
+                    "definition": "Relaxed and unconcerned; informal.",
+                    "context": {
+                        "Context 1": "Her casual tone made the conversation feel friendly.",
+                        "Context 2": "He wore casual clothes to the party.",
+                        "Context 3": "Casual Friday at work allows employees to dress down."
+                    }
+                },
+                {
+                    "word": "Obvious",
+                    "definition": "Easily perceived or understood; clear.",
+                    "context": {
+                        "Context 1": "It was obvious that she was excited about the news.",
+                        "Context 2": "The obvious choice for the role was the most experienced candidate.",
+                        "Context 3": "The obvious solution to the puzzle was overlooked."
+                    }
+                },
+                {
+                    "word": "Complex",
+                    "definition": "Consisting of many different and connected parts; complicated.",
+                    "context": {
+                        "Context 1": "The complex design of the machine required expert knowledge.",
+                        "Context 2": "Understanding complex emotions can be challenging.",
+                        "Context 3": "The complex math problem took hours to solve."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Imitate",
+                    "fact": "Did you know that some animals, like dolphins, can imitate human sounds? They might just be trying to join the conversation!"
+                },
+                {
+                    "word": "Artificial Intelligence",
+                    "fact": "Artificial Intelligence can now create art, but it still can't figure out why humans put pineapple on pizza!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the artist break up with their partner?",
+                    "answer": "Because they just couldn't find common ground!"
+                },
+                {
+                    "question": "Why did the computer go to art school?",
+                    "answer": "Because it wanted to learn how to draw better algorithms!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Tense",
+                    "definition": "A grammatical category that locates a situation in time, indicating when an action occurs.",
+                    "context": {
+                        "Context 1": "In English, we have several tenses, including past, present, and future.",
+                        "Context 2": "The tense of the verb changes depending on whether the action is ongoing or completed.",
+                        "Context 3": "When writing a story, it's important to maintain the same tense throughout."
+                    }
+                },
+                {
+                    "word": "Grammatical",
+                    "definition": "Relating to the rules and structure of a language.",
+                    "context": {
+                        "Context 1": "Grammatical mistakes can lower your score on language assessments.",
+                        "Context 2": "She has a strong grammatical understanding of French, which helps her teach it.",
+                        "Context 3": "The grammatical structure of ancient Greek is quite complex."
+                    }
+                },
+                {
+                    "word": "Correct",
+                    "definition": "Free from error; in accordance with fact or truth.",
+                    "context": {
+                        "Context 1": "It’s important to ensure your sentences are grammatically correct.",
+                        "Context 2": "The teacher asked the students to correct their homework before submitting it.",
+                        "Context 3": "He always tries to correct his friends when they make jokes about history."
+                    }
+                },
+                {
+                    "word": "Simplify",
+                    "definition": "To make something easier to understand or do.",
+                    "context": {
+                        "Context 1": "If you simplify your sentences, it may help avoid grammatical mistakes.",
+                        "Context 2": "The scientist tried to simplify the complex theory for the general public.",
+                        "Context 3": "To simplify the recipe, she decided to use fewer ingredients."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Understanding the artist's perspective can enhance your appreciation of the artwork.",
+                        "Context 2": "From her perspective, the project was a success despite the challenges.",
+                        "Context 3": "His perspective on life changed after traveling to different countries."
+                    }
+                },
+                {
+                    "word": "Mistake",
+                    "definition": "An action or judgment that is misguided or wrong.",
+                    "context": {
+                        "Context 1": "Making mistakes is a natural part of the learning process.",
+                        "Context 2": "He realized his mistake when he saw the incorrect answer on the test.",
+                        "Context 3": "The chef made a mistake by adding salt instead of sugar to the dessert."
+                    }
+                },
+                {
+                    "word": "Essay",
+                    "definition": "A short piece of writing on a particular subject.",
+                    "context": {
+                        "Context 1": "The assignment requires you to write an essay on remote work.",
+                        "Context 2": "She spent hours researching for her essay on climate change.",
+                        "Context 3": "His essay on the benefits of exercise won first place in the competition."
+                    }
+                },
+                {
+                    "word": "Score",
+                    "definition": "A number or letter indicating the quality of a student's work.",
+                    "context": {
+                        "Context 1": "Your score can improve if you avoid grammatical errors.",
+                        "Context 2": "He was thrilled to receive a high score on his math test.",
+                        "Context 3": "The final score of the game was 3-2, with the home team winning."
+                    }
+                },
+                {
+                    "word": "Understandable",
+                    "definition": "Able to be understood; clear and comprehensible.",
+                    "context": {
+                        "Context 1": "Using simpler words makes your writing more understandable.",
+                        "Context 2": "The instructions were clear and understandable, making the task easier.",
+                        "Context 3": "Her understandable explanation helped the students grasp the concept."
+                    }
+                },
+                {
+                    "word": "Relevant",
+                    "definition": "Closely connected or appropriate to what is being done or considered.",
+                    "context": {
+                        "Context 1": "Make sure your ideas are relevant to the essay topic.",
+                        "Context 2": "The speaker provided relevant examples to support her argument.",
+                        "Context 3": "He found a relevant article that discussed the same issue he was facing."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Tense",
+                    "fact": "Did you know that the word 'tense' comes from the Latin 'tempus,' meaning time? So, in a way, tenses are all about time travel!"
+                },
+                {
+                    "word": "Perspective",
+                    "fact": "In art, perspective can create an illusion of depth. So, if your drawing looks flat, just say you were going for a 'minimalist perspective'!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the grammar teacher break up with the punctuation teacher?",
+                    "answer": "Because she found him too possessive!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going today?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to shake off this stomachache. How about you?"
+                },
+                {
+                    "Person 1": "Oh no, I hope you feel better soon! I’m doing alright, just busy with work."
+                },
+                {
+                    "Person 2": "Thanks! I’ve been trying to keep up with everything, but it’s a bit overwhelming."
+                },
+                {
+                    "Person 1": "I get that. Did you finish that essay you were working on?"
+                },
+                {
+                    "Person 2": "I did! But I’m not sure if I changed everything I was supposed to."
+                },
+                {
+                    "Person 1": "No worries! Want to go over it together? Sometimes a second pair of eyes helps."
+                },
+                {
+                    "Person 2": "That would be great! I just want to make sure it sounds natural."
+                },
+                {
+                    "Person 1": "Absolutely! Let’s start with the first sentence. What did you write?"
+                },
+                {
+                    "Person 2": "I wrote, 'Robots will take over human workplaces in the future.'"
+                },
+                {
+                    "Person 1": "That’s a solid start! But maybe we can tweak it a little for flow?"
+                },
+                {
+                    "Person 2": "Yeah, I thought 'human workplaces' sounded a bit off. What do you think?"
+                },
+                {
+                    "Person 1": "How about just saying 'jobs'? It keeps it simple."
+                },
+                {
+                    "Person 2": "Good idea! I’ll change that. I just don’t want to repeat too much."
+                },
+                {
+                    "Person 1": "Repetition isn’t bad, though! It’s better than using a word you’re unsure about."
+                },
+                {
+                    "Person 2": "True! I just want it to flow nicely."
+                },
+                {
+                    "Person 1": "Let’s keep working through it. We’ll make it sound great!"
+                },
+                {
+                    "Person 2": "Thanks for helping me out! I really appreciate it."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh, totally! What a finish! I can't believe they scored in the last minute."
+                },
+                {
+                    "Person 1": "Right? I was on the edge of my seat! I thought they were done for."
+                },
+                {
+                    "Person 2": "Same here! And that last play was just insane. Did you see the quarterback's throw?"
+                },
+                {
+                    "Person 1": "Yeah, it was perfect! He really pulled through under pressure."
+                },
+                {
+                    "Person 2": "For sure! I love when games get that intense. Makes it all worth watching."
+                },
+                {
+                    "Person 1": "Absolutely! So, are you planning to watch the playoffs?"
+                },
+                {
+                    "Person 2": "Definitely! I’ve got my snacks ready for the next game. You coming over?"
+                },
+                {
+                    "Person 1": "Count me in! I’ll bring the drinks."
+                },
+                {
+                    "Person 2": "Awesome! It’s going to be a blast. Can’t wait!"
+                },
+                {
+                    "Person 1": "Me neither! Let’s hope for another thrilling game."
+                },
+                {
+                    "Person 2": "Fingers crossed! See you then!"
+                },
+                {
+                    "Person 1": "See you!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you see that new art exhibit downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I heard about it! They say the paintings look like they were done by famous artists."
+                },
+                {
+                    "Person 1": "Exactly! I think it’s amazing how artificial intelligence can create art that resembles human artists."
+                },
+                {
+                    "Person 2": "Right? It’s like the AI is learning from their styles and techniques."
+                },
+                {
+                    "Person 1": "Totally! I wonder if it can ever really capture the emotion that a human artist puts into their work."
+                },
+                {
+                    "Person 2": "That’s a good point. I mean, art is so personal. Can a machine really understand that?"
+                },
+                {
+                    "Person 1": "I guess it can mimic styles, but the heart behind the art is something different."
+                },
+                {
+                    "Person 2": "Yeah, I think so. But it’s still cool to see what it can do. Have you tried any AI art generators?"
+                },
+                {
+                    "Person 1": "I did! I made a picture of a sunset over the ocean. It turned out pretty nice!"
+                },
+                {
+                    "Person 2": "Nice! I should give it a shot. Maybe I can create something for my living room."
+                },
+                {
+                    "Person 1": "For sure! Just remember to add your own twist to it."
+                },
+                {
+                    "Person 2": "Definitely! I’ll make it unique. Let’s go check out that exhibit together!"
+                },
+                {
+                    "Person 1": "Sounds like a plan! I can’t wait to see the AI art in person."
+                },
+                {
+                    "Person 2": "Me too! It’ll be fun to compare it with the real stuff."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a finish, right? I thought they were done for!"
+                },
+                {
+                    "Person 1": "I know! I was on the edge of my seat. That last-minute touchdown was insane!"
+                },
+                {
+                    "Person 2": "Totally! I couldn't believe they pulled it off. Did you see the quarterback's reaction?"
+                },
+                {
+                    "Person 1": "Yes! He looked like he was in shock. It’s moments like that that make sports so exciting."
+                },
+                {
+                    "Person 2": "For sure! I love how unpredictable it can be. What do you think about the next game?"
+                },
+                {
+                    "Person 1": "I think they have a good shot if they keep playing like that. But they need to work on their defense."
+                },
+                {
+                    "Person 2": "Agreed! If they tighten up their defense, they could go far this season."
+                },
+                {
+                    "Person 1": "Exactly! So, are we watching the next game together?"
+                },
+                {
+                    "Person 2": "Absolutely! I’ll bring the snacks!"
+                },
+                {
+                    "Person 1": "Perfect! I’ll bring the drinks. It’s going to be a blast!"
+                },
+                {
+                    "Person 2": "Can’t wait! It’ll be nice to hang out and cheer for our team."
+                },
+                {
+                    "Person 1": "For sure! Let’s hope they give us another game to remember."
+                },
+                {
+                    "Person 2": "Definitely! See you then!"
+                },
+                {
+                    "Person 1": "See you!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
