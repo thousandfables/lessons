@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I was growing my dog everything what I what I could to say everything is about my dog.",
+                    "corrected": "I was grooming my dog; everything I could say is about my dog.",
+                    "explanation": "The term 'growing' is incorrect; 'grooming' is the appropriate term for caring for a dog. Additionally, the sentence structure is awkward.",
+                    "context": "I spend a lot of time taking care of my dog. I was grooming my dog; everything I could say is about my dog. It's a big part of my daily routine."
+                },
+                {
+                    "original": "I had to pick it to pick up your shirt.",
+                    "corrected": "I had to pick up your shirt.",
+                    "explanation": "The phrase 'pick it to pick up' is redundant; 'pick up' is sufficient.",
+                    "context": "I was helping out with some chores. I had to pick up your shirt. It was lying on the floor."
+                },
+                {
+                    "original": "I think that she took a decision to give another life in the garbage of my black clothes.",
+                    "corrected": "I think she decided to give my black clothes another life in the garbage.",
+                    "explanation": "The phrase 'took a decision' is awkward; 'decided' is more natural. The sentence structure also needed adjustment.",
+                    "context": "I was frustrated with my dog's behavior. I think she decided to give my black clothes another life in the garbage. It was quite a mess."
+                },
+                {
+                    "original": "It's not here it's a new prepare improve the test before improving the taste of the of your dish.",
+                    "corrected": "It's not here; it's a new way to improve the taste of your dish before serving.",
+                    "explanation": "The original sentence is confusing and lacks clarity. It needs proper punctuation and restructuring for better understanding.",
+                    "context": "We were discussing cooking techniques. It's not here; it's a new way to improve the taste of your dish before serving. I learned it from a cooking show."
+                },
+                {
+                    "original": "I asked my friends yesterday do you like a bumpy bump bump.",
+                    "corrected": "I asked my friends yesterday if they liked bumpy bump bump.",
+                    "explanation": "The original sentence lacks proper question structure; 'if' should be used to introduce indirect questions.",
+                    "context": "I was curious about my friends' preferences. I asked my friends yesterday if they liked bumpy bump bump. It was a fun topic to discuss."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "my speech which first point you get a chicken and cut cut cut the head of this chicken",
+                    "corrected": "My speech, which is about the first point, is to get a chicken and cut the head off.",
+                    "explanation": "The original sentence lacks proper punctuation and structure. 'Cut cut cut' is redundant, and 'cut the head of this chicken' should be 'cut the head off.'",
+                    "context": "I'm trying to explain the first step in my cooking process. My speech, which is about the first point, is to get a chicken and cut the head off. This is part of a ritual."
+                },
+                {
+                    "original": "like the chicken blood you can use in this ritual and like pumpkin and on Halloween for you maybe interesting",
+                    "corrected": "You can use the chicken's blood in this ritual, along with pumpkin, which might be interesting for you on Halloween.",
+                    "explanation": "The original sentence is awkwardly structured and lacks clarity. It should be rephrased for better flow.",
+                    "context": "I'm discussing the ingredients needed for the ritual. You can use the chicken's blood in this ritual, along with pumpkin, which might be interesting for you on Halloween. It adds a unique element to the experience."
+                },
+                {
+                    "original": "and the mix bueno butter not butter well boiled butter maybe",
+                    "corrected": "and the mix of melted butter, not boiled butter, maybe.",
+                    "explanation": "The phrase 'bueno butter' is incorrect; it should be 'melted butter.' The structure also needs clarification.",
+                    "context": "I'm explaining how to prepare the ingredients. I need to mix melted butter, not boiled butter, maybe. This will enhance the flavor of the dish."
+                },
+                {
+                    "original": "I both already substance with the matter you have a piece of butter",
+                    "corrected": "I have already prepared the substance with the butter.",
+                    "explanation": "The original sentence is confusing and contains grammatical errors. It should be simplified for clarity.",
+                    "context": "I'm describing the preparation process. I have already prepared the substance with the butter. This is an important step in the recipe."
+                },
+                {
+                    "original": "and when you're talking with the onion gives will give a good smell and change the color of this substance butter",
+                    "corrected": "When you cook the onion, it will give a good smell and change the color of the butter.",
+                    "explanation": "The original sentence is awkwardly phrased and contains grammatical errors. It should be restructured for clarity.",
+                    "context": "I'm explaining the cooking process. When you cook the onion, it will give a good smell and change the color of the butter. This is a key part of the recipe."
+                },
+                {
+                    "original": "the water must be not critical vegetables okay to cover water to cover vegetables",
+                    "corrected": "The water must not be critical; it should cover the vegetables.",
+                    "explanation": "The original sentence is confusing and contains grammatical errors. It should be clarified and restructured.",
+                    "context": "I'm discussing the cooking method. The water must not be critical; it should cover the vegetables. This ensures they cook properly."
+                },
+                {
+                    "original": "you we need a blender under under water this electronic device to put it and crash big pieces to micro pieces",
+                    "corrected": "We need a blender, this electronic device, to blend the big pieces into micro pieces.",
+                    "explanation": "The original sentence is confusing and contains repetition. It should be simplified for clarity.",
+                    "context": "I'm explaining the next step in the recipe. We need a blender, this electronic device, to blend the big pieces into micro pieces. This will create a smooth texture."
+                },
+                {
+                    "original": "I could I could not drink more than two sips two sips it okay that's not my cup of tea",
+                    "corrected": "I could not drink more than two sips; that's not my cup of tea.",
+                    "explanation": "The original sentence is repetitive and lacks proper punctuation. It should be streamlined for clarity.",
+                    "context": "I'm sharing my experience with a smoothie. I could not drink more than two sips; that's not my cup of tea. I prefer simpler flavors."
+                },
+                {
+                    "original": "I don't have the big devices like traditional blender like in American films oh every everybody have but I don't have",
+                    "corrected": "I don't have big devices like a traditional blender, like in American films. Everyone has one, but I don't.",
+                    "explanation": "The original sentence is awkwardly structured and contains redundancy. It should be rephrased for clarity.",
+                    "context": "I'm discussing kitchen equipment. I don't have big devices like a traditional blender, like in American films. Everyone has one, but I don't."
+                },
+                {
+                    "original": "and I think it's could be better and when we are working big pieces of in this substance",
+                    "corrected": "I think it could be better when we work with the big pieces in this substance.",
+                    "explanation": "The original sentence contains grammatical errors and awkward phrasing. It should be restructured for clarity.",
+                    "context": "I'm reflecting on the cooking process. I think it could be better when we work with the big pieces in this substance. This will improve the final dish."
+                },
+                {
+                    "original": "and my family told me say to me and we are we don't want to eat your dishes because it's not understandable for us suspicious suspicious suspicious for us",
+                    "corrected": "My family told me they don't want to eat my dishes because they find them suspicious.",
+                    "explanation": "The original sentence is overly repetitive and lacks clarity. It should be streamlined for better understanding.",
+                    "context": "I'm sharing my family's reaction to my cooking. My family told me they don't want to eat my dishes because they find them suspicious. This has made me hesitant to cook for them."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "she she understand it",
+                    "corrected": "she understood it",
+                    "explanation": "The verb 'understand' should be in the past tense 'understood' to match the context.",
+                    "context": "In our conversation, I mentioned how my friend didn't grasp the cooking techniques. She understood it, but she still had some confusion about the details."
+                },
+                {
+                    "original": "plan to don't tasty eat",
+                    "corrected": "plan to not eat tasty food",
+                    "explanation": "'Don't tasty eat' is incorrect; it should be 'not eat tasty food' to convey the intended meaning.",
+                    "context": "We were discussing dietary choices. She has a plan to not eat tasty food, which is quite challenging for her."
+                },
+                {
+                    "original": "my mommy tasty and eating",
+                    "corrected": "my mommy tastes and eats",
+                    "explanation": "'Tasty and eating' is incorrect; it should be 'tastes and eats' to describe her actions.",
+                    "context": "I was sharing how my mother reacts to food. When I make something new, if the smell is great, my mommy tastes and eats it."
+                },
+                {
+                    "original": "I suffering I I I could cooking and suffering",
+                    "corrected": "I suffer when I cook and feel like I'm suffering",
+                    "explanation": "The phrase lacks proper verb forms; it should be 'I suffer' to express the ongoing action.",
+                    "context": "I was expressing my feelings about cooking. I suffer when I cook and feel like I'm suffering if it becomes a routine task."
+                },
+                {
+                    "original": "my dishes is not good",
+                    "corrected": "my dishes are not good",
+                    "explanation": "'Is' should be 'are' because 'dishes' is plural.",
+                    "context": "I talked about my cooking skills. Usually, if I don't have inspiration, my dishes are not good."
+                },
+                {
+                    "original": "I burned a master I produced great master master piece",
+                    "corrected": "I created a masterpiece",
+                    "explanation": "The phrase is unclear; 'burned a master' is not idiomatic. It should be 'created a masterpiece.'",
+                    "context": "I was discussing my cooking successes. When I want to cook quickly, I create a masterpiece."
+                },
+                {
+                    "original": "she did not have a very much experience speaking",
+                    "corrected": "she did not have much experience speaking",
+                    "explanation": "'A very much experience' is incorrect; it should be 'much experience' for proper phrasing.",
+                    "context": "I was describing a student's speaking skills. She did not have much experience speaking because she lacked practice partners."
+                },
+                {
+                    "original": "it's not clear what they mean",
+                    "corrected": "it's not clear what they are saying",
+                    "explanation": "The phrase 'what they mean' is vague; 'what they are saying' is clearer in this context.",
+                    "context": "I was comparing writing and speaking skills. When you speak with some people, it's not clear what they are saying."
+                },
+                {
+                    "original": "they don't usually like pumpkin",
+                    "corrected": "they usually don't like pumpkin",
+                    "explanation": "The adverb 'usually' should precede 'don't' for correct word order.",
+                    "context": "I was discussing people's preferences. They usually don't like pumpkin, which is interesting."
+                },
+                {
+                    "original": "it looks like it should be pronounced onion",
+                    "corrected": "it looks like it should be pronounced 'onion'",
+                    "explanation": "Quotation marks are needed around 'onion' to indicate it's a pronunciation example.",
+                    "context": "I was explaining how words can be misleading. It looks like it should be pronounced 'onion,' but pronunciation can be tricky."
+                },
+                {
+                    "original": "I told I told her the word broth",
+                    "corrected": "I told her the word 'broth'",
+                    "explanation": "Repetition is unnecessary; it should be simplified to 'I told her the word 'broth.'",
+                    "context": "I recalled teaching a student cooking vocabulary. I told her the word 'broth,' which is essential in cooking."
+                },
+                {
+                    "original": "our long-term memory does not work the same way our short-term memory works",
+                    "corrected": "our long-term memory does not work the same way that our short-term memory does",
+                    "explanation": "The sentence lacks clarity; 'that' should be included for proper comparison.",
+                    "context": "I was reflecting on memory. Our long-term memory does not work the same way that our short-term memory does."
+                },
+                {
+                    "original": "I prefer I I want to look which I I like what you the short video",
+                    "corrected": "I prefer to watch short videos",
+                    "explanation": "The sentence is overly complicated and repetitive; it should be simplified.",
+                    "context": "I was sharing my viewing preferences. I prefer to watch short videos on Instagram about healthy cooking."
+                },
+                {
+                    "original": "the lead of this show appearing was was appearing kindly",
+                    "corrected": "the host of this show appeared kindly",
+                    "explanation": "The phrase is awkward and repetitive; it should be simplified to 'the host of this show appeared kindly.'",
+                    "context": "I was reminiscing about a cooking show. The host of this show appeared kindly and was genuinely interested in the guests."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "that's very you know once you start watching that you can't you can't stop it absorbs you",
+                    "corrected": "that's very interesting; once you start watching that, you can't stop; it absorbs you.",
+                    "explanation": "The phrase 'that's very you know' is informal and unclear. It should be 'that's very interesting' for clarity. Additionally, punctuation is needed to separate independent clauses.",
+                    "context": "I was discussing how engaging Western cooking shows can be. That's very interesting; once you start watching that, you can't stop; it absorbs you. The way they present everything makes it captivating."
+                },
+                {
+                    "original": "they are mincing meat they take a big chunks of meat and they're mincing it",
+                    "corrected": "they take big chunks of meat and mince it.",
+                    "explanation": "The phrase 'a big chunks' is incorrect; 'chunks' is plural and should not have 'a' before it. The sentence can be simplified for clarity.",
+                    "context": "I was explaining the process of cooking in these shows. They take big chunks of meat and mince it. This visual representation helps viewers understand the cooking techniques."
+                },
+                {
+                    "original": "but you understand me me yes yeah",
+                    "corrected": "but you understand me, yes.",
+                    "explanation": "The repetition of 'me' is unnecessary and confusing. The sentence should be simplified.",
+                    "context": "I was acknowledging the student's comprehension during our conversation. But you understand me, yes. It's important to recognize their progress."
+                },
+                {
+                    "original": "the ability to speak comes not from speaking itself the ability to speak comes from increasing your level of understanding",
+                    "corrected": "the ability to speak comes not just from speaking itself; it comes from increasing your level of understanding.",
+                    "explanation": "The sentence lacks proper punctuation, making it a run-on sentence. A semicolon or conjunction is needed for clarity.",
+                    "context": "I was emphasizing the importance of understanding in language learning. The ability to speak comes not just from speaking itself; it comes from increasing your level of understanding. Listening is crucial for this."
+                },
+                {
+                    "original": "maybe to make it uh I don't know look at it as the home task",
+                    "corrected": "maybe to make it look like a home task.",
+                    "explanation": "The phrase 'look at it as the home task' is awkward. It should be simplified to 'look like a home task' for clarity.",
+                    "context": "I was suggesting how to approach additional practice outside of lessons. Maybe to make it look like a home task. This way, it feels like a part of the learning process."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Intuition",
+                    "definition": "The ability to understand something instinctively, without the need for conscious reasoning.",
+                    "context": {
+                        "Context 1": "You need to trust your intuition sometimes when making decisions.",
+                        "Context 2": "Her intuition told her that something was wrong with the project.",
+                        "Context 3": "He relied on his intuition to choose the right path in the forest."
+                    }
+                },
+                {
+                    "word": "Fragile",
+                    "definition": "Easily broken or damaged; delicate.",
+                    "context": {
+                        "Context 1": "She is very fragile and needs to be handled with care.",
+                        "Context 2": "The fragile vase shattered when it fell off the shelf.",
+                        "Context 3": "He felt fragile after the long hike, needing rest."
+                    }
+                },
+                {
+                    "word": "Productive",
+                    "definition": "Achieving a significant amount or result; effective.",
+                    "context": {
+                        "Context 1": "I predicted that today would be more productive than yesterday.",
+                        "Context 2": "The meeting was productive, leading to several new ideas.",
+                        "Context 3": "After a productive day at work, she felt accomplished."
+                    }
+                },
+                {
+                    "word": "Substance",
+                    "definition": "A particular kind of matter with uniform properties.",
+                    "context": {
+                        "Context 1": "What kind of substance could that be?",
+                        "Context 2": "Water is a substance that is essential for life.",
+                        "Context 3": "The scientist studied the chemical substance to understand its properties."
+                    }
+                },
+                {
+                    "word": "Immunity",
+                    "definition": "The ability of an organism to resist a particular infection or toxin.",
+                    "context": {
+                        "Context 1": "Dogs have very strong immunity against many diseases.",
+                        "Context 2": "Vaccines help boost our immunity to various illnesses.",
+                        "Context 3": "His immunity to cold weather allowed him to enjoy winter sports."
+                    }
+                },
+                {
+                    "word": "Habit",
+                    "definition": "A settled or regular tendency or practice, especially one that is hard to give up.",
+                    "context": {
+                        "Context 1": "It's important to get into this habit of waking up early.",
+                        "Context 2": "She developed a habit of reading every night before bed.",
+                        "Context 3": "Breaking a bad habit can be challenging but rewarding."
+                    }
+                },
+                {
+                    "word": "Groom",
+                    "definition": "To clean and maintain the appearance of an animal.",
+                    "context": {
+                        "Context 1": "I was grooming my dog yesterday to keep her clean.",
+                        "Context 2": "The zookeeper grooms the animals to ensure they are healthy.",
+                        "Context 3": "He spent the afternoon grooming his horse for the competition."
+                    }
+                },
+                {
+                    "word": "Hurry",
+                    "definition": "To move or act with speed; to rush.",
+                    "context": {
+                        "Context 1": "It's better to cook without hurry to ensure the food is good.",
+                        "Context 2": "She was in a hurry to catch the bus and forgot her bag.",
+                        "Context 3": "In a hurry, he spilled coffee all over his shirt."
+                    }
+                },
+                {
+                    "word": "Territory",
+                    "definition": "An area of land under the jurisdiction of a ruler or state.",
+                    "context": {
+                        "Context 1": "It's private territory, and I can shoot unauthorized trespassers.",
+                        "Context 2": "The lion marked its territory to warn other animals.",
+                        "Context 3": "Countries often dispute territory over natural resources."
+                    }
+                },
+                {
+                    "word": "Clean",
+                    "definition": "Free from dirt, marks, or stains; to remove dirt or impurities.",
+                    "context": {
+                        "Context 1": "Her paws are clean, so I think everything will be fine.",
+                        "Context 2": "He likes to keep his workspace clean and organized.",
+                        "Context 3": "The clean kitchen made cooking much more enjoyable."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Intuition",
+                    "fact": "Some people believe that intuition is just your brain's way of processing information faster than you can think!"
+                },
+                {
+                    "word": "Fragile",
+                    "fact": "Did you know that the word 'fragile' comes from the Latin word 'fragilis,' which means 'easily broken'? Sounds like a warning label!"
+                },
+                {
+                    "word": "Groom",
+                    "fact": "In the animal world, grooming is not just for cleanliness; it's also a way for animals to bond with each other!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the dog sit in the shade?",
+                    "answer": "Because he didn’t want to become a hot dog!"
+                },
+                {
+                    "question": "What do you call a lazy kangaroo?",
+                    "answer": "A pouch potato!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Ritual",
+                    "definition": "A series of actions performed according to a prescribed order.",
+                    "context": {
+                        "Context 1": "The ritual of preparing the chicken was essential for the ceremony.",
+                        "Context 2": "Every morning, she has a ritual of drinking coffee and reading the news.",
+                        "Context 3": "In some cultures, a ritual is performed to celebrate the harvest."
+                    }
+                },
+                {
+                    "word": "Substance",
+                    "definition": "A particular kind of matter with uniform properties.",
+                    "context": {
+                        "Context 1": "The substance used in the recipe was a mixture of pumpkin and onion.",
+                        "Context 2": "Water is a substance that is essential for all forms of life.",
+                        "Context 3": "The scientist studied the substance to understand its chemical properties."
+                    }
+                },
+                {
+                    "word": "Blend",
+                    "definition": "To mix two or more ingredients together thoroughly.",
+                    "context": {
+                        "Context 1": "You need to blend the pumpkin and onion until smooth.",
+                        "Context 2": "She decided to blend her favorite fruits to make a smoothie.",
+                        "Context 3": "The artist wanted to blend different colors to create a unique shade."
+                    }
+                },
+                {
+                    "word": "Boil",
+                    "definition": "To heat a liquid until it reaches its boiling point.",
+                    "context": {
+                        "Context 1": "You should boil the water before adding the vegetables.",
+                        "Context 2": "He forgot to boil the pasta and ended up with a sticky mess.",
+                        "Context 3": "The kettle began to boil, signaling that the water was ready."
+                    }
+                },
+                {
+                    "word": "Coconut milk",
+                    "definition": "A creamy liquid made from the grated meat of mature coconuts.",
+                    "context": {
+                        "Context 1": "Adding coconut milk to the soup gave it a rich flavor.",
+                        "Context 2": "She used coconut milk in her smoothie for a tropical twist.",
+                        "Context 3": "Coconut milk is a popular ingredient in many Thai dishes."
+                    }
+                },
+                {
+                    "word": "Suspicious",
+                    "definition": "Having or showing a cautious distrust of someone or something.",
+                    "context": {
+                        "Context 1": "The family was suspicious of the strange smell coming from the kitchen.",
+                        "Context 2": "He gave her a suspicious look when she mentioned the surprise party.",
+                        "Context 3": "The detective was suspicious of the alibi provided by the suspect."
+                    }
+                },
+                {
+                    "word": "Salivate",
+                    "definition": "To produce saliva, often in anticipation of food.",
+                    "context": {
+                        "Context 1": "Talking about the delicious soup made me salivate.",
+                        "Context 2": "The smell of fresh-baked cookies made everyone salivate.",
+                        "Context 3": "He couldn't help but salivate when he saw the gourmet meal."
+                    }
+                },
+                {
+                    "word": "Ingredient",
+                    "definition": "Any of the foods or substances that are combined to make a particular dish.",
+                    "context": {
+                        "Context 1": "Pumpkin is a key ingredient in the soup recipe.",
+                        "Context 2": "She checked the ingredient list before starting to bake the cake.",
+                        "Context 3": "The chef emphasized the importance of using fresh ingredients."
+                    }
+                },
+                {
+                    "word": "Mix",
+                    "definition": "To combine two or more substances together.",
+                    "context": {
+                        "Context 1": "You need to mix the butter with the pumpkin before cooking.",
+                        "Context 2": "He decided to mix different genres of music for his new album.",
+                        "Context 3": "The teacher asked the students to mix colors to create new shades."
+                    }
+                },
+                {
+                    "word": "Device",
+                    "definition": "A tool or piece of equipment designed for a specific purpose.",
+                    "context": {
+                        "Context 1": "A blender is a device used to mix ingredients smoothly.",
+                        "Context 2": "He bought a new device to help him track his fitness goals.",
+                        "Context 3": "The smartphone is a versatile device that can perform many functions."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Coconut milk",
+                    "fact": "Coconut milk is not actually milk; it's a creamy liquid made from the flesh of coconuts!"
+                },
+                {
+                    "word": "Blend",
+                    "fact": "In the world of cooking, blending can sometimes lead to unexpected 'smooth' disasters!"
+                },
+                {
+                    "word": "Ritual",
+                    "fact": "Some cultures have rituals that involve dancing with chickens—talk about a clucking good time!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the chicken join a band?",
+                    "answer": "Because it had the drumsticks!"
+                },
+                {
+                    "question": "What do you call a fake noodle?",
+                    "answer": "An impasta!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Inspiration",
+                    "definition": "The process of being mentally stimulated to do or feel something, especially to do something creative.",
+                    "context": {
+                        "Context 1": "When I cook, I need inspiration to create new dishes.",
+                        "Context 2": "The artist found inspiration in the beauty of nature for her painting.",
+                        "Context 3": "He lacked inspiration during the meeting and struggled to come up with ideas."
+                    }
+                },
+                {
+                    "word": "Masterpiece",
+                    "definition": "A work of outstanding artistry, skill, or workmanship.",
+                    "context": {
+                        "Context 1": "When I cook quickly, I sometimes create a masterpiece.",
+                        "Context 2": "The sculptor's latest piece is considered a masterpiece of modern art.",
+                        "Context 3": "After hours of practice, he finally wrote a masterpiece of a novel."
+                    }
+                },
+                {
+                    "word": "Routine",
+                    "definition": "A sequence of actions regularly followed; a fixed program.",
+                    "context": {
+                        "Context 1": "Cooking can feel like a routine operation when I'm not inspired.",
+                        "Context 2": "Her morning routine includes yoga and a healthy breakfast.",
+                        "Context 3": "The athlete followed a strict training routine to prepare for the competition."
+                    }
+                },
+                {
+                    "word": "Convey",
+                    "definition": "To communicate or make known.",
+                    "context": {
+                        "Context 1": "She used natural phrases to convey her ideas effectively.",
+                        "Context 2": "The teacher tried to convey the importance of studying to her students.",
+                        "Context 3": "He struggled to convey his feelings in words during the conversation."
+                    }
+                },
+                {
+                    "word": "Assess",
+                    "definition": "To evaluate or estimate the nature, ability, or quality of.",
+                    "context": {
+                        "Context 1": "Examiners assess students based on their writing and speaking skills.",
+                        "Context 2": "The manager will assess the team's performance at the end of the quarter.",
+                        "Context 3": "Doctors assess patients' health through various tests and examinations."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "She had a lot of experience listening to films, which helped her speaking.",
+                        "Context 2": "His experience in the field made him a valuable asset to the company.",
+                        "Context 3": "Traveling provides a unique experience that broadens one's perspective."
+                    }
+                },
+                {
+                    "word": "Natural",
+                    "definition": "Existing in or caused by nature; not made or caused by humankind.",
+                    "context": {
+                        "Context 1": "She used natural phrases when speaking, making it comfortable to communicate.",
+                        "Context 2": "The park is filled with natural beauty and wildlife.",
+                        "Context 3": "He has a natural talent for playing the piano without formal training."
+                    }
+                },
+                {
+                    "word": "Mistake",
+                    "definition": "An action or judgment that is misguided or wrong.",
+                    "context": {
+                        "Context 1": "She made a lot of mistakes in her writing, affecting her score.",
+                        "Context 2": "Everyone makes mistakes; it’s part of learning.",
+                        "Context 3": "He realized his mistake after reviewing the project with his team."
+                    }
+                },
+                {
+                    "word": "Reinforce",
+                    "definition": "To strengthen or support, especially with additional personnel or material.",
+                    "context": {
+                        "Context 1": "Looking up words helps reinforce my memory of them.",
+                        "Context 2": "The coach used drills to reinforce the players' skills.",
+                        "Context 3": "The company plans to reinforce its brand image through advertising."
+                    }
+                },
+                {
+                    "word": "Comfortable",
+                    "definition": "Providing physical ease and relaxation.",
+                    "context": {
+                        "Context 1": "It was comfortable to speak with her despite her writing mistakes.",
+                        "Context 2": "The new sofa is so comfortable that I could sit here all day.",
+                        "Context 3": "He felt comfortable in his new job after a few weeks of training."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Masterpiece",
+                    "fact": "Did you know that the Mona Lisa has no eyebrows? It was fashionable in Renaissance Florence to shave them off!"
+                },
+                {
+                    "word": "Inspiration",
+                    "fact": "The word 'inspiration' comes from the Latin 'inspirare,' which means 'to breathe into.' So, you could say that ideas are like fresh air!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the chef break up with his girlfriend?",
+                    "answer": "Because she kept saying he was too kneady!"
+                },
+                {
+                    "question": "What did the pasta say to the tomato?",
+                    "answer": "You’re saucy!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Absorb",
+                    "definition": "To take in or soak up information or knowledge.",
+                    "context": {
+                        "Context 1": "The cooking show was so engaging that it absorbed my attention completely.",
+                        "Context 2": "A sponge can absorb a lot of water.",
+                        "Context 3": "He tried to absorb the information from the lecture before the exam."
+                    }
+                },
+                {
+                    "word": "Mince",
+                    "definition": "To cut food into very small pieces.",
+                    "context": {
+                        "Context 1": "The chef demonstrated how to mince garlic for the recipe.",
+                        "Context 2": "She decided to mince her words to avoid hurting his feelings.",
+                        "Context 3": "The dog loves to mince its toys into tiny pieces."
+                    }
+                },
+                {
+                    "word": "Steer",
+                    "definition": "To guide or control the direction of something.",
+                    "context": {
+                        "Context 1": "He learned how to steer the boat through the rough waters.",
+                        "Context 2": "The teacher had to steer the discussion back on track.",
+                        "Context 3": "She tried to steer clear of any controversial topics at the party."
+                    }
+                },
+                {
+                    "word": "Potential",
+                    "definition": "The inherent ability or capacity for growth, development, or coming into existence.",
+                    "context": {
+                        "Context 1": "With practice, you can unlock your full potential in speaking English.",
+                        "Context 2": "The potential for a new business idea excited the investors.",
+                        "Context 3": "He showed great potential as a musician from a young age."
+                    }
+                },
+                {
+                    "word": "Reproduce",
+                    "definition": "To make a copy or representation of something.",
+                    "context": {
+                        "Context 1": "Students often struggle to reproduce complex vocabulary in their writing.",
+                        "Context 2": "Scientists can reproduce the experiment to verify the results.",
+                        "Context 3": "The artist wanted to reproduce the famous painting in her own style."
+                    }
+                },
+                {
+                    "word": "Flow",
+                    "definition": "To move smoothly and continuously.",
+                    "context": {
+                        "Context 1": "After warming up, the conversation began to flow naturally.",
+                        "Context 2": "The river will flow faster during the rainy season.",
+                        "Context 3": "He loves to flow with the music when he dances."
+                    }
+                },
+                {
+                    "word": "Engage",
+                    "definition": "To attract or involve someone's interest or attention.",
+                    "context": {
+                        "Context 1": "The cooking show was designed to engage viewers with its interactive format.",
+                        "Context 2": "She tried to engage her audience with a funny story.",
+                        "Context 3": "The teacher used games to engage the students in learning."
+                    }
+                },
+                {
+                    "word": "Warm up",
+                    "definition": "To prepare for an activity by doing light exercises or gradually increasing intensity.",
+                    "context": {
+                        "Context 1": "At the beginning of the lesson, students need to warm up their speaking skills.",
+                        "Context 2": "Athletes warm up before a game to prevent injuries.",
+                        "Context 3": "She likes to warm up her voice before singing."
+                    }
+                },
+                {
+                    "word": "Task",
+                    "definition": "A piece of work to be done or undertaken.",
+                    "context": {
+                        "Context 1": "The teacher assigned a task to help improve vocabulary.",
+                        "Context 2": "His task was to clean the garage over the weekend.",
+                        "Context 3": "Completing the puzzle was a fun task for the family."
+                    }
+                },
+                {
+                    "word": "Material",
+                    "definition": "The substance or items used to create something.",
+                    "context": {
+                        "Context 1": "Watching extra material, like cooking shows, can enhance your learning.",
+                        "Context 2": "The artist needed more material to finish her sculpture.",
+                        "Context 3": "He gathered all the material needed for the science project."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Absorb",
+                    "fact": "Did you know that a single tree can absorb up to 48 pounds of carbon dioxide per year?"
+                },
+                {
+                    "word": "Mince",
+                    "fact": "In the UK, 'mince' can also refer to a type of meat mixture, but it's also a term for speaking in a way that is overly careful or delicate!"
+                },
+                {
+                    "word": "Steer",
+                    "fact": "The word 'steer' comes from an Old English word meaning 'to guide or direct.' So, next time you steer a conversation, remember you’re guiding it!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the chef break up with their partner?",
+                    "answer": "Because they couldn't find common thyme!"
+                },
+                {
+                    "question": "Why did the tomato turn red?",
+                    "answer": "Because it saw the salad dressing!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Good morning! How’s it going?"
+                },
+                {
+                    "Person 2": "Good morning! I’m doing well, just trying to wake up a bit. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I’m not really a morning person, but I’m getting there."
+                },
+                {
+                    "Person 2": "Yeah, I used to hate waking up early. I’d sleep in until noon!"
+                },
+                {
+                    "Person 1": "Right? But I’ve been trying to get up earlier lately. It feels nice to start the day with some time to myself."
+                },
+                {
+                    "Person 2": "Totally! I’ve heard that waking up at 5 a.m. can be really beneficial, but that’s a bit too early for me."
+                },
+                {
+                    "Person 1": "Yeah, I think 5 a.m. is pushing it. I prefer around 6 or 7."
+                },
+                {
+                    "Person 2": "Exactly! I feel like if I sleep past 7, I’m wasting my day."
+                },
+                {
+                    "Person 1": "For sure! Plus, I love making breakfast. It’s my favorite part of the morning."
+                },
+                {
+                    "Person 2": "Same! But I can’t stand rushing. I like to take my time and enjoy it."
+                },
+                {
+                    "Person 1": "Yeah, nothing worse than a hurried breakfast. It just ruins the whole vibe."
+                },
+                {
+                    "Person 2": "Right? And I’ve had some pretty hairy cooking disasters before!"
+                },
+                {
+                    "Person 1": "Oh no! I can only imagine. Cooking should be fun, not stressful."
+                },
+                {
+                    "Person 2": "Exactly! So, what’s on your agenda for today?"
+                },
+                {
+                    "Person 1": "I’ve got some work to finish up, then I might try a new recipe later."
+                },
+                {
+                    "Person 2": "Nice! What are you thinking of making?"
+                },
+                {
+                    "Person 1": "Maybe a soup. I’ve been craving something warm and cozy."
+                },
+                {
+                    "Person 2": "Sounds delicious! I’d love to hear how it turns out."
+                },
+                {
+                    "Person 1": "Definitely! I’ll let you know. Enjoy your morning!"
+                },
+                {
+                    "Person 2": "You too! Let’s catch up later!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever tried making pumpkin soup?"
+                },
+                {
+                    "Person 2": "No, I haven't! Sounds interesting though. How do you make it?"
+                },
+                {
+                    "Person 1": "Well, first you need to get some pumpkin and cut it up. You also need some onion and butter."
+                },
+                {
+                    "Person 2": "Okay, that sounds simple enough. What do you do with them?"
+                },
+                {
+                    "Person 1": "You start by melting the butter in a pot, then add the chopped onion and pumpkin. Cook it until the onion is soft."
+                },
+                {
+                    "Person 2": "Got it! And then what?"
+                },
+                {
+                    "Person 1": "After that, you add some water to cover the veggies and let it simmer for about 20 minutes."
+                },
+                {
+                    "Person 2": "Sounds easy! Do you blend it after that?"
+                },
+                {
+                    "Person 1": "Exactly! You blend it until it’s smooth. A blender works best for that."
+                },
+                {
+                    "Person 2": "I think I have a small one somewhere. What else do you add?"
+                },
+                {
+                    "Person 1": "You can add coconut milk for creaminess and some spices like salt and pepper to taste."
+                },
+                {
+                    "Person 2": "Yum! I love coconut milk. This sounds delicious!"
+                },
+                {
+                    "Person 1": "It really is! And it’s perfect for fall. You should definitely give it a try."
+                },
+                {
+                    "Person 2": "I will! Maybe I’ll make it this weekend. Thanks for the recipe!"
+                },
+                {
+                    "Person 1": "No problem! Let me know how it turns out!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you been cooking anything interesting lately?"
+                },
+                {
+                    "Person 2": "Actually, yeah! I tried making a new pasta dish last weekend. It turned out pretty good!"
+                },
+                {
+                    "Person 1": "Nice! I love pasta. What kind did you make?"
+                },
+                {
+                    "Person 2": "It was a creamy garlic sauce with spinach and chicken. Super simple but so tasty!"
+                },
+                {
+                    "Person 1": "That sounds delicious! I always struggle with sauces. They never come out right for me."
+                },
+                {
+                    "Person 2": "I get that. Sometimes I just wing it, and it surprisingly works out. But if I overthink it, it usually flops."
+                },
+                {
+                    "Person 1": "Exactly! Cooking can feel like an art sometimes. You need the right mood and inspiration."
+                },
+                {
+                    "Person 2": "Totally! If I’m not in the mood, I just end up making the same old thing. It gets boring."
+                },
+                {
+                    "Person 1": "Do you ever watch cooking shows for inspiration?"
+                },
+                {
+                    "Person 2": "Not really anymore. I used to love them, but now I prefer quick videos on Instagram. They’re more fun!"
+                },
+                {
+                    "Person 1": "I know what you mean! Those short clips are great. They show you how to make something in just a minute."
+                },
+                {
+                    "Person 2": "Yeah! And they usually have cool ideas for healthy meals too. I like that."
+                },
+                {
+                    "Person 1": "Same here! I feel like I learn something new every time I watch one."
+                },
+                {
+                    "Person 2": "For sure! Plus, it’s nice to see someone else cook for a change."
+                },
+                {
+                    "Person 1": "Right? Sometimes I just want to relax and watch someone else do all the work!"
+                },
+                {
+                    "Person 2": "Haha, exactly! So, what are you planning to cook next?"
+                },
+                {
+                    "Person 1": "I’m thinking of trying a stir-fry. Quick and easy, right?"
+                },
+                {
+                    "Person 2": "Definitely! You can throw in whatever veggies you have. It’s hard to mess up!"
+                },
+                {
+                    "Person 1": "Great! I’ll let you know how it turns out."
+                },
+                {
+                    "Person 2": "Can’t wait to hear about it! Happy cooking!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you seen any good cooking shows on YouTube lately?"
+                },
+                {
+                    "Person 2": "Oh, totally! There’s this channel where they cook all sorts of recipes. I can’t stop watching it!"
+                },
+                {
+                    "Person 1": "I know what you mean! It’s so addictive. They show everything step by step, so it’s easy to follow along."
+                },
+                {
+                    "Person 2": "Exactly! Like when they talk about chopping vegetables, they actually show the process. It makes it so much clearer."
+                },
+                {
+                    "Person 1": "Right? I love how visual it is. It really helps you understand the cooking terms."
+                },
+                {
+                    "Person 2": "Yeah, and I find myself picking up new words too. But sometimes I struggle to remember them later."
+                },
+                {
+                    "Person 1": "Same here! I can understand a lot, but when it comes to speaking, I freeze up."
+                },
+                {
+                    "Person 2": "Totally! It’s like my brain knows what I want to say, but the words just don’t come out."
+                },
+                {
+                    "Person 1": "Exactly! But I think watching those shows helps. It’s good practice."
+                },
+                {
+                    "Person 2": "For sure! Maybe we should make it a goal to watch a few episodes each week?"
+                },
+                {
+                    "Person 1": "That sounds like a plan! We can even try cooking some of the recipes together."
+                },
+                {
+                    "Person 2": "Yes! That would be fun. Plus, we can practice talking about the cooking process."
+                },
+                {
+                    "Person 1": "Great idea! Let’s start this weekend. I’ll find a good episode for us."
+                },
+                {
+                    "Person 2": "Awesome! I can’t wait. It’ll be a fun way to learn and eat!"
+                },
+                {
+                    "Person 1": "Absolutely! Alright, see you Saturday then!"
+                },
+                {
+                    "Person 2": "See you! Have a great week until then!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
