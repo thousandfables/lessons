@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Skype works pretty good, but...",
+                    "corrected": "Skype works pretty well, but...",
+                    "explanation": "\"Good\" is an adjective and should not be used to modify the verb \"works\"; instead, \"well\" (an adverb) should be used.",
+                    "context": "We were discussing the effectiveness of different communication platforms. Skype works pretty well, but I feel it's becoming outdated compared to newer options."
+                },
+                {
+                    "original": "I have no time for playing the games.",
+                    "corrected": "I have no time for playing games.",
+                    "explanation": "The article \"the\" is unnecessary here; it should be omitted when referring to games in general.",
+                    "context": "I mentioned my busy schedule and how I prioritize my time. I have no time for playing games, as I focus on other activities."
+                },
+                {
+                    "original": "I prefer one-users games.",
+                    "corrected": "I prefer single-player games.",
+                    "explanation": "\"One-users\" is not a standard term; the correct term is \"single-player\" to describe games meant for one player.",
+                    "context": "I was explaining my gaming preferences. I prefer single-player games because I enjoy playing at my own pace."
+                },
+                {
+                    "original": "I use collective playing for manipulating.",
+                    "corrected": "I use multiplayer games for socializing.",
+                    "explanation": "The phrase \"collective playing\" is not commonly used; \"multiplayer games\" is the correct term, and \"manipulating\" does not fit the context.",
+                    "context": "I was talking about my experiences with different game types. I use multiplayer games for socializing with friends."
+                },
+                {
+                    "original": "It just pretends that my headphones don't exist.",
+                    "corrected": "It seems like my headphones don't exist.",
+                    "explanation": "\"Pretends\" implies intentionality, which is incorrect; \"seems like\" is more appropriate for describing a technical issue.",
+                    "context": "I was frustrated with my audio setup. It seems like my headphones don't exist, making it hard to connect."
+                },
+                {
+                    "original": "Yes, everything's work.",
+                    "corrected": "Yes, everything works.",
+                    "explanation": "The verb \"work\" should be in the present tense \"works\" to agree with the singular subject \"everything.\"",
+                    "context": "I confirmed that my setup was functioning properly. Yes, everything works, and I'm ready to continue."
+                },
+                {
+                    "original": "It's not really, you know, I would love to play around with this feature and to generate previews, you know, some stuff that you can upload to YouTube as a thumbnail on your video.",
+                    "corrected": "I would love to play around with this feature and generate previews, like thumbnails for YouTube videos.",
+                    "explanation": "The phrase is overly complicated; simplifying it improves clarity and removes unnecessary filler words.",
+                    "context": "I was excited about the potential of the new feature. I would love to play around with this feature and generate previews, like thumbnails for YouTube videos."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I find a good AI which can take the subtitles or short description from YouTube videos because I don't like watching YouTube videos.",
+                    "corrected": "I found a good AI that can take the subtitles or short descriptions from YouTube videos because I don't like watching YouTube videos.",
+                    "explanation": "The verb 'find' should be in the past tense 'found' to match the context of the sentence.",
+                    "context": "I don't enjoy watching YouTube videos. I found a good AI that can take the subtitles or short descriptions from YouTube videos. This makes it easier for me to get the information I want."
+                },
+                {
+                    "original": "But it's only for adults because the author have some jokes for adults when I watch this with Sun and the author start using some rude words about cars.",
+                    "corrected": "But it's only for adults because the author has some jokes for adults when I watch this with my son and the author starts using some rude words about cars.",
+                    "explanation": "The verb 'have' should be 'has' to agree with the singular subject 'author', and 'start' should be 'starts' for the same reason.",
+                    "context": "I enjoy watching videos about animal behavior. But it's only for adults because the author has some jokes for adults when I watch this with my son. Sometimes the author starts using rude words about cars."
+                },
+                {
+                    "original": "I didn't know about this.",
+                    "corrected": "I didn't know about that.",
+                    "explanation": "'This' is typically used for something closer in time or space; 'that' is more appropriate for something previously mentioned.",
+                    "context": "I was surprised by the couriers' behavior. I didn't know about that. It was a funny situation that I learned about later."
+                },
+                {
+                    "original": "I think they were not happy to go to upstairs on the ice area.",
+                    "corrected": "I think they were not happy to go upstairs on the icy ground.",
+                    "explanation": "'To go to upstairs' is incorrect; it should be 'to go upstairs'. 'Ice area' is awkward; 'icy ground' is more idiomatic.",
+                    "context": "I remember how the couriers delivered food in winter. I think they were not happy to go upstairs on the icy ground. It must have been quite challenging for them."
+                },
+                {
+                    "original": "I want to return these couriers to Riga.",
+                    "corrected": "I want to send these couriers back to Riga.",
+                    "explanation": "'Return' is not incorrect, but 'send back' is more idiomatic in this context.",
+                    "context": "I have mixed feelings about the couriers. I want to send these couriers back to Riga. They are more expensive and not as fast there."
+                },
+                {
+                    "original": "Because in the marketplaces I can go with my son.",
+                    "corrected": "Because in the marketplaces I can take my son with me.",
+                    "explanation": "'Go with my son' is awkward; 'take my son with me' is more natural.",
+                    "context": "I prefer marketplaces over malls. Because in the marketplaces I can take my son with me. It’s easier to manage him there."
+                },
+                {
+                    "original": "He stole cars and ties.",
+                    "corrected": "He steals cars and toys.",
+                    "explanation": "The verb 'stole' should be in the present tense 'steals' for consistency, and 'ties' is likely a misunderstanding; 'toys' fits better.",
+                    "context": "When I take my son shopping, he tends to get into trouble. He steals cars and toys. It's quite a challenge to keep an eye on him."
+                },
+                {
+                    "original": "In evolution people are not so aggressive.",
+                    "corrected": "In evolution, people were not so aggressive.",
+                    "explanation": "The verb 'are' should be in the past tense 'were' to match the context of evolution.",
+                    "context": "I've been thinking about human behavior. In evolution, people were not so aggressive. This change has been influenced by various factors over time."
+                },
+                {
+                    "original": "And men are not so aggressive after many years.",
+                    "corrected": "And men have not been so aggressive over many years.",
+                    "explanation": "The phrase 'are not so aggressive' should be changed to 'have not been so aggressive' to indicate a continuous state.",
+                    "context": "I've read some interesting theories. And men have not been so aggressive over many years. This reflects a shift in societal preferences."
+                },
+                {
+                    "original": "And men have less testosterone and less teeth.",
+                    "corrected": "And men have less testosterone and fewer teeth.",
+                    "explanation": "'Less' is used for uncountable nouns; 'fewer' should be used for countable nouns like 'teeth.'",
+                    "context": "I learned some fascinating facts today. And men have less testosterone and fewer teeth. These changes are part of our evolutionary history."
+                },
+                {
+                    "original": "So if somebody can't have babies, or their babies are dead, they will distinct.",
+                    "corrected": "So if somebody can't have babies, or their babies are dead, they will go extinct.",
+                    "explanation": "'Distinct' is incorrect; the correct term is 'go extinct' to convey the idea of a species disappearing.",
+                    "context": "I've been studying natural selection. So if somebody can't have babies, or their babies are dead, they will go extinct. This is a key aspect of evolution."
+                },
+                {
+                    "original": "Yes, it's a popular example how to make love not far.",
+                    "corrected": "Yes, it's a popular example of how to make love not far.",
+                    "explanation": "The phrase 'example how' should be 'example of how' to be grammatically correct.",
+                    "context": "When discussing bonobos, I mentioned their behavior. Yes, it's a popular example of how to make love not far. Their social structure is quite fascinating."
+                },
+                {
+                    "original": "Like, humans, for example, humans is species.",
+                    "corrected": "Like, humans, for example, humans are a species.",
+                    "explanation": "'Humans is species' should be 'humans are a species' to ensure subject-verb agreement.",
+                    "context": "In our discussion about species, I clarified some points. Like, humans, for example, humans are a species. This classification helps us understand our place in the animal kingdom."
+                },
+                {
+                    "original": "Species is a species.",
+                    "corrected": "A species is a species.",
+                    "explanation": "The sentence should start with 'A' to indicate that it is referring to one of many species.",
+                    "context": "I was explaining the concept of species. A species is a species. This definition helps clarify the differences among various living organisms."
+                },
+                {
+                    "original": "But, yes, like, bonobos live in a very resource-rich environment.",
+                    "corrected": "But, yes, bonobos live in a very resource-rich environment.",
+                    "explanation": "The phrase 'like' is unnecessary and disrupts the flow of the sentence.",
+                    "context": "In discussing bonobos, I highlighted their living conditions. But, yes, bonobos live in a very resource-rich environment. This contributes to their unique behaviors."
+                },
+                {
+                    "original": "Yeah, because aggression is an evolutionary mechanism that helps to survive.",
+                    "corrected": "Yeah, because aggression is an evolutionary mechanism that helps organisms survive.",
+                    "explanation": "The phrase 'helps to survive' should be 'helps organisms survive' for clarity and grammatical correctness.",
+                    "context": "In our conversation about aggression, I made an important point. Yeah, because aggression is an evolutionary mechanism that helps organisms survive. This is crucial for understanding animal behavior."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "But I think that different situations, different environment, for some peoples make them more aggressive or less aggressive.",
+                    "corrected": "But I think that different situations and different environments make some people more aggressive or less aggressive.",
+                    "explanation": "The word 'peoples' is incorrect; 'people' should be used as it refers to individuals collectively. Additionally, 'environment' should be pluralized to 'environments' to match 'different situations.'",
+                    "context": "I believe that various situations and environments can influence human behavior. But I think that different situations and different environments make some people more aggressive or less aggressive. For example, in the North, people are less aggressive."
+                },
+                {
+                    "original": "In the South, people don't need to care about children, and their children will stay alive.",
+                    "corrected": "In the South, people don't need to worry about their children, and they will survive.",
+                    "explanation": "'Care about' is less idiomatic in this context; 'worry about' is more appropriate. Additionally, 'stay alive' can be simplified to 'survive.'",
+                    "context": "In the South, the conditions are different. In the South, people don't need to worry about their children, and they will survive. They have enough resources to ensure their well-being."
+                },
+                {
+                    "original": "Too many, and they need resources for living, because they have really a lot of children, they have really a lot of people, and they don't need to spend resources to have a life, to have five babies maybe.",
+                    "corrected": "There are too many people, and they need resources for living because they have many children, and they don't need to spend much on having a life, even if they have five babies.",
+                    "explanation": "The phrase 'really a lot of' is awkward; 'many' is more concise. The sentence structure is also convoluted and can be simplified for clarity.",
+                    "context": "In some countries, the population is high. There are too many people, and they need resources for living because they have many children. They don't need to spend much on having a life."
+                },
+                {
+                    "original": "They starved in 90s because his family has no ideas how to create food.",
+                    "corrected": "They starved in the 90s because his family had no idea how to grow food.",
+                    "explanation": "The phrase 'in 90s' should include 'the' for specificity, and 'has no ideas' should be 'had no idea' for correct tense and singular form.",
+                    "context": "My husband's family faced severe hardships. They starved in the 90s because his family had no idea how to grow food. They lacked the necessary skills and resources."
+                },
+                {
+                    "original": "They are too helpless in some situation.",
+                    "corrected": "They are too helpless in some situations.",
+                    "explanation": "The phrase 'some situation' should be pluralized to 'some situations' for grammatical accuracy.",
+                    "context": "Some people struggle to cope with challenges. They are too helpless in some situations. They lack the experience needed to find solutions."
+                },
+                {
+                    "original": "They don't know how to survive.",
+                    "corrected": "They don't know how to survive in difficult situations.",
+                    "explanation": "Adding 'in difficult situations' clarifies the context of survival and enhances the sentence's meaning.",
+                    "context": "Many individuals face challenges in life. They don't know how to survive in difficult situations. This lack of knowledge can lead to serious consequences."
+                },
+                {
+                    "original": "I am a tourist, but I can survive in the wild forest or in the mountains.",
+                    "corrected": "I am a tourist, but I can survive in the wilderness or in the mountains.",
+                    "explanation": "'Wild forest' is less idiomatic; 'wilderness' is a more common term to describe untamed natural areas.",
+                    "context": "I enjoy exploring nature. I am a tourist, but I can survive in the wilderness or in the mountains. I have learned essential survival skills."
+                },
+                {
+                    "original": "You better reinforce your knowledge.",
+                    "corrected": "You should reinforce your knowledge.",
+                    "explanation": "'You better' is informal and less appropriate; 'You should' is more standard and polite.",
+                    "context": "As you prepare for your upcoming trip, it's important to be well-prepared. You should reinforce your knowledge. This will help you in case of emergencies."
+                },
+                {
+                    "original": "I never meet the wildlife because I prefer to live in big cities.",
+                    "corrected": "I have never met wildlife because I prefer to live in big cities.",
+                    "explanation": "The present tense 'meet' should be changed to the present perfect 'have met' to indicate past experiences.",
+                    "context": "I enjoy urban life. I have never met wildlife because I prefer to live in big cities. My lifestyle keeps me away from nature."
+                },
+                {
+                    "original": "He grew, I believe, in a completely different... A completely different person from.",
+                    "corrected": "He grew up, I believe, to be a completely different person.",
+                    "explanation": "The phrase 'grew' should be 'grew up' for clarity, and 'from' is incomplete; 'to be' clarifies the intended meaning.",
+                    "context": "It's interesting to compare backgrounds. He grew up, I believe, to be a completely different person. His values and experiences shaped him uniquely."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "His daughter don't take her... Inheritage.",
+                    "corrected": "His daughter doesn't take her inheritance.",
+                    "explanation": "The verb 'don't' should be 'doesn't' to agree with the singular subject 'daughter.' Also, 'inheritage' is a misspelling; the correct term is 'inheritance.'",
+                    "context": "My husband has a daughter. His daughter doesn't take her inheritance. This situation is quite complicated, as she has taken advantage of him."
+                },
+                {
+                    "original": "He have easy money.",
+                    "corrected": "He has easy money.",
+                    "explanation": "'Have' should be 'has' to agree with the singular subject 'he.'",
+                    "context": "Sometimes my husband's friends think that he has easy money. But his friend told me that it's not easy money at all."
+                },
+                {
+                    "original": "He work a lot.",
+                    "corrected": "He works a lot.",
+                    "explanation": "'Work' should be 'works' to match the singular subject 'he.'",
+                    "context": "People often assume he has an easy life. But he works a lot to maintain his lifestyle."
+                },
+                {
+                    "original": "He have only five interests in his life.",
+                    "corrected": "He has only five interests in his life.",
+                    "explanation": "Again, 'have' should be 'has' to agree with the singular subject 'he.'",
+                    "context": "My husband is very focused on his career. He has only five interests in his life, mostly related to work."
+                },
+                {
+                    "original": "He know only investment.",
+                    "corrected": "He knows only about investments.",
+                    "explanation": "'Know' should be 'knows' for subject-verb agreement, and 'investment' should be pluralized and clarified with 'about.'",
+                    "context": "He is very knowledgeable in his field. However, he knows only about investments and nothing else."
+                },
+                {
+                    "original": "He will do smart face and... give you a lot of advices.",
+                    "corrected": "He will put on a smart face and give you a lot of advice.",
+                    "explanation": "The phrase 'do smart face' is incorrect; it should be 'put on a smart face.' Also, 'advices' should be 'advice' as it is an uncountable noun.",
+                    "context": "He often tries to appear knowledgeable. He will put on a smart face and give you a lot of advice, even if he lacks real understanding."
+                },
+                {
+                    "original": "I only go to the job interview.",
+                    "corrected": "I only went to the job interview.",
+                    "explanation": "The tense is incorrect; it should be past tense 'went' to indicate a completed action.",
+                    "context": "I was nervous about my prospects. I only went to the job interview, but I didn't find it interesting."
+                },
+                {
+                    "original": "I think I need to exam after... English.",
+                    "corrected": "I think I need to take an exam after... English.",
+                    "explanation": "The phrase 'to exam' is incorrect; it should be 'to take an exam.'",
+                    "context": "I'm preparing for my tests. I think I need to take an exam after my English lesson to assess my progress."
+                },
+                {
+                    "original": "It's kind of a good way.",
+                    "corrected": "It's kind of a good idea.",
+                    "explanation": "'Way' is not idiomatic in this context; 'idea' is more appropriate.",
+                    "context": "We were discussing strategies for my studies. It's kind of a good idea to have a plan in place."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Discord",
+                    "definition": "A communication platform designed for creating communities, allowing users to chat via text, voice, and video.",
+                    "context": {
+                        "Context 1": "I used Discord to chat with my friends while we played games together.",
+                        "Context 2": "Discord is often used by gamers to coordinate strategies during online matches.",
+                        "Context 3": "Many study groups use Discord to discuss assignments and share resources."
+                    }
+                },
+                {
+                    "word": "Backup",
+                    "definition": "A copy of data or a system that can be used to restore the original in case of failure.",
+                    "context": {
+                        "Context 1": "We have a backup plan in case the main communication platform fails.",
+                        "Context 2": "Always keep a backup of your important files on an external drive.",
+                        "Context 3": "The backup singer added harmony to the main vocalist's performance."
+                    }
+                },
+                {
+                    "word": "Capture",
+                    "definition": "To take control of or seize something; in technology, it often refers to recording data or images.",
+                    "context": {
+                        "Context 1": "I struggled with the capture test on Discord that asked me to identify traffic lights.",
+                        "Context 2": "The photographer was able to capture the sunset beautifully.",
+                        "Context 3": "The software can capture video from your screen for tutorials."
+                    }
+                },
+                {
+                    "word": "Platform",
+                    "definition": "A base or environment for something to operate on, often used in technology to refer to software or services.",
+                    "context": {
+                        "Context 1": "We switched to a new platform for our online meetings.",
+                        "Context 2": "The social media platform allows users to share photos and videos easily.",
+                        "Context 3": "The theater's platform was set up for the upcoming performance."
+                    }
+                },
+                {
+                    "word": "Feature",
+                    "definition": "A distinctive attribute or aspect of something, often referring to a functionality in software.",
+                    "context": {
+                        "Context 1": "The new feature in Discord allows users to share their screens during calls.",
+                        "Context 2": "The smartphone's camera feature is one of its most popular selling points.",
+                        "Context 3": "The movie had a special feature that included behind-the-scenes footage."
+                    }
+                },
+                {
+                    "word": "Stream",
+                    "definition": "To transmit or receive data, especially video and audio, over the internet in real-time.",
+                    "context": {
+                        "Context 1": "We often stream our gaming sessions live on Twitch.",
+                        "Context 2": "I like to stream music while I work to stay focused.",
+                        "Context 3": "The river began to stream rapidly after the heavy rain."
+                    }
+                },
+                {
+                    "word": "Username",
+                    "definition": "A unique identifier chosen by a user to access a system or platform.",
+                    "context": {
+                        "Context 1": "Make sure to choose a username that reflects your personality on Discord.",
+                        "Context 2": "He forgot his username and had to reset his account.",
+                        "Context 3": "The artist's username on social media is very catchy."
+                    }
+                },
+                {
+                    "word": "Invite",
+                    "definition": "To request someone to join an event or activity.",
+                    "context": {
+                        "Context 1": "You can send an invite to your friends to join your Discord server.",
+                        "Context 2": "I received an invite to a wedding next month.",
+                        "Context 3": "The club sent out invites for their annual picnic."
+                    }
+                },
+                {
+                    "word": "Overcomplicated",
+                    "definition": "Made more complex than necessary; difficult to understand or use.",
+                    "context": {
+                        "Context 1": "Some users find Discord's interface overcomplicated for beginners.",
+                        "Context 2": "The recipe was overcomplicated with too many unnecessary steps.",
+                        "Context 3": "His explanation was so overcomplicated that no one understood the concept."
+                    }
+                },
+                {
+                    "word": "Rate limit",
+                    "definition": "A restriction on the number of requests a user can make to a service in a given time frame.",
+                    "context": {
+                        "Context 1": "The rate limit on Discord prevents users from spamming messages.",
+                        "Context 2": "The website implemented a rate limit to avoid server overload.",
+                        "Context 3": "The delivery service has a rate limit on how many packages can be sent per hour."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Discord",
+                    "fact": "Discord was originally designed for gamers, but now it's used for everything from study groups to book clubs!"
+                },
+                {
+                    "word": "Stream",
+                    "fact": "Did you know that the word 'stream' comes from the Old English 'streama,' which means 'a current of water'? Now it's all about data!"
+                },
+                {
+                    "word": "Username",
+                    "fact": "Some people take their usernames so seriously that they spend hours trying to come up with the perfect one, while others just go with 'User123'!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes from its past!"
+                },
+                {
+                    "question": "Why did the gamer bring a ladder to the game?",
+                    "answer": "Because they wanted to reach the next level!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Thumbnail",
+                    "definition": "A small image that represents a larger image or video, often used as a preview.",
+                    "context": {
+                        "Context 1": "The thumbnail for the YouTube video was so eye-catching that I couldn't resist clicking on it.",
+                        "Context 2": "She created a thumbnail for her blog post to attract more readers.",
+                        "Context 3": "The artist used a thumbnail sketch to plan out the larger painting."
+                    }
+                },
+                {
+                    "word": "Behavior",
+                    "definition": "The way in which one acts or conducts oneself, especially towards others.",
+                    "context": {
+                        "Context 1": "The study focused on the behavior of animals in their natural habitat.",
+                        "Context 2": "His behavior in class improved after he received positive feedback.",
+                        "Context 3": "The behavior of the stock market can be unpredictable at times."
+                    }
+                },
+                {
+                    "word": "Aggression",
+                    "definition": "Hostile or violent behavior or attitudes toward another; readiness to attack or confront.",
+                    "context": {
+                        "Context 1": "The documentary explored the roots of aggression in both humans and animals.",
+                        "Context 2": "His aggression on the field made him a formidable opponent.",
+                        "Context 3": "Aggression can sometimes be a sign of underlying stress or anxiety."
+                    }
+                },
+                {
+                    "word": "Species",
+                    "definition": "A group of living organisms consisting of similar individuals capable of exchanging genes or interbreeding.",
+                    "context": {
+                        "Context 1": "Humans and bonobos share a common ancestor, making them part of the same species family.",
+                        "Context 2": "The conservationist focused on endangered species to help preserve biodiversity.",
+                        "Context 3": "In biology class, we learned about the different species of birds in our region."
+                    }
+                },
+                {
+                    "word": "Evolution",
+                    "definition": "The process by which different kinds of living organisms develop and diversify from earlier forms.",
+                    "context": {
+                        "Context 1": "The lesson covered the theory of evolution and its impact on species development.",
+                        "Context 2": "She believes that technology is undergoing rapid evolution in the modern world.",
+                        "Context 3": "The evolution of fashion trends can be fascinating to study."
+                    }
+                },
+                {
+                    "word": "Natural Selection",
+                    "definition": "The process whereby organisms better adapted to their environment tend to survive and produce more offspring.",
+                    "context": {
+                        "Context 1": "Natural selection plays a crucial role in the evolution of species.",
+                        "Context 2": "In business, natural selection can be seen in how companies that adapt thrive.",
+                        "Context 3": "The concept of natural selection can also apply to social dynamics in groups."
+                    }
+                },
+                {
+                    "word": "Cooperative",
+                    "definition": "Involving mutual assistance in working toward a common goal.",
+                    "context": {
+                        "Context 1": "The research indicated that cooperative behavior is preferred in mate selection.",
+                        "Context 2": "The cooperative effort among team members led to a successful project.",
+                        "Context 3": "In cooperative games, players work together to achieve a shared objective."
+                    }
+                },
+                {
+                    "word": "Resource-rich",
+                    "definition": "Having an abundance of resources, such as food, water, or materials.",
+                    "context": {
+                        "Context 1": "Bonobos thrive in a resource-rich environment, which reduces their need for aggression.",
+                        "Context 2": "The country is known for its resource-rich lands, making it a target for investment.",
+                        "Context 3": "In video games, resource-rich areas are often contested by players."
+                    }
+                },
+                {
+                    "word": "Convenient",
+                    "definition": "Fitting in well with a person's needs, activities, and plans; easy to use or access.",
+                    "context": {
+                        "Context 1": "The online shopping platform was convenient for purchasing items quickly.",
+                        "Context 2": "Having a coffee shop nearby is very convenient for busy students.",
+                        "Context 3": "The new app made it convenient to track my fitness goals."
+                    }
+                },
+                {
+                    "word": "Analyze",
+                    "definition": "To examine in detail for purposes of explanation and interpretation.",
+                    "context": {
+                        "Context 1": "The scientist aimed to analyze the behavior patterns of different animal species.",
+                        "Context 2": "She needed to analyze the data before making any conclusions.",
+                        "Context 3": "The detective had to analyze the evidence to solve the case."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Aggression",
+                    "fact": "Did you know that some animals, like dolphins, can display aggression but also have playful behaviors? They really know how to balance their moods!"
+                },
+                {
+                    "word": "Species",
+                    "fact": "There are more than 8.7 million known species on Earth, but scientists estimate that over 80% of species are still undiscovered. Talk about a hidden talent!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the biologist break up with their partner?",
+                    "answer": "They found them too 'cell-fish'!"
+                },
+                {
+                    "question": "Why did the animal behaviorist bring a ladder to the bar?",
+                    "answer": "Because they heard the drinks were on the house!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Unforgiving",
+                    "definition": "Harsh or severe; not allowing for mistakes or weaknesses.",
+                    "context": {
+                        "Context 1": "The unforgiving environment made survival difficult for early humans.",
+                        "Context 2": "The unforgiving nature of the exam left many students feeling stressed.",
+                        "Context 3": "In the unforgiving world of competitive sports, only the strongest survive."
+                    }
+                },
+                {
+                    "word": "Aggression",
+                    "definition": "Hostile or violent behavior or attitudes.",
+                    "context": {
+                        "Context 1": "Aggression can sometimes be a response to feeling threatened.",
+                        "Context 2": "The puppy showed aggression when it was startled by a loud noise.",
+                        "Context 3": "His aggression on the basketball court helped him score many points."
+                    }
+                },
+                {
+                    "word": "Surplus",
+                    "definition": "An amount of something that is more than what is needed.",
+                    "context": {
+                        "Context 1": "The surplus of food allowed the community to share with those in need.",
+                        "Context 2": "After the sale, there was a surplus of unsold items left in the store.",
+                        "Context 3": "The surplus of water in the reservoir ensured that the town would not face drought."
+                    }
+                },
+                {
+                    "word": "Helpless",
+                    "definition": "Unable to defend oneself or act effectively; powerless.",
+                    "context": {
+                        "Context 1": "She felt helpless when she saw the accident but didn't know how to help.",
+                        "Context 2": "The kitten looked helpless as it tried to climb out of the box.",
+                        "Context 3": "He felt helpless when he realized he had lost his wallet."
+                    }
+                },
+                {
+                    "word": "Infantile",
+                    "definition": "Characteristic of a child; immature.",
+                    "context": {
+                        "Context 1": "His infantile behavior during the meeting frustrated his colleagues.",
+                        "Context 2": "The infantile drawings on the wall showed the creativity of the young artist.",
+                        "Context 3": "Her infantile sense of humor made everyone laugh at the party."
+                    }
+                },
+                {
+                    "word": "Survive",
+                    "definition": "To continue to live or exist, especially in spite of danger or hardship.",
+                    "context": {
+                        "Context 1": "Many species have adapted to survive in harsh environments.",
+                        "Context 2": "He learned how to survive in the wilderness during his camping trip.",
+                        "Context 3": "The plant can survive with very little water."
+                    }
+                },
+                {
+                    "word": "Resources",
+                    "definition": "A source of supply or support; materials or assets.",
+                    "context": {
+                        "Context 1": "The community pooled its resources to help those in need.",
+                        "Context 2": "The school has limited resources for art supplies.",
+                        "Context 3": "Natural resources like oil and gas are vital for the economy."
+                    }
+                },
+                {
+                    "word": "Control",
+                    "definition": "The power to influence or direct people's behavior or the course of events.",
+                    "context": {
+                        "Context 1": "He struggled to maintain control over his emotions during the argument.",
+                        "Context 2": "The control of the remote allowed her to change the channel easily.",
+                        "Context 3": "The manager has control over the budget for the project."
+                    }
+                },
+                {
+                    "word": "Environment",
+                    "definition": "The surroundings or conditions in which a person, animal, or plant lives or operates.",
+                    "context": {
+                        "Context 1": "The environment plays a crucial role in shaping behavior.",
+                        "Context 2": "The park provides a beautiful environment for picnics.",
+                        "Context 3": "The classroom environment can greatly affect student learning."
+                    }
+                },
+                {
+                    "word": "Challenge",
+                    "definition": "A task or situation that tests someone's abilities.",
+                    "context": {
+                        "Context 1": "Learning a new language can be a significant challenge.",
+                        "Context 2": "The challenge of climbing the mountain excited the adventurers.",
+                        "Context 3": "He accepted the challenge to run a marathon."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Surplus",
+                    "fact": "Did you know that the word 'surplus' comes from the Latin 'superplus,' meaning 'more than enough'?"
+                },
+                {
+                    "word": "Helpless",
+                    "fact": "The term 'helpless' is often used in cartoons when characters find themselves in ridiculous situations, like falling into a pie!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the scarecrow win an award?",
+                    "answer": "Because he was outstanding in his field!"
+                },
+                {
+                    "question": "What do you call a bear with no teeth?",
+                    "answer": "A gummy bear!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Inheritance",
+                    "definition": "The assets or qualities passed down from one generation to another.",
+                    "context": {
+                        "Context 1": "His daughter did not receive her inheritance because she refused to accept it.",
+                        "Context 2": "The family’s inheritance included a large estate and several businesses.",
+                        "Context 3": "She was surprised to learn that her inheritance was a collection of rare coins."
+                    }
+                },
+                {
+                    "word": "Dysfunctional",
+                    "definition": "Not operating normally or properly; characterized by unhealthy family dynamics.",
+                    "context": {
+                        "Context 1": "She comes from a dysfunctional family, which affected her relationships.",
+                        "Context 2": "The dysfunctional machine needed repairs before it could be used again.",
+                        "Context 3": "His dysfunctional diet included only junk food and soda."
+                    }
+                },
+                {
+                    "word": "Scammed",
+                    "definition": "To be deceived or tricked, especially in a financial context.",
+                    "context": {
+                        "Context 1": "His mother was scammed out of her apartment by fraudsters.",
+                        "Context 2": "I got scammed when I bought a fake watch online.",
+                        "Context 3": "The magician scammed the audience with his clever tricks."
+                    }
+                },
+                {
+                    "word": "Professional Deformation",
+                    "definition": "A change in a person's behavior or thinking due to their profession.",
+                    "context": {
+                        "Context 1": "His professional deformation made him give advice on topics he knew little about.",
+                        "Context 2": "The artist's professional deformation led him to see the world in colors and shapes.",
+                        "Context 3": "After years in finance, her professional deformation made her overly cautious with money."
+                    }
+                },
+                {
+                    "word": "Parentification",
+                    "definition": "When a child is forced to take on the role of a parent, often due to the parents' inability to care for them.",
+                    "context": {
+                        "Context 1": "He experienced parentification, having to care for his younger siblings.",
+                        "Context 2": "The parentification of pets can lead to them acting like humans.",
+                        "Context 3": "In some cultures, parentification is seen as a rite of passage."
+                    }
+                },
+                {
+                    "word": "Mock Test",
+                    "definition": "A practice exam designed to simulate the conditions of a real test.",
+                    "context": {
+                        "Context 1": "She took a mock test to prepare for the real exam next week.",
+                        "Context 2": "The mock test was actually a fun quiz about pop culture.",
+                        "Context 3": "He used a mock test to decide which pizza toppings to choose."
+                    }
+                },
+                {
+                    "word": "Stress",
+                    "definition": "A state of mental or emotional strain or tension resulting from adverse or demanding circumstances.",
+                    "context": {
+                        "Context 1": "She felt stress before her exam, but she learned to manage it.",
+                        "Context 2": "The stress of planning a wedding can be overwhelming.",
+                        "Context 3": "He found that stress can sometimes lead to creative breakthroughs."
+                    }
+                },
+                {
+                    "word": "Environment",
+                    "definition": "The surroundings or conditions in which a person, animal, or plant lives or operates.",
+                    "context": {
+                        "Context 1": "His environment growing up influenced his career choices.",
+                        "Context 2": "The environment in the office was very supportive and collaborative.",
+                        "Context 3": "The environment of outer space is vastly different from Earth."
+                    }
+                },
+                {
+                    "word": "Capable",
+                    "definition": "Having the ability, fitness, or quality necessary to do or achieve a specified thing.",
+                    "context": {
+                        "Context 1": "She felt capable of taking the real test after her mock exam.",
+                        "Context 2": "He was capable of running a marathon after months of training.",
+                        "Context 3": "The robot was capable of performing complex tasks with ease."
+                    }
+                },
+                {
+                    "word": "Advices",
+                    "definition": "Suggestions or recommendations offered regarding a decision or course of action.",
+                    "context": {
+                        "Context 1": "He often gives advice on topics he knows little about, which can be misleading.",
+                        "Context 2": "The advice from the wise old man helped the villagers.",
+                        "Context 3": "She received conflicting advices from her friends about which movie to watch."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Dysfunctional",
+                    "fact": "Did you know that the term 'dysfunctional' was first used in the 1950s to describe families that were not functioning well? Now it’s often used to describe everything from relationships to appliances!"
+                },
+                {
+                    "word": "Parentification",
+                    "fact": "Parentification is so common that some psychologists say it’s a rite of passage for many kids, especially in large families. Who knew being a mini-parent could be a trend?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to the exam?",
+                    "answer": "Because they wanted to reach new heights!"
+                },
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey there! How's it going this morning?"
+                },
+                {
+                    "Person 2": "Good morning! I'm doing well, just trying to wake up a bit. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I had a bit too much coffee, I think. You ever use Discord?"
+                },
+                {
+                    "Person 2": "Yeah, I used it a while back for gaming. It's pretty cool. Do you have an account?"
+                },
+                {
+                    "Person 1": "I think I do, but I haven't logged in forever. I mostly stick to Skype."
+                },
+                {
+                    "Person 2": "Skype is nice, but Discord has some fun features. You should give it another shot!"
+                },
+                {
+                    "Person 1": "Maybe! I just find it a bit complicated sometimes."
+                },
+                {
+                    "Person 2": "I get that. It can be a bit overwhelming at first. But once you get the hang of it, it's pretty easy."
+                },
+                {
+                    "Person 1": "Yeah, I remember trying to set it up and getting stuck on the audio settings."
+                },
+                {
+                    "Person 2": "Oh, the audio settings can be tricky! I had to mess around with mine too."
+                },
+                {
+                    "Person 1": "So, what have you been up to lately? Any new games?"
+                },
+                {
+                    "Person 2": "Not really. I've been more into reading books these days. How about you?"
+                },
+                {
+                    "Person 1": "I've been trying to read more too! But I keep getting distracted by my phone."
+                },
+                {
+                    "Person 2": "Same! It's hard to focus when there are so many notifications."
+                },
+                {
+                    "Person 1": "Right? I feel like I need to set some limits on my screen time."
+                },
+                {
+                    "Person 2": "That sounds like a good idea. Maybe we can hold each other accountable!"
+                },
+                {
+                    "Person 1": "Deal! Let's check in with each other next week."
+                },
+                {
+                    "Person 2": "Sounds good! And maybe we can try a game night on Discord sometime."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you see that new video about animal behavior on YouTube?"
+                },
+                {
+                    "Person 2": "Oh, I think I did! The one where they talk about why some animals are so colorful?"
+                },
+                {
+                    "Person 1": "Exactly! I found it really interesting how they connect that to evolution."
+                },
+                {
+                    "Person 2": "Yeah, it’s wild to think about how those traits develop over time. I love watching stuff like that."
+                },
+                {
+                    "Person 1": "Same here! But sometimes I feel like I waste too much time scrolling through videos."
+                },
+                {
+                    "Person 2": "Right? I mean, I start watching one video and then suddenly it's two hours later."
+                },
+                {
+                    "Person 1": "Totally! I tried to focus on a book last night, but I kept picking up my phone."
+                },
+                {
+                    "Person 2": "I get that. I think I need to set some limits for myself, like no phone an hour before bed."
+                },
+                {
+                    "Person 1": "That sounds like a good plan. I might try that too, after I finish this video, of course!"
+                },
+                {
+                    "Person 2": "Haha, classic! We’re all in the same boat, aren't we?"
+                },
+                {
+                    "Person 1": "For sure! By the way, have you ever thought about how our pets might behave differently based on their environment?"
+                },
+                {
+                    "Person 2": "Definitely! Like, I read that dogs can pick up on our moods and adjust their behavior."
+                },
+                {
+                    "Person 1": "Yeah, it’s fascinating how connected we are with them. Makes me appreciate my dog even more."
+                },
+                {
+                    "Person 2": "Same! I think they really help us understand ourselves better, too."
+                },
+                {
+                    "Person 1": "Absolutely! Alright, I’ll try to limit my scrolling. Let’s see how that goes!"
+                },
+                {
+                    "Person 2": "Good luck! We can check in tomorrow to see if we actually did it!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that documentary about food scarcity?"
+                },
+                {
+                    "Person 2": "No, I missed it! What was it about?"
+                },
+                {
+                    "Person 1": "It was really interesting. It talked about how we actually produce more food than we need, but people still starve."
+                },
+                {
+                    "Person 2": "That sounds wild! How does that even happen?"
+                },
+                {
+                    "Person 1": "Apparently, it's mostly because of how resources are controlled. It's not that we can't grow enough food; it's just not shared properly."
+                },
+                {
+                    "Person 2": "Wow, that’s frustrating! You’d think with all the technology we have, we could solve that."
+                },
+                {
+                    "Person 1": "Exactly! It’s kind of an artificial problem. Like, we have everything we need, but the system is just messed up."
+                },
+                {
+                    "Person 2": "Right? And it’s not just food. There are so many things we have access to, but still face issues."
+                },
+                {
+                    "Person 1": "Totally! I mean, my family had a garden growing up, so we always had fresh veggies. But not everyone knows how to do that."
+                },
+                {
+                    "Person 2": "Same here! My grandparents used to grow their own food too. It’s a lost skill for a lot of people."
+                },
+                {
+                    "Person 1": "Yeah, and when people don’t have that experience, they struggle when things get tough."
+                },
+                {
+                    "Person 2": "Exactly! It’s like they don’t know how to adapt or find solutions."
+                },
+                {
+                    "Person 1": "For sure! I mean, I wouldn’t know how to survive in the wild without some help."
+                },
+                {
+                    "Person 2": "Same! I’d probably just end up lost somewhere. But it’s cool that you’ve learned some survival skills."
+                },
+                {
+                    "Person 1": "Thanks! I think it’s important to know a bit about that stuff, especially with all the crazy things happening in the world."
+                },
+                {
+                    "Person 2": "Absolutely! And who knows, maybe one day we’ll need those skills."
+                },
+                {
+                    "Person 1": "Let’s hope it doesn’t come to that! But it’s good to be prepared."
+                },
+                {
+                    "Person 2": "For sure! Alright, I’ll have to check out that documentary when I get a chance."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to figure out my work situation. You know how it is."
+                },
+                {
+                    "Person 1": "Yeah, I totally get that. Are you still looking for jobs?"
+                },
+                {
+                    "Person 2": "Kind of. I had an interview last week, but it was in Russian, and I’m not sure how I did."
+                },
+                {
+                    "Person 1": "Oh wow, that sounds challenging! Did you feel prepared?"
+                },
+                {
+                    "Person 2": "I thought I was, but then I got really nervous. I spent so much time studying for the tests."
+                },
+                {
+                    "Person 1": "That’s understandable. Interviews can be super stressful. What’s your next step?"
+                },
+                {
+                    "Person 2": "I want to take a real exam this week. I think I’ll be ready."
+                },
+                {
+                    "Person 1": "That’s great! Just remember to treat it like a practice test. Don’t overthink it."
+                },
+                {
+                    "Person 2": "Yeah, I know. Stressing out doesn’t help at all."
+                },
+                {
+                    "Person 1": "Exactly! And maybe try to avoid Russian for a bit before the test to clear your mind."
+                },
+                {
+                    "Person 2": "Good idea! I’ll definitely do that. I need to focus on English."
+                },
+                {
+                    "Person 1": "Sounds like a plan! Let’s catch up after your exam."
+                },
+                {
+                    "Person 2": "Definitely! Thanks for the support. See you soon!"
+                },
+                {
+                    "Person 1": "See you! Good luck!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
