@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 6,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I try to be as fast as I can So I put every letter that I see Not every, just random",
+                    "corrected": "I try to be as fast as I can, so I put in random letters.",
+                    "explanation": "The phrase 'put every letter that I see' is awkward; 'put in random letters' is clearer and more idiomatic.",
+                    "context": "I try to be as fast as I can, so I put in random letters. I don't always check what I'm typing."
+                },
+                {
+                    "original": "I understand that it cannot be today",
+                    "corrected": "I understood that it couldn't be today.",
+                    "explanation": "The tense should be past ('understood') to match the context of a previous realization.",
+                    "context": "I wrote you a schedule yesterday. I understood that it couldn't be today."
+                },
+                {
+                    "original": "Heavy lifting? Heavy lifting, yeah Means most of hard and most of hard job",
+                    "corrected": "Heavy lifting? Heavy lifting, yeah. It means the hardest part of the job.",
+                    "explanation": "The phrase 'most of hard and most of hard job' is redundant and unclear; 'the hardest part of the job' is more precise.",
+                    "context": "You're doing a lot of work today. It means the hardest part of the job."
+                },
+                {
+                    "original": "Remote work means to work not in the office But in the office",
+                    "corrected": "Remote work means to work not in the office but from other locations.",
+                    "explanation": "The phrase 'but in the office' contradicts the definition of remote work; it should clarify that it involves working from different locations.",
+                    "context": "Remote work means to work not in the office but from other locations. It's about flexibility in where you work."
+                },
+                {
+                    "original": "Why are you using so weird formatting?",
+                    "corrected": "Why are you using such weird formatting?",
+                    "explanation": "'So weird' is incorrect in this context; 'such weird' is the appropriate phrase.",
+                    "context": "I noticed the formatting in your document. Why are you using such weird formatting?"
+                },
+                {
+                    "original": "How I should say that?",
+                    "corrected": "How should I say that?",
+                    "explanation": "The word order is incorrect; the correct structure is 'How should I'.",
+                    "context": "I want to express a concept in English. How should I say that?"
+                },
+                {
+                    "original": "This is not enough for you to assume that it's safe to use it",
+                    "corrected": "This is not enough for you to assume that it's safe to use.",
+                    "explanation": "The phrase 'to use it' is awkward; it should be more concise as 'to use'.",
+                    "context": "You might think a word translates directly. This is not enough for you to assume that it's safe to use."
+                },
+                {
+                    "original": "Imagine that we have in English the word in Russian",
+                    "corrected": "Imagine that we have a word in English that corresponds to a word in Russian.",
+                    "explanation": "The original sentence structure is confusing; it should clearly indicate the comparison between the two languages.",
+                    "context": "I want to illustrate a point about translation. Imagine that we have a word in English that corresponds to a word in Russian."
+                },
+                {
+                    "original": "What is it? What part of it?",
+                    "corrected": "What is it? What part is it?",
+                    "explanation": "The phrase 'What part of it?' is unclear; 'What part is it?' is more direct.",
+                    "context": "I'm trying to clarify a concept. What is it? What part is it?"
+                },
+                {
+                    "original": "I should write a logical chain?",
+                    "corrected": "Should I write a logical chain?",
+                    "explanation": "The sentence structure is incorrect; it should be phrased as a question.",
+                    "context": "I'm unsure about the assignment. Should I write a logical chain?"
+                },
+                {
+                    "original": "Logical chain is when you start with one premise and have one conclusion",
+                    "corrected": "A logical chain is when you start with one premise and reach a conclusion.",
+                    "explanation": "The phrase 'have one conclusion' is awkward; 'reach a conclusion' is more idiomatic.",
+                    "context": "I'm explaining the concept of logical chains. A logical chain is when you start with one premise and reach a conclusion."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "Going smoke together is not something that I can write.",
+                    "corrected": "Going to smoke together is not something that I can write.",
+                    "explanation": "The phrase 'going smoke together' is incorrect; it should be 'going to smoke together' to indicate the action of smoking.",
+                    "context": "When discussing social activities, I mentioned that going to smoke together is not something that I can write. However, I understand that it's a common practice for some people."
+                },
+                {
+                    "original": "But usually people go, usually people smoke, is it because they want to do it with someone or there are other reasons?",
+                    "corrected": "But usually people smoke; is it because they want to do it with someone, or are there other reasons?",
+                    "explanation": "The sentence lacks proper punctuation and structure; it should be split into two parts for clarity.",
+                    "context": "I was pondering the reasons why people smoke during breaks. But usually people smoke; is it because they want to do it with someone, or are there other reasons?"
+                },
+                {
+                    "original": "They want to distract, relax.",
+                    "corrected": "They want to distract themselves and relax.",
+                    "explanation": "The phrase is incomplete; it should include 'themselves' and 'and' to connect the two actions.",
+                    "context": "In discussing the motivations behind smoking breaks, I noted that they want to distract themselves and relax."
+                },
+                {
+                    "original": "That's strange, yeah, you see, if it starts raising.",
+                    "corrected": "That's strange, yeah, you see, if it starts rising.",
+                    "explanation": "'Raising' is incorrect here; 'rising' should be used to describe something that is increasing.",
+                    "context": "While reflecting on the discussion, I found it strange. That's strange, yeah, you see, if it starts rising, it could indicate a larger issue."
+                },
+                {
+                    "original": "Central area is not plural.",
+                    "corrected": "The central area is not plural.",
+                    "explanation": "The sentence is missing an article; it should include 'the' to specify the noun.",
+                    "context": "In our discussion about geography, I pointed out that the central area is not plural, which is important for our analysis."
+                },
+                {
+                    "original": "I forgot the word that costs a lot, hyper-access.",
+                    "corrected": "I forgot the word that means something expensive, hyper-access.",
+                    "explanation": "The phrase 'costs a lot' is vague; 'means something expensive' is clearer.",
+                    "context": "While trying to recall specific terminology, I mentioned that I forgot the word that means something expensive, hyper-access."
+                },
+                {
+                    "original": "Sometimes we can use the opposite and to just say not I remembered the word cheap, but I can't remember.",
+                    "corrected": "Sometimes we can use the opposite and just say, 'I remembered the word cheap, but I can't remember the opposite.'",
+                    "explanation": "The sentence structure is confusing; it should clarify what is being remembered and what is not.",
+                    "context": "In discussing vocabulary, I suggested that sometimes we can use the opposite and just say, 'I remembered the word cheap, but I can't remember the opposite.'"
+                },
+                {
+                    "original": "Which are not cheap?",
+                    "corrected": "Which things are not cheap?",
+                    "explanation": "The sentence is incomplete; it should specify what 'which' refers to.",
+                    "context": "When discussing affordability, I asked, 'Which things are not cheap?' to clarify my point."
+                },
+                {
+                    "original": "It sounds like example.",
+                    "corrected": "It sounds like an example.",
+                    "explanation": "The sentence is missing the article 'an' before 'example.'",
+                    "context": "In our discussion about examples and explanations, I noted that it sounds like an example."
+                },
+                {
+                    "original": "How is it different from the explanation?",
+                    "corrected": "How is it different from an explanation?",
+                    "explanation": "The sentence is missing the article 'an' before 'explanation.'",
+                    "context": "While trying to differentiate between concepts, I asked, 'How is it different from an explanation?'"
+                },
+                {
+                    "original": "Difficulties of getting to work is your reason why it is actually less productive.",
+                    "corrected": "The difficulties of getting to work are the reason why it is actually less productive.",
+                    "explanation": "The subject-verb agreement is incorrect; 'difficulties' is plural and requires 'are.'",
+                    "context": "In discussing productivity, I explained that the difficulties of getting to work are the reason why it is actually less productive."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "That you can start earlier and do not spend time on preparation and something like this.",
+                    "corrected": "That you can start earlier and not spend time on preparation and things like that.",
+                    "explanation": "The phrase 'do not' should be 'not' to maintain parallel structure with 'can start earlier.'",
+                    "context": "When discussing the benefits of remote work, I mentioned that you can start earlier and not spend time on preparation and things like that. This makes the workday more efficient."
+                },
+                {
+                    "original": "You've never heard of people who work remotely Actually they are just sleeping and they started at the same time.",
+                    "corrected": "You've never heard of people who work remotely? Actually, they just sleep and start at the same time.",
+                    "explanation": "A question mark is needed after 'remotely' to indicate a question, and 'are' should be removed for clarity.",
+                    "context": "I was surprised to hear that you've never heard of people who work remotely. Actually, they just sleep and start at the same time as everyone else."
+                },
+                {
+                    "original": "I studied remotely, but I live in a small area I don't take a lot of time to go somewhere.",
+                    "corrected": "I studied remotely, but I live in a small area, so I don't take a lot of time to go anywhere.",
+                    "explanation": "A conjunction is needed to connect the two independent clauses, and 'somewhere' should be 'anywhere' for better clarity.",
+                    "context": "Reflecting on my experience, I studied remotely, but I live in a small area, so I don't take a lot of time to go anywhere. This has made my learning experience easier."
+                },
+                {
+                    "original": "You are trying to make up examples, to talk about things you don't really know much about.",
+                    "corrected": "You are trying to make up examples to talk about things you don't really know much about.",
+                    "explanation": "The comma before 'to talk' is unnecessary and disrupts the flow of the sentence.",
+                    "context": "I noticed that you are trying to make up examples to talk about things you don't really know much about. It's better to stick to what you are familiar with."
+                },
+                {
+                    "original": "But still it's some time.",
+                    "corrected": "But still, it's some time.",
+                    "explanation": "A comma is needed after 'still' to separate the clauses correctly.",
+                    "context": "When discussing commuting, I said that I live 30 minutes away from my university. But still, it's some time that could be used more productively."
+                },
+                {
+                    "original": "What is the disadvantage when people live far from their workplace?",
+                    "corrected": "What is the disadvantage of living far from one's workplace?",
+                    "explanation": "The phrase should use 'of' instead of 'when' to correctly express the relationship between living far and the disadvantages.",
+                    "context": "In our discussion about commuting, I asked what the disadvantage of living far from one's workplace is. This helps us understand the impact on productivity."
+                },
+                {
+                    "original": "You spend a lot of time and you need to wake up early.",
+                    "corrected": "You spend a lot of time, and you need to wake up early.",
+                    "explanation": "A comma is needed before 'and' to separate the two independent clauses.",
+                    "context": "I pointed out that when commuting, you spend a lot of time, and you need to wake up early. This can lead to fatigue and affect productivity."
+                },
+                {
+                    "original": "This is an example I'm going to show you a video.",
+                    "corrected": "This is an example. I'm going to show you a video.",
+                    "explanation": "The sentence should be split into two separate sentences for clarity.",
+                    "context": "While explaining a point, I said, 'This is an example. I'm going to show you a video.' This helps illustrate my argument effectively."
+                },
+                {
+                    "original": "But think, is it specific enough?",
+                    "corrected": "But think, is it specific enough?",
+                    "explanation": "The sentence is grammatically correct, but it could be rephrased for clarity.",
+                    "context": "As we reviewed the second body paragraph, I asked, 'But think, is it specific enough?' This encourages deeper analysis of the content."
+                },
+                {
+                    "original": "If you put, for example, before the sentence, would it make sense?",
+                    "corrected": "If you put, for example, before the sentence, would it make sense?",
+                    "explanation": "The sentence is grammatically correct, but it lacks clarity and could be more concise.",
+                    "context": "In our discussion about structuring sentences, I asked, 'If you put, for example, before the sentence, would it make sense?' This prompts consideration of sentence structure."
+                },
+                {
+                    "original": "People are are they productive in government or institute like in these passport tables?",
+                    "corrected": "Are people productive in government institutions, like in these passport offices?",
+                    "explanation": "The phrase is confusing and contains a repetition of 'are.' It should be restructured for clarity.",
+                    "context": "When discussing productivity, I questioned, 'Are people productive in government institutions, like in these passport offices?' This highlights issues in bureaucratic efficiency."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "It's people who are built very strong friendship with their coworkers.",
+                    "corrected": "It's people who have built very strong friendships with their coworkers.",
+                    "explanation": "The phrase 'are built' is incorrect; 'have built' is the correct form to indicate the action of forming friendships.",
+                    "context": "People often form strong connections with their coworkers. It's people who have built very strong friendships with their coworkers. These relationships can impact their work dynamics."
+                },
+                {
+                    "original": "It's just random people.",
+                    "corrected": "They're just random people.",
+                    "explanation": "The use of 'It's' is incorrect here; 'They're' should be used to refer to people.",
+                    "context": "Friendships at work can vary greatly. They're just random people. Some may connect deeply, while others remain distant."
+                },
+                {
+                    "original": "But if some middle aged woman would would read it, I think it would be very low score.",
+                    "corrected": "But if some middle-aged woman were to read it, I think it would receive a very low score.",
+                    "explanation": "The conditional form 'would' should be replaced with 'were to' for hypothetical situations; 'middle aged' should be hyphenated.",
+                    "context": "When considering the audience, I realize that some middle-aged woman were to read it, I think it would receive a very low score. It's important to be mindful of how different demographics perceive content."
+                },
+                {
+                    "original": "I can I have experience, you know, like what it feels like to work in in the in in an office.",
+                    "corrected": "I have experience, you know, of what it feels like to work in an office.",
+                    "explanation": "The phrase 'I can I have experience' is incorrect; it should be 'I have experience.' The repetition of 'in' is also unnecessary.",
+                    "context": "Having worked in several companies, I can say I have experience, you know, of what it feels like to work in an office. This gives me a unique perspective on workplace dynamics."
+                },
+                {
+                    "original": "They are going to be able to communicate with each other.",
+                    "corrected": "They are not going to be able to communicate with each other.",
+                    "explanation": "The original sentence incorrectly states that they will communicate; it should indicate that they will not.",
+                    "context": "In some work environments, the close relationships can hinder communication. They are not going to be able to communicate with each other effectively. This can lead to misunderstandings."
+                },
+                {
+                    "original": "But on the other hand, they do things much slower than they could possibly.",
+                    "corrected": "But on the other hand, they do things much slower than they possibly could.",
+                    "explanation": "The word 'possibly' should come after 'could' to maintain proper word order.",
+                    "context": "While strong relationships can foster teamwork, there are downsides. But on the other hand, they do things much slower than they possibly could. This can affect overall productivity."
+                },
+                {
+                    "original": "Because probably if you really think of that, probably, you know, talking is not the issue here.",
+                    "corrected": "Because if you really think about it, talking is probably not the issue here.",
+                    "explanation": "The phrase 'think of that' should be 'think about it'; 'probably' is repeated unnecessarily.",
+                    "context": "When analyzing workplace distractions, I realize that talking is probably not the issue here. It's essential to identify the real distractions affecting productivity."
+                },
+                {
+                    "original": "When you can't go on the workplace, but you still productive.",
+                    "corrected": "When you can't go to the workplace, but you are still productive.",
+                    "explanation": "The phrase 'go on the workplace' is incorrect; it should be 'go to the workplace.' 'You still productive' needs 'are' to be grammatically correct.",
+                    "context": "In times of crisis, like a pandemic, many people find new ways to work. When you can't go to the workplace, but you are still productive, it shows adaptability."
+                },
+                {
+                    "original": "I mean, I don't have people to talk.",
+                    "corrected": "I mean, I don't have people to talk to.",
+                    "explanation": "The phrase 'to talk' is incomplete; it should be 'to talk to' to indicate the action of conversing.",
+                    "context": "Reflecting on my productivity, I realize that I work better alone. I mean, I don't have people to talk to. This helps me focus on my tasks."
+                },
+                {
+                    "original": "What kind of protection is that? Their own offices.",
+                    "corrected": "What kind of protection is that? It's their own offices.",
+                    "explanation": "The response lacks a subject; 'It's' should be added for clarity.",
+                    "context": "In discussing workplace dynamics, we ponder the measures taken to enhance productivity. What kind of protection is that? It's their own offices that provide a distraction-free environment."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "Should I put it in... Should I put S there?",
+                    "corrected": "Should I put an S there?",
+                    "explanation": "The article 'an' is needed before the noun 'S' to indicate that it is a singular item.",
+                    "context": "In discussing the correct terminology, I asked if I should put an S there. I was unsure about the grammatical structure."
+                },
+                {
+                    "original": "Is example match the explanation?",
+                    "corrected": "Does the example match the explanation?",
+                    "explanation": "The subject-verb agreement is incorrect; 'does' should be used with 'example' to form a proper question.",
+                    "context": "I was checking if the example aligns with the explanation. Does the example match the explanation? It seems they talk about slightly different things."
+                },
+                {
+                    "original": "What is more important? To simplify idea.",
+                    "corrected": "What is more important? To simplify the idea.",
+                    "explanation": "The definite article 'the' is needed before 'idea' to specify which idea is being referred to.",
+                    "context": "In our discussion about writing, I asked what is more important. To simplify the idea is crucial for clarity."
+                },
+                {
+                    "original": "But your example also good.",
+                    "corrected": "But your example is also good.",
+                    "explanation": "The verb 'is' is missing; it is necessary to complete the sentence grammatically.",
+                    "context": "I acknowledged the value of the other person's example. But your example is also good, and it contributes to our discussion."
+                },
+                {
+                    "original": "What does it mean? Accurate means precisely what we want to express.",
+                    "corrected": "What does it mean? Accurate means exactly what we want to express.",
+                    "explanation": "'Exactly' is a more precise word in this context, emphasizing the clarity of the definition.",
+                    "context": "I was explaining the term 'accurate' in relation to writing. What does it mean? Accurate means exactly what we want to express."
+                },
+                {
+                    "original": "If you like what is what are general rules to play it safe?",
+                    "corrected": "If you like, what are the general rules to play it safe?",
+                    "explanation": "The sentence structure is awkward; 'the' is needed before 'general rules' for proper phrasing.",
+                    "context": "I was trying to clarify the guidelines for writing. If you like, what are the general rules to play it safe in writing?"
+                },
+                {
+                    "original": "But probably we know the word ashes, and we know this expression to scatter ashes.",
+                    "corrected": "But we probably know the word ashes, and we know this expression to scatter ashes.",
+                    "explanation": "The adverb 'probably' should come after 'we' for correct word order in this context.",
+                    "context": "In discussing vocabulary, I noted our familiarity with certain terms. But we probably know the word ashes and the expression to scatter ashes."
+                },
+                {
+                    "original": "But who knows, maybe it's not.",
+                    "corrected": "But who knows, maybe it isn't.",
+                    "explanation": "The contraction 'isn't' is more appropriate and natural in spoken English than 'it's not.'",
+                    "context": "I expressed uncertainty about the accuracy of certain phrases. But who knows, maybe it isn't accurate."
+                },
+                {
+                    "original": "If you have simple words, but good ideas, you will get a high mark.",
+                    "corrected": "If you have simple words but good ideas, you will get a high mark.",
+                    "explanation": "The comma before 'but' is unnecessary in this context as it connects two independent clauses.",
+                    "context": "I was emphasizing the importance of clarity in writing. If you have simple words but good ideas, you will get a high mark."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "I want to see the full essay that I will like.",
+                    "corrected": "I want to see the full essay that I will enjoy.",
+                    "explanation": "'Like' is not appropriate here; 'enjoy' is the correct verb to express appreciation for something.",
+                    "context": "I want to see the full essay that I will enjoy. It's important that it meets the criteria. I don't want to see any risk-taking expressions."
+                },
+                {
+                    "original": "I don't want to see there any risk-taking expressions.",
+                    "corrected": "I don't want to see any risk-taking expressions there.",
+                    "explanation": "The placement of 'there' is incorrect; it should come after 'any risk-taking expressions' for clarity.",
+                    "context": "I want to see the full essay that I will enjoy. I don't want to see any risk-taking expressions there. They can lower your score."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or setting surrounding an event or situation.",
+                    "context": {
+                        "Context 1": "In our lesson, we discussed the context of remote work and its impact on productivity.",
+                        "Context 2": "The context of the movie helped viewers understand the characters' motivations.",
+                        "Context 3": "Without the proper context, the joke didn't make sense to the audience."
+                    }
+                },
+                {
+                    "word": "Productivity",
+                    "definition": "The effectiveness of productive effort, especially in industry, as measured in terms of output per unit of input.",
+                    "context": {
+                        "Context 1": "We talked about how remote work can affect productivity in the workplace.",
+                        "Context 2": "The factory's productivity increased after implementing new machinery.",
+                        "Context 3": "She measured her productivity by tracking how many tasks she completed each day."
+                    }
+                },
+                {
+                    "word": "Thesis Statement",
+                    "definition": "A statement that presents the main idea or argument of an essay or paper.",
+                    "context": {
+                        "Context 1": "In our discussion, we focused on crafting a strong thesis statement for the essay.",
+                        "Context 2": "The thesis statement should clearly outline the main points of your argument.",
+                        "Context 3": "His thesis statement was so vague that it confused the readers."
+                    }
+                },
+                {
+                    "word": "Logical Chain",
+                    "definition": "A sequence of reasoning that connects premises to a conclusion.",
+                    "context": {
+                        "Context 1": "We explored how to create a logical chain to support our arguments in the essay.",
+                        "Context 2": "In math, a logical chain helps solve complex problems step by step.",
+                        "Context 3": "Her logical chain of thought led her to the correct answer in the debate."
+                    }
+                },
+                {
+                    "word": "Comment",
+                    "definition": "A verbal or written remark expressing an opinion or reaction.",
+                    "context": {
+                        "Context 1": "I advised him to limit his comments while writing the essay to stay focused.",
+                        "Context 2": "She left a comment on the blog post to share her thoughts.",
+                        "Context 3": "His comment during the meeting sparked a lively discussion."
+                    }
+                },
+                {
+                    "word": "Objection",
+                    "definition": "An expression or feeling of disapproval or opposition.",
+                    "context": {
+                        "Context 1": "We discussed anticipating objections to strengthen our arguments.",
+                        "Context 2": "The lawyer raised an objection during the trial to challenge the evidence.",
+                        "Context 3": "Her objection to the plan was based on environmental concerns."
+                    }
+                },
+                {
+                    "word": "Collective",
+                    "definition": "A group of individuals acting together for a common purpose.",
+                    "context": {
+                        "Context 1": "In the lesson, we clarified that 'work collective' is not commonly used in English.",
+                        "Context 2": "The collective of artists organized an exhibition to showcase their work.",
+                        "Context 3": "The collective decision was made after a long discussion among the members."
+                    }
+                },
+                {
+                    "word": "Formatting",
+                    "definition": "The arrangement and appearance of text and images on a page.",
+                    "context": {
+                        "Context 1": "We talked about the importance of formatting in making the essay readable.",
+                        "Context 2": "He spent hours formatting his presentation to make it visually appealing.",
+                        "Context 3": "The formatting of the document was inconsistent, making it hard to follow."
+                    }
+                },
+                {
+                    "word": "Plan",
+                    "definition": "A detailed proposal for doing or achieving something.",
+                    "context": {
+                        "Context 1": "We worked on creating a plan for the essay during our lesson.",
+                        "Context 2": "She made a plan to travel across Europe next summer.",
+                        "Context 3": "The team developed a plan to improve customer service."
+                    }
+                },
+                {
+                    "word": "Address",
+                    "definition": "To deal with or discuss a particular issue or problem.",
+                    "context": {
+                        "Context 1": "We need to address the key parts of the essay to make it effective.",
+                        "Context 2": "The manager will address the team's concerns in the next meeting.",
+                        "Context 3": "He failed to address the main issue during the debate."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Productivity",
+                    "fact": "Did you know that studies show that taking short breaks can actually increase productivity? So, coffee breaks are not just for coffee!"
+                },
+                {
+                    "word": "Thesis Statement",
+                    "fact": "The longest thesis ever written was over 3,000 pages long! Talk about a lengthy argument!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What did one essay say to the other?",
+                    "answer": "I think we should stick together; we make a great argument!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Objection",
+                    "definition": "An expression or feeling of disapproval or opposition.",
+                    "context": {
+                        "Context 1": "She raised an objection to the proposal during the meeting.",
+                        "Context 2": "The lawyer filed an objection against the evidence presented.",
+                        "Context 3": "His objection to the new policy was based on personal experience."
+                    }
+                },
+                {
+                    "word": "Distraction",
+                    "definition": "A thing that prevents someone from giving full attention to something else.",
+                    "context": {
+                        "Context 1": "The loud music was a major distraction during the exam.",
+                        "Context 2": "She found her phone to be a constant distraction while studying.",
+                        "Context 3": "The colorful decorations in the room became a distraction during the presentation."
+                    }
+                },
+                {
+                    "word": "Polite",
+                    "definition": "Having or showing behavior that is respectful and considerate of other people.",
+                    "context": {
+                        "Context 1": "It’s polite to say thank you after receiving help.",
+                        "Context 2": "He was polite enough to hold the door open for her.",
+                        "Context 3": "Being polite can help you make friends more easily."
+                    }
+                },
+                {
+                    "word": "Effort",
+                    "definition": "A vigorous or determined attempt.",
+                    "context": {
+                        "Context 1": "She put a lot of effort into her final project.",
+                        "Context 2": "The team’s effort to win the championship paid off.",
+                        "Context 3": "He made an effort to learn a new language before traveling."
+                    }
+                },
+                {
+                    "word": "Undeniable",
+                    "definition": "Unable to be denied or disputed.",
+                    "context": {
+                        "Context 1": "The evidence presented was undeniable and convinced the jury.",
+                        "Context 2": "Her talent for singing was undeniable, earning her a record deal.",
+                        "Context 3": "The undeniable fact is that exercise is good for health."
+                    }
+                },
+                {
+                    "word": "Thesis Statement",
+                    "definition": "A statement that summarizes the main point or claim of an essay or research paper.",
+                    "context": {
+                        "Context 1": "The thesis statement should clearly outline the argument of the paper.",
+                        "Context 2": "In her thesis statement, she argued for the importance of renewable energy.",
+                        "Context 3": "A strong thesis statement can guide the direction of the entire essay."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern used to illustrate a concept.",
+                    "context": {
+                        "Context 1": "He provided an example to clarify his point during the discussion.",
+                        "Context 2": "The teacher asked for an example of a metaphor in literature.",
+                        "Context 3": "Using real-life examples can make a presentation more engaging."
+                    }
+                },
+                {
+                    "word": "Condition",
+                    "definition": "The state of something with regard to its appearance, quality, or working order.",
+                    "context": {
+                        "Context 1": "The car is in excellent condition after the repairs.",
+                        "Context 2": "The living conditions in the area were poor and needed improvement.",
+                        "Context 3": "He checked the condition of the equipment before starting the project."
+                    }
+                },
+                {
+                    "word": "Productivity",
+                    "definition": "The state or quality of producing something, especially in large amounts.",
+                    "context": {
+                        "Context 1": "Improving workplace conditions can enhance productivity.",
+                        "Context 2": "She measured her productivity by tracking the number of tasks completed.",
+                        "Context 3": "High productivity is essential for a successful business."
+                    }
+                },
+                {
+                    "word": "Argument",
+                    "definition": "A reason or set of reasons given in support of an idea, action, or theory.",
+                    "context": {
+                        "Context 1": "His argument was well-structured and convincing.",
+                        "Context 2": "They had a heated argument about the best movie of the year.",
+                        "Context 3": "The argument for climate change action is becoming increasingly urgent."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Objection",
+                    "fact": "In some countries, you can object to a marriage if you think the couple is not right for each other—talk about a dramatic wedding crash!"
+                },
+                {
+                    "word": "Polite",
+                    "fact": "Did you know that in Japan, being polite is so important that there are entire classes dedicated to teaching it?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Commute",
+                    "definition": "To travel some distance between one's home and place of work on a regular basis.",
+                    "context": {
+                        "Context 1": "Many people find their daily commute to work exhausting.",
+                        "Context 2": "After a long commute, he enjoyed relaxing at home with a good book.",
+                        "Context 3": "The city has implemented new policies to reduce the time spent on the commute."
+                    }
+                },
+                {
+                    "word": "Productivity",
+                    "definition": "The state or quality of producing something, especially in large amounts.",
+                    "context": {
+                        "Context 1": "Remote work can enhance productivity by eliminating commute times.",
+                        "Context 2": "The productivity of the farm increased after they adopted new technology.",
+                        "Context 3": "She measured her productivity by how many books she read in a month."
+                    }
+                },
+                {
+                    "word": "Remote work",
+                    "definition": "A work arrangement that allows employees to work outside of a traditional office environment.",
+                    "context": {
+                        "Context 1": "Many companies have adopted remote work policies to improve employee satisfaction.",
+                        "Context 2": "He prefers remote work because it allows him to travel while maintaining his job.",
+                        "Context 3": "Remote work is becoming more common in the tech industry."
+                    }
+                },
+                {
+                    "word": "Bureaucracy",
+                    "definition": "A system of government or management that is characterized by excessive red tape and routine.",
+                    "context": {
+                        "Context 1": "Bureaucracy can slow down decision-making processes in large organizations.",
+                        "Context 2": "The new law aims to reduce bureaucracy in public services.",
+                        "Context 3": "He felt trapped in the bureaucracy of the corporate world."
+                    }
+                },
+                {
+                    "word": "Effort",
+                    "definition": "A vigorous or determined attempt.",
+                    "context": {
+                        "Context 1": "It takes a lot of effort to build strong relationships with coworkers.",
+                        "Context 2": "She put in a great effort to complete the marathon.",
+                        "Context 3": "His effort to learn a new language was commendable."
+                    }
+                },
+                {
+                    "word": "Concentrate",
+                    "definition": "To focus one's attention or mental effort on a particular task.",
+                    "context": {
+                        "Context 1": "Without the distractions of commuting, it's easier to concentrate on work.",
+                        "Context 2": "He struggled to concentrate during the noisy lecture.",
+                        "Context 3": "To concentrate better, she decided to turn off her phone."
+                    }
+                },
+                {
+                    "word": "Statistics",
+                    "definition": "Numerical data collected and analyzed to understand trends or patterns.",
+                    "context": {
+                        "Context 1": "Using statistics can help support claims about productivity in remote work.",
+                        "Context 2": "The statistics showed a significant decrease in crime rates last year.",
+                        "Context 3": "He loves studying statistics to understand sports performance."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern used to illustrate a concept.",
+                    "context": {
+                        "Context 1": "She provided an example of how remote work can improve productivity.",
+                        "Context 2": "As an example, he mentioned famous scientists who changed the world.",
+                        "Context 3": "The teacher asked for an example of a historical event."
+                    }
+                },
+                {
+                    "word": "Challenge",
+                    "definition": "A difficult task or situation that requires a solution.",
+                    "context": {
+                        "Context 1": "Living far from work can present a challenge for many employees.",
+                        "Context 2": "The challenge of climbing the mountain excited the adventurers.",
+                        "Context 3": "She faced the challenge of balancing work and family life."
+                    }
+                },
+                {
+                    "word": "Relationship",
+                    "definition": "The way in which two or more people or groups regard and behave toward each other.",
+                    "context": {
+                        "Context 1": "Building a good relationship with coworkers is important for teamwork.",
+                        "Context 2": "Their friendship developed into a romantic relationship over time.",
+                        "Context 3": "He studied the relationship between diet and health."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Commute",
+                    "fact": "Did you know that the average American spends about 26 minutes commuting each way? That's over 4 hours a week!"
+                },
+                {
+                    "word": "Bureaucracy",
+                    "fact": "The word 'bureaucracy' comes from the French word 'bureau,' meaning desk, and Greek 'kratos,' meaning power. So, it literally means 'desk power!'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the employee bring a ladder to work?",
+                    "answer": "Because they heard the job was a step up!"
+                },
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes of stress!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Cohesiveness",
+                    "definition": "The quality of forming a united whole.",
+                    "context": {
+                        "Context 1": "The cohesiveness of the team improved after they participated in team-building activities.",
+                        "Context 2": "The cohesiveness of the jelly mixture was perfect for making desserts.",
+                        "Context 3": "A good book often has a cohesiveness that keeps readers engaged from start to finish."
+                    }
+                },
+                {
+                    "word": "Productivity",
+                    "definition": "The state or quality of producing something, especially in large amounts.",
+                    "context": {
+                        "Context 1": "The new software significantly increased the productivity of the employees.",
+                        "Context 2": "The productivity of the garden was impressive, yielding vegetables all summer long.",
+                        "Context 3": "His productivity in painting improved after he switched to a new brand of paint."
+                    }
+                },
+                {
+                    "word": "Distraction",
+                    "definition": "A thing that prevents someone from giving full attention to something else.",
+                    "context": {
+                        "Context 1": "Socializing with coworkers can often become a distraction during work hours.",
+                        "Context 2": "The loud music was a major distraction while he was trying to study.",
+                        "Context 3": "Her phone notifications were a constant distraction during the meeting."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "Her experience in the office helped her understand workplace dynamics.",
+                        "Context 2": "Traveling abroad was a life-changing experience for him.",
+                        "Context 3": "The experience of climbing a mountain can be both thrilling and exhausting."
+                    }
+                },
+                {
+                    "word": "Socializing",
+                    "definition": "The activity of mixing socially with others.",
+                    "context": {
+                        "Context 1": "Socializing with colleagues can enhance teamwork and collaboration.",
+                        "Context 2": "He enjoys socializing at community events and festivals.",
+                        "Context 3": "Socializing with pets can improve their behavior and happiness."
+                    }
+                },
+                {
+                    "word": "Isolation",
+                    "definition": "The state of being separated from others.",
+                    "context": {
+                        "Context 1": "Isolation from distractions can help improve focus and productivity.",
+                        "Context 2": "The isolation of the island made it a perfect getaway for those seeking peace.",
+                        "Context 3": "Isolation in a science experiment can lead to more accurate results."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "From her perspective, the team was functioning well despite the challenges.",
+                        "Context 2": "The artist's perspective on life is reflected in her paintings.",
+                        "Context 3": "He gained a new perspective after reading the book about different cultures."
+                    }
+                },
+                {
+                    "word": "Goals",
+                    "definition": "The object of a person's ambition or effort; an aim or desired result.",
+                    "context": {
+                        "Context 1": "Setting clear goals can help improve workplace productivity.",
+                        "Context 2": "Her goals for the year include traveling and learning a new language.",
+                        "Context 3": "The team's goals for the project were clearly outlined in the proposal."
+                    }
+                },
+                {
+                    "word": "Communication",
+                    "definition": "The imparting or exchanging of information or news.",
+                    "context": {
+                        "Context 1": "Effective communication among team members is essential for success.",
+                        "Context 2": "The communication between the two countries improved after the peace talks.",
+                        "Context 3": "Non-verbal communication can often convey more than words."
+                    }
+                },
+                {
+                    "word": "Colleagues",
+                    "definition": "A person with whom one works, especially in a profession or business.",
+                    "context": {
+                        "Context 1": "She enjoys collaborating with her colleagues on various projects.",
+                        "Context 2": "His colleagues at the gym are supportive and motivating.",
+                        "Context 3": "The colleagues in the art class shared tips and techniques with each other."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Cohesiveness",
+                    "fact": "Did you know that some teams are so cohesive that they can finish each other's sandwiches?"
+                },
+                {
+                    "word": "Distraction",
+                    "fact": "Studies show that the average person gets distracted every 8 seconds, which is about the same time it takes to say 'squirrel!'"
+                },
+                {
+                    "word": "Socializing",
+                    "fact": "Socializing with cats is a great way to improve your mood, but they may not always reciprocate!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the employee bring a ladder to work?",
+                    "answer": "Because they wanted to reach new heights in productivity!"
+                },
+                {
+                    "question": "What do you call a group of musical coworkers?",
+                    "answer": "A team that knows how to work in harmony!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Privacy",
+                    "definition": "The state of being free from public attention or scrutiny.",
+                    "context": {
+                        "Context 1": "The company ensures the privacy of its workers by implementing strict data protection policies.",
+                        "Context 2": "He enjoys his privacy and prefers not to share personal details on social media.",
+                        "Context 3": "The privacy of the library allows students to study without distractions."
+                    }
+                },
+                {
+                    "word": "Distraction",
+                    "definition": "A thing that prevents someone from giving full attention to something else.",
+                    "context": {
+                        "Context 1": "Chatting can be a major distraction in the workplace, affecting productivity.",
+                        "Context 2": "The loud music was a distraction during the exam, making it hard to concentrate.",
+                        "Context 3": "He found that his phone was a constant distraction while trying to read."
+                    }
+                },
+                {
+                    "word": "Accurate",
+                    "definition": "Correct in all details; exact.",
+                    "context": {
+                        "Context 1": "Using accurate vocabulary is essential for clear communication in writing.",
+                        "Context 2": "The weather forecast was surprisingly accurate this week.",
+                        "Context 3": "She gave an accurate description of the painting, capturing every detail."
+                    }
+                },
+                {
+                    "word": "Motto",
+                    "definition": "A short sentence or phrase that expresses a belief or purpose.",
+                    "context": {
+                        "Context 1": "The motto of the organization is 'Simple but effective,' guiding their approach to projects.",
+                        "Context 2": "His personal motto is 'Live and let live,' which reflects his easy-going nature.",
+                        "Context 3": "The school's motto encourages students to strive for excellence in all they do."
+                    }
+                },
+                {
+                    "word": "Personal Space",
+                    "definition": "The physical distance that a person maintains between themselves and others.",
+                    "context": {
+                        "Context 1": "Respecting personal space is important in maintaining comfort in social interactions.",
+                        "Context 2": "In crowded places, it can be challenging to find personal space to relax.",
+                        "Context 3": "He felt his personal space was invaded when someone stood too close to him."
+                    }
+                },
+                {
+                    "word": "Boundaries",
+                    "definition": "Limits that define acceptable behavior or personal space.",
+                    "context": {
+                        "Context 1": "Setting clear boundaries at work can help maintain a professional environment.",
+                        "Context 2": "She learned to establish boundaries with friends to protect her time and energy.",
+                        "Context 3": "The artist's boundaries were pushed when asked to create something outside her usual style."
+                    }
+                },
+                {
+                    "word": "Productivity",
+                    "definition": "The state or quality of producing something, especially in relation to efficiency.",
+                    "context": {
+                        "Context 1": "Creating a quiet workspace can enhance productivity among employees.",
+                        "Context 2": "His productivity soared after he started using a planner to organize his tasks.",
+                        "Context 3": "The productivity of the farm increased after they adopted new farming techniques."
+                    }
+                },
+                {
+                    "word": "Communication",
+                    "definition": "The imparting or exchanging of information or news.",
+                    "context": {
+                        "Context 1": "Effective communication is key to avoiding misunderstandings in the workplace.",
+                        "Context 2": "He used sign language as a form of communication with his deaf friend.",
+                        "Context 3": "The communication between the two teams improved after they held a joint meeting."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern used to illustrate a concept.",
+                    "context": {
+                        "Context 1": "The teacher provided an example to clarify the assignment's requirements.",
+                        "Context 2": "He used a famous painting as an example of modern art in his presentation.",
+                        "Context 3": "The recipe included an example of how to prepare the dish step-by-step."
+                    }
+                },
+                {
+                    "word": "Ideas",
+                    "definition": "Thoughts or suggestions about a possible course of action.",
+                    "context": {
+                        "Context 1": "The brainstorming session generated many innovative ideas for the project.",
+                        "Context 2": "She shared her ideas for improving the community garden with her neighbors.",
+                        "Context 3": "His ideas for a new app were well-received at the tech conference."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Privacy",
+                    "fact": "Did you know that in some countries, it's illegal to take a photo of someone without their consent? Talk about privacy!"
+                },
+                {
+                    "word": "Motto",
+                    "fact": "The longest motto in the world belongs to the city of Geneva, Switzerland, and it has 26 words!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Eloquent",
+                    "definition": "Fluent or persuasive in speaking or writing.",
+                    "context": {
+                        "Context 1": "Her eloquent speech captivated the audience and left a lasting impression.",
+                        "Context 2": "The artist was known for his eloquent brush strokes that brought his paintings to life.",
+                        "Context 3": "He wrote an eloquent letter to the editor expressing his views on climate change."
+                    }
+                },
+                {
+                    "word": "Risk-taking",
+                    "definition": "The act of doing something that involves danger or risk in order to achieve a goal.",
+                    "context": {
+                        "Context 1": "In her essay, she avoided risk-taking expressions to maintain clarity.",
+                        "Context 2": "Skydiving is a popular risk-taking activity for thrill-seekers.",
+                        "Context 3": "Investing in stocks can be seen as a form of risk-taking in finance."
+                    }
+                },
+                {
+                    "word": "Wise",
+                    "definition": "Having or showing experience, knowledge, and good judgment.",
+                    "context": {
+                        "Context 1": "His wise advice helped her make the right decision.",
+                        "Context 2": "The wise old owl is a common symbol of knowledge in folklore.",
+                        "Context 3": "She made a wise choice by studying hard for her exams."
+                    }
+                },
+                {
+                    "word": "Score",
+                    "definition": "The number of points achieved in a game or test.",
+                    "context": {
+                        "Context 1": "The teacher emphasized that risk-taking expressions could lower your score.",
+                        "Context 2": "He was thrilled to score the winning goal in the final match.",
+                        "Context 3": "The movie received a high score from critics for its storytelling."
+                    }
+                },
+                {
+                    "word": "Essay",
+                    "definition": "A short piece of writing on a particular subject.",
+                    "context": {
+                        "Context 1": "The teacher requested to see the full essay by Thursday.",
+                        "Context 2": "She wrote an essay about her summer vacation that was full of adventures.",
+                        "Context 3": "The essay competition attracted participants from all over the country."
+                    }
+                },
+                {
+                    "word": "Captivated",
+                    "definition": "Attracted and held the interest and attention of someone.",
+                    "context": {
+                        "Context 1": "The audience was captivated by her eloquent presentation.",
+                        "Context 2": "The magician captivated the crowd with his amazing tricks.",
+                        "Context 3": "The novel captivated readers with its thrilling plot twists."
+                    }
+                },
+                {
+                    "word": "Maintain",
+                    "definition": "To keep something in a specified state or condition.",
+                    "context": {
+                        "Context 1": "She worked hard to maintain her high grades throughout the semester.",
+                        "Context 2": "He needed to maintain his car regularly to ensure it runs smoothly.",
+                        "Context 3": "The gardener must maintain the flowers to keep the garden beautiful."
+                    }
+                },
+                {
+                    "word": "Expression",
+                    "definition": "The process of making known one's thoughts or feelings.",
+                    "context": {
+                        "Context 1": "The teacher warned against using risk-taking expressions in the essay.",
+                        "Context 2": "Her facial expression showed her surprise when she received the news.",
+                        "Context 3": "Art is a powerful form of expression for many people."
+                    }
+                },
+                {
+                    "word": "Goodbye",
+                    "definition": "A polite expression used when parting from someone.",
+                    "context": {
+                        "Context 1": "The lesson ended with a friendly goodbye from the teacher.",
+                        "Context 2": "She waved goodbye as her friend drove away.",
+                        "Context 3": "Saying goodbye can be hard when leaving a place you love."
+                    }
+                },
+                {
+                    "word": "Thank you",
+                    "definition": "A polite expression of gratitude.",
+                    "context": {
+                        "Context 1": "The teacher concluded the lesson with a 'thank you' to the students.",
+                        "Context 2": "After receiving the gift, she said, 'Thank you!' with a big smile.",
+                        "Context 3": "He always remembers to say 'thank you' when someone helps him."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Eloquent",
+                    "fact": "The word 'eloquent' comes from the Latin 'eloquens,' which means 'speaking out.' So, next time you speak well, you're literally 'speaking out'!"
+                },
+                {
+                    "word": "Essay",
+                    "fact": "Did you know that the word 'essay' comes from the French word 'essayer,' which means 'to try'? So, every essay is just a 'try' at writing!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the teacher go to the beach?",
+                    "answer": "To test the waters!"
+                },
+                {
+                    "question": "Why did the student eat his homework?",
+                    "answer": "Because the teacher said it was a piece of cake!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going today?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to get through my to-do list. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I’ve got a ton of stuff to do, but I keep getting distracted."
+                },
+                {
+                    "Person 2": "I feel that! I started working on an essay yesterday, but I ended up watching cat videos instead."
+                },
+                {
+                    "Person 1": "Classic! Those videos are hard to resist. What was your essay about?"
+                },
+                {
+                    "Person 2": "It’s on how remote work affects productivity. I thought it would be easy, but it’s actually pretty complicated."
+                },
+                {
+                    "Person 1": "Yeah, I can see that. There are so many factors to consider. Have you made a plan for it?"
+                },
+                {
+                    "Person 2": "Not really. I was thinking of just diving in, but maybe I should outline my ideas first."
+                },
+                {
+                    "Person 1": "Outlining sounds like a good idea! It helps keep your thoughts organized."
+                },
+                {
+                    "Person 2": "True! I always forget that part. Do you usually outline your work?"
+                },
+                {
+                    "Person 1": "I try to! It makes writing so much easier. Plus, I can catch any gaps in my logic before I start."
+                },
+                {
+                    "Person 2": "That’s smart. I should really give it a shot. What do you think is the biggest challenge with remote work?"
+                },
+                {
+                    "Person 1": "I think distractions at home are a big one. It’s easy to lose focus with so many things around."
+                },
+                {
+                    "Person 2": "Exactly! I get distracted by laundry, cooking, you name it. It’s tough to stay on task."
+                },
+                {
+                    "Person 1": "For sure! Maybe we should set some work hours and stick to them?"
+                },
+                {
+                    "Person 2": "That sounds like a plan! Let’s hold each other accountable."
+                },
+                {
+                    "Person 1": "Deal! Let’s check in tomorrow and see how we did."
+                },
+                {
+                    "Person 2": "Looking forward to it! Hopefully, we’ll both have made some progress."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch the game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a comeback! I thought they were done for."
+                },
+                {
+                    "Person 1": "Right? I was about to turn it off, but then they scored that last-minute goal!"
+                },
+                {
+                    "Person 2": "I know! I jumped off the couch! It’s moments like that that make sports so exciting."
+                },
+                {
+                    "Person 1": "Totally! Do you think they have a shot at the playoffs this year?"
+                },
+                {
+                    "Person 2": "I hope so! They’ve been playing really well lately. If they keep it up, I think they can make it."
+                },
+                {
+                    "Person 1": "Yeah, and their defense has improved a lot. It used to be a real weak spot."
+                },
+                {
+                    "Person 2": "For sure! It’s nice to see them working together as a team. Makes a big difference."
+                },
+                {
+                    "Person 1": "So, are you going to the next game?"
+                },
+                {
+                    "Person 2": "Absolutely! I wouldn’t miss it for the world. You should come with me!"
+                },
+                {
+                    "Person 1": "Count me in! I’ll grab the tickets."
+                },
+                {
+                    "Person 2": "Awesome! Let’s make it a fun night out."
+                },
+                {
+                    "Person 1": "Definitely! Maybe we can grab some food before the game too."
+                },
+                {
+                    "Person 2": "Great idea! I know a place that has amazing burgers."
+                },
+                {
+                    "Person 1": "Perfect! I’m looking forward to it!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever thought about how much time we waste commuting to work?"
+                },
+                {
+                    "Person 2": "Oh man, all the time! I mean, I spend almost an hour just getting to the office."
+                },
+                {
+                    "Person 1": "Right? It’s crazy! I could be sleeping or doing something productive instead."
+                },
+                {
+                    "Person 2": "Exactly! I read somewhere that remote workers are often more productive because they skip the commute."
+                },
+                {
+                    "Person 1": "That makes sense. I mean, if you can wake up and just start working, you’re already ahead."
+                },
+                {
+                    "Person 2": "Totally! Plus, you don’t have to deal with traffic or crowded trains."
+                },
+                {
+                    "Person 1": "Yeah, and think about how much energy you save. I always feel drained after my commute."
+                },
+                {
+                    "Person 2": "Same here! By the time I get to work, I’m already tired. It’s hard to focus."
+                },
+                {
+                    "Person 1": "So, do you think remote work is the future?"
+                },
+                {
+                    "Person 2": "I hope so! It seems like a win-win for both employees and companies."
+                },
+                {
+                    "Person 1": "For sure! Less commuting means more time for family or hobbies."
+                },
+                {
+                    "Person 2": "Exactly! And I think it could lead to happier employees overall."
+                },
+                {
+                    "Person 1": "Yeah, I’d love to see more companies adopt flexible work arrangements."
+                },
+                {
+                    "Person 2": "Same! Let’s hope they catch on. I’m ready for a change!"
+                },
+                {
+                    "Person 1": "Me too! Alright, let’s keep our fingers crossed!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to survive the work week. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I feel like I spend more time chatting with my coworkers than actually working."
+                },
+                {
+                    "Person 2": "Right? It's like we start talking about one thing, and before you know it, an hour has passed!"
+                },
+                {
+                    "Person 1": "Exactly! I love my team, but sometimes I wonder if we get too distracted."
+                },
+                {
+                    "Person 2": "Totally! I mean, it’s great to bond, but we also have deadlines to meet."
+                },
+                {
+                    "Person 1": "For sure! I think we need to find a balance. Maybe set some 'focus hours'?"
+                },
+                {
+                    "Person 2": "That could work! Like, no chatting for the first two hours of the day?"
+                },
+                {
+                    "Person 1": "Yeah! And then we can catch up during lunch or breaks."
+                },
+                {
+                    "Person 2": "Sounds like a plan! I think it might help us be more productive."
+                },
+                {
+                    "Person 1": "Definitely! Plus, I think we’d appreciate our chats more if they were limited."
+                },
+                {
+                    "Person 2": "Exactly! Quality over quantity, right?"
+                },
+                {
+                    "Person 1": "Absolutely! So, what are you working on today?"
+                },
+                {
+                    "Person 2": "Just wrapping up a report. How about you?"
+                },
+                {
+                    "Person 1": "I’m finishing up some emails. Let’s catch up later!"
+                },
+                {
+                    "Person 2": "For sure! Good luck with those emails!"
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh, totally! What a nail-biter! I thought they were going to lose for sure."
+                },
+                {
+                    "Person 1": "Right? I was on the edge of my seat! That last-minute goal was insane."
+                },
+                {
+                    "Person 2": "I know! I jumped up and spilled my popcorn everywhere!"
+                },
+                {
+                    "Person 1": "Haha, classic! I always end up snacking way too much during games."
+                },
+                {
+                    "Person 2": "Same here! It’s like the food makes the game even more exciting."
+                },
+                {
+                    "Person 1": "What’s your go-to snack for game day?"
+                },
+                {
+                    "Person 2": "Definitely nachos. You can’t go wrong with cheese and jalapeños!"
+                },
+                {
+                    "Person 1": "Yum! I usually go for wings. Can’t beat that flavor!"
+                },
+                {
+                    "Person 2": "Wings are a solid choice! We should have a game day party soon."
+                },
+                {
+                    "Person 1": "Absolutely! I’ll bring the wings if you handle the nachos."
+                },
+                {
+                    "Person 2": "Deal! And maybe we can set up a little bracket for the playoffs?"
+                },
+                {
+                    "Person 1": "That sounds awesome! I’m in!"
+                },
+                {
+                    "Person 2": "Great! I can’t wait for the next game!"
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Pretty good! Just trying to get through this week. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I have this big essay due on Thursday, and I'm feeling the pressure."
+                },
+                {
+                    "Person 2": "Oh man, I remember those days. What’s your topic?"
+                },
+                {
+                    "Person 1": "It's about the impact of social media on communication. I want to make sure I get it right."
+                },
+                {
+                    "Person 2": "That sounds interesting! Just make sure to avoid any risky arguments that could lower your score."
+                },
+                {
+                    "Person 1": "Exactly! I want it to be solid. I’ve been reading a lot about it."
+                },
+                {
+                    "Person 2": "That’s great! You’ll have to show it to me when you’re done."
+                },
+                {
+                    "Person 1": "Definitely! I want it to be something I can be proud of."
+                },
+                {
+                    "Person 2": "For sure! Just remember to take breaks. You don’t want to burn out."
+                },
+                {
+                    "Person 1": "Good point! I’ll try to balance it out. Thanks for the reminder!"
+                },
+                {
+                    "Person 2": "No problem! Let’s catch up again after you turn it in."
+                },
+                {
+                    "Person 1": "Sounds like a plan! I’ll see you then."
+                },
+                {
+                    "Person 2": "Alright, good luck with the essay!"
+                },
+                {
+                    "Person 1": "Thanks! Talk to you later!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
