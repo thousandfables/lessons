@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I spent I think hour and a half to get there by bus.",
+                    "corrected": "I spent, I think, an hour and a half getting there by bus.",
+                    "explanation": "The phrase 'an hour and a half' needs the article 'an,' and 'to get there' should be changed to 'getting there' for grammatical accuracy.",
+                    "context": "Yesterday, my sister invited me and my cousin to her place. I spent, I think, an hour and a half getting there by bus. It was a long journey, and I never want to experience that again."
+                },
+                {
+                    "original": "I don't know because I have those IV trips.",
+                    "corrected": "I don't know because I have those IV treatments.",
+                    "explanation": "'IV trips' is incorrect; it should be 'IV treatments' to refer to medical procedures.",
+                    "context": "I mentioned that I'm not allowed to drink beer right now. I don't know because I have those IV treatments. It complicates things for me."
+                },
+                {
+                    "original": "I really wanted to just go home and sleep but my cousin she leaves in the Oh god, my brain doesn't work like no like she your parents went like away.",
+                    "corrected": "I really wanted to just go home and sleep, but my cousin lives in the dormitory far away.",
+                    "explanation": "The phrase 'my cousin she leaves in the' is incorrect; it should be 'my cousin lives in the.' The rest of the sentence is also unclear.",
+                    "context": "After a long day, I really wanted to just go home and sleep. But my cousin lives in the dormitory far away, and she was worried about getting home late."
+                },
+                {
+                    "original": "I wanted my essay that I started.",
+                    "corrected": "I wanted to finish my essay that I started.",
+                    "explanation": "The phrase 'I wanted my essay' is vague; it should specify the intention to 'finish' the essay.",
+                    "context": "I was trying to do my assignment while my cousin was cooking. I wanted to finish my essay that I started, but it was hard to concentrate."
+                },
+                {
+                    "original": "I have been struggling with the essays.",
+                    "corrected": "I have been struggling with my essays.",
+                    "explanation": "The possessive 'my' is needed to clarify ownership of the essays.",
+                    "context": "I shared my frustrations with writing. I have been struggling with my essays. I don't know what's wrong with me, but I just can't write them."
+                },
+                {
+                    "original": "I even watch to like Just Lessons from someone else.",
+                    "corrected": "I even watched some lessons from someone else.",
+                    "explanation": "The verb 'watch' should be in the past tense 'watched,' and 'to like Just Lessons' is unclear and should be simplified.",
+                    "context": "To improve my writing, I tried different methods. I even watched some lessons from someone else. I was hoping to understand what they were doing."
+                },
+                {
+                    "original": "I meant like from 2009 and This light fall it's better to write in 2010.",
+                    "corrected": "I meant like from 2009, and this slight fall is better described as occurring in 2010.",
+                    "explanation": "The term 'light fall' is incorrect; it should be 'slight fall.' Additionally, the sentence structure needs clarity.",
+                    "context": "When discussing trends, I mentioned the changes over the years. I meant like from 2009, and this slight fall is better described as occurring in 2010."
+                },
+                {
+                    "original": "The percentage of Japanese language were as high as French.",
+                    "corrected": "The percentage of Japanese language learners was as high as that of French.",
+                    "explanation": "The verb 'were' should be 'was' to agree with the singular subject 'percentage,' and 'language learners' clarifies the subject.",
+                    "context": "In our discussion about language trends, I noted some statistics. The percentage of Japanese language learners was as high as that of French."
+                },
+                {
+                    "original": "I mean we can say that for example and Chinese has been steadily increasing throughout the period.",
+                    "corrected": "I mean, we can say that, for example, Chinese has been steadily increasing throughout the period.",
+                    "explanation": "Punctuation is needed for clarity; commas should be added for better sentence flow.",
+                    "context": "We were analyzing language trends. I mean, we can say that, for example, Chinese has been steadily increasing throughout the period."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I have drank my coffee.",
+                    "corrected": "I have drunk my coffee.",
+                    "explanation": "The correct past participle of 'drink' is 'drunk', not 'drank'.",
+                    "context": "I often enjoy my morning routine with a cup of coffee. I have drunk my coffee, and now I'm ready to start my day."
+                },
+                {
+                    "original": "the most appropriate would be just not overcomplicating.",
+                    "corrected": "the most appropriate would be to just not overcomplicate.",
+                    "explanation": "The verb 'overcomplicating' should be in its base form 'overcomplicate' after 'to'.",
+                    "context": "When writing, clarity is key. The most appropriate would be to just not overcomplicate the ideas we present."
+                },
+                {
+                    "original": "the share don't don't overthink it.",
+                    "corrected": "the share, don't overthink it.",
+                    "explanation": "A comma is needed to separate the clauses for clarity.",
+                    "context": "In our discussion, we need to focus on the data. The share, don't overthink it; it's straightforward."
+                },
+                {
+                    "original": "the number of students the share share proportion or percentage part sometimes.",
+                    "corrected": "the number of students, the share, proportion, or percentage part sometimes.",
+                    "explanation": "Commas are needed to separate the items in the list for clarity.",
+                    "context": "When analyzing the data, we consider various aspects. The number of students, the share, proportion, or percentage part sometimes can all provide insights."
+                },
+                {
+                    "original": "it reached its highly highest value in 2007.",
+                    "corrected": "it reached its highest value in 2007.",
+                    "explanation": "The word 'highly' is unnecessary and incorrect in this context; 'highest' suffices.",
+                    "context": "In our analysis, we noted trends over the years. It reached its highest value in 2007, which was significant."
+                },
+                {
+                    "original": "I don't like the word steadily what else can we say.",
+                    "corrected": "I don't like the word 'steadily'; what else can we say?",
+                    "explanation": "Quotation marks are needed around 'steadily', and a semicolon or period should separate the two clauses.",
+                    "context": "When discussing language, word choice is crucial. I don't like the word 'steadily'; what else can we say to convey the same meaning?"
+                },
+                {
+                    "original": "by definition conclusion is when we talked about something.",
+                    "corrected": "by definition, a conclusion is when we talk about something.",
+                    "explanation": "A comma is needed after 'definition', and 'talked' should be changed to 'talk' for present tense consistency.",
+                    "context": "In writing, structure matters. By definition, a conclusion is when we talk about something we've analyzed or discussed."
+                },
+                {
+                    "original": "we don't really need that but if we wanted like to kind of to use a broader range of vocabulary.",
+                    "corrected": "we don't really need that, but if we wanted to use a broader range of vocabulary.",
+                    "explanation": "A comma is needed before 'but', and 'like to kind of to' is redundant.",
+                    "context": "In our writing, we aim for precision. We don't really need that, but if we wanted to use a broader range of vocabulary, we could."
+                },
+                {
+                    "original": "was almost a third yeah but overall around 30%.",
+                    "corrected": "it was almost a third, yeah, but overall around 30%.",
+                    "explanation": "The subject 'it' is needed for clarity, and commas are required for better flow.",
+                    "context": "When discussing statistics, precision is key. It was almost a third, yeah, but overall around 30% is a more accurate representation."
+                },
+                {
+                    "original": "we dropped on to less than then quarter.",
+                    "corrected": "we dropped down to less than a quarter.",
+                    "explanation": "'On to' is incorrect; 'down to' is the appropriate phrase, and 'then' should be 'a'.",
+                    "context": "In our findings, we observed trends over time. We dropped down to less than a quarter, which indicates a significant change."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "it's hard to tell because we need to like to consider many factors",
+                    "corrected": "it's hard to tell because we need to consider many factors",
+                    "explanation": "The phrase 'to like to' is redundant; 'to consider' is sufficient.",
+                    "context": "When discussing the report's score, I mentioned that it's hard to tell how well it performs. It's hard to tell because we need to consider many factors."
+                },
+                {
+                    "original": "this will be very very good",
+                    "corrected": "this will be very good",
+                    "explanation": "Using 'very' twice is unnecessary; one is sufficient for emphasis.",
+                    "context": "We are aiming for a high-quality report. I believe that if we produce a report like this, it will be very good."
+                },
+                {
+                    "original": "the better I don't think check the grammar in the sentence looking for the obvious mistakes",
+                    "corrected": "I don't think we should check the grammar in the sentence looking for the obvious mistakes.",
+                    "explanation": "The original sentence lacks clarity and structure; it needs a subject and verb.",
+                    "context": "While analyzing the report, I expressed my doubts about checking the grammar. I don't think we should check the grammar in the sentence looking for the obvious mistakes."
+                },
+                {
+                    "original": "the problem here is that I'm not very familiar with like British tax system",
+                    "corrected": "the problem here is that I'm not very familiar with the British tax system",
+                    "explanation": "The article 'the' is needed before 'British tax system' for proper noun usage.",
+                    "context": "As we discussed tax revenue, I admitted my lack of knowledge. The problem here is that I'm not very familiar with the British tax system."
+                },
+                {
+                    "original": "we can just name the biggest shares in this graph and be fine with that",
+                    "corrected": "we can just name the biggest categories in this graph and be fine with that",
+                    "explanation": "'Shares' is not the correct term here; 'categories' is more appropriate for this context.",
+                    "context": "When analyzing the graph, I suggested a simpler approach. We can just name the biggest categories in this graph and be fine with that."
+                },
+                {
+                    "original": "but mostly because it's a formula for profit it's okay",
+                    "corrected": "but mostly because it's a formula for profit, it's okay.",
+                    "explanation": "The sentence is missing a comma before 'it's okay' to separate clauses.",
+                    "context": "While discussing profit, I clarified its definition. But mostly because it's a formula for profit, it's okay."
+                },
+                {
+                    "original": "it's not an economic it's not an economics class",
+                    "corrected": "it's not an economics class",
+                    "explanation": "The repetition of 'it's not an' is unnecessary; one statement suffices.",
+                    "context": "In our lesson, I reflected on the nature of our discussions. It's not an economics class."
+                },
+                {
+                    "original": "the most sourceful",
+                    "corrected": "the most resourceful",
+                    "explanation": "'Sourceful' is not a standard term; 'resourceful' is the correct adjective.",
+                    "context": "I was trying to describe the source of tax revenue. I just don't know how to say it; I meant the most resourceful."
+                },
+                {
+                    "original": "the least money is like on five bro where are you",
+                    "corrected": "the least amount of money is on five.",
+                    "explanation": "The phrase 'the least money is like on five' is informal and unclear; 'the least amount of money' is more precise.",
+                    "context": "When discussing the least revenue sources, I was unsure. I asked if the least amount of money is on five."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I hated economics.",
+                    "corrected": "I hate economics.",
+                    "explanation": "The speaker should use the present tense 'hate' instead of the past tense 'hated' to express their current feelings.",
+                    "context": "I studied economics, but I didn't enjoy it at all. I hate economics. It's just not my thing."
+                },
+                {
+                    "original": "I told you multiple times that I cannot have it.",
+                    "corrected": "I told you multiple times that I couldn't have it.",
+                    "explanation": "The speaker should use the past tense 'couldn't' to refer to a past situation.",
+                    "context": "I reached out to them several times about my situation. I told you multiple times that I couldn't have it. It's frustrating."
+                },
+                {
+                    "original": "I mean, I will start learning German right after I pass IELTS.",
+                    "corrected": "I mean, I will start learning German right after I receive my certificate.",
+                    "explanation": "The speaker should use 'receive' instead of 'pass' to refer to obtaining the certificate.",
+                    "context": "I have plans to improve my language skills. I mean, I will start learning German right after I receive my certificate. That will open up more opportunities for me."
+                },
+                {
+                    "original": "I will probably be so exhausted I will be dying.",
+                    "corrected": "I will probably be so exhausted that I will feel like I'm dying.",
+                    "explanation": "The phrase 'I will be dying' is informal and should be rephrased for clarity and correctness.",
+                    "context": "Traveling can be tiring, especially with a busy schedule. I will probably be so exhausted that I will feel like I'm dying. I need to prepare for that."
+                },
+                {
+                    "original": "I have six lessons on Saturday.",
+                    "corrected": "I have six lessons on Saturday.",
+                    "explanation": "This sentence is correct but lacks context for clarity.",
+                    "context": "My schedule is packed, and I have a lot to manage. I have six lessons on Saturday, which makes it hard to fit everything in."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Insist",
+                    "definition": "To demand something forcefully, not accepting refusal.",
+                    "context": {
+                        "Context 1": "My cousin insisted that we stay for a sleepover, even though I wanted to go home.",
+                        "Context 2": "The teacher insisted that all students submit their assignments on time.",
+                        "Context 3": "He insisted on wearing his favorite shirt, despite the weather being cold."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "The process of doing and seeing things and having them happen to you.",
+                    "context": {
+                        "Context 1": "I never want to experience that long bus ride again.",
+                        "Context 2": "Traveling abroad can be a life-changing experience.",
+                        "Context 3": "She had an amazing experience when she went skydiving last summer."
+                    }
+                },
+                {
+                    "word": "Assignment",
+                    "definition": "A task or piece of work assigned to someone as part of a job or course of study.",
+                    "context": {
+                        "Context 1": "I wanted to finish my assignment before going to sleep.",
+                        "Context 2": "The teacher gave us a challenging assignment to complete over the weekend.",
+                        "Context 3": "He forgot to submit his assignment and received a lower grade."
+                    }
+                },
+                {
+                    "word": "Dormitory",
+                    "definition": "A building providing sleeping and residential quarters for a number of people.",
+                    "context": {
+                        "Context 1": "My cousin lives in a dormitory that is very far from my sister's place.",
+                        "Context 2": "The university dormitory has a great cafeteria.",
+                        "Context 3": "During the summer, the dormitory is often empty as students go home."
+                    }
+                },
+                {
+                    "word": "Prototyping",
+                    "definition": "The process of creating an early model of a product to test its concept.",
+                    "context": {
+                        "Context 1": "We discussed my first prototype during the lesson.",
+                        "Context 2": "The company is prototyping a new smartphone design.",
+                        "Context 3": "He spent the weekend prototyping a new board game."
+                    }
+                },
+                {
+                    "word": "Percentage",
+                    "definition": "A rate, number, or amount in each hundred.",
+                    "context": {
+                        "Context 1": "The percentage of Japanese language learners was high in 2009.",
+                        "Context 2": "She calculated the percentage of students who passed the exam.",
+                        "Context 3": "The store had a sale with a percentage off all items."
+                    }
+                },
+                {
+                    "word": "Trend",
+                    "definition": "A general direction in which something is developing or changing.",
+                    "context": {
+                        "Context 1": "We need to identify the trend in language learning over the years.",
+                        "Context 2": "Fashion trends change every season.",
+                        "Context 3": "There is a trend towards more sustainable living."
+                    }
+                },
+                {
+                    "word": "Decline",
+                    "definition": "A gradual and continuous loss of strength, numbers, quality, or value.",
+                    "context": {
+                        "Context 1": "The percentage of German language learners has been in decline.",
+                        "Context 2": "The decline in bee populations is concerning for the environment.",
+                        "Context 3": "He noticed a decline in his energy levels as he got older."
+                    }
+                },
+                {
+                    "word": "Characterize",
+                    "definition": "To describe the distinctive nature or features of something.",
+                    "context": {
+                        "Context 1": "We need to characterize the languages based on their popularity.",
+                        "Context 2": "The author characterized the main character as brave and adventurous.",
+                        "Context 3": "Scientists characterize new species based on their unique traits."
+                    }
+                },
+                {
+                    "word": "Insomnia",
+                    "definition": "The inability to sleep, often leading to fatigue and irritability.",
+                    "context": {
+                        "Context 1": "I couldn't sleep after the late-night conversation, which felt like insomnia.",
+                        "Context 2": "He struggles with insomnia and often reads books at night.",
+                        "Context 3": "Insomnia can be caused by stress or anxiety."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Insist",
+                    "fact": "Did you know that the word 'insist' comes from the Latin 'insistere,' which means 'to stand on'?"
+                },
+                {
+                    "word": "Prototype",
+                    "fact": "The first prototype of a rubber band was made in 1845 and was originally used to hold papers together!"
+                },
+                {
+                    "word": "Percentage",
+                    "fact": "The term 'percentage' comes from the Latin 'per centum,' meaning 'by the hundred.'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Past Perfect Continuous",
+                    "definition": "A verb tense used to indicate an action that was ongoing in the past before another action occurred.",
+                    "context": {
+                        "Context 1": "He had been studying for hours before the exam started.",
+                        "Context 2": "She had been running every morning before she injured her ankle.",
+                        "Context 3": "They had been planning the party for weeks when the weather turned bad."
+                    }
+                },
+                {
+                    "word": "Decline",
+                    "definition": "To decrease or diminish in quality, quantity, or strength.",
+                    "context": {
+                        "Context 1": "The number of students learning German has declined over the years.",
+                        "Context 2": "The decline in sales forced the company to lay off employees.",
+                        "Context 3": "After the storm, the decline of the river's water level was noticeable."
+                    }
+                },
+                {
+                    "word": "Accurate",
+                    "definition": "Free from error; correct or precise.",
+                    "context": {
+                        "Context 1": "It's important to provide an accurate description of the graph.",
+                        "Context 2": "The scientist ensured that the data was accurate before publishing the results.",
+                        "Context 3": "Her accurate memory of the events helped solve the mystery."
+                    }
+                },
+                {
+                    "word": "Proportion",
+                    "definition": "A part, share, or number considered in comparative relation to a whole.",
+                    "context": {
+                        "Context 1": "The proportion of students learning French is higher than those learning German.",
+                        "Context 2": "In the recipe, the proportion of sugar to flour is crucial for the cake's success.",
+                        "Context 3": "The proportion of people who prefer coffee over tea varies by region."
+                    }
+                },
+                {
+                    "word": "Consistently",
+                    "definition": "In a way that does not change; regularly or uniformly.",
+                    "context": {
+                        "Context 1": "The data showed that the number of students learning German has consistently decreased.",
+                        "Context 2": "She consistently arrives at work on time, earning her a good reputation.",
+                        "Context 3": "The athlete has performed consistently well throughout the season."
+                    }
+                },
+                {
+                    "word": "Graph",
+                    "definition": "A diagram representing a system of connections or interrelations among two or more things by a number of distinctive dots, lines, bars, etc.",
+                    "context": {
+                        "Context 1": "The graph illustrates the decline in German language learners over the years.",
+                        "Context 2": "He used a graph to show the relationship between temperature and ice cream sales.",
+                        "Context 3": "The graph in the textbook helps visualize the data clearly."
+                    }
+                },
+                {
+                    "word": "Percentage",
+                    "definition": "A rate, number, or amount in each hundred.",
+                    "context": {
+                        "Context 1": "The percentage of students learning German was around 15% in 2006.",
+                        "Context 2": "She received a high percentage on her math exam, which made her very happy.",
+                        "Context 3": "The percentage of people who prefer dogs over cats varies by country."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "He has experience in teaching German, which makes him a great instructor.",
+                        "Context 2": "Her travel experience helped her adapt to new cultures easily.",
+                        "Context 3": "The experience of skydiving was exhilarating for him."
+                    }
+                },
+                {
+                    "word": "Task",
+                    "definition": "A piece of work to be done or undertaken.",
+                    "context": {
+                        "Context 1": "Completing the writing task is essential for the assignment.",
+                        "Context 2": "His task was to organize the files in alphabetical order.",
+                        "Context 3": "The team was given a challenging task to improve customer service."
+                    }
+                },
+                {
+                    "word": "Conclusion",
+                    "definition": "The end or finish of an event, process, or text.",
+                    "context": {
+                        "Context 1": "The conclusion of the report summarized the key findings.",
+                        "Context 2": "In the conclusion of her speech, she thanked everyone for their support.",
+                        "Context 3": "The conclusion of the movie left the audience in suspense."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Decline",
+                    "fact": "Did you know that the word 'decline' comes from the Latin 'declinare,' which means 'to bend down' or 'to turn aside'?"
+                },
+                {
+                    "word": "Accurate",
+                    "fact": "The word 'accurate' comes from the Latin 'accuratus,' meaning 'carefully done.' So, being accurate is all about being careful!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "Why was the equal sign so humble?",
+                    "answer": "Because it knew it wasn't less than or greater than anyone else!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Proportions",
+                    "definition": "A part, share, or number considered in comparative relation to a whole.",
+                    "context": {
+                        "Context 1": "In the lesson, we discussed how to describe proportions when analyzing data.",
+                        "Context 2": "The chef adjusted the proportions of the ingredients to make a larger batch of soup.",
+                        "Context 3": "The artist focused on the proportions of the human figure in her painting."
+                    }
+                },
+                {
+                    "word": "Revenue",
+                    "definition": "The income generated from normal business operations.",
+                    "context": {
+                        "Context 1": "The report highlighted the tax revenue collected by the government.",
+                        "Context 2": "The company's revenue increased significantly after launching the new product.",
+                        "Context 3": "She donated a portion of her revenue from the book sales to charity."
+                    }
+                },
+                {
+                    "word": "Expenditure",
+                    "definition": "The action of spending funds; an amount of money spent.",
+                    "context": {
+                        "Context 1": "We analyzed government expenditure for the previous year in the lesson.",
+                        "Context 2": "His monthly expenditure on groceries is much higher than he anticipated.",
+                        "Context 3": "The school's expenditure on sports equipment has doubled this year."
+                    }
+                },
+                {
+                    "word": "Dynamic",
+                    "definition": "Characterized by constant change, activity, or progress.",
+                    "context": {
+                        "Context 1": "We discussed dynamic proportions that change over time.",
+                        "Context 2": "The dynamic nature of the stock market makes it challenging to predict trends.",
+                        "Context 3": "Her dynamic personality makes her a great leader."
+                    }
+                },
+                {
+                    "word": "Paraphrase",
+                    "definition": "To express the meaning of something written or spoken using different words.",
+                    "context": {
+                        "Context 1": "We practiced how to paraphrase sentences in our report.",
+                        "Context 2": "He had to paraphrase the complex article for his classmates to understand.",
+                        "Context 3": "The teacher asked the students to paraphrase the poem in their own words."
+                    }
+                },
+                {
+                    "word": "Tax",
+                    "definition": "A compulsory contribution to state revenue, levied by the government.",
+                    "context": {
+                        "Context 1": "The lesson included a discussion about different types of tax revenue.",
+                        "Context 2": "He was confused about how much tax he needed to pay this year.",
+                        "Context 3": "Many people are unhappy with the increase in property tax."
+                    }
+                },
+                {
+                    "word": "Analysis",
+                    "definition": "A detailed examination of the elements or structure of something.",
+                    "context": {
+                        "Context 1": "We conducted an analysis of the data presented in the graph.",
+                        "Context 2": "The analysis of the novel revealed deeper themes and meanings.",
+                        "Context 3": "Her analysis of the market trends helped the company make informed decisions."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or setting surrounding an event, statement, or idea.",
+                    "context": {
+                        "Context 1": "Understanding the context of the vocabulary helps in using it correctly.",
+                        "Context 2": "In a historical context, the event had significant implications.",
+                        "Context 3": "Without context, the joke may not make sense to everyone."
+                    }
+                },
+                {
+                    "word": "Infer",
+                    "definition": "To deduce or conclude information from evidence and reasoning rather than from explicit statements.",
+                    "context": {
+                        "Context 1": "We learned how to infer information from the data presented in the lesson.",
+                        "Context 2": "From her tone, I could infer that she was not happy with the decision.",
+                        "Context 3": "He tried to infer the meaning of the poem without reading any analysis."
+                    }
+                },
+                {
+                    "word": "Profit",
+                    "definition": "The financial gain made in a transaction; total revenue minus total costs.",
+                    "context": {
+                        "Context 1": "We discussed how profit is calculated in the context of businesses.",
+                        "Context 2": "The bakery's profit increased after they raised their prices.",
+                        "Context 3": "Investors are always looking for ways to maximize their profit."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Revenue",
+                    "fact": "The word 'revenue' comes from the Latin 'revenire,' which means 'to come back.' So, it's like money that just can't stay away!"
+                },
+                {
+                    "word": "Expenditure",
+                    "fact": "In ancient Rome, expenditure was often measured in sheep! Imagine budgeting with a flock!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the accountant break up with the calculator?",
+                    "answer": "Because she felt he was just adding to her problems!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Economics",
+                    "definition": "The branch of knowledge concerned with the production, consumption, and transfer of wealth.",
+                    "context": {
+                        "Context 1": "I studied economics at university, and it helped me understand market trends.",
+                        "Context 2": "The economics of running a bakery can be quite complex, especially with ingredient prices fluctuating.",
+                        "Context 3": "He decided to write a novel about the economics of a small town during the Great Depression."
+                    }
+                },
+                {
+                    "word": "Graph",
+                    "definition": "A diagram representing a system of connections or interrelations among two or more things by a number of distinctive dots, lines, or areas.",
+                    "context": {
+                        "Context 1": "The graph clearly shows the increase in sales over the last quarter.",
+                        "Context 2": "In art class, we learned how to create a graph of our color choices for the project.",
+                        "Context 3": "The graph of the mountain range was beautifully illustrated in the geography textbook."
+                    }
+                },
+                {
+                    "word": "Certificate",
+                    "definition": "An official document attesting a certain fact, especially one relating to academic achievement.",
+                    "context": {
+                        "Context 1": "I need to provide a certificate that proves I completed my first year of university.",
+                        "Context 2": "After completing the cooking course, she received a certificate that allowed her to work as a chef.",
+                        "Context 3": "The certificate of authenticity confirmed that the painting was an original."
+                    }
+                },
+                {
+                    "word": "Complications",
+                    "definition": "Difficulties or problems that arise in a situation.",
+                    "context": {
+                        "Context 1": "There were complications with my university application that delayed the process.",
+                        "Context 2": "The surgery went well, but there were some complications during recovery.",
+                        "Context 3": "Planning the wedding had its complications, especially with the guest list."
+                    }
+                },
+                {
+                    "word": "Potential",
+                    "definition": "Having or showing the capacity to develop into something in the future.",
+                    "context": {
+                        "Context 1": "She has great potential as a student, especially in mathematics.",
+                        "Context 2": "The potential for renewable energy sources is vast and largely untapped.",
+                        "Context 3": "He saw potential in the old building and decided to renovate it into a café."
+                    }
+                },
+                {
+                    "word": "Application",
+                    "definition": "A formal request to an authority for something.",
+                    "context": {
+                        "Context 1": "I submitted my application to the university last week.",
+                        "Context 2": "The application for the job requires a detailed resume and cover letter.",
+                        "Context 3": "She filled out the application for a loan to buy her first car."
+                    }
+                },
+                {
+                    "word": "Exams",
+                    "definition": "Formal tests of a person's knowledge or proficiency in a subject or skill.",
+                    "context": {
+                        "Context 1": "I have an exam coming up next week that I need to study for.",
+                        "Context 2": "The final exams for high school students are often stressful and intense.",
+                        "Context 3": "He took his driving exams and passed on the first try!"
+                    }
+                },
+                {
+                    "word": "Trends",
+                    "definition": "General directions in which something is developing or changing.",
+                    "context": {
+                        "Context 1": "The latest trends in fashion can often be seen on social media.",
+                        "Context 2": "Economic trends can help businesses predict future market behavior.",
+                        "Context 3": "She loves to follow the trends in technology to stay updated."
+                    }
+                },
+                {
+                    "word": "International",
+                    "definition": "Existing, occurring, or carried on between nations.",
+                    "context": {
+                        "Context 1": "I am studying international finances to understand global markets.",
+                        "Context 2": "The international conference brought together experts from around the world.",
+                        "Context 3": "He enjoys international cuisine and often tries new dishes from different countries."
+                    }
+                },
+                {
+                    "word": "Insane",
+                    "definition": "In a state of mind that prevents normal perception, behavior, or social interaction; seriously mentally ill.",
+                    "context": {
+                        "Context 1": "The application fee of 400 euros seemed insane to me.",
+                        "Context 2": "The insane traffic made it impossible to reach the airport on time.",
+                        "Context 3": "His insane talent for music left everyone in awe at the concert."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Economics",
+                    "fact": "Did you know that the term 'economics' comes from the Greek word 'oikonomia,' which means 'household management'?"
+                },
+                {
+                    "word": "Graph",
+                    "fact": "Graphs have been used since the 17th century, but the first pie chart was created by Florence Nightingale to show mortality rates!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why was the math book sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How was your day yesterday?"
+                },
+                {
+                    "Person 2": "Oh man, it was a bit of a trek! My sister invited me and my cousin over, but she lives way out in the sticks."
+                },
+                {
+                    "Person 1": "Really? How far is it?"
+                },
+                {
+                    "Person 2": "It took me like an hour and a half by bus to get there. Never again, I swear!"
+                },
+                {
+                    "Person 1": "Yikes! So what did you guys do once you finally arrived?"
+                },
+                {
+                    "Person 2": "We just hung out, played some games, and had a few drinks. They bought beer, but I’m not really supposed to drink right now."
+                },
+                {
+                    "Person 1": "Oh, are you underage or something?"
+                },
+                {
+                    "Person 2": "No, I’m 18, almost 19 actually, but I’m trying to be responsible. It just got a little out of hand."
+                },
+                {
+                    "Person 1": "I get that. So, did you end up staying the night?"
+                },
+                {
+                    "Person 2": "Ugh, I didn’t want to! My cousin was all worried about how she’d get home since it was late."
+                },
+                {
+                    "Person 1": "That’s rough. Did you manage to get some sleep?"
+                },
+                {
+                    "Person 2": "Not really! We got back home around midnight, and I was trying to finish an assignment, but my cousin was hungry and started cooking."
+                },
+                {
+                    "Person 1": "Sounds chaotic! Did you at least get to finish your work?"
+                },
+                {
+                    "Person 2": "Nope! I ended up falling asleep on the couch. I thought I’d just take a quick nap, but here I am, three hours later!"
+                },
+                {
+                    "Person 1": "Wow, that’s a long nap! So, what’s next for you?"
+                },
+                {
+                    "Person 2": "I’m heading to Astana on Sunday. Got a train to Moscow and then flying to Almaty."
+                },
+                {
+                    "Person 1": "Nice! That sounds exciting. Are you all packed?"
+                },
+                {
+                    "Person 2": "Not even close! I’ve got to get my act together. But first, coffee!"
+                },
+                {
+                    "Person 1": "Good plan! Let’s grab some together!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a comeback, right? I thought they were done for."
+                },
+                {
+                    "Person 1": "I know! I was on the edge of my seat. That last-minute goal was insane!"
+                },
+                {
+                    "Person 2": "Totally! I couldn't believe it. I was jumping around my living room."
+                },
+                {
+                    "Person 1": "Same here! I think my neighbors might have thought I was losing it."
+                },
+                {
+                    "Person 2": "Haha! At least we weren't alone. Everyone was talking about it today."
+                },
+                {
+                    "Person 1": "Right? I even saw some memes about it already. People are quick!"
+                },
+                {
+                    "Person 2": "They really are! Social media is wild like that. What do you think about the next game?"
+                },
+                {
+                    "Person 1": "I’m feeling optimistic! If they keep playing like that, they might go all the way."
+                },
+                {
+                    "Person 2": "For sure! I just hope they can keep up the momentum."
+                },
+                {
+                    "Person 1": "Agreed! Let’s plan to watch it together next time."
+                },
+                {
+                    "Person 2": "Definitely! I’ll bring the snacks!"
+                },
+                {
+                    "Person 1": "Perfect! Can’t wait!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a finish, right? I thought they were done for."
+                },
+                {
+                    "Person 1": "I know! That last-minute goal was insane. I was on the edge of my seat!"
+                },
+                {
+                    "Person 2": "Same here! I couldn't believe they pulled it off. Did you see the crowd's reaction?"
+                },
+                {
+                    "Person 1": "Absolutely! Everyone went wild. I wish I was there!"
+                },
+                {
+                    "Person 2": "Right? It must have been electric. I was just watching at home, but I was screaming."
+                },
+                {
+                    "Person 1": "Haha! I get that. So, what do you think about their chances in the playoffs?"
+                },
+                {
+                    "Person 2": "I think they have a good shot. If they keep playing like that, they could go all the way."
+                },
+                {
+                    "Person 1": "For sure! They just need to stay consistent. No more last-minute drama, please!"
+                },
+                {
+                    "Person 2": "Exactly! My heart can't take it. What about you? Any plans for the weekend?"
+                },
+                {
+                    "Person 1": "Not much, just hanging out. Maybe catch another game. How about you?"
+                },
+                {
+                    "Person 2": "Thinking of going hiking if the weather's nice. Need some fresh air!"
+                },
+                {
+                    "Person 1": "That sounds great! I might join you if you don't mind."
+                },
+                {
+                    "Person 2": "Of course! The more, the merrier. Let’s hope for good weather!"
+                },
+                {
+                    "Person 1": "Fingers crossed! It’ll be fun to get outside."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to wrap my head around some economics stuff for school."
+                },
+                {
+                    "Person 1": "Economics? Ugh, I hated that class. How are you finding it?"
+                },
+                {
+                    "Person 2": "Honestly, it’s a bit of a struggle. I feel like I’m drowning in graphs and charts."
+                },
+                {
+                    "Person 1": "Right? They throw so much data at you. I could never keep it straight."
+                },
+                {
+                    "Person 2": "Exactly! And then they expect you to explain it all like it’s second nature."
+                },
+                {
+                    "Person 1": "Have you tried studying with a group? Sometimes that helps."
+                },
+                {
+                    "Person 2": "Yeah, I did that last week. It was helpful, but we ended up talking about everything but economics!"
+                },
+                {
+                    "Person 1": "Classic! So, what’s the plan for your exam?"
+                },
+                {
+                    "Person 2": "I’ve got a week to prepare. I’m just hoping I can remember the vocabulary."
+                },
+                {
+                    "Person 1": "I can send you some notes if you want. I still have mine from when I took it."
+                },
+                {
+                    "Person 2": "That would be awesome! I could use all the help I can get."
+                },
+                {
+                    "Person 1": "No problem! Just don’t stress too much. You’ll do great!"
+                },
+                {
+                    "Person 2": "Thanks! I appreciate it. I just need to get through this and then I can relax."
+                },
+                {
+                    "Person 1": "Totally! What are you planning to do after your exam?"
+                },
+                {
+                    "Person 2": "I think I’ll treat myself to a movie or something. I need a break!"
+                },
+                {
+                    "Person 1": "Sounds like a plan! Let’s catch up after your exam and celebrate."
+                },
+                {
+                    "Person 2": "Definitely! I’ll let you know how it goes."
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
