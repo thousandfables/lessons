@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I can hear you well and I see you well.",
+                    "corrected": "I can hear you well and see you well.",
+                    "explanation": "The second 'I' is unnecessary; it can be omitted for smoother sentence flow.",
+                    "context": "I can hear you well and see you well. It's great to connect like this. I hope we can have a productive lesson today."
+                },
+                {
+                    "original": "There are some Olympiads at summer, I don't know.",
+                    "corrected": "There are some Olympiads in summer, I don't know.",
+                    "explanation": "'At summer' is incorrect; 'in summer' is the correct preposition to indicate a season.",
+                    "context": "I don't think I have any plans for summer. There are some Olympiads in summer, I don't know. Maybe I will participate in a few events."
+                },
+                {
+                    "original": "I can be a bad photographer, but I need experience, so I should work more.",
+                    "corrected": "I can be a bad photographer, but I need experience, so I should work harder.",
+                    "explanation": "The phrase 'work more' is less idiomatic; 'work harder' conveys the idea of putting in more effort.",
+                    "context": "I can be a bad photographer, but I need experience, so I should work harder. Gaining experience is crucial for improving my skills."
+                },
+                {
+                    "original": "Doesn't work good enough.",
+                    "corrected": "Doesn't work well enough.",
+                    "explanation": "'Good' is an adjective and should be replaced with 'well,' which is the adverb form used to describe how something works.",
+                    "context": "I tried using some software for editing photos. It doesn't work well enough. I need something more effective."
+                },
+                {
+                    "original": "Perfection is not what is actually what will get you money.",
+                    "corrected": "Perfection is not actually what will get you money.",
+                    "explanation": "The phrase 'what is actually what' is redundant; it should be simplified to improve clarity.",
+                    "context": "When you look at what people post on Instagram, you see that perfection is not actually what will get you money. It's more about the atmosphere."
+                },
+                {
+                    "original": "There is, like, no some AI-based tool that can do that.",
+                    "corrected": "There is no AI-based tool that can do that.",
+                    "explanation": "The phrase 'like, no some' is incorrect; it should simply be 'no' to convey the intended meaning.",
+                    "context": "When you look at what AI is capable of today, it's hard to believe that there is no AI-based tool that can do that. Human touch is still essential."
+                },
+                {
+                    "original": "I feel like you act as a retired person here because you don't do anything.",
+                    "corrected": "I feel like you are acting like a retired person here because you don't do anything.",
+                    "explanation": "The verb 'act' should be in the continuous form 'are acting' to match the context of the ongoing situation.",
+                    "context": "When I think of that type of vacation, I feel like you are acting like a retired person here because you don't do anything. It's a very laid-back experience."
+                },
+                {
+                    "original": "I was once in Turkey and I was once in this type of vacation.",
+                    "corrected": "I was once in Turkey and experienced this type of vacation.",
+                    "explanation": "The phrase 'was once in this type of vacation' is awkward; 'experienced' is a more suitable verb.",
+                    "context": "I was once in Turkey and experienced this type of vacation. It was relaxing but not really my style."
+                },
+                {
+                    "original": "It doesn't look like Coliseum to me, it looks like just a bunch of, you know, old stones.",
+                    "corrected": "It doesn't look like the Coliseum to me; it looks like just a bunch of old stones.",
+                    "explanation": "The definite article 'the' is needed before 'Coliseum,' and a semicolon is better than a comma to separate the two independent clauses.",
+                    "context": "When I visited some ruins, I thought, 'It doesn't look like the Coliseum to me; it looks like just a bunch of old stones.'"
+                },
+                {
+                    "original": "I just saw marble, I don't remember.",
+                    "corrected": "I just saw marble; I don't remember.",
+                    "explanation": "A semicolon is needed to properly connect two related independent clauses.",
+                    "context": "When I visited the ruins, I just saw marble; I don't remember much else. It wasn't very memorable."
+                },
+                {
+                    "original": "I should close this switch.",
+                    "corrected": "I should close that switch.",
+                    "explanation": "'This' implies proximity, while 'that' is more appropriate for referring to something mentioned earlier.",
+                    "context": "I just automatically switched off the camera because I have a physical switch. I should close that switch to avoid anxiety."
+                },
+                {
+                    "original": "What I really find fascinating is how you can pronounce R in Russian language, but can't do that in English.",
+                    "corrected": "What I really find fascinating is how you can pronounce R in the Russian language, but can't do that in English.",
+                    "explanation": "The definite article 'the' is needed before 'Russian language' for grammatical correctness.",
+                    "context": "I find it interesting how language works. What I really find fascinating is how you can pronounce R in the Russian language, but can't do that in English."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I couldn't... I wasn't able to pronounce R in Russian and was fully able to pronounce it in English.",
+                    "corrected": "I couldn't... I wasn't able to pronounce the R in Russian and was fully able to pronounce it in English.",
+                    "explanation": "The article 'the' is needed before 'R' to specify which letter is being referred to.",
+                    "context": "I was applying to a school and the English teacher said that she didn't notice that I was unable to pronounce the R in Russian. I wasn't able to pronounce the R in Russian and was fully able to pronounce it in English."
+                },
+                {
+                    "original": "It's called eroticism. Eroticism? Eroticism, but eroticism.",
+                    "corrected": "It's called eroticism. Eroticism? No, it's pronounced eroticism.",
+                    "explanation": "The repetition of 'eroticism' is unnecessary and confusing; clarification is needed.",
+                    "context": "I was discussing the pronunciation of certain letters. It's called eroticism. No, it's pronounced eroticism."
+                },
+                {
+                    "original": "I see you have like five paragraphs here.",
+                    "corrected": "I see you have about five paragraphs here.",
+                    "explanation": "'Like' is informal and unnecessary in this context; 'about' is more appropriate.",
+                    "context": "We were reviewing the structure of your essay. I see you have about five paragraphs here. Is one paragraph specifically about your reason why you think one side outweighs the other?"
+                },
+                {
+                    "original": "But, yeah, I wasn't able to point out the another.",
+                    "corrected": "But, yeah, I wasn't able to point out another one.",
+                    "explanation": "'The another' is incorrect; 'another one' is the correct form.",
+                    "context": "We were discussing the structure of your essay. But, yeah, I wasn't able to point out another one."
+                },
+                {
+                    "original": "I've even saw, like, watched a couple of videos about this problem.",
+                    "corrected": "I've even seen, like, watched a couple of videos about this problem.",
+                    "explanation": "'Saw' is the past tense; 'seen' is the correct past participle form needed here.",
+                    "context": "I was explaining my efforts to improve my essay writing. I've even seen, like, watched a couple of videos about this problem."
+                },
+                {
+                    "original": "You can come back to the university and get your degree, and then, yeah, you can get your degree, and then, you can get your degree, and then, you can get your degree, as possible.",
+                    "corrected": "You can come back to the university and get your degree.",
+                    "explanation": "The repetition of 'you can get your degree' is redundant; it should be stated once for clarity.",
+                    "context": "We were discussing options for further education. You can come back to the university and get your degree."
+                },
+                {
+                    "original": "What is actually, what we can learn, again, from the sample essay here, is that though we have here the plural version of advantages, disadvantages, we only present one.",
+                    "corrected": "What we can learn again from the sample essay here is that, although we have the plural versions of advantages and disadvantages, we only present one.",
+                    "explanation": "The sentence structure is awkward and includes unnecessary words; it should be simplified.",
+                    "context": "We were analyzing the sample essay. What we can learn again from the sample essay here is that, although we have the plural versions of advantages and disadvantages, we only present one."
+                },
+                {
+                    "original": "So there are two disadvantages? No, no, no. There is only one.",
+                    "corrected": "So there is only one disadvantage? No, no, no. There is only one.",
+                    "explanation": "The original sentence incorrectly uses 'there are' when referring to a singular noun 'disadvantage.'",
+                    "context": "We were clarifying the structure of your essay. So there is only one disadvantage? No, no, no. There is only one."
+                },
+                {
+                    "original": "Because you're talking about, like, advantages, here, like, you're talking about economic boost, that's your advantage.",
+                    "corrected": "Because you're talking about advantages here, you're discussing the economic boost, which is your advantage.",
+                    "explanation": "The use of 'like' is informal and unnecessary; the sentence should be more direct.",
+                    "context": "We were discussing the advantages in your essay. Because you're talking about advantages here, you're discussing the economic boost, which is your advantage."
+                },
+                {
+                    "original": "And for a couple of years, like, you know about Chicago, that Chicago was preparing for the Olympics, 2016 Olympics, as I remember.",
+                    "corrected": "And for a couple of years, you know that Chicago was preparing for the 2016 Olympics, as I remember.",
+                    "explanation": "The phrase 'like' is informal and should be removed for clarity.",
+                    "context": "We were discussing the preparations for the Olympics. And for a couple of years, you know that Chicago was preparing for the 2016 Olympics, as I remember."
+                },
+                {
+                    "original": "This is what we see on paper, right?",
+                    "corrected": "This is what we see on paper, isn't it?",
+                    "explanation": "The tag question should be 'isn't it?' instead of 'right?' for proper grammar.",
+                    "context": "We were discussing the budget for the Olympics. This is what we see on paper, isn't it?"
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "the cost of actually maintaining them is very high.",
+                    "corrected": "the cost of maintaining them is very high.",
+                    "explanation": "The word 'actually' is unnecessary and makes the sentence less concise.",
+                    "context": "Some stadiums are left behind after events. The cost of maintaining them is very high. This leads to a lot of unused facilities."
+                },
+                {
+                    "original": "they will read it.",
+                    "corrected": "they will read it carefully.",
+                    "explanation": "Adding 'carefully' clarifies the action and emphasizes the importance of thorough reading.",
+                    "context": "If we delete this passage, we need to ensure our essay meets the word count. They will read it carefully to evaluate our arguments."
+                },
+                {
+                    "original": "there are gonna be, like, 220 words.",
+                    "corrected": "there are going to be about 220 words.",
+                    "explanation": "'Gonna' is informal; 'going to' is more appropriate in this context.",
+                    "context": "I need to maintain the word count in my essay. There are going to be about 220 words if I delete this passage."
+                },
+                {
+                    "original": "should have added my opinion.",
+                    "corrected": "I should have added my opinion.",
+                    "explanation": "The subject 'I' is missing, making the sentence incomplete.",
+                    "context": "Reflecting on my essay, I realize I should have added my opinion to strengthen my argument."
+                },
+                {
+                    "original": "advance outweigh or do not outweigh.",
+                    "corrected": "advantages outweigh or do not outweigh.",
+                    "explanation": "'Advance' is incorrect; 'advantages' is the appropriate term in this context.",
+                    "context": "I need to clarify my stance on the topic. The advantages outweigh or do not outweigh the disadvantages."
+                },
+                {
+                    "original": "the economic benefits end improved global stinging.",
+                    "corrected": "the economic benefits and improved global standing.",
+                    "explanation": "The word 'end' is a typo; 'and' should be used to connect the two ideas.",
+                    "context": "In my conclusion, I want to highlight the positive aspects. The economic benefits and improved global standing make the event worthwhile."
+                },
+                {
+                    "original": "making official for the costing country.",
+                    "corrected": "making it official for the hosting country.",
+                    "explanation": "'Costing' is incorrect; 'hosting' is the appropriate term in this context.",
+                    "context": "When discussing the financial implications, I need to clarify who is affected. Making it official for the hosting country is crucial."
+                },
+                {
+                    "original": "everything concluded.",
+                    "corrected": "everything is concluded.",
+                    "explanation": "The verb 'is' is needed to form a complete sentence.",
+                    "context": "After reviewing my essay, I feel satisfied. Everything is concluded, and I believe I have addressed all points."
+                },
+                {
+                    "original": "did we again reference the problem that we had?",
+                    "corrected": "did we reference the problem we had again?",
+                    "explanation": "The word order is awkward; it should be restructured for clarity.",
+                    "context": "As I review my essay, I want to ensure all points are covered. Did we reference the problem we had again?"
+                },
+                {
+                    "original": "this will be included.",
+                    "corrected": "this will be included in the total count.",
+                    "explanation": "The phrase is incomplete; it should specify what 'this' refers to.",
+                    "context": "When checking my essay, I need to ensure all sentences are counted. This will be included in the total count for the word requirement."
+                },
+                {
+                    "original": "I mean, I'm not sure.",
+                    "corrected": "I am not sure.",
+                    "explanation": "Using 'I mean' is unnecessary and makes the statement less formal.",
+                    "context": "While discussing my ideas, I realize I need to be more confident. I am not sure about this point, so I should clarify."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "Like one advantage, one disadvantage, or choosing which one is better.",
+                    "corrected": "Like one advantage and one disadvantage, or choosing which one is better.",
+                    "explanation": "The conjunction 'and' is needed to connect 'one advantage' and 'one disadvantage' properly.",
+                    "context": "In our discussion about essay structure, we talked about presenting arguments clearly. We should include one advantage and one disadvantage, or discuss which one is better."
+                },
+                {
+                    "original": "I thought that I should do this, but now I understand.",
+                    "corrected": "I thought that I should do this, but now I understand it better.",
+                    "explanation": "The phrase 'understand better' clarifies that the speaker has gained a deeper comprehension of the topic.",
+                    "context": "While reflecting on the essay structure, I realized I had some misconceptions. I thought that I should do this, but now I understand it better."
+                },
+                {
+                    "original": "Because in the first one, like before, I should have written like the counter-accusment.",
+                    "corrected": "Because in the first one, like before, I should have written the counter-argument.",
+                    "explanation": "The term 'counter-accusment' is incorrect; the proper term is 'counter-argument' to refer to opposing viewpoints.",
+                    "context": "When discussing the importance of addressing opposing views in essays, I recalled my earlier drafts. Because in the first one, like before, I should have written the counter-argument."
+                },
+                {
+                    "original": "We can simply ignore it, or if we really want to dive, like if we want to go further, we can...",
+                    "corrected": "We can simply ignore it, or if we really want to dive deeper, we can...",
+                    "explanation": "'Dive deeper' is the correct phrase to indicate a more thorough exploration of a topic.",
+                    "context": "In our conversation about essay writing, we explored how to handle repetitive points. We can simply ignore it, or if we really want to dive deeper, we can..."
+                },
+                {
+                    "original": "The examiner is looking at whether we completed our task effectively.",
+                    "corrected": "The examiner is looking at whether we have completed our task effectively.",
+                    "explanation": "The present perfect tense 'have completed' is more appropriate here to indicate an action relevant to the present.",
+                    "context": "As we discussed the evaluation criteria for essays, I emphasized the examiner's focus. The examiner is looking at whether we have completed our task effectively."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Olympiad",
+                    "definition": "A competition involving a series of tests or challenges, often in academic subjects.",
+                    "context": {
+                        "Context 1": "I plan to participate in several Olympiads this summer to challenge myself academically.",
+                        "Context 2": "The Olympiad for athletes is held every four years in different countries.",
+                        "Context 3": "She trained hard for the math Olympiad, hoping to win a gold medal."
+                    }
+                },
+                {
+                    "word": "Color grading",
+                    "definition": "The process of adjusting the color of a video or image to achieve a desired look.",
+                    "context": {
+                        "Context 1": "After the photo shoot, I spent hours on color grading to enhance the images.",
+                        "Context 2": "Color grading is essential in filmmaking to create the right mood for a scene.",
+                        "Context 3": "He decided to take a workshop on color grading to improve his photography skills."
+                    }
+                },
+                {
+                    "word": "All-inclusive",
+                    "definition": "A type of vacation package that includes all meals, drinks, and activities for a single price.",
+                    "context": {
+                        "Context 1": "I prefer all-inclusive resorts because everything is taken care of.",
+                        "Context 2": "The all-inclusive package at the theme park includes rides, food, and souvenirs.",
+                        "Context 3": "They booked an all-inclusive cruise that offered entertainment and dining options."
+                    }
+                },
+                {
+                    "word": "Sightseeing",
+                    "definition": "The activity of visiting places of interest in a particular location.",
+                    "context": {
+                        "Context 1": "During our trip, we spent a day sightseeing at the ancient ruins.",
+                        "Context 2": "Sightseeing in the city included visiting museums and historical landmarks.",
+                        "Context 3": "She loves sightseeing and often takes photos of famous monuments."
+                    }
+                },
+                {
+                    "word": "Exhausting",
+                    "definition": "Causing extreme physical or mental fatigue.",
+                    "context": {
+                        "Context 1": "The hike was exhausting, but the view from the top was worth it.",
+                        "Context 2": "Studying for finals can be exhausting, especially when you lack sleep.",
+                        "Context 3": "He found the marathon exhausting but felt accomplished after finishing."
+                    }
+                },
+                {
+                    "word": "Retired",
+                    "definition": "Having stopped working, typically due to age or after a long career.",
+                    "context": {
+                        "Context 1": "After years of teaching, she finally retired and enjoys traveling.",
+                        "Context 2": "The retired couple spends their days gardening and volunteering.",
+                        "Context 3": "He dreams of a retired life filled with leisure and adventure."
+                    }
+                },
+                {
+                    "word": "Fascinating",
+                    "definition": "Extremely interesting or charming.",
+                    "context": {
+                        "Context 1": "I find ancient history fascinating, especially the stories of past civilizations.",
+                        "Context 2": "The documentary about space was so fascinating that I watched it twice.",
+                        "Context 3": "She has a fascinating collection of stamps from around the world."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "I need more experience in photography to improve my skills.",
+                        "Context 2": "Traveling abroad gave him a unique experience that changed his perspective.",
+                        "Context 3": "Her experience in the industry helped her land the job."
+                    }
+                },
+                {
+                    "word": "Adventure",
+                    "definition": "An unusual and exciting experience or activity.",
+                    "context": {
+                        "Context 1": "I’m not a fan of adventures, preferring to stay in familiar places.",
+                        "Context 2": "The book is filled with tales of adventure on the high seas.",
+                        "Context 3": "They planned an adventure trip to the mountains for the summer."
+                    }
+                },
+                {
+                    "word": "Wisdom",
+                    "definition": "The quality of having experience, knowledge, and good judgment.",
+                    "context": {
+                        "Context 1": "Traveling can provide wisdom that you can't gain from books.",
+                        "Context 2": "He shared his wisdom about life during the family gathering.",
+                        "Context 3": "The old man was known for his wisdom and often gave advice to the youth."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Olympiad",
+                    "fact": "Did you know that the first modern Olympiad was held in Athens in 1896, featuring only 13 countries?"
+                },
+                {
+                    "word": "All-inclusive",
+                    "fact": "The term 'all-inclusive' was first used in the travel industry in the 1950s, but it sounds like a buffet of fun!"
+                },
+                {
+                    "word": "Fascinating",
+                    "fact": "The word 'fascinating' comes from the Latin 'fascinatus,' which means 'to bewitch or enchant'—so be careful who you fascinate!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the photographer break up with their camera?",
+                    "answer": "Because they just couldn't focus on the relationship!"
+                },
+                {
+                    "question": "Why don’t scientists trust atoms?",
+                    "answer": "Because they make up everything!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Pronounce",
+                    "definition": "To make the sound of a word or letter in the correct way.",
+                    "context": {
+                        "Context 1": "I struggled to pronounce the word 'Kartavi' correctly in Russian.",
+                        "Context 2": "She can pronounce several languages fluently, including French and Spanish.",
+                        "Context 3": "The teacher asked the students to pronounce their names clearly during roll call."
+                    }
+                },
+                {
+                    "word": "Unnoticeable",
+                    "definition": "Not easily seen or noticed; subtle.",
+                    "context": {
+                        "Context 1": "The difference in my pronunciation was unnoticeable to most people.",
+                        "Context 2": "The artist's brush strokes were so fine that they were almost unnoticeable.",
+                        "Context 3": "The changes made to the website were unnoticeable until users pointed them out."
+                    }
+                },
+                {
+                    "word": "Irony",
+                    "definition": "A situation that is strange or funny because things happen in a way that seems to be the opposite of what you expected.",
+                    "context": {
+                        "Context 1": "It's ironic that I can pronounce the English 'R' but struggle with the Russian one.",
+                        "Context 2": "The irony of the situation was that the thief ended up locked in the store he was robbing.",
+                        "Context 3": "She found it ironic that her fear of flying was heightened during a flight to a safety seminar."
+                    }
+                },
+                {
+                    "word": "Mock",
+                    "definition": "To make fun of someone or something in a cruel way.",
+                    "context": {
+                        "Context 1": "He felt mocked by the way his speech defect was pointed out in class.",
+                        "Context 2": "The comedian often mocks celebrities in his stand-up routines.",
+                        "Context 3": "The children would mock each other playfully during recess."
+                    }
+                },
+                {
+                    "word": "Credits",
+                    "definition": "Recognition or acknowledgment for contributions or achievements.",
+                    "context": {
+                        "Context 1": "I gave you a lot of credits in my essay for your help.",
+                        "Context 2": "The movie's credits rolled for ten minutes after the final scene.",
+                        "Context 3": "She received credits for her volunteer work at the local shelter."
+                    }
+                },
+                {
+                    "word": "Structure",
+                    "definition": "The arrangement or organization of parts to form a whole.",
+                    "context": {
+                        "Context 1": "The structure of your essay needs to be clear and logical.",
+                        "Context 2": "The structure of the building was designed to withstand earthquakes.",
+                        "Context 3": "He admired the structure of the poem, with its unique rhythm and rhyme scheme."
+                    }
+                },
+                {
+                    "word": "Prototype",
+                    "definition": "An original model on which something is based or formed.",
+                    "context": {
+                        "Context 1": "You should include prototypes of your ideas in the introduction of your essay.",
+                        "Context 2": "The engineers created a prototype of the new car before mass production.",
+                        "Context 3": "The artist's prototype sculpture was displayed in the gallery for feedback."
+                    }
+                },
+                {
+                    "word": "Advantage",
+                    "definition": "A condition or circumstance that puts one in a favorable or superior position.",
+                    "context": {
+                        "Context 1": "One advantage of studying abroad is the exposure to different cultures.",
+                        "Context 2": "Having a good education is an advantage in the job market.",
+                        "Context 3": "The team had the advantage of playing on their home turf."
+                    }
+                },
+                {
+                    "word": "Disadvantage",
+                    "definition": "A condition or circumstance that puts one in a less favorable or inferior position.",
+                    "context": {
+                        "Context 1": "One disadvantage of living in a big city is the high cost of living.",
+                        "Context 2": "The main disadvantage of remote work is the lack of face-to-face interaction.",
+                        "Context 3": "He recognized the disadvantage of not having a car in a rural area."
+                    }
+                },
+                {
+                    "word": "Economic",
+                    "definition": "Related to the economy or the management of resources.",
+                    "context": {
+                        "Context 1": "The economic benefits of hosting the Olympics can be significant.",
+                        "Context 2": "She studied economic theories in her university courses.",
+                        "Context 3": "The government implemented new policies to improve the economic situation."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Pronounce",
+                    "fact": "Did you know that the word 'pronounce' is often mispronounced as 'pro-nounce' instead of 'pruh-nouns'?"
+                },
+                {
+                    "word": "Irony",
+                    "fact": "Irony is so common in literature that it has its own literary device, but in real life, it can be quite unexpected!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Compensated",
+                    "definition": "To make up for something, typically by providing an equivalent benefit or payment.",
+                    "context": {
+                        "Context 1": "The workers were compensated for their overtime hours with additional pay.",
+                        "Context 2": "He compensated his lack of experience with enthusiasm and hard work.",
+                        "Context 3": "The restaurant compensated the customer with a free meal after the long wait."
+                    }
+                },
+                {
+                    "word": "Recouped",
+                    "definition": "To regain or recover something that was lost or spent.",
+                    "context": {
+                        "Context 1": "The company recouped its losses after a successful marketing campaign.",
+                        "Context 2": "She recouped her energy by taking a short nap.",
+                        "Context 3": "He recouped his investment in the stock market after a year of steady growth."
+                    }
+                },
+                {
+                    "word": "Outweigh",
+                    "definition": "To be greater or more significant than something else.",
+                    "context": {
+                        "Context 1": "The benefits of the new policy outweigh the drawbacks.",
+                        "Context 2": "In her opinion, the fun of the trip outweighed the cost.",
+                        "Context 3": "The risks of the project outweighed the potential rewards."
+                    }
+                },
+                {
+                    "word": "Expenses",
+                    "definition": "The costs incurred in the process of doing something.",
+                    "context": {
+                        "Context 1": "The expenses for the event exceeded the budget.",
+                        "Context 2": "He kept track of his expenses to save money for a vacation.",
+                        "Context 3": "The expenses of running a small business can be quite high."
+                    }
+                },
+                {
+                    "word": "Global Influence",
+                    "definition": "The ability to affect or shape events and decisions on a worldwide scale.",
+                    "context": {
+                        "Context 1": "The organization aims to increase its global influence through partnerships.",
+                        "Context 2": "His global influence as a celebrity allows him to advocate for important causes.",
+                        "Context 3": "The country’s global influence has grown due to its economic power."
+                    }
+                },
+                {
+                    "word": "Conclusion",
+                    "definition": "The end or finish of an event, process, or text, summarizing the main points.",
+                    "context": {
+                        "Context 1": "In the conclusion of the essay, she restated her main arguments.",
+                        "Context 2": "The conclusion of the movie left the audience in suspense.",
+                        "Context 3": "His conclusion about the experiment was based on the data collected."
+                    }
+                },
+                {
+                    "word": "Instruction",
+                    "definition": "A direction or order given to guide someone in performing a task.",
+                    "context": {
+                        "Context 1": "The teacher gave clear instructions on how to complete the assignment.",
+                        "Context 2": "He followed the instructions carefully to assemble the furniture.",
+                        "Context 3": "The instructions for the game were confusing, leading to misunderstandings."
+                    }
+                },
+                {
+                    "word": "Paraphrase",
+                    "definition": "To express the meaning of something using different words, especially to achieve clarity.",
+                    "context": {
+                        "Context 1": "She had to paraphrase the article to make it easier to understand.",
+                        "Context 2": "The teacher asked him to paraphrase the poem in his own words.",
+                        "Context 3": "Paraphrasing can help avoid plagiarism in academic writing."
+                    }
+                },
+                {
+                    "word": "Clarified",
+                    "definition": "To make something clear or easier to understand.",
+                    "context": {
+                        "Context 1": "The teacher clarified the assignment requirements for the students.",
+                        "Context 2": "He clarified his intentions during the meeting to avoid misunderstandings.",
+                        "Context 3": "The instructions were clarified after several students asked questions."
+                    }
+                },
+                {
+                    "word": "Significant",
+                    "definition": "Having meaning or importance; noteworthy.",
+                    "context": {
+                        "Context 1": "The study showed significant results that could impact future research.",
+                        "Context 2": "Her significant contribution to the project was recognized by her peers.",
+                        "Context 3": "The significant changes in the weather patterns are a cause for concern."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Compensated",
+                    "fact": "In ancient Rome, soldiers were compensated with salt, which was so valuable that it was the origin of the word 'salary'!"
+                },
+                {
+                    "word": "Recouped",
+                    "fact": "The term 'recoup' comes from the French word 'recouper,' which means to cut back or recover, but it sounds like a fancy way to say 'get your money back!'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What do you call a teacher who never farts in public?",
+                    "answer": "A private tutor!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Outweigh",
+                    "definition": "To be greater or more significant than something else.",
+                    "context": {
+                        "Context 1": "The benefits of the new policy outweigh the costs involved.",
+                        "Context 2": "In a debate, it's important to show how your arguments outweigh those of your opponent.",
+                        "Context 3": "The joy of owning a pet often outweighs the responsibilities that come with it."
+                    }
+                },
+                {
+                    "word": "Moreover",
+                    "definition": "In addition to what has been said; furthermore.",
+                    "context": {
+                        "Context 1": "The project is not only innovative; moreover, it is cost-effective.",
+                        "Context 2": "She loves hiking; moreover, she enjoys camping in the wilderness.",
+                        "Context 3": "He is a talented musician; moreover, he is an excellent painter."
+                    }
+                },
+                {
+                    "word": "Fulfill",
+                    "definition": "To complete or achieve something, typically a requirement or duty.",
+                    "context": {
+                        "Context 1": "The new building was designed to fulfill the needs of the community.",
+                        "Context 2": "He worked hard to fulfill his dream of becoming a doctor.",
+                        "Context 3": "The team was able to fulfill their goal of winning the championship."
+                    }
+                },
+                {
+                    "word": "Counter-argument",
+                    "definition": "An argument that opposes another argument.",
+                    "context": {
+                        "Context 1": "In her essay, she presented a strong counter-argument to the opposing view.",
+                        "Context 2": "During the debate, he effectively countered his opponent's arguments.",
+                        "Context 3": "The lawyer prepared a counter-argument to challenge the prosecution's claims."
+                    }
+                },
+                {
+                    "word": "Justify",
+                    "definition": "To show or prove to be right or reasonable.",
+                    "context": {
+                        "Context 1": "He needed to justify his decision to invest in the new project.",
+                        "Context 2": "The teacher asked the students to justify their answers during the discussion.",
+                        "Context 3": "She tried to justify her absence from the meeting with a valid excuse."
+                    }
+                },
+                {
+                    "word": "Paraphrase",
+                    "definition": "To express the meaning of something written or spoken using different words.",
+                    "context": {
+                        "Context 1": "It's important to paraphrase sources in your essay to avoid plagiarism.",
+                        "Context 2": "He had to paraphrase the poem to make it easier for his classmates to understand.",
+                        "Context 3": "The teacher encouraged students to paraphrase the textbook material in their own words."
+                    }
+                },
+                {
+                    "word": "Explicitly",
+                    "definition": "In a clear and detailed manner, leaving no room for confusion.",
+                    "context": {
+                        "Context 1": "The instructions must explicitly state what is required from the students.",
+                        "Context 2": "He explicitly mentioned his expectations during the meeting.",
+                        "Context 3": "The contract explicitly outlines the terms of the agreement."
+                    }
+                },
+                {
+                    "word": "Significant",
+                    "definition": "Sufficiently great or important to be worthy of attention.",
+                    "context": {
+                        "Context 1": "The research showed a significant improvement in the students' test scores.",
+                        "Context 2": "There was a significant increase in sales after the new marketing campaign.",
+                        "Context 3": "Her contribution to the project was significant and greatly appreciated."
+                    }
+                },
+                {
+                    "word": "Structure",
+                    "definition": "The arrangement of and relations between the parts or elements of something complex.",
+                    "context": {
+                        "Context 1": "The structure of the essay is crucial for conveying the main arguments.",
+                        "Context 2": "The structure of the building was designed to withstand earthquakes.",
+                        "Context 3": "He admired the structure of the ancient castle during his visit."
+                    }
+                },
+                {
+                    "word": "Connect",
+                    "definition": "To join together or establish a relationship between two or more things.",
+                    "context": {
+                        "Context 1": "It's important to connect your ideas logically in an essay.",
+                        "Context 2": "She tried to connect with her audience during the presentation.",
+                        "Context 3": "The app allows users to connect with friends from around the world."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Justify",
+                    "fact": "Did you know that the word 'justify' originally meant 'to make righteous'? So next time you justify your late homework, remember you're on a moral mission!"
+                },
+                {
+                    "word": "Paraphrase",
+                    "fact": "Paraphrasing is like giving a book a makeover; you keep the story but change the outfit!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the essay go to therapy?",
+                    "answer": "Because it had too many unresolved issues!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to reach new heights in their studies!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going this afternoon?"
+                },
+                {
+                    "Person 2": "Pretty good! Just enjoying some downtime. How about you?"
+                },
+                {
+                    "Person 1": "Same here! So, any plans for the summer?"
+                },
+                {
+                    "Person 2": "Not really. I might just hang out and maybe join a few local events. What about you?"
+                },
+                {
+                    "Person 1": "I was thinking of picking up photography as a side gig. You know, just for fun."
+                },
+                {
+                    "Person 2": "That sounds awesome! I’ve heard you can make decent money even if you’re just starting out."
+                },
+                {
+                    "Person 1": "Yeah, but I need to practice a lot first. My friend who’s a photographer says editing is the hardest part."
+                },
+                {
+                    "Person 2": "For sure! I’ve tried editing photos before, and it can be a bit tedious."
+                },
+                {
+                    "Person 1": "Right? And I feel like the software doesn’t always do a great job. I want my own style."
+                },
+                {
+                    "Person 2": "Exactly! It’s all about capturing your unique perspective. Have you thought about traveling for inspiration?"
+                },
+                {
+                    "Person 1": "I’ve considered it, but I’m not really into big adventures. I love it here in the city."
+                },
+                {
+                    "Person 2": "Totally get that. Sometimes exploring your own backyard is just as rewarding."
+                },
+                {
+                    "Person 1": "Yeah, and traveling can be so expensive nowadays. I’m not sure it’s worth it right now."
+                },
+                {
+                    "Person 2": "True! Plus, there’s so much to see locally. Have you ever been to that new art exhibit downtown?"
+                },
+                {
+                    "Person 1": "Not yet, but I’ve heard great things about it! We should check it out together."
+                },
+                {
+                    "Person 2": "Definitely! Let’s plan for it this weekend."
+                },
+                {
+                    "Person 1": "Sounds like a plan! I’ll bring my camera!"
+                },
+                {
+                    "Person 2": "Perfect! Can’t wait to see what you capture!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you finish that essay for class yet?"
+                },
+                {
+                    "Person 2": "Not yet! I’ve been staring at my laptop for hours. It’s like my brain just won’t cooperate."
+                },
+                {
+                    "Person 1": "I totally get that. Sometimes I feel like I’m just chewing on my thoughts and not getting anywhere."
+                },
+                {
+                    "Person 2": "Exactly! I was trying to figure out how to structure my arguments, and it’s just a mess."
+                },
+                {
+                    "Person 1": "Have you looked at any sample essays? They can really help with the structure."
+                },
+                {
+                    "Person 2": "I did! I found one that had a clear layout, but I still struggled to fit my ideas into it."
+                },
+                {
+                    "Person 1": "Yeah, it can be tough. Maybe try breaking it down into smaller parts?"
+                },
+                {
+                    "Person 2": "That’s a good idea! I think I’m trying to tackle the whole thing at once."
+                },
+                {
+                    "Person 1": "Right? Just focus on one paragraph at a time. What’s your main argument?"
+                },
+                {
+                    "Person 2": "I’m arguing that the benefits of hosting big events outweigh the downsides, but it’s hard to back it up."
+                },
+                {
+                    "Person 1": "That’s a solid point! You could mention job creation and economic boosts as advantages."
+                },
+                {
+                    "Person 2": "Yeah, I thought about that! But then there are the costs and the impact on local businesses."
+                },
+                {
+                    "Person 1": "True, but you can frame it as a trade-off. Highlight the positives and then address the negatives."
+                },
+                {
+                    "Person 2": "That makes sense! I just need to find a way to express it clearly."
+                },
+                {
+                    "Person 1": "You got this! Just remember to keep it simple and focus on your main points."
+                },
+                {
+                    "Person 2": "Thanks! I’ll give it another shot. Maybe I’ll grab a snack first to recharge."
+                },
+                {
+                    "Person 1": "Good plan! A little break can do wonders. Let me know if you need any more help!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "I did! What a finish, right? I thought they were done for."
+                },
+                {
+                    "Person 1": "I know! I was ready to turn it off, but then they scored that last-minute goal."
+                },
+                {
+                    "Person 2": "Exactly! I jumped off the couch. It was so unexpected."
+                },
+                {
+                    "Person 1": "Right? And the crowd went wild! I love when the underdog pulls through."
+                },
+                {
+                    "Person 2": "Same here! It makes the game so much more exciting. What do you think about the next match?"
+                },
+                {
+                    "Person 1": "I think they have a good shot! If they keep playing like that, they could go far."
+                },
+                {
+                    "Person 2": "Totally agree! I just hope they can keep up the momentum."
+                },
+                {
+                    "Person 1": "Yeah, consistency is key. By the way, are you going to the watch party this weekend?"
+                },
+                {
+                    "Person 2": "Absolutely! I wouldn’t miss it. It’s always a blast with everyone."
+                },
+                {
+                    "Person 1": "For sure! Plus, the snacks are always on point."
+                },
+                {
+                    "Person 2": "Haha, right? I’m bringing my famous nachos!"
+                },
+                {
+                    "Person 1": "Nice! I’ll bring some drinks. Can’t wait!"
+                },
+                {
+                    "Person 2": "Same here! It’s going to be a great time."
+                },
+                {
+                    "Person 1": "Definitely! Let’s hope for another thrilling game."
+                },
+                {
+                    "Person 2": "For sure! See you there!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a nail-biter! I thought they were going to lose for sure."
+                },
+                {
+                    "Person 1": "I know, right? That last-minute goal was insane!"
+                },
+                {
+                    "Person 2": "Totally! I was on the edge of my seat. Did you see the crowd's reaction?"
+                },
+                {
+                    "Person 1": "Yes! Everyone went wild! I love moments like that in sports."
+                },
+                {
+                    "Person 2": "Same here! It really brings people together. Are you going to the next game?"
+                },
+                {
+                    "Person 1": "Absolutely! I wouldn’t miss it for the world. You coming?"
+                },
+                {
+                    "Person 2": "For sure! Let’s grab some snacks before the game."
+                },
+                {
+                    "Person 1": "Great idea! I’m craving some nachos."
+                },
+                {
+                    "Person 2": "Nachos it is! I’ll bring the drinks."
+                },
+                {
+                    "Person 1": "Perfect! Can’t wait for the game. It’s going to be epic!"
+                },
+                {
+                    "Person 2": "Yeah, let’s hope for another thrilling finish!"
+                },
+                {
+                    "Person 1": "Definitely! See you then!"
+                },
+                {
+                    "Person 2": "See you!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
