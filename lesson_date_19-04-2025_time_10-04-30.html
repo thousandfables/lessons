@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 6,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I decided to take a health day rest from not like from 21st of April maybe 28 or 39th of April.",
+                    "corrected": "I decided to take a health day off from around the 21st of April, maybe the 28th or 29th of April.",
+                    "explanation": "The phrase 'health day rest' is awkward; 'health day off' is more idiomatic. 'Not like from' is unnecessary and confusing. The dates should be clarified as 'the 28th or 29th.'",
+                    "context": "Today is Saturday, and I have some plans. I decided to take a health day off from around the 21st of April, maybe the 28th or 29th of April. I asked my manager how to do it."
+                },
+                {
+                    "original": "it's necessary that someone not like just three or four people a little bit more to go to clean near with cathedral.",
+                    "corrected": "It's necessary that more than just three or four people go to clean near the cathedral.",
+                    "explanation": "'Not like just' is awkward; 'more than just' is clearer. 'To go to clean near with cathedral' should be 'to clean near the cathedral.'",
+                    "context": "I have some responsibilities today. It's necessary that more than just three or four people go to clean near the cathedral. We need a larger group to help out."
+                },
+                {
+                    "original": "my memory is not that good you know it's okay it's morning.",
+                    "corrected": "My memory isn't that good, you know; it's okay, it's morning.",
+                    "explanation": "The phrase 'is not that good' should be contracted to 'isn't' for fluency. A semicolon or comma is needed for clarity.",
+                    "context": "I feel a bit forgetful today. My memory isn't that good, you know; it's okay, it's morning. I often struggle with remembering things early in the day."
+                },
+                {
+                    "original": "But it should be not on the Saturday like clean clean Thursday.",
+                    "corrected": "But it shouldn't be on Saturday; I should clean on Thursday.",
+                    "explanation": "'Should be not' is incorrect; it should be 'shouldn't be.' The phrase 'like clean clean Thursday' is unclear and should be rephrased.",
+                    "context": "I have a routine for cleaning my apartment. But it shouldn't be on Saturday; I should clean on Thursday. I prefer to keep my weekends free."
+                },
+                {
+                    "original": "when you learn some language yeah like English Italian or something you try to be immersed in the culture as deep as possible right.",
+                    "corrected": "When you learn a language, like English or Italian, you try to immerse yourself in the culture as deeply as possible, right?",
+                    "explanation": "The phrase 'some language' should be 'a language.' 'Immersed' should be 'immerse yourself,' and 'as deep as possible' should be 'as deeply as possible.'",
+                    "context": "Learning a new language is fascinating. When you learn a language, like English or Italian, you try to immerse yourself in the culture as deeply as possible, right? It helps you understand the language better."
+                },
+                {
+                    "original": "that's fine just a couple of a couple hours practice and I will be good.",
+                    "corrected": "That's fine; just a couple of hours of practice and I will be good.",
+                    "explanation": "The phrase 'a couple of a couple hours' is redundant; it should be 'a couple of hours.' A semicolon is needed for clarity.",
+                    "context": "I believe I can regain my language skills. That's fine; just a couple of hours of practice and I will be good. I just need to dedicate some time to it."
+                },
+                {
+                    "original": "my mom also cooked a lot of but she also sold sold them.",
+                    "corrected": "My mom also cooked a lot, but she also sold them.",
+                    "explanation": "The phrase 'cooked a lot of' is awkward; it should be 'cooked a lot.' The repetition of 'sold' is a mistake.",
+                    "context": "Food is a big part of my family traditions. My mom also cooked a lot, but she also sold them. She had a talent for making delicious dishes."
+                },
+                {
+                    "original": "do they bake or the same thing in Italy or is in Russia.",
+                    "corrected": "Do they bake the same thing in Italy as they do in Russia?",
+                    "explanation": "The sentence structure is incorrect; it should be rephrased for clarity. 'Or is in Russia' is awkward and should be 'as they do in Russia.'",
+                    "context": "I often wonder about culinary traditions. Do they bake the same thing in Italy as they do in Russia? I love comparing different cultures' cuisines."
+                },
+                {
+                    "original": "it's looking like a cool each but a little bit different flavor for my opinion better.",
+                    "corrected": "It looks like a kulich, but in my opinion, it has a better flavor.",
+                    "explanation": "'It's looking like' should be 'It looks like.' 'Cool each' is a misspelling of 'kulich.' The phrase 'for my opinion better' should be rephrased to 'in my opinion, it has a better flavor.'",
+                    "context": "I enjoy discussing traditional foods. It looks like a kulich, but in my opinion, it has a better flavor. I find it fascinating how flavors can vary."
+                },
+                {
+                    "original": "and do they have them um my mom made it more professional.",
+                    "corrected": "And do they have them? My mom made them more professionally.",
+                    "explanation": "The phrase 'made it more professional' should be 'made them more professionally.' A question mark is needed after 'have them.'",
+                    "context": "I'm curious about different culinary practices. And do they have them? My mom made them more professionally. She always puts a lot of effort into her cooking."
+                },
+                {
+                    "original": "but in my opinion it should cost like maybe not less than the two um no no 100 2000.",
+                    "corrected": "But in my opinion, it should cost at least 2000 rubles.",
+                    "explanation": "The phrase 'not less than the two um no no 100 2000' is confusing and should be simplified to 'at least 2000 rubles.'",
+                    "context": "I often think about the value of homemade goods. But in my opinion, it should cost at least 2000 rubles. Quality comes with a price."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "it's like a regular life there no but he adore that to eat something or especially drink wine",
+                    "corrected": "it's like a regular life there, but he adores eating something, especially drinking wine.",
+                    "explanation": "The verb 'adore' should be in the third person singular form 'adores.' Additionally, 'to eat' should be changed to 'eating' for grammatical consistency.",
+                    "context": "When discussing his experiences, he mentioned that living there feels quite normal. However, he adores eating and especially drinking wine."
+                },
+                {
+                    "original": "it was first time for his maybe second or third",
+                    "corrected": "it was the first time for him, maybe the second or third for others.",
+                    "explanation": "The phrase 'first time for his' should be 'first time for him.' The article 'the' is needed before 'first time.'",
+                    "context": "Reflecting on a wine tasting event, he noted that it was his first time attending such an event. For his friend, it might have been the second or third time."
+                },
+                {
+                    "original": "it was like overall three weeks and in the end it was like oh my god",
+                    "corrected": "it was overall three weeks, and in the end, I thought, 'Oh my God.'",
+                    "explanation": "The phrase 'it was like overall three weeks' should be 'it was overall three weeks.' Also, 'it was like oh my god' should be rephrased for clarity.",
+                    "context": "He described a trip that lasted about three weeks. By the end of it, he was overwhelmed and exclaimed, 'Oh my God.'"
+                },
+                {
+                    "original": "but at the end we were very tired but later maybe after six months we missed about this feel like when you travel",
+                    "corrected": "but in the end, we were very tired. However, maybe after six months, we missed the feeling of traveling.",
+                    "explanation": "The phrase 'at the end' should be 'in the end.' The structure 'missed about this feel' is incorrect; it should be 'missed the feeling.'",
+                    "context": "He reflected on the exhaustion after a busy trip. Yet, after some time, he realized he missed the feeling of traveling."
+                },
+                {
+                    "original": "it's an exotic you know when you travel it's an exhausting feeling but it's satisfactory a feeling of satisfaction that's very satisfying",
+                    "corrected": "it's exotic, you know. When you travel, it's an exhausting feeling, but it's also satisfying—a feeling of satisfaction.",
+                    "explanation": "The phrase 'it's an exotic' is incomplete; it should be 'it's exotic.' The sentence structure needs clarification and punctuation.",
+                    "context": "He described traveling as an exotic experience. Although it can be exhausting, it also brings a satisfying feeling."
+                },
+                {
+                    "original": "you do exercises you receive a bad mark or only half or you did only half right correctly",
+                    "corrected": "you do exercises, and you receive a bad mark or only get half of them right.",
+                    "explanation": "The phrase 'only half or you did only half right correctly' is awkward; it should be rephrased for clarity.",
+                    "context": "He discussed the challenges of doing exercises. Sometimes, you might receive a bad mark or only get half of them right."
+                },
+                {
+                    "original": "the thing that matters is that some of them are actually right so you're actually getting a hang of this topic",
+                    "corrected": "what matters is that some of them are actually right, so you're getting the hang of this topic.",
+                    "explanation": "The phrase 'the thing that matters' can be simplified to 'what matters.' 'Getting a hang of' is more idiomatic than 'getting a hang of this topic.'",
+                    "context": "He emphasized the importance of recognizing that getting some answers right shows progress. You're getting the hang of the topic."
+                },
+                {
+                    "original": "writing part one is like a kind of a small exercise but it's still important",
+                    "corrected": "writing part one is a kind of small exercise, but it's still important.",
+                    "explanation": "The phrase 'like a kind of a small exercise' should be simplified to 'a kind of small exercise.'",
+                    "context": "He explained the structure of writing tasks. Writing part one is a small exercise, but it remains important."
+                },
+                {
+                    "original": "what is you what is uh good news is that it doesn't actually matter what kind of thing we receive",
+                    "corrected": "what is good news is that it doesn't actually matter what kind of data we receive.",
+                    "explanation": "The phrase 'what is you what is uh good news' is unclear; it should be simplified to 'what is good news.'",
+                    "context": "He reassured the students that the type of data received for writing tasks doesn't matter. What is good news is that it remains consistent."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "I thought that spanish more interesting for me because I also tried to learn spanish after the usa.",
+                    "corrected": "I thought that Spanish was more interesting for me because I also tried to learn Spanish after the USA.",
+                    "explanation": "The verb 'was' is needed here to indicate past tense, and 'Spanish' should be capitalized as it's a proper noun.",
+                    "context": "Before visiting Italy, I thought that Spanish was more interesting for me. I also tried to learn Spanish after my time in the USA."
+                },
+                {
+                    "original": "when I heard their language I also thought very beautiful language for me.",
+                    "corrected": "when I heard their language, I thought it was a very beautiful language for me.",
+                    "explanation": "The sentence needs a subject ('it') and a verb ('was') to be grammatically correct.",
+                    "context": "When I heard their language, I thought it was a very beautiful language for me. I was captivated by its sound."
+                },
+                {
+                    "original": "when we will make words verbs and before italy I also.",
+                    "corrected": "when we make words and verbs, and before Italy, I also.",
+                    "explanation": "The future tense 'will' is unnecessary here; the present tense is appropriate for a general statement.",
+                    "context": "When we make words and verbs, I remember my experience learning Spanish. Before Italy, I also tried to learn the language."
+                },
+                {
+                    "original": "very important learn it and spend time on this language every day.",
+                    "corrected": "it's very important to learn it and spend time on this language every day.",
+                    "explanation": "The phrase needs 'it's' to introduce the importance of the action, and 'to' before 'learn' for correct infinitive form.",
+                    "context": "I believe it's very important to learn a new language and spend time on it every day. Otherwise, you might waste your time."
+                },
+                {
+                    "original": "that's why uh people from spanish can understand approximately italian people.",
+                    "corrected": "that's why people from Spain can approximately understand Italian people.",
+                    "explanation": "The term 'Spanish' should refer to the country 'Spain' for clarity, and 'approximately' should be placed before 'understand.'",
+                    "context": "That's why people from Spain can approximately understand Italian people. There are similarities between the two languages."
+                },
+                {
+                    "original": "ukrainian language more near with poland.",
+                    "corrected": "Ukrainian language is closer to Polish.",
+                    "explanation": "The correct comparative form is 'closer' instead of 'more near,' and 'is' is needed for grammatical correctness.",
+                    "context": "I believe the Ukrainian language is closer to Polish. This is why there are some similarities."
+                },
+                {
+                    "original": "that's why maybe we thought that we have almost the same language.",
+                    "corrected": "that's why maybe we thought that we had almost the same language.",
+                    "explanation": "The past perfect tense 'had' is needed to indicate a past belief.",
+                    "context": "That's why maybe we thought that we had almost the same language. Our experiences shaped our understanding."
+                },
+                {
+                    "original": "if take exactly person who speak jazz on ukrainian.",
+                    "corrected": "if you take exactly a person who speaks Ukrainian.",
+                    "explanation": "The sentence requires 'you' to clarify the subject, and 'speaks' should be in the third person singular form.",
+                    "context": "If you take exactly a person who speaks Ukrainian, you will see the differences clearly. Language can vary significantly."
+                },
+                {
+                    "original": "you can just learn them and overall you you can understand their language.",
+                    "corrected": "you can just learn them, and overall, you can understand their language.",
+                    "explanation": "The repetition of 'you' is unnecessary, and commas are needed for clarity.",
+                    "context": "You can just learn them, and overall, you can understand their language. It's a gradual process."
+                },
+                {
+                    "original": "it's easy to understand from the context because like.",
+                    "corrected": "it's easy to understand from the context because, like.",
+                    "explanation": "A comma is needed before 'like' to separate clauses properly.",
+                    "context": "It's easy to understand from the context because, like many languages, there are cues that help with comprehension."
+                },
+                {
+                    "original": "I thought I mean okay but it's easy to understand from the context.",
+                    "corrected": "I thought, I mean, okay, but it's easy to understand from the context.",
+                    "explanation": "Commas are needed to separate the clauses and clarify the speaker's thoughts.",
+                    "context": "I thought, I mean, okay, but it's easy to understand from the context. Language often reveals meaning through context."
+                },
+                {
+                    "original": "and I had a student she lives in israel but she originally is from ukraine.",
+                    "corrected": "and I had a student who lives in Israel, but she is originally from Ukraine.",
+                    "explanation": "The relative pronoun 'who' is needed, and 'Israel' should be capitalized as a proper noun.",
+                    "context": "I had a student who lives in Israel, but she is originally from Ukraine. Her background gives her a unique perspective."
+                },
+                {
+                    "original": "it's not even here in kazakhstan you know.",
+                    "corrected": "it's not even the case here in Kazakhstan, you know.",
+                    "explanation": "The phrase needs 'the case' for clarity, and 'Kazakhstan' should be capitalized.",
+                    "context": "It's not even the case here in Kazakhstan, you know. Language dynamics can vary greatly by region."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "i mean or maybe you watched with mask people with masks rats uh maybe why a dark mask with ices yes no about bank about bank when a robbery tried to take money from bank no never no okay",
+                    "corrected": "I mean, maybe you watched 'Masked' people with masks? Maybe a dark mask with ice? No, about the bank, when a robbery tried to take money from the bank? No, never.",
+                    "explanation": "The original sentence lacks proper punctuation and structure, making it confusing. It should be broken into clearer questions and statements.",
+                    "context": "I was trying to recall a show about a bank robbery. I mean, maybe you watched 'Masked' people with masks? No, about the bank, when a robbery tried to take money from the bank? No, never."
+                },
+                {
+                    "original": "i learned a uh i learned a poem in in italian by heart like i did not know how the words are pronounced i did not know how even what they mean occasionally but i just so liked uh saying this like letters saying that it just stuck in my head",
+                    "corrected": "I learned a poem in Italian by heart. I did not know how the words were pronounced or even what they meant, but I just liked saying the letters, and it stuck in my head.",
+                    "explanation": "The original sentence is overly long and lacks clarity. It should be split into shorter sentences for better understanding.",
+                    "context": "During my time in Italy, I learned a poem in Italian by heart. I did not know how the words were pronounced or even what they meant, but I just liked saying the letters, and it stuck in my head."
+                },
+                {
+                    "original": "i also found this analogy very useful because you know when you look at arabic arabic people and chinese people i mean it's hard it's much harder to like to like their culture just without any effort",
+                    "corrected": "I also found this analogy very useful because, you know, when you look at Arabic and Chinese people, it's much harder to appreciate their culture without any effort.",
+                    "explanation": "The repetition of 'arabic' and 'to like' is unnecessary. The sentence should be streamlined for clarity.",
+                    "context": "I was discussing how different cultures can be challenging to understand. I also found this analogy very useful because, you know, when you look at Arabic and Chinese people, it's much harder to appreciate their culture without any effort."
+                },
+                {
+                    "original": "it takes a lot of like time you need and a lot of effort it's not easily triggered in your head wow this culture is beautiful because it is very very different from what we are used to like arab culture very different culture very different",
+                    "corrected": "It takes a lot of time and effort; it's not easily triggered in your head to realize, 'Wow, this culture is beautiful,' because it is very different from what we are used to, like Arab culture.",
+                    "explanation": "The phrase 'a lot of like time' is awkward. The sentence is also repetitive and should be more concise.",
+                    "context": "I was reflecting on the challenges of understanding different cultures. It takes a lot of time and effort; it's not easily triggered in your head to realize, 'Wow, this culture is beautiful,' because it is very different from what we are used to, like Arab culture."
+                },
+                {
+                    "original": "and also there is a sense of some exotic culture because like they are they do the same things but they look a little bit differently and they look like this kind of like south uh so they have the southern white south southern vibe in them",
+                    "corrected": "There is also a sense of exotic culture because they do the same things, but they look a little bit different, and they have this southern vibe.",
+                    "explanation": "The phrase 'look a little bit differently' should be 'look a little bit different.' The sentence is also overly wordy.",
+                    "context": "I was discussing the appeal of different cultures. There is also a sense of exotic culture because they do the same things, but they look a little bit different, and they have this southern vibe."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "the mosque if take friends they also spend more money in cars but in uk more",
+                    "corrected": "the most if we take France, they also spend more money on cars, but in the UK, it's more.",
+                    "explanation": "The phrase 'the mosque if take friends' is unclear and likely a miscommunication. 'In the UK more' lacks clarity and should be restructured.",
+                    "context": "When discussing spending habits, I mentioned that the most if we take France, they also spend more money on cars, but in the UK, it's more. This highlights the difference in car spending between the two countries."
+                },
+                {
+                    "original": "let's not make it difficult yeah let's choose two most obvious categories",
+                    "corrected": "let's not make it difficult; yeah, let's choose the two most obvious categories.",
+                    "explanation": "Missing article 'the' before 'two most obvious categories' and a semicolon is needed for clarity.",
+                    "context": "While brainstorming categories, I suggested that let's not make it difficult; yeah, let's choose the two most obvious categories. This would help streamline our discussion."
+                },
+                {
+                    "original": "what is basically it's most popular category and least popular category",
+                    "corrected": "what is basically the most popular category and the least popular category.",
+                    "explanation": "The phrase 'what is basically it's' is incorrect; 'it's' should be replaced with 'the' for grammatical accuracy.",
+                    "context": "In analyzing the data, I asked what is basically the most popular category and the least popular category. This helps to clarify the focus of our discussion."
+                },
+                {
+                    "original": "we talked about one feature of cars yeah we did not compare france and the uk",
+                    "corrected": "we talked about one feature of cars; yeah, we did not compare France and the UK.",
+                    "explanation": "The sentence lacks proper punctuation; a semicolon is needed to separate the two independent clauses.",
+                    "context": "Reflecting on our earlier discussion, I noted that we talked about one feature of cars; yeah, we did not compare France and the UK. This distinction is important for our analysis."
+                },
+                {
+                    "original": "but in the uk more",
+                    "corrected": "but in the UK, it's more.",
+                    "explanation": "The sentence is incomplete; adding 'it's' clarifies what 'more' refers to.",
+                    "context": "In discussing spending habits, I pointed out that but in the UK, it's more. This emphasizes the difference in expenditure."
+                },
+                {
+                    "original": "we can talk about that but that's our second feature here",
+                    "corrected": "we can talk about that; but that's our second feature here.",
+                    "explanation": "A semicolon is needed to properly connect the two independent clauses.",
+                    "context": "As we continued our analysis, I mentioned that we can talk about that; but that's our second feature here. This helps to organize our points."
+                },
+                {
+                    "original": "let's write that down again then we'll see whether it's correct or not",
+                    "corrected": "let's write that down again, and then we'll see whether it's correct or not.",
+                    "explanation": "A comma is needed before 'and' to separate the two clauses.",
+                    "context": "In our writing process, I suggested that let's write that down again, and then we'll see whether it's correct or not. This ensures clarity in our revisions."
+                },
+                {
+                    "original": "we talked about the least difference between countries is computers and cars",
+                    "corrected": "we talked about the least differences between countries, which are computers and cars.",
+                    "explanation": "The phrase 'the least difference' is awkward; it should be pluralized and restructured for clarity.",
+                    "context": "In summarizing our findings, I noted that we talked about the least differences between countries, which are computers and cars. This helps clarify our comparison."
+                },
+                {
+                    "original": "the point of all that is that imagine that somebody is reading your report without seeing the actual graph",
+                    "corrected": "the point of all that is to imagine that somebody is reading your report without seeing the actual graph.",
+                    "explanation": "The phrase 'is that' should be changed to 'is to' for grammatical correctness.",
+                    "context": "While discussing the report's structure, I emphasized that the point of all that is to imagine that somebody is reading your report without seeing the actual graph. This highlights the importance of clarity."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "This here is two times more, two times popular.",
+                    "corrected": "This here is two times more popular.",
+                    "explanation": "The phrase 'two times more' is redundant when followed by 'popular'; it should simply be 'more popular.'",
+                    "context": "We are discussing the popularity of certain items. This here is two times more popular. It clearly shows the difference in popularity."
+                },
+                {
+                    "original": "This here is like by 17% more.",
+                    "corrected": "This here is about 17% more.",
+                    "explanation": "'Like by' is incorrect; 'about' is the appropriate term to indicate an approximate increase.",
+                    "context": "We are comparing data points in a report. This here is about 17% more. It highlights the increase effectively."
+                },
+                {
+                    "original": "Your goal will be to actually write it.",
+                    "corrected": "Your goal will be to write it.",
+                    "explanation": "The word 'actually' is unnecessary and does not add value to the sentence.",
+                    "context": "I am assigning a new writing task. Your goal will be to write it. This will help you practice your skills."
+                },
+                {
+                    "original": "It was also not the perfect essay.",
+                    "corrected": "It was not a perfect essay.",
+                    "explanation": "The phrase 'the perfect essay' is awkward; 'a perfect essay' is more idiomatic.",
+                    "context": "Reflecting on past writing experiences, I recall your first attempts. It was not a perfect essay. But that’s part of the learning process."
+                },
+                {
+                    "original": "Just one, and this is for you to do a graph.",
+                    "corrected": "Just one more thing, and this is for you to do a graph.",
+                    "explanation": "The sentence is incomplete; adding 'more thing' clarifies the statement.",
+                    "context": "Before concluding the lesson, I want to give you one last task. Just one more thing, and this is for you to do a graph. It will help you visualize the data."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Immersion",
+                    "definition": "The act of being deeply engaged or involved in something, especially a culture or language.",
+                    "context": {
+                        "Context 1": "When learning a new language, immersion in the culture helps you understand it better.",
+                        "Context 2": "The immersion of the sponge in water made it expand.",
+                        "Context 3": "He felt a sense of immersion while diving into the ocean, surrounded by colorful fish."
+                    }
+                },
+                {
+                    "word": "Tradition",
+                    "definition": "A long-established custom or belief that is passed down through generations.",
+                    "context": {
+                        "Context 1": "Celebrating Easter with family is a cherished tradition in many cultures.",
+                        "Context 2": "The tradition of eating turkey on Thanksgiving dates back centuries.",
+                        "Context 3": "In some countries, it is a tradition to wear white on New Year's Eve."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Learning a new language gives you a different perspective on the world.",
+                        "Context 2": "From his perspective, the project was a success despite the challenges.",
+                        "Context 3": "She changed her perspective after traveling to different countries."
+                    }
+                },
+                {
+                    "word": "Cultural",
+                    "definition": "Relating to the ideas, customs, and social behavior of a society.",
+                    "context": {
+                        "Context 1": "Understanding cultural differences is important when traveling abroad.",
+                        "Context 2": "The cultural festival showcased music and dance from various countries.",
+                        "Context 3": "He enjoys reading cultural books that explore different lifestyles."
+                    }
+                },
+                {
+                    "word": "Personality",
+                    "definition": "The combination of characteristics or qualities that form an individual's distinctive character.",
+                    "context": {
+                        "Context 1": "Her outgoing personality makes her the life of the party.",
+                        "Context 2": "The personality of the dog was friendly and playful.",
+                        "Context 3": "He has a unique personality that draws people to him."
+                    }
+                },
+                {
+                    "word": "Trade-off",
+                    "definition": "A balance achieved between two desirable but incompatible features; a compromise.",
+                    "context": {
+                        "Context 1": "There is often a trade-off between quality and cost in manufacturing.",
+                        "Context 2": "Choosing to study abroad is a trade-off between time and experience.",
+                        "Context 3": "The trade-off for a bigger house is a longer commute to work."
+                    }
+                },
+                {
+                    "word": "Delicious",
+                    "definition": "Highly pleasant to the taste; very enjoyable.",
+                    "context": {
+                        "Context 1": "The cake she baked was absolutely delicious and everyone loved it.",
+                        "Context 2": "He found the view from the mountain top to be deliciously beautiful.",
+                        "Context 3": "The delicious sound of laughter filled the room."
+                    }
+                },
+                {
+                    "word": "Sophisticated",
+                    "definition": "Having a refined knowledge of the world; complex or intricate.",
+                    "context": {
+                        "Context 1": "Her sophisticated taste in art impressed everyone at the gallery.",
+                        "Context 2": "The robot was equipped with sophisticated technology for navigation.",
+                        "Context 3": "He wore a sophisticated outfit that caught everyone's attention."
+                    }
+                },
+                {
+                    "word": "Bakery",
+                    "definition": "A place where bread, cakes, and other baked goods are made and sold.",
+                    "context": {
+                        "Context 1": "The bakery down the street has the best croissants in town.",
+                        "Context 2": "They visited a bakery to buy fresh ingredients for their cooking class.",
+                        "Context 3": "The bakery was filled with the sweet aroma of freshly baked cookies."
+                    }
+                },
+                {
+                    "word": "Event",
+                    "definition": "An occurrence, especially one of significance.",
+                    "context": {
+                        "Context 1": "The community organized an event to celebrate cultural diversity.",
+                        "Context 2": "The event of the solar eclipse attracted many spectators.",
+                        "Context 3": "His birthday party was the biggest event of the year."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Tradition",
+                    "fact": "In some cultures, it's a tradition to throw a tomato at someone during festivals—it's called a 'tomatina!'"
+                },
+                {
+                    "word": "Delicious",
+                    "fact": "Did you know that honey never spoils? Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still delicious!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the cookie go to the doctor?",
+                    "answer": "Because it felt crummy!"
+                },
+                {
+                    "question": "What did one plate say to another plate?",
+                    "answer": "Lunch is on me!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Exotic",
+                    "definition": "Attractive or striking because it is unusual or different from what is familiar.",
+                    "context": {
+                        "Context 1": "The food we tried during our vacation was exotic and unlike anything we had at home.",
+                        "Context 2": "She wore an exotic dress that turned heads at the party.",
+                        "Context 3": "The exotic animals in the zoo fascinated the children."
+                    }
+                },
+                {
+                    "word": "Satisfactory",
+                    "definition": "Meeting expectations or requirements; acceptable.",
+                    "context": {
+                        "Context 1": "The results of my exam were satisfactory, so I was happy.",
+                        "Context 2": "He found the meal satisfactory, but it could have been better.",
+                        "Context 3": "The service at the restaurant was satisfactory, but the ambiance was lacking."
+                    }
+                },
+                {
+                    "word": "Exhausting",
+                    "definition": "Causing extreme tiredness; very tiring.",
+                    "context": {
+                        "Context 1": "Traveling to multiple countries in a short time can be exhausting.",
+                        "Context 2": "The workout was exhausting, but I felt accomplished afterward.",
+                        "Context 3": "Her job as a nurse can be exhausting, especially during night shifts."
+                    }
+                },
+                {
+                    "word": "Beneficial",
+                    "definition": "Producing good results or helpful effects.",
+                    "context": {
+                        "Context 1": "Doing grammar exercises can be beneficial for improving language skills.",
+                        "Context 2": "Regular exercise is beneficial for maintaining good health.",
+                        "Context 3": "Reading books is beneficial for expanding your vocabulary."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Traveling gives you a new perspective on different cultures.",
+                        "Context 2": "From her perspective, the project was a success.",
+                        "Context 3": "His perspective on life changed after he traveled abroad."
+                    }
+                },
+                {
+                    "word": "Control",
+                    "definition": "The power to influence or direct people's behavior or the course of events.",
+                    "context": {
+                        "Context 1": "It's important to control your emotions during stressful situations.",
+                        "Context 2": "He lost control of the car on the icy road.",
+                        "Context 3": "The manager has control over the budget for the project."
+                    }
+                },
+                {
+                    "word": "Mistake",
+                    "definition": "An action or judgment that is misguided or wrong.",
+                    "context": {
+                        "Context 1": "I made a mistake on my grammar exercises, but I learned from it.",
+                        "Context 2": "She realized her mistake after reviewing the report.",
+                        "Context 3": "Everyone makes mistakes; it's part of learning."
+                    }
+                },
+                {
+                    "word": "Data",
+                    "definition": "Facts and statistics collected for reference or analysis.",
+                    "context": {
+                        "Context 1": "The report was based on data collected from various sources.",
+                        "Context 2": "Scientists analyze data to draw conclusions about their experiments.",
+                        "Context 3": "The data from the survey showed interesting trends."
+                    }
+                },
+                {
+                    "word": "Rigid",
+                    "definition": "Not flexible; strict and inflexible in behavior or structure.",
+                    "context": {
+                        "Context 1": "The guidelines for the report were quite rigid, leaving little room for creativity.",
+                        "Context 2": "His rigid schedule didn't allow for any spontaneous activities.",
+                        "Context 3": "The rigid rules of the club made it hard for new members to join."
+                    }
+                },
+                {
+                    "word": "Vacation",
+                    "definition": "An extended period of leisure and recreation, especially away from home.",
+                    "context": {
+                        "Context 1": "I took a vacation to Italy last summer.",
+                        "Context 2": "During our vacation, we visited several historical sites.",
+                        "Context 3": "She plans to go on vacation every year to relax and recharge."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Exotic",
+                    "fact": "The word 'exotic' comes from the Greek word 'exōtikos,' which means 'from outside.' So, when you eat exotic food, you're literally tasting something from outside your usual menu!"
+                },
+                {
+                    "word": "Data",
+                    "fact": "Did you know that the word 'data' is technically a plural noun? So, when you say 'data is,' you're actually using it incorrectly! But don't worry, everyone does it."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go on a diet?",
+                    "answer": "Because it had too many bytes!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Analyze",
+                    "definition": "To examine something in detail in order to understand it better or draw conclusions.",
+                    "context": {
+                        "Context 1": "We need to analyze the data to understand the trends.",
+                        "Context 2": "The detective had to analyze the clues to solve the mystery.",
+                        "Context 3": "Before making a decision, it's important to analyze all the options available."
+                    }
+                },
+                {
+                    "word": "Internship",
+                    "definition": "A temporary position with an emphasis on on-the-job training rather than merely employment.",
+                    "context": {
+                        "Context 1": "During my internship in Italy, I learned a lot about the culture.",
+                        "Context 2": "She secured an internship at a prestigious law firm this summer.",
+                        "Context 3": "His internship at the zoo allowed him to work closely with animals."
+                    }
+                },
+                {
+                    "word": "Influence",
+                    "definition": "The capacity to have an effect on the character, development, or behavior of someone or something.",
+                    "context": {
+                        "Context 1": "The Russian language was influenced heavily by other languages.",
+                        "Context 2": "Her positive attitude had a great influence on the team’s morale.",
+                        "Context 3": "The weather can influence our plans for the weekend."
+                    }
+                },
+                {
+                    "word": "Dialect",
+                    "definition": "A particular form of a language that is peculiar to a specific region or social group.",
+                    "context": {
+                        "Context 1": "Ukrainian and Russian have different dialects that can be hard to distinguish.",
+                        "Context 2": "In the southern United States, people often speak with a distinct dialect.",
+                        "Context 3": "The dialect spoken in the mountains is quite different from that in the city."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or setting surrounding an event, statement, or idea.",
+                    "context": {
+                        "Context 1": "Understanding the context of a conversation is crucial for effective communication.",
+                        "Context 2": "In literature, context can change the meaning of a text significantly.",
+                        "Context 3": "The historical context of the painting adds depth to its interpretation."
+                    }
+                },
+                {
+                    "word": "Cultural",
+                    "definition": "Relating to the ideas, customs, and social behavior of a particular people or society.",
+                    "context": {
+                        "Context 1": "During my internship, I experienced many cultural differences.",
+                        "Context 2": "Cultural festivals are a great way to learn about different traditions.",
+                        "Context 3": "The museum showcases cultural artifacts from around the world."
+                    }
+                },
+                {
+                    "word": "Language Barrier",
+                    "definition": "A difficulty in communication that arises from speaking different languages.",
+                    "context": {
+                        "Context 1": "When I traveled abroad, I faced a language barrier that made it hard to communicate.",
+                        "Context 2": "Despite the language barrier, they managed to understand each other through gestures.",
+                        "Context 3": "The language barrier can be a challenge for international students."
+                    }
+                },
+                {
+                    "word": "Similarity",
+                    "definition": "The state of being similar; resemblance.",
+                    "context": {
+                        "Context 1": "There are many similarities between Spanish and Italian languages.",
+                        "Context 2": "The similarity between the twins is striking; they look almost identical.",
+                        "Context 3": "The similarity in their tastes made them great friends."
+                    }
+                },
+                {
+                    "word": "Comprehend",
+                    "definition": "To understand or grasp the meaning of something.",
+                    "context": {
+                        "Context 1": "It took me a while to comprehend the differences between the languages.",
+                        "Context 2": "She struggled to comprehend the complex math problem.",
+                        "Context 3": "The book was so well-written that I could easily comprehend its themes."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "I had a unique experience while living in Italy.",
+                        "Context 2": "His experience in the field made him a valuable asset to the team.",
+                        "Context 3": "Traveling to different countries can provide a rich cultural experience."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Analyze",
+                    "fact": "Did you know that the word 'analyze' comes from the Greek word 'analusis,' which means 'a breaking up'?"
+                },
+                {
+                    "word": "Internship",
+                    "fact": "The first known internship was in ancient Rome, where young men learned from masters in various trades!"
+                },
+                {
+                    "word": "Dialect",
+                    "fact": "In some parts of England, the word 'bread' is pronounced as 'brad'—talk about a 'loaf' of language!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the language student bring a ladder to class?",
+                    "answer": "Because they wanted to reach new heights in their vocabulary!"
+                },
+                {
+                    "question": "What do you call a fake noodle?",
+                    "answer": "An impasta!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Exposure",
+                    "definition": "The state of being exposed to something, such as a language or culture.",
+                    "context": {
+                        "Context 1": "My exposure to Spanish came from watching series like Breaking Bad.",
+                        "Context 2": "The exposure of the painting to sunlight caused it to fade.",
+                        "Context 3": "Exposure to different cultures can broaden one's perspective."
+                    }
+                },
+                {
+                    "word": "Motivation",
+                    "definition": "The reason or reasons one has for acting or behaving in a particular way.",
+                    "context": {
+                        "Context 1": "My motivation to learn Spanish comes from my love of the culture.",
+                        "Context 2": "His motivation for running a marathon was to raise money for charity.",
+                        "Context 3": "The motivation behind her artwork is to inspire others."
+                    }
+                },
+                {
+                    "word": "Culture",
+                    "definition": "The social behavior and norms found in human societies.",
+                    "context": {
+                        "Context 1": "Language is deeply connected to culture, influencing how we communicate.",
+                        "Context 2": "The culture of the ancient Greeks has influenced modern philosophy.",
+                        "Context 3": "Food is an important aspect of culture, reflecting traditions and history."
+                    }
+                },
+                {
+                    "word": "Inspiration",
+                    "definition": "The process of being mentally stimulated to do or feel something.",
+                    "context": {
+                        "Context 1": "Hearing beautiful music can be a source of inspiration for learning a language.",
+                        "Context 2": "The artist found inspiration in nature for her latest painting.",
+                        "Context 3": "His travels around the world provided inspiration for his writing."
+                    }
+                },
+                {
+                    "word": "Analogies",
+                    "definition": "A comparison between two things, typically for the purpose of explanation or clarification.",
+                    "context": {
+                        "Context 1": "I found the analogy between learning Spanish and connecting with culture very useful.",
+                        "Context 2": "The teacher used analogies to help students understand complex math concepts.",
+                        "Context 3": "Her analogy comparing life to a journey resonated with many listeners."
+                    }
+                },
+                {
+                    "word": "Exotic",
+                    "definition": "Attractive or striking because it is unusual or different from what is familiar.",
+                    "context": {
+                        "Context 1": "The exotic culture of Spain captivated me during my travels.",
+                        "Context 2": "She wore an exotic dress that caught everyone's attention at the party.",
+                        "Context 3": "The restaurant served exotic dishes from around the world."
+                    }
+                },
+                {
+                    "word": "Appealing",
+                    "definition": "Attractive or interesting.",
+                    "context": {
+                        "Context 1": "The rhythm of the Spanish language is very appealing to me.",
+                        "Context 2": "The appealing design of the new smartphone attracted many customers.",
+                        "Context 3": "The idea of traveling to new places is appealing to adventurous people."
+                    }
+                },
+                {
+                    "word": "Celebrate",
+                    "definition": "To acknowledge a significant or happy day or event with a social gathering or enjoyable activity.",
+                    "context": {
+                        "Context 1": "We celebrated my father's birthday in Italy, which was a wonderful experience.",
+                        "Context 2": "They celebrate New Year's Eve with fireworks and parties.",
+                        "Context 3": "The community came together to celebrate the festival of lights."
+                    }
+                },
+                {
+                    "word": "Connection",
+                    "definition": "A relationship in which a person or thing is linked or associated with something else.",
+                    "context": {
+                        "Context 1": "I feel a strong connection to the culture when I learn a new language.",
+                        "Context 2": "There is a connection between diet and health that many studies explore.",
+                        "Context 3": "The connection between the two friends grew stronger over the years."
+                    }
+                },
+                {
+                    "word": "Effort",
+                    "definition": "A vigorous or determined attempt.",
+                    "context": {
+                        "Context 1": "Learning a new language takes a lot of effort and practice.",
+                        "Context 2": "He put in a great effort to complete the project on time.",
+                        "Context 3": "The team's effort paid off when they won the championship."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Motivation",
+                    "fact": "Did you know that the word 'motivation' comes from the Latin word 'movere', which means 'to move'? So, technically, if you're motivated, you're just moving around a lot!"
+                },
+                {
+                    "word": "Exotic",
+                    "fact": "The word 'exotic' originally comes from the Greek word 'exōtikos', meaning 'from outside'. So, if you ever feel out of place, just remember you might be 'exotic'!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the language student bring a ladder to class?",
+                    "answer": "Because they wanted to reach new heights in their vocabulary!"
+                },
+                {
+                    "question": "Why did the tomato turn red?",
+                    "answer": "Because it saw the salad dressing and wanted to learn Spanish!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Prototype",
+                    "definition": "An original model on which something is patterned.",
+                    "context": {
+                        "Context 1": "In our first prototype, we compared the overall popularity of cars in both countries.",
+                        "Context 2": "The engineer created a prototype of the new smartphone to test its features.",
+                        "Context 3": "The artist's prototype of the sculpture was displayed in the gallery before the final version."
+                    }
+                },
+                {
+                    "word": "Trends",
+                    "definition": "General directions in which something is developing or changing.",
+                    "context": {
+                        "Context 1": "The graph shows two major trends in car spending between the UK and France.",
+                        "Context 2": "Fashion trends often change with the seasons, influencing what people wear.",
+                        "Context 3": "Social media trends can spread rapidly, affecting how people communicate."
+                    }
+                },
+                {
+                    "word": "Categories",
+                    "definition": "Classes or divisions of things that share similar characteristics.",
+                    "context": {
+                        "Context 1": "We can divide the spending into categories like transport and technology.",
+                        "Context 2": "The library organizes books into categories such as fiction, non-fiction, and reference.",
+                        "Context 3": "In the art exhibition, the paintings were grouped into categories based on their style."
+                    }
+                },
+                {
+                    "word": "Contrast",
+                    "definition": "The state of being strikingly different from something else.",
+                    "context": {
+                        "Context 1": "We can make a contrast between transport spending in the UK and France.",
+                        "Context 2": "The contrast between the bright colors of the painting and the dark background was stunning.",
+                        "Context 3": "In literature, authors often use contrast to highlight the differences between characters."
+                    }
+                },
+                {
+                    "word": "Popularity",
+                    "definition": "The state of being liked, admired, or supported by many people.",
+                    "context": {
+                        "Context 1": "Cars are much more popular than perfume in both countries.",
+                        "Context 2": "The popularity of the new restaurant skyrocketed after it was featured in a magazine.",
+                        "Context 3": "Video games have gained immense popularity among teenagers in recent years."
+                    }
+                },
+                {
+                    "word": "Data",
+                    "definition": "Facts and statistics collected for reference or analysis.",
+                    "context": {
+                        "Context 1": "We will use data from the graph to support our main body paragraph.",
+                        "Context 2": "Scientists rely on data to draw conclusions from their experiments.",
+                        "Context 3": "The marketing team analyzed data to understand customer preferences."
+                    }
+                },
+                {
+                    "word": "Feature",
+                    "definition": "A distinctive attribute or aspect of something.",
+                    "context": {
+                        "Context 1": "The graph highlights two main features of spending habits in the UK and France.",
+                        "Context 2": "One feature of the new phone is its advanced camera technology.",
+                        "Context 3": "The movie's most appealing feature was its stunning visual effects."
+                    }
+                },
+                {
+                    "word": "Reflect",
+                    "definition": "To think deeply or carefully about something.",
+                    "context": {
+                        "Context 1": "We need to reflect on the features we discussed in our report.",
+                        "Context 2": "After the meeting, she took some time to reflect on the feedback she received.",
+                        "Context 3": "The calm lake reflected the beautiful mountains surrounding it."
+                    }
+                },
+                {
+                    "word": "Accurate",
+                    "definition": "Free from error; correct in all details.",
+                    "context": {
+                        "Context 1": "We should provide accurate information in our main body paragraphs.",
+                        "Context 2": "The map was accurate, showing every street and landmark in the city.",
+                        "Context 3": "To ensure safety, the engineer made accurate calculations before construction."
+                    }
+                },
+                {
+                    "word": "Emphasize",
+                    "definition": "To give special importance or prominence to something in speaking or writing.",
+                    "context": {
+                        "Context 1": "We should not emphasize the equal popularity of cars in both countries.",
+                        "Context 2": "The teacher emphasized the importance of studying for the exam.",
+                        "Context 3": "In her speech, she emphasized the need for community involvement."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Prototype",
+                    "fact": "Did you know that the first prototype of a modern car was built in 1885? It was called the Benz Patent Motorwagen!"
+                },
+                {
+                    "word": "Trends",
+                    "fact": "The word 'trend' comes from the Old English 'trendian,' which means 'to turn' or 'to revolve.' So, trends are literally things that turn around!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the graph go to therapy?",
+                    "answer": "Because it had too many ups and downs!"
+                },
+                {
+                    "question": "Why did the computer break up with the printer?",
+                    "answer": "Because it couldn't handle the paper jams in their relationship!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Interpretation",
+                    "definition": "The action of explaining the meaning of something.",
+                    "context": {
+                        "Context 1": "His interpretation of the data revealed new insights.",
+                        "Context 2": "The artist’s interpretation of the song was very different from the original.",
+                        "Context 3": "In court, the lawyer provided an interpretation of the law to support her case."
+                    }
+                },
+                {
+                    "word": "Analysis",
+                    "definition": "A detailed examination of the elements or structure of something.",
+                    "context": {
+                        "Context 1": "The analysis of the report showed significant trends.",
+                        "Context 2": "Her analysis of the movie revealed hidden themes.",
+                        "Context 3": "The scientist's analysis of the samples took several weeks."
+                    }
+                },
+                {
+                    "word": "Misinterpretation",
+                    "definition": "The act of interpreting something incorrectly.",
+                    "context": {
+                        "Context 1": "The misinterpretation of the data led to wrong conclusions.",
+                        "Context 2": "His misinterpretation of her words caused a misunderstanding.",
+                        "Context 3": "The misinterpretation of the instructions resulted in a failed experiment."
+                    }
+                },
+                {
+                    "word": "Feedback",
+                    "definition": "Information about reactions to a product, a person's performance, or a task.",
+                    "context": {
+                        "Context 1": "The teacher provided feedback on the students' essays.",
+                        "Context 2": "He received positive feedback for his performance in the play.",
+                        "Context 3": "The feedback from the audience helped improve the show."
+                    }
+                },
+                {
+                    "word": "Graph",
+                    "definition": "A diagram representing a system of connections or interrelations among two or more things.",
+                    "context": {
+                        "Context 1": "You need to include a graph to illustrate your findings.",
+                        "Context 2": "The graph showed a steady increase in sales over the year.",
+                        "Context 3": "In math class, we learned how to create a bar graph."
+                    }
+                },
+                {
+                    "word": "Task",
+                    "definition": "A piece of work to be done or undertaken.",
+                    "context": {
+                        "Context 1": "Your task is to write a report based on the data.",
+                        "Context 2": "The task of cleaning the house was assigned to the children.",
+                        "Context 3": "Completing the task on time is crucial for the project."
+                    }
+                },
+                {
+                    "word": "Overall",
+                    "definition": "Taking everything into account; in general.",
+                    "context": {
+                        "Context 1": "Overall, the project was a success despite some challenges.",
+                        "Context 2": "Overall, the weather was nice during our vacation.",
+                        "Context 3": "The overall performance of the team improved this season."
+                    }
+                },
+                {
+                    "word": "Improve",
+                    "definition": "To make or become better.",
+                    "context": {
+                        "Context 1": "You will improve your writing skills with practice.",
+                        "Context 2": "He wanted to improve his cooking by taking classes.",
+                        "Context 3": "The company aims to improve customer service this year."
+                    }
+                },
+                {
+                    "word": "Data",
+                    "definition": "Facts and statistics collected for reference or analysis.",
+                    "context": {
+                        "Context 1": "The data collected from the survey was analyzed thoroughly.",
+                        "Context 2": "He used data from various sources to support his argument.",
+                        "Context 3": "The data showed a significant drop in temperature last winter."
+                    }
+                },
+                {
+                    "word": "Essay",
+                    "definition": "A short piece of writing on a particular subject.",
+                    "context": {
+                        "Context 1": "Your first essay was full of mistakes, but that’s okay.",
+                        "Context 2": "She wrote an essay about her favorite book for class.",
+                        "Context 3": "The essay competition had many talented participants."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Data",
+                    "fact": "Did you know that the word 'data' is actually the plural of 'datum'? So, technically, you should say 'these data' instead of 'this data'!"
+                },
+                {
+                    "word": "Graph",
+                    "fact": "In ancient times, people used to draw graphs on cave walls. Imagine a caveman trying to explain his hunting success with a pie chart!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "What do you call a fake noodle?",
+                    "answer": "An impasta!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going today?"
+                },
+                {
+                    "Person 2": "I'm doing well, thanks! Just enjoying my Saturday. How about you?"
+                },
+                {
+                    "Person 1": "Same here! Got any fun plans for the day?"
+                },
+                {
+                    "Person 2": "Actually, I’m working a bit today. I decided to take a health day next week, so I’m catching up on some stuff now."
+                },
+                {
+                    "Person 1": "Oh, nice! I could use a health day too. What are you working on?"
+                },
+                {
+                    "Person 2": "Just some cleaning around the office. We have a little community cleanup event later, so I’m preparing for that."
+                },
+                {
+                    "Person 1": "That sounds cool! I remember doing something like that back in school. We called it 'community service.'"
+                },
+                {
+                    "Person 2": "Yeah, exactly! It’s nice to give back a little. Plus, it’s a good way to meet people."
+                },
+                {
+                    "Person 1": "For sure! Speaking of cleaning, I spent yesterday tidying up my apartment. It was a mess!"
+                },
+                {
+                    "Person 2": "I get that! I usually do a big clean before holidays. It feels good to have everything organized."
+                },
+                {
+                    "Person 1": "Totally! I always forget how satisfying it is until I actually do it."
+                },
+                {
+                    "Person 2": "Right? And then you can relax in a clean space. It’s the best feeling."
+                },
+                {
+                    "Person 1": "So, any special plans for Easter coming up?"
+                },
+                {
+                    "Person 2": "Yeah! My mom always makes this amazing cake for Easter. It’s a family tradition."
+                },
+                {
+                    "Person 1": "That sounds delicious! What kind of cake is it?"
+                },
+                {
+                    "Person 2": "It’s a special recipe with layers and icing. She puts a lot of effort into it!"
+                },
+                {
+                    "Person 1": "Wow, I’d love to try that! Do you help her out in the kitchen?"
+                },
+                {
+                    "Person 2": "Sometimes! I’m not the best cook, but I try to help with the decorating."
+                },
+                {
+                    "Person 1": "Hey, that counts! It’s all about spending time together, right?"
+                },
+                {
+                    "Person 2": "Exactly! Plus, I get to eat the leftovers, so it’s a win-win."
+                },
+                {
+                    "Person 1": "Haha, I can’t argue with that! Let me know how it turns out."
+                },
+                {
+                    "Person 2": "Will do! And you should come over for a slice!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever thought about taking a long vacation somewhere?"
+                },
+                {
+                    "Person 2": "Oh, totally! I’ve always wanted to spend a month in Italy, just exploring and eating all the pasta."
+                },
+                {
+                    "Person 1": "That sounds amazing! I went there for two weeks once, but I felt so rushed trying to see everything."
+                },
+                {
+                    "Person 2": "Yeah, I get that. You want to see all the sights, but then you end up exhausted."
+                },
+                {
+                    "Person 1": "Exactly! By the end, I just wanted to chill and not talk to anyone for a bit."
+                },
+                {
+                    "Person 2": "Right? It’s like, you think visiting all those places will be fun, but it can be tiring too."
+                },
+                {
+                    "Person 1": "For sure! But then after a while, you start missing that travel vibe."
+                },
+                {
+                    "Person 2": "Definitely! The food, the culture, and just the excitement of being somewhere new."
+                },
+                {
+                    "Person 1": "Speaking of food, I tried some amazing wines when I was there. Have you ever done a wine tasting?"
+                },
+                {
+                    "Person 2": "Not yet, but I’d love to! I’ve heard it’s such a fun experience."
+                },
+                {
+                    "Person 1": "It really is! We tried different types, like rosé and red wines. It was my first time, and I loved it."
+                },
+                {
+                    "Person 2": "That sounds awesome! I need to add that to my bucket list."
+                },
+                {
+                    "Person 1": "For sure! Let’s plan a trip together someday. We can explore and taste all the wines!"
+                },
+                {
+                    "Person 2": "Count me in! Just remind me not to over-schedule our days."
+                },
+                {
+                    "Person 1": "Deal! Relaxing is just as important as sightseeing."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever compared Italy and Spain? I’m curious about the differences."
+                },
+                {
+                    "Person 2": "Oh, definitely! I used to think Spain was more interesting, especially since I tried learning Spanish when I was in the U.S."
+                },
+                {
+                    "Person 1": "Really? What made you want to learn Spanish?"
+                },
+                {
+                    "Person 2": "Well, I was around a lot of Mexican friends, and I thought the language sounded beautiful. Plus, the alphabet is pretty similar to English!"
+                },
+                {
+                    "Person 1": "That makes sense! I tried learning Spanish too, but I forgot most of it after a while."
+                },
+                {
+                    "Person 2": "Same here! It’s tough to keep up with a language if you don’t practice it daily."
+                },
+                {
+                    "Person 1": "Exactly! I thought I wouldn’t like Italian at first, but after visiting, I found it really beautiful too."
+                },
+                {
+                    "Person 2": "Right? When I heard it spoken in Italy, I was like, 'Wow, this sounds amazing!'"
+                },
+                {
+                    "Person 1": "Do you think it’s easier to learn than Spanish?"
+                },
+                {
+                    "Person 2": "I think so! Some words are similar, but there are definitely differences. It’s like how Ukrainian and Russian are related but not the same."
+                },
+                {
+                    "Person 1": "That’s interesting! I didn’t know that about Ukrainian and Russian."
+                },
+                {
+                    "Person 2": "Yeah, I worked with some Ukrainian people in Poland, and it took me a while to understand them."
+                },
+                {
+                    "Person 1": "Did you pick up any Ukrainian while you were there?"
+                },
+                {
+                    "Person 2": "A little! It’s funny how you can start to understand a language just by being around it."
+                },
+                {
+                    "Person 1": "Totally! I feel like immersion is the best way to learn."
+                },
+                {
+                    "Person 2": "For sure! I love how languages connect us, even if they’re not exactly the same."
+                },
+                {
+                    "Person 1": "Absolutely! Maybe we should plan a trip to Italy together and practice our Italian!"
+                },
+                {
+                    "Person 2": "That sounds like a plan! Let’s do it!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever thought about how we start learning new languages?"
+                },
+                {
+                    "Person 2": "Yeah, I was just thinking about that! I learned a bit of Spanish from watching shows like 'Breaking Bad.'"
+                },
+                {
+                    "Person 1": "That's cool! I love how shows can really help with that. I picked up some Italian from a trip I took."
+                },
+                {
+                    "Person 2": "Nice! What did you learn? Just phrases or something more?"
+                },
+                {
+                    "Person 1": "I learned a poem by heart! I didn’t even know what it meant, but I loved how it sounded."
+                },
+                {
+                    "Person 2": "That's awesome! Sometimes the rhythm of a language is just so appealing."
+                },
+                {
+                    "Person 1": "Exactly! And when you mix it with great content, it makes you want to connect even more."
+                },
+                {
+                    "Person 2": "For sure! I feel like motivation is key. Just wanting to work in a country isn’t enough."
+                },
+                {
+                    "Person 1": "Right? It’s more about the culture and the experiences you can have."
+                },
+                {
+                    "Person 2": "Totally! I find Spanish culture relatable, especially with traditions like Easter."
+                },
+                {
+                    "Person 1": "Yeah, it’s interesting how similar yet different cultures can be."
+                },
+                {
+                    "Person 2": "Exactly! It’s like you get a taste of something exotic but still familiar."
+                },
+                {
+                    "Person 1": "I think that’s what makes learning languages so fun!"
+                },
+                {
+                    "Person 2": "Absolutely! So, what language do you want to tackle next?"
+                },
+                {
+                    "Person 1": "I’m thinking about diving into French. What about you?"
+                },
+                {
+                    "Person 2": "I might give Italian another shot! I want to really understand the music."
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a finish, right? I thought they were done for."
+                },
+                {
+                    "Person 1": "I know! I was on the edge of my seat. That last-minute goal was insane!"
+                },
+                {
+                    "Person 2": "Totally! I couldn’t believe it. I was jumping around my living room."
+                },
+                {
+                    "Person 1": "Same here! I think my neighbors must think I'm crazy."
+                },
+                {
+                    "Person 2": "Haha! Well, it’s all part of the fun. Did you see the highlights?"
+                },
+                {
+                    "Person 1": "Not yet. I was planning to watch them later. Were there any crazy plays?"
+                },
+                {
+                    "Person 2": "Oh yeah! There was this one save that was just unbelievable. The goalie was a total hero."
+                },
+                {
+                    "Person 1": "Nice! I love when the goalie makes those game-saving moves."
+                },
+                {
+                    "Person 2": "For sure! It really keeps the excitement going. Are you going to the next game?"
+                },
+                {
+                    "Person 1": "Definitely! I wouldn’t miss it for the world. You in?"
+                },
+                {
+                    "Person 2": "Absolutely! Let’s grab some snacks before the game."
+                },
+                {
+                    "Person 1": "Sounds like a plan! Can’t wait!"
+                },
+                {
+                    "Person 2": "Me neither! It’s going to be a blast."
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh man, I missed it! How did it go?"
+                },
+                {
+                    "Person 1": "It was intense! We were down by two touchdowns at halftime, but we made a crazy comeback."
+                },
+                {
+                    "Person 2": "No way! That sounds exciting! Who scored the winning touchdown?"
+                },
+                {
+                    "Person 1": "It was our rookie wide receiver. He caught a pass in the end zone with just seconds left on the clock!"
+                },
+                {
+                    "Person 2": "Wow, that's awesome! I love when the underdogs come through. Did you watch it with anyone?"
+                },
+                {
+                    "Person 1": "Yeah, I had a few friends over. We made some nachos and just cheered like crazy."
+                },
+                {
+                    "Person 2": "Sounds like a blast! I need to join next time. I can bring the drinks!"
+                },
+                {
+                    "Person 1": "Definitely! The more, the merrier. We should plan for the next game."
+                },
+                {
+                    "Person 2": "For sure! I’ll keep my schedule open. What’s the next game?"
+                },
+                {
+                    "Person 1": "It’s next Sunday. We’re playing against the rivals, so it should be a good one!"
+                },
+                {
+                    "Person 2": "Perfect! I’ll bring my lucky jersey. Let’s hope it works!"
+                },
+                {
+                    "Person 1": "Haha, sounds like a plan! Can’t wait!"
+                },
+                {
+                    "Person 2": "Me too! See you then!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
