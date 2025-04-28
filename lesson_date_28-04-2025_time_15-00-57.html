@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I was every like we did a big uh we did a big event out of it",
+                    "corrected": "I remember we did a big event out of it.",
+                    "explanation": "The phrase 'I was every like' is incorrect and unclear; it should be simplified to 'I remember.'",
+                    "context": "I recall that we had a significant event related to it. I remember we did a big event out of it. It was a memorable experience."
+                },
+                {
+                    "original": "they would train every class that we would skip lessons",
+                    "corrected": "they would train every class while we skipped lessons.",
+                    "explanation": "The phrase 'that we would skip lessons' is awkward; 'while we skipped lessons' is clearer.",
+                    "context": "During that time, they would train every class while we skipped lessons. It was a unique way to prepare for the event."
+                },
+                {
+                    "original": "nobody knows how to uh the thing is when you are trying to march",
+                    "corrected": "nobody knows how to march; the thing is, when you are trying to march,",
+                    "explanation": "The sentence structure is incorrect; it should be split for clarity.",
+                    "context": "It's funny because nobody knows how to march. The thing is, when you are trying to march, it becomes complicated."
+                },
+                {
+                    "original": "it's a problem that's that's the only thing I could talk about this day",
+                    "corrected": "that's the only thing I could talk about today.",
+                    "explanation": "The phrase 'this day' is awkward; 'today' is more idiomatic.",
+                    "context": "I don't have much to share about my day. That's the only thing I could talk about today. It was quite uneventful."
+                },
+                {
+                    "original": "I thought that uh these things only work in russia",
+                    "corrected": "I thought that these things only happened in Russia.",
+                    "explanation": "The phrase 'only work in Russia' is incorrect; 'only happened in Russia' is clearer.",
+                    "context": "I had a misconception about the cultural practices. I thought that these things only happened in Russia. It's surprising to see them elsewhere."
+                },
+                {
+                    "original": "the i don't know government loves this just to rule the people",
+                    "corrected": "the government loves this just to control the people.",
+                    "explanation": "The phrase 'to rule the people' is awkward; 'to control the people' is more appropriate in this context.",
+                    "context": "It seems like a tactic for maintaining power. The government loves this just to control the people. It's a common strategy."
+                },
+                {
+                    "original": "i will i i will just say that i i get sick",
+                    "corrected": "I will just say that I am sick.",
+                    "explanation": "The repetition and phrasing are awkward; it should be simplified.",
+                    "context": "If I need to skip the parade, I will just say that I am sick. It's an easy excuse to avoid it."
+                },
+                {
+                    "original": "i didn't want this from the start as soon as someone said that we'll be marching",
+                    "corrected": "I didn't want to participate from the start as soon as someone said that we would be marching.",
+                    "explanation": "The phrase 'want this' is vague; 'want to participate' is clearer.",
+                    "context": "I felt uneasy about it. I didn't want to participate from the start as soon as someone said that we would be marching. It just didn't appeal to me."
+                },
+                {
+                    "original": "that's why offline school sucks",
+                    "corrected": "that's one reason why offline school is frustrating.",
+                    "explanation": "The phrase 'sucks' is informal; 'is frustrating' is more appropriate in this context.",
+                    "context": "There are many downsides to it. That's one reason why offline school is frustrating. It limits our freedom."
+                },
+                {
+                    "original": "we were discussing we were reviewing this graph with my other student",
+                    "corrected": "we were reviewing this graph with another student.",
+                    "explanation": "The phrase 'my other student' is awkward; 'another student' is clearer.",
+                    "context": "In class, we often analyze various graphs. We were reviewing this graph with another student. It helps us understand the data better."
+                },
+                {
+                    "original": "it's not yeah it's it's total mess because birth death per thousand",
+                    "corrected": "it's a total mess because of the birth and death rates per thousand.",
+                    "explanation": "The phrase 'it's total mess' is missing an article; 'it's a total mess' is correct.",
+                    "context": "The data can be confusing. It's a total mess because of the birth and death rates per thousand. It needs clarification."
+                },
+                {
+                    "original": "the person who has never seen the graph itself uh is able to or like to understand it",
+                    "corrected": "the person who has never seen the graph itself is able to understand it.",
+                    "explanation": "The phrase 'or like to understand it' is unnecessary; it should be simplified.",
+                    "context": "When writing reports, clarity is crucial. The person who has never seen the graph itself is able to understand it. That's the goal."
+                },
+                {
+                    "original": "we can say distribution or we can say how water is distributed and these are considered different",
+                    "corrected": "we can say 'distribution' or we can say 'how water is distributed,' and these are considered different.",
+                    "explanation": "The sentence lacks proper punctuation; quotes should be used for clarity.",
+                    "context": "In our discussions, we often analyze terminology. We can say 'distribution' or we can say 'how water is distributed,' and these are considered different. It's important to be precise."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "the way water is around the world and the two charts by charts show the way water is distributed around the world",
+                    "corrected": "the two charts show how water is distributed around the world",
+                    "explanation": "The phrase 'the way water is around the world' is awkward; 'how' is a more natural choice.",
+                    "context": "We are discussing the distribution of water globally. The two charts show how water is distributed around the world. They illustrate the different types of water available."
+                },
+                {
+                    "original": "the graph about freshwater is just a part of all water but it's just to make it more representative",
+                    "corrected": "the graph about freshwater is just a part of all water and is meant to be more representative",
+                    "explanation": "The phrase 'it's just to make it more representative' is informal; 'is meant to be' is clearer.",
+                    "context": "When analyzing the data, we see that the graph about freshwater is just a part of all water and is meant to be more representative. This helps us understand the overall distribution."
+                },
+                {
+                    "original": "the second one short short demonstrates expect a patronum demonstrates the",
+                    "corrected": "the second chart demonstrates the",
+                    "explanation": "The phrase 'short short demonstrates expect a patronum demonstrates' is unclear and contains a reference that doesn't fit the context.",
+                    "context": "We are looking at the second chart now. The second chart demonstrates the sources of freshwater. It provides a clearer view of the data."
+                },
+                {
+                    "original": "it doesn't demonstrate just lists depict",
+                    "corrected": "it doesn't demonstrate; it just lists and depicts",
+                    "explanation": "The sentence lacks clarity and proper punctuation; it should be clearer with the use of 'it just lists and depicts.'",
+                    "context": "When discussing the chart, I realized that it doesn't demonstrate; it just lists and depicts the sources of freshwater. This distinction is important for our analysis."
+                },
+                {
+                    "original": "Concentrate the attention",
+                    "corrected": "Concentrate on the attention",
+                    "explanation": "'Concentrate the attention' is incorrect; the correct phrase is 'concentrate on.'",
+                    "context": "I was trying to emphasize the importance of focus. We need to concentrate on the attention given to the data. This will help in our presentation."
+                },
+                {
+                    "original": "only 3% of In The world in the world or on the world or at at or In",
+                    "corrected": "only 3% of the water in the world",
+                    "explanation": "The phrase is repetitive and contains unnecessary variations; it should be simplified.",
+                    "context": "As we discuss the statistics, it's important to note that only 3% of the water in the world is freshwater. This fact is crucial for understanding global water distribution."
+                },
+                {
+                    "original": "most of the water salty Salty water and salt water is the same different",
+                    "corrected": "most of the water is salty; salty water and salt water are the same.",
+                    "explanation": "The sentence lacks proper structure and punctuation; it should be clearer and more concise.",
+                    "context": "In our discussion about water types, we mentioned that most of the water is salty. Salty water and salt water are the same, which is an important distinction."
+                },
+                {
+                    "original": "a big percent",
+                    "corrected": "a large percentage",
+                    "explanation": "'A big percent' is informal; 'a large percentage' is more appropriate in formal contexts.",
+                    "context": "When analyzing water usage, I noted that a large percentage of water is used for agricultural purposes. This is a significant aspect of our report."
+                },
+                {
+                    "original": "To industry",
+                    "corrected": "to the industry",
+                    "explanation": "The phrase is missing an article; it should include 'the' for clarity.",
+                    "context": "In discussing water distribution, I mentioned that most of Canada’s water is provided to the industry. This highlights the different uses of water."
+                },
+                {
+                    "original": "abundancy",
+                    "corrected": "abundance",
+                    "explanation": "'Abundancy' is not a correct term; 'abundance' is the proper word.",
+                    "context": "While discussing water resources, I was unsure about the term 'abundancy.' The correct term is 'abundance,' which accurately describes the availability of water."
+                },
+                {
+                    "original": "for example, plants, plants or plantation.",
+                    "corrected": "for example, plantations or crops.",
+                    "explanation": "The repetition of 'plants' is unnecessary; 'plantations or crops' is clearer.",
+                    "context": "When discussing agricultural water use, I suggested saying 'for example, plantations or crops.' This makes the point clearer and avoids redundancy."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "What kind of plants is that?",
+                    "corrected": "What kind of plants are those?",
+                    "explanation": "The subject 'plants' is plural, so the verb should be 'are' instead of 'is.'",
+                    "context": "When discussing agriculture, I started to think about the types of plants involved. What kind of plants are those? I was considering various crops like potatoes and wheat."
+                },
+                {
+                    "original": "Plantations or animal farms.",
+                    "corrected": "Plantations and animal farms.",
+                    "explanation": "The conjunction 'and' is more appropriate here to connect the two types of farming.",
+                    "context": "In our discussion about agriculture, I mentioned different types of farming. Plantations and animal farms are both important aspects of agriculture."
+                },
+                {
+                    "original": "You can write like that.",
+                    "corrected": "You can write it like that.",
+                    "explanation": "The phrase 'write like that' is missing the object 'it' for clarity.",
+                    "context": "While discussing how to present information, I suggested a way to phrase it. You can write it like that to make it clearer."
+                },
+                {
+                    "original": "The way I wrote it, consumed by factories.",
+                    "corrected": "The way I wrote it, is consumed by factories.",
+                    "explanation": "The sentence is missing the verb 'is' to form a complete thought.",
+                    "context": "I was reflecting on how I had phrased something in my notes. The way I wrote it, is consumed by factories, which clarifies the meaning."
+                },
+                {
+                    "original": "Fantasized? No.",
+                    "corrected": "Imagined? No.",
+                    "explanation": "'Fantasized' is not the correct term in this context; 'imagined' fits better.",
+                    "context": "I was trying to find the right word to describe my thought process. Imagined? No, that’s not quite right, but it’s closer than fantasized."
+                },
+                {
+                    "original": "It's just a part of the process.",
+                    "corrected": "It's just part of the process.",
+                    "explanation": "The article 'a' is unnecessary before 'part' in this context.",
+                    "context": "In discussing the water usage in industry, I noted that it has a specific role. It's just part of the process, not something that is wasted."
+                },
+                {
+                    "original": "At the same time as...",
+                    "corrected": "At the same time.",
+                    "explanation": "The phrase 'as' is redundant and makes the sentence awkward.",
+                    "context": "While clarifying my thoughts, I realized I could simplify my phrasing. At the same time, I wanted to ensure clarity in my explanation."
+                },
+                {
+                    "original": "Percentage of water is...",
+                    "corrected": "The percentage of water is...",
+                    "explanation": "The definite article 'the' is needed to specify which percentage is being referred to.",
+                    "context": "In discussing statistics, I wanted to specify the data I was referencing. The percentage of water is crucial for understanding our topic."
+                },
+                {
+                    "original": "Four fifths instead of 80%.",
+                    "corrected": "Four fifths instead of eighty percent.",
+                    "explanation": "Numbers under ten should generally be written out in words for formal writing.",
+                    "context": "During our discussion about data representation, I considered how to express fractions. Four fifths instead of eighty percent makes it clearer in some contexts."
+                },
+                {
+                    "original": "Percentage is a countable noun.",
+                    "corrected": "Percentage is a non-countable noun.",
+                    "explanation": "The term 'percentage' is typically treated as a non-countable noun in this context.",
+                    "context": "While discussing grammatical rules, I clarified the nature of the term. Percentage is a non-countable noun, which is important for proper usage."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "It can be a sign, it can be like percent, it can be written with words, it can be written with symbols.",
+                    "corrected": "It can be a sign, it can be percent, it can be written with words, it can be written with symbols.",
+                    "explanation": "'Like' is unnecessary here; 'percent' should be used directly for clarity.",
+                    "context": "In discussing how to express percentages in writing, I mentioned that it can be a sign, it can be percent, it can be written with words, it can be written with symbols. The key is to maintain formality in your writing."
+                },
+                {
+                    "original": "Doing sport, which are really sportive.",
+                    "corrected": "Doing sports, which is really sporty.",
+                    "explanation": "'Sport' should be pluralized to 'sports,' and 'sportive' is not commonly used; 'sporty' is more appropriate.",
+                    "context": "While analyzing activities teenagers engage in, I noted that doing sports, which is really sporty, is one of them. It's important to recognize the variety of activities they participate in."
+                },
+                {
+                    "original": "The problem with this site, they sometimes give an abridged data.",
+                    "corrected": "The problem with this site is that they sometimes give abridged data.",
+                    "explanation": "The sentence lacks a verb; 'is' should be included to connect the subject and the complement.",
+                    "context": "When discussing the reliability of a certain website, I pointed out that the problem with this site is that they sometimes give abridged data. This can lead to incomplete information."
+                },
+                {
+                    "original": "How much have people been using something?",
+                    "corrected": "How much have people been using it?",
+                    "explanation": "'Something' is vague; 'it' should be used to refer back to the specific topic of discussion.",
+                    "context": "Inquiring about usage statistics, I asked how much have people been using it. This helps to clarify the subject of the conversation."
+                },
+                {
+                    "original": "Could I say, like, the amount of telephone and Imperson and queries, okay, received has shown that...",
+                    "corrected": "Could I say, for example, the amount of telephone and in-person queries received has shown that...",
+                    "explanation": "'Like' is informal and should be replaced with 'for example' for clarity and formality.",
+                    "context": "While trying to formulate a sentence about data collection, I wondered if I could say, for example, the amount of telephone and in-person queries received has shown that... This would help convey my point more effectively."
+                },
+                {
+                    "original": "The one below. Uh-huh. Vectors affecting work performance.",
+                    "corrected": "The one below. Uh-huh. Factors affecting work performance.",
+                    "explanation": "'Vectors' is incorrect in this context; 'factors' is the appropriate term.",
+                    "context": "When referring to a specific chart, I mentioned the one below. Uh-huh. Factors affecting work performance. This is crucial for understanding the elements that influence productivity."
+                },
+                {
+                    "original": "I would take your... Every sentence that you feel not comfortable about...",
+                    "corrected": "I would take every sentence that you feel uncomfortable about...",
+                    "explanation": "'Not comfortable' should be replaced with 'uncomfortable' for grammatical accuracy.",
+                    "context": "In advising a student on how to improve their writing, I suggested that I would take every sentence that you feel uncomfortable about and help refine it. This can enhance their confidence in writing."
+                },
+                {
+                    "original": "That does not sound correct.",
+                    "corrected": "That does not sound correct.",
+                    "explanation": "The sentence is grammatically correct but could be more specific.",
+                    "context": "When reviewing a student's phrasing, I noted that it does not sound correct. Providing specific feedback can guide them toward better expression."
+                },
+                {
+                    "original": "It sounds awkward.",
+                    "corrected": "It sounds awkward.",
+                    "explanation": "The sentence is correct, but it could be more descriptive.",
+                    "context": "In discussing a student's choice of words, I remarked that it sounds awkward. Clarity in language is essential for effective communication."
+                },
+                {
+                    "original": "These things are quite tricky.",
+                    "corrected": "These concepts are quite tricky.",
+                    "explanation": "'Things' is vague; 'concepts' would provide more clarity.",
+                    "context": "While explaining the complexities of comparisons in data, I mentioned that these concepts are quite tricky. It's important to address these challenges in our discussions."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Marching",
+                    "definition": "To walk in a formal and organized manner, often in a group.",
+                    "context": {
+                        "Context 1": "We practiced marching every day in preparation for the Victory Day parade.",
+                        "Context 2": "The marching band played lively music as they paraded down the street.",
+                        "Context 3": "The soldiers were marching in perfect synchronization during the ceremony."
+                    }
+                },
+                {
+                    "word": "Tedious",
+                    "definition": "Too long, slow, or dull; tiresome or monotonous.",
+                    "context": {
+                        "Context 1": "The rehearsal for the parade felt tedious because it lasted for hours without any breaks.",
+                        "Context 2": "Reading the lengthy report was a tedious task that took all afternoon.",
+                        "Context 3": "The tedious process of assembling the furniture made me lose my patience."
+                    }
+                },
+                {
+                    "word": "Synchronized",
+                    "definition": "To occur at the same time or rate; coordinated.",
+                    "context": {
+                        "Context 1": "The students needed to perform synchronized movements while marching.",
+                        "Context 2": "The synchronized swimmers dazzled the audience with their flawless routine.",
+                        "Context 3": "The clock's hands are synchronized to show the correct time together."
+                    }
+                },
+                {
+                    "word": "Absence",
+                    "definition": "The state of being away or not present.",
+                    "context": {
+                        "Context 1": "I planned to make an excuse for my absence from the parade.",
+                        "Context 2": "Her absence from the meeting was noted by everyone in attendance.",
+                        "Context 3": "The teacher marked his absence when he didn't show up for class."
+                    }
+                },
+                {
+                    "word": "Impression",
+                    "definition": "An effect produced on someone or something.",
+                    "context": {
+                        "Context 1": "The parade was meant to create a strong impression of military strength.",
+                        "Context 2": "She made a great impression during her job interview.",
+                        "Context 3": "The artist's work left a lasting impression on the gallery visitors."
+                    }
+                },
+                {
+                    "word": "Messed up",
+                    "definition": "To make a mistake or to ruin something.",
+                    "context": {
+                        "Context 1": "The military organization was messed up, leading to confusion during the parade.",
+                        "Context 2": "I messed up my presentation by forgetting key points.",
+                        "Context 3": "He messed up the recipe and ended up burning the cake."
+                    }
+                },
+                {
+                    "word": "Keen",
+                    "definition": "Having or showing eagerness or enthusiasm.",
+                    "context": {
+                        "Context 1": "I am not keen on participating in military-themed events.",
+                        "Context 2": "She was keen to start her new job and meet her colleagues.",
+                        "Context 3": "He is keen on learning new languages and travels often."
+                    }
+                },
+                {
+                    "word": "Parade",
+                    "definition": "A public procession, especially one celebrating a special day or event.",
+                    "context": {
+                        "Context 1": "The annual parade celebrates Victory Day with music and marching.",
+                        "Context 2": "The Thanksgiving parade featured giant balloons and floats.",
+                        "Context 3": "The school organized a parade to showcase students' talents."
+                    }
+                },
+                {
+                    "word": "Flexible",
+                    "definition": "Capable of bending easily without breaking; adaptable.",
+                    "context": {
+                        "Context 1": "Using flexible vocabulary can enhance your writing style.",
+                        "Context 2": "The gymnast's flexible body allowed her to perform difficult routines.",
+                        "Context 3": "He has a flexible schedule, making it easy to meet up."
+                    }
+                },
+                {
+                    "word": "Distribution",
+                    "definition": "The action of sharing something out among a number of recipients.",
+                    "context": {
+                        "Context 1": "The distribution of tasks during the parade was carefully planned.",
+                        "Context 2": "The distribution of food to the needy was organized by volunteers.",
+                        "Context 3": "The distribution of the new product was delayed due to shipping issues."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Marching",
+                    "fact": "Did you know that there are marching bands that perform in space-themed parades? They play music while floating in zero gravity!"
+                },
+                {
+                    "word": "Tedious",
+                    "fact": "The word 'tedious' comes from the Latin 'taedere,' which means 'to be weary of.' So, if you're feeling tired of something, you can blame the ancient Romans!"
+                },
+                {
+                    "word": "Synchronized",
+                    "fact": "Synchronized swimming was originally called 'water ballet' and was first introduced in the 1880s!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the marching band break up?",
+                    "answer": "Because they couldn't find the right tempo!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to the parade?",
+                    "answer": "Because they heard the parade was going to be on a higher level!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Demonstrate",
+                    "definition": "To show or prove something clearly.",
+                    "context": {
+                        "Context 1": "The second chart demonstrates the sources of freshwater.",
+                        "Context 2": "The magician will demonstrate a new trick at the show.",
+                        "Context 3": "The teacher wanted to demonstrate how to solve the math problem."
+                    }
+                },
+                {
+                    "word": "Depict",
+                    "definition": "To represent or show something in a picture or story.",
+                    "context": {
+                        "Context 1": "The graph depicts the distribution of water around the world.",
+                        "Context 2": "The artist chose to depict the sunset in vibrant colors.",
+                        "Context 3": "The novel depicts the struggles of a young girl in a war-torn country."
+                    }
+                },
+                {
+                    "word": "Concentrate",
+                    "definition": "To focus one's attention or mental effort on a particular task.",
+                    "context": {
+                        "Context 1": "You need to concentrate on the sources of freshwater.",
+                        "Context 2": "He found it hard to concentrate while the music was playing.",
+                        "Context 3": "To concentrate better, she moved to a quieter room."
+                    }
+                },
+                {
+                    "word": "Percentage",
+                    "definition": "A rate, number, or amount in each hundred.",
+                    "context": {
+                        "Context 1": "A big percentage of water is used for agricultural purposes.",
+                        "Context 2": "The percentage of students passing the exam increased this year.",
+                        "Context 3": "She calculated the percentage of her savings that she could spend."
+                    }
+                },
+                {
+                    "word": "Abundance",
+                    "definition": "A very large quantity of something.",
+                    "context": {
+                        "Context 1": "There is an abundance of freshwater in glaciers.",
+                        "Context 2": "The garden was filled with an abundance of flowers in spring.",
+                        "Context 3": "The region is known for its abundance of wildlife."
+                    }
+                },
+                {
+                    "word": "Glacier",
+                    "definition": "A slowly moving mass of ice formed by the accumulation of snow.",
+                    "context": {
+                        "Context 1": "Most freshwater comes from glaciers and ice.",
+                        "Context 2": "The glacier melted due to rising temperatures.",
+                        "Context 3": "Scientists study glaciers to understand climate change."
+                    }
+                },
+                {
+                    "word": "Agriculture",
+                    "definition": "The science or practice of farming, including cultivation of the soil and rearing of animals.",
+                    "context": {
+                        "Context 1": "A large percentage of water is used for agricultural purposes.",
+                        "Context 2": "Agriculture is vital for food production worldwide.",
+                        "Context 3": "The farmer decided to switch to organic agriculture."
+                    }
+                },
+                {
+                    "word": "Surface water",
+                    "definition": "Water that collects on the surface of the ground.",
+                    "context": {
+                        "Context 1": "The chart shows the distribution of surface water sources.",
+                        "Context 2": "Surface water is essential for irrigation.",
+                        "Context 3": "Pollution can significantly affect surface water quality."
+                    }
+                },
+                {
+                    "word": "Salty water",
+                    "definition": "Water that contains a high concentration of salt, typically found in oceans.",
+                    "context": {
+                        "Context 1": "Most of the world's water is salty water.",
+                        "Context 2": "The salty water of the ocean is not suitable for drinking.",
+                        "Context 3": "Many fish species thrive in salty water environments."
+                    }
+                },
+                {
+                    "word": "Prototype",
+                    "definition": "A first or preliminary version of a device or vehicle from which other forms are developed.",
+                    "context": {
+                        "Context 1": "This is our first prototype of the water distribution report.",
+                        "Context 2": "The engineers built a prototype of the new car model.",
+                        "Context 3": "The software company released a prototype for user testing."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Glacier",
+                    "fact": "Did you know that some glaciers move faster than a cheetah can run? They can travel up to 30 meters a day!"
+                },
+                {
+                    "word": "Abundance",
+                    "fact": "The word 'abundance' comes from the Latin 'abundantia,' which means 'overflowing.' So, if you have an abundance of cookies, you might just be overflowing with happiness!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the water break up with the salt?",
+                    "answer": "Because it found someone less salty!"
+                },
+                {
+                    "question": "What did one ocean say to the other ocean?",
+                    "answer": "Nothing, they just waved!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Agriculture",
+                    "definition": "The science or practice of farming, including the cultivation of soil for growing crops and the rearing of animals for food, wool, and other products.",
+                    "context": {
+                        "Context 1": "Agriculture is essential for providing food to the growing population.",
+                        "Context 2": "The agriculture of ancient civilizations relied heavily on irrigation techniques.",
+                        "Context 3": "My grandmother always said that agriculture is the backbone of the economy."
+                    }
+                },
+                {
+                    "word": "Plantation",
+                    "definition": "A large estate where crops are grown, often in a tropical or subtropical climate.",
+                    "context": {
+                        "Context 1": "The plantation was filled with rows of sugarcane ready for harvest.",
+                        "Context 2": "He decided to invest in a coffee plantation in Brazil.",
+                        "Context 3": "The plantation was so big that it took hours to walk from one end to the other."
+                    }
+                },
+                {
+                    "word": "Consume",
+                    "definition": "To use up a resource or to eat or drink something.",
+                    "context": {
+                        "Context 1": "Factories consume a significant amount of water for their operations.",
+                        "Context 2": "I usually consume a lot of coffee during exam week.",
+                        "Context 3": "The hungry bear will consume anything it can find in the forest."
+                    }
+                },
+                {
+                    "word": "Edible",
+                    "definition": "Fit or suitable to be eaten.",
+                    "context": {
+                        "Context 1": "Potatoes and carrots are examples of edible plants.",
+                        "Context 2": "The chef prepared a dish using only edible flowers.",
+                        "Context 3": "In the wild, many mushrooms are not edible and can be poisonous."
+                    }
+                },
+                {
+                    "word": "Abundance",
+                    "definition": "A very large quantity of something.",
+                    "context": {
+                        "Context 1": "Canada has an abundance of fresh water resources.",
+                        "Context 2": "During the harvest season, there was an abundance of fruits and vegetables.",
+                        "Context 3": "The garden was filled with an abundance of colorful flowers."
+                    }
+                },
+                {
+                    "word": "Industry",
+                    "definition": "Economic activity concerned with the processing of raw materials and the manufacture of goods in factories.",
+                    "context": {
+                        "Context 1": "The water is primarily used in the industry for cooling processes.",
+                        "Context 2": "The automotive industry is a major contributor to the economy.",
+                        "Context 3": "She works in the fashion industry, designing clothes for a popular brand."
+                    }
+                },
+                {
+                    "word": "Utilize",
+                    "definition": "To make practical and effective use of something.",
+                    "context": {
+                        "Context 1": "Farmers utilize advanced technology to improve crop yields.",
+                        "Context 2": "We should utilize our resources wisely to avoid waste.",
+                        "Context 3": "He decided to utilize his free time by learning a new language."
+                    }
+                },
+                {
+                    "word": "Graph",
+                    "definition": "A diagram representing a system of connections or interrelations among two or more things by a number of distinctive dots, lines, or areas.",
+                    "context": {
+                        "Context 1": "The graph showed the increase in water consumption over the years.",
+                        "Context 2": "She used a graph to illustrate her research findings.",
+                        "Context 3": "The students were asked to draw a graph of their favorite fruits."
+                    }
+                },
+                {
+                    "word": "Percentage",
+                    "definition": "A rate, number, or amount in each hundred.",
+                    "context": {
+                        "Context 1": "The percentage of fresh water available on Earth is very small.",
+                        "Context 2": "He received a high percentage on his math exam.",
+                        "Context 3": "The store is offering a percentage off all items this weekend."
+                    }
+                },
+                {
+                    "word": "Domestic",
+                    "definition": "Relating to the running of a home or to family relations.",
+                    "context": {
+                        "Context 1": "The domestic use of water is a significant concern in many countries.",
+                        "Context 2": "They have a domestic cat that loves to play with yarn.",
+                        "Context 3": "Domestic travel has increased since the pandemic restrictions were lifted."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Agriculture",
+                    "fact": "Did you know that the word 'agriculture' comes from the Latin words 'ager' (field) and 'cultura' (cultivation)?"
+                },
+                {
+                    "word": "Edible",
+                    "fact": "Some flowers are edible, but not all! If you’re unsure, it’s best to stick to the ones that come with a salad!"
+                },
+                {
+                    "word": "Abundance",
+                    "fact": "In ancient times, people believed that having an abundance of food was a sign of divine favor!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the farmer plant a seed in the computer?",
+                    "answer": "Because he wanted to grow a website!"
+                },
+                {
+                    "question": "What do you call a potato that is never going to be eaten?",
+                    "answer": "A procrastinato!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Prototype",
+                    "definition": "An original model on which something is patterned.",
+                    "context": {
+                        "Context 1": "This is the prototype of your first main body paragraph.",
+                        "Context 2": "The engineers created a prototype of the new car before starting mass production.",
+                        "Context 3": "In art class, we made a prototype of our sculpture using clay."
+                    }
+                },
+                {
+                    "word": "Percentage",
+                    "definition": "A fraction or ratio expressed as a part of 100.",
+                    "context": {
+                        "Context 1": "I'm going to get this percentage just slightly closer to 10.",
+                        "Context 2": "The teacher announced that 75% of the class passed the exam.",
+                        "Context 3": "In the bakery, the recipe calls for a percentage of sugar to flour."
+                    }
+                },
+                {
+                    "word": "Formal",
+                    "definition": "Following established conventions or rules; official.",
+                    "context": {
+                        "Context 1": "It doesn't matter as long as it is formal.",
+                        "Context 2": "The formal dress code requires all attendees to wear suits and ties.",
+                        "Context 3": "He wrote a formal letter to apply for the job."
+                    }
+                },
+                {
+                    "word": "Paraphrasing",
+                    "definition": "Restating text or speech using different words.",
+                    "context": {
+                        "Context 1": "Just for you to feel secure, you can just alter this language. It also counts as paraphrasing.",
+                        "Context 2": "Paraphrasing is a useful skill for summarizing articles.",
+                        "Context 3": "In her essay, she focused on paraphrasing the main ideas from the book."
+                    }
+                },
+                {
+                    "word": "Graphs",
+                    "definition": "Visual representations of data or information.",
+                    "context": {
+                        "Context 1": "I want to give you graphs now because graphs are different than bar charts.",
+                        "Context 2": "The teacher used graphs to show the students' progress over the year.",
+                        "Context 3": "He loves creating graphs to visualize his monthly expenses."
+                    }
+                },
+                {
+                    "word": "Abridged",
+                    "definition": "Shortened by omitting parts while retaining the main idea.",
+                    "context": {
+                        "Context 1": "The problem with this site is they sometimes give an abridged data.",
+                        "Context 2": "The abridged version of the novel was easier to read for younger audiences.",
+                        "Context 3": "She prefers the abridged edition of the textbook for her studies."
+                    }
+                },
+                {
+                    "word": "Awkward",
+                    "definition": "Causing difficulty; hard to deal with.",
+                    "context": {
+                        "Context 1": "It sounds awkward, that's why better to paraphrase it with something simpler.",
+                        "Context 2": "He felt awkward during the conversation with his crush.",
+                        "Context 3": "The awkward silence in the room was palpable after the joke fell flat."
+                    }
+                },
+                {
+                    "word": "Comparison",
+                    "definition": "The act of evaluating two or more things to note similarities or differences.",
+                    "context": {
+                        "Context 1": "Comparisons are tricky when we say by 15% more, three times less.",
+                        "Context 2": "In her report, she made a comparison between the two cities' economies.",
+                        "Context 3": "The comparison of the two paintings revealed their distinct styles."
+                    }
+                },
+                {
+                    "word": "Queries",
+                    "definition": "Questions or inquiries.",
+                    "context": {
+                        "Context 1": "The amount of telephone and queries received has shown that...",
+                        "Context 2": "She had several queries about the new project guidelines.",
+                        "Context 3": "The librarian answered all the students' queries about the research process."
+                    }
+                },
+                {
+                    "word": "Secure",
+                    "definition": "To feel safe or confident; free from worry.",
+                    "context": {
+                        "Context 1": "Just for the feeling of security, just for you to feel secure.",
+                        "Context 2": "He felt secure in his job after receiving a promotion.",
+                        "Context 3": "The secure password protected her online accounts from hackers."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Prototype",
+                    "fact": "The first prototype of a rubber duck was made in the 1940s and was actually hard!"
+                },
+                {
+                    "word": "Graphs",
+                    "fact": "The word 'graph' comes from the Greek word 'grapho,' which means 'to write.' So, technically, graphs are just fancy writing!"
+                },
+                {
+                    "word": "Awkward",
+                    "fact": "The word 'awkward' has been around since the 14th century and originally meant 'backward' or 'clumsy.'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How was school today?"
+                },
+                {
+                    "Person 2": "It was alright. Nothing too exciting, just the usual stuff."
+                },
+                {
+                    "Person 1": "Gotcha. Any big events coming up?"
+                },
+                {
+                    "Person 2": "Yeah, we have this marching event for Victory Day next month."
+                },
+                {
+                    "Person 1": "Oh wow, marching? That sounds intense!"
+                },
+                {
+                    "Person 2": "Yeah, it can be a bit of a pain. We have to practice a lot."
+                },
+                {
+                    "Person 1": "Do you even know how to march?"
+                },
+                {
+                    "Person 2": "Not really! It’s hard to get everyone in sync, you know?"
+                },
+                {
+                    "Person 1": "Totally! I remember those days. It’s like herding cats!"
+                },
+                {
+                    "Person 2": "Exactly! And if one person messes up, it throws everyone off."
+                },
+                {
+                    "Person 1": "Right? I always tried to find a way to skip out on those practices."
+                },
+                {
+                    "Person 2": "Same here! I just don’t get the appeal of marching."
+                },
+                {
+                    "Person 1": "Yeah, it feels a bit outdated. Like, why do we still do this?"
+                },
+                {
+                    "Person 2": "I guess it’s just a tradition. But honestly, I’d rather just hang out with friends."
+                },
+                {
+                    "Person 1": "For sure! So, any plans for the weekend?"
+                },
+                {
+                    "Person 2": "Thinking about catching a movie. You in?"
+                },
+                {
+                    "Person 1": "Absolutely! Let’s do it!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that documentary about water distribution around the world?"
+                },
+                {
+                    "Person 2": "Yeah, I saw it! It was pretty eye-opening how much of our water is actually salty."
+                },
+                {
+                    "Person 1": "Right? I had no idea that only about 3% of the world's water is fresh."
+                },
+                {
+                    "Person 2": "Exactly! And most of that fresh water comes from glaciers and ice. Crazy, huh?"
+                },
+                {
+                    "Person 1": "Totally! I always thought fresh water was more abundant. It makes you think about conservation."
+                },
+                {
+                    "Person 2": "For sure! And then they mentioned how much water is used for agriculture. That was surprising."
+                },
+                {
+                    "Person 1": "Yeah, I think they said a big percentage is used for farming. It's wild how much we rely on it."
+                },
+                {
+                    "Person 2": "Definitely! And what about the part where they talked about industrial use? Canada uses a lot for that."
+                },
+                {
+                    "Person 1": "Yeah! It's interesting to see how different countries manage their water resources."
+                },
+                {
+                    "Person 2": "I know! Makes you appreciate the importance of water even more."
+                },
+                {
+                    "Person 1": "Absolutely! We should probably start being more mindful about our water usage."
+                },
+                {
+                    "Person 2": "Agreed! Maybe we can start by reducing our water waste at home."
+                },
+                {
+                    "Person 1": "Good idea! Let's make a plan to do that together."
+                },
+                {
+                    "Person 2": "Sounds like a plan! I’m in!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh, totally! It was intense! I can't believe they pulled off that last-minute win."
+                },
+                {
+                    "Person 1": "Right? I was on the edge of my seat! I thought they were done for."
+                },
+                {
+                    "Person 2": "Same here! And that last play was just genius. The coach really knows how to strategize."
+                },
+                {
+                    "Person 1": "For sure! I love how they never give up. It’s inspiring."
+                },
+                {
+                    "Person 2": "Absolutely! By the way, are you going to the next game?"
+                },
+                {
+                    "Person 1": "I’m planning to! I got my tickets already. You should come with me!"
+                },
+                {
+                    "Person 2": "Count me in! I wouldn’t miss it for the world."
+                },
+                {
+                    "Person 1": "Awesome! We can grab some snacks before the game too."
+                },
+                {
+                    "Person 2": "Definitely! I need my nachos and a soda to cheer them on."
+                },
+                {
+                    "Person 1": "Perfect! It’s going to be a blast!"
+                },
+                {
+                    "Person 2": "Can’t wait! Let’s hope for another thrilling match."
+                },
+                {
+                    "Person 1": "Yeah! And maybe we’ll see some cool plays again."
+                },
+                {
+                    "Person 2": "For sure! Alright, I’ll see you then!"
+                },
+                {
+                    "Person 1": "See you!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch the game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a comeback, right?"
+                },
+                {
+                    "Person 1": "I know! I thought they were done for, but they really pulled it together."
+                },
+                {
+                    "Person 2": "Totally! That last-minute goal was insane. I was on the edge of my seat!"
+                },
+                {
+                    "Person 1": "Same here! I was yelling at the TV like it could hear me."
+                },
+                {
+                    "Person 2": "Haha! I do that too. My neighbors probably think I’m losing it."
+                },
+                {
+                    "Person 1": "Right? So, what do you think about the next game? Do we have a chance?"
+                },
+                {
+                    "Person 2": "I think so! If they keep playing like that, we might actually have a shot at the playoffs."
+                },
+                {
+                    "Person 1": "Fingers crossed! I’d love to see them go all the way this year."
+                },
+                {
+                    "Person 2": "Me too! We should definitely watch the next game together."
+                },
+                {
+                    "Person 1": "Absolutely! Popcorn and snacks are a must!"
+                },
+                {
+                    "Person 2": "For sure! I’ll bring the drinks. It’s going to be a fun night!"
+                },
+                {
+                    "Person 1": "Can’t wait! Let’s hope for another thrilling match."
+                },
+                {
+                    "Person 2": "Definitely! See you then!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
