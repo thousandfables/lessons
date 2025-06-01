@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I think I can't because I have a lot of cases.",
+                    "corrected": "I think I can't because I have a lot of things to tend to.",
+                    "explanation": "The phrase 'a lot of cases' is awkward; 'a lot of things to tend to' is more idiomatic.",
+                    "context": "I wanted to reschedule our class. I think I can't because I have a lot of things to tend to. My schedule is quite packed."
+                },
+                {
+                    "original": "You... Like, doesn't work at all or just the internet is limited, like there is a cap.",
+                    "corrected": "You... Like, does it not work at all or is the internet just limited, like there is a cap?",
+                    "explanation": "The subject-verb agreement is incorrect; 'doesn't' should be 'does it not' to form a question.",
+                    "context": "I was trying to clarify the issue with the Wi-Fi. You... Like, does it not work at all or is the internet just limited, like there is a cap? I need to understand the problem."
+                },
+                {
+                    "original": "I was in a yoga class but in different place.",
+                    "corrected": "I was in a yoga class but in a different place.",
+                    "explanation": "The article 'a' is missing before 'different place.'",
+                    "context": "I was discussing my yoga experience. I was in a yoga class but in a different place. This new class will be a new experience for me."
+                },
+                {
+                    "original": "It's just free for me.",
+                    "corrected": "It's just free for me.",
+                    "explanation": "The sentence is correct but lacks clarity; it could be rephrased for better understanding.",
+                    "context": "I was explaining why I chose a new yoga class. It's just free for me. This makes it a convenient option."
+                },
+                {
+                    "original": "Difference? I don't know the difference.",
+                    "corrected": "Difference? I don't know what the difference is.",
+                    "explanation": "The sentence is incomplete; it should specify what the difference is.",
+                    "context": "I was asked about the differences between yoga classes. Difference? I don't know what the difference is. I haven't experienced the new class yet."
+                },
+                {
+                    "original": "I never go in yoga class in my gym.",
+                    "corrected": "I have never gone to a yoga class in my gym.",
+                    "explanation": "The tense is incorrect; 'never go' should be 'have never gone' for present perfect.",
+                    "context": "I was clarifying my yoga class history. I have never gone to a yoga class in my gym. This will be my first time."
+                },
+                {
+                    "original": "If I like the yoga in my gym, I think I'll visit it again.",
+                    "corrected": "If I like the yoga at my gym, I think I'll visit it again.",
+                    "explanation": "The preposition 'in' should be 'at' when referring to a location like a gym.",
+                    "context": "I was discussing my future yoga plans. If I like the yoga at my gym, I think I'll visit it again. I want to see how it compares."
+                },
+                {
+                    "original": "I just didn't know about it's free for me.",
+                    "corrected": "I just didn't know that it's free for me.",
+                    "explanation": "The phrase 'about it's free' is incorrect; it should be 'that it's free.'",
+                    "context": "I was explaining my previous ignorance about the gym's offerings. I just didn't know that it's free for me. Now I feel lucky."
+                },
+                {
+                    "original": "What makes your gym better?",
+                    "corrected": "What makes your gym better?",
+                    "explanation": "The sentence is correct but could be rephrased for clarity.",
+                    "context": "I was asked to compare my gym to the yoga studio. What makes your gym better? I think it has more modern facilities."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "Yes, I have a cat, but he don't like me.",
+                    "corrected": "Yes, I have a cat, but he doesn't like me.",
+                    "explanation": "'Don't' is incorrect here; the correct form is 'doesn't' for third-person singular subjects.",
+                    "context": "I have a cat, but he doesn't like me. It's frustrating because I really care for him."
+                },
+                {
+                    "original": "Why he don't like me?",
+                    "corrected": "Why doesn't he like me?",
+                    "explanation": "The correct form is 'doesn't' for third-person singular questions.",
+                    "context": "I wonder why he doesn't like me. It's puzzling because I try to be nice to him."
+                },
+                {
+                    "original": "my dog really like me.",
+                    "corrected": "my dog really likes me.",
+                    "explanation": "'Like' should be 'likes' for third-person singular subjects.",
+                    "context": "I don't really like my dog, but my dog really likes me. It's an odd situation."
+                },
+                {
+                    "original": "he really like to sleep in a warm place.",
+                    "corrected": "he really likes to sleep in a warm place.",
+                    "explanation": "'Like' should be 'likes' for third-person singular subjects.",
+                    "context": "My cat really likes to sleep in a warm place. He always finds the coziest spots."
+                },
+                {
+                    "original": "he tried to bite me always.",
+                    "corrected": "he always tries to bite me.",
+                    "explanation": "The adverb 'always' should come before the verb 'tries' in this context.",
+                    "context": "He always tries to bite me. It's like he thinks it's a game or something."
+                },
+                {
+                    "original": "he bites you and he thinks, OK, now I should follow her and see where she when she dies.",
+                    "corrected": "he bites you and he thinks, OK, now I should follow her and see where she goes when she dies.",
+                    "explanation": "The sentence is missing 'goes' for clarity and grammatical correctness.",
+                    "context": "He bites you and thinks, OK, now I should follow her and see where she goes when she dies. It's a funny thought."
+                },
+                {
+                    "original": "he don't like when I pet the main part of his body like the back.",
+                    "corrected": "he doesn't like when I pet the main part of his body like the back.",
+                    "explanation": "'Don't' should be 'doesn't' for third-person singular subjects.",
+                    "context": "He doesn't like when I pet the main part of his body like the back. He prefers gentle touches."
+                },
+                {
+                    "original": "he hated.",
+                    "corrected": "he hates.",
+                    "explanation": "The correct form is 'hates' for present tense.",
+                    "context": "He hates when I touch his tail. It's a sensitive spot for him."
+                },
+                {
+                    "original": "he doesn't like it.",
+                    "corrected": "he doesn't like it.",
+                    "explanation": "This sentence is correct but needs to be clarified with context.",
+                    "context": "He doesn't like it when I touch his belly. Cats can be quite particular."
+                },
+                {
+                    "original": "he tried to bite me and or running out.",
+                    "corrected": "he tries to bite me and runs away.",
+                    "explanation": "The verb forms should be consistent in present tense.",
+                    "context": "He tries to bite me and runs away when I touch him in the wrong spot. It's quite the chase!"
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "I like like the stubborn maybe animals because they don't need like to be together, to be always with you.",
+                    "corrected": "I like stubborn animals because they don't need to be together or always with you.",
+                    "explanation": "The repetition of 'like' is unnecessary and makes the sentence awkward. 'Like' should only be used once for clarity.",
+                    "context": "I find stubborn animals appealing. I like stubborn animals because they don't need to be together or always with you. They have their own independence."
+                },
+                {
+                    "original": "They are no soul.",
+                    "corrected": "They have no soul.",
+                    "explanation": "The phrase 'are no soul' is incorrect; the correct form is 'have no soul' to indicate possession.",
+                    "context": "I think cats can be quite independent. They have no soul in the sense that they don't show emotions like dogs do. They are more solitary."
+                },
+                {
+                    "original": "They are not so activity maybe.",
+                    "corrected": "They are not very active.",
+                    "explanation": "'So activity maybe' is incorrect; 'very active' is the appropriate phrase to describe energy levels.",
+                    "context": "Cats have their own unique behaviors. They are not very active compared to other pets. They prefer to rest and sleep."
+                },
+                {
+                    "original": "If he wants something, he will do everything to maybe take it or to have it.",
+                    "corrected": "If he wants something, he will do everything to get it.",
+                    "explanation": "'To maybe take it or to have it' is awkward; 'to get it' is a more straightforward expression.",
+                    "context": "When discussing my brother's stubbornness, I said, 'If he wants something, he will do everything to get it.' This shows how determined he can be."
+                },
+                {
+                    "original": "But the word determined is the word that we use in a good way to describe people.",
+                    "corrected": "But the word 'determined' is used positively to describe people.",
+                    "explanation": "The phrase is awkward; simplifying it makes the meaning clearer.",
+                    "context": "In our discussion about stubbornness, I clarified, 'But the word 'determined' is used positively to describe people.' This highlights the difference between the two terms."
+                },
+                {
+                    "original": "He just threw everything what he wants.",
+                    "corrected": "He just throws everything he wants.",
+                    "explanation": "The tense is incorrect; it should be present tense for habitual actions.",
+                    "context": "When describing my cat's behavior, I said, 'He just throws everything he wants.' This illustrates his playful yet stubborn nature."
+                },
+                {
+                    "original": "It's mentally mine.",
+                    "corrected": "He is mentally mine.",
+                    "explanation": "'It's mentally mine' is unclear; 'he is mentally mine' clarifies ownership and attachment.",
+                    "context": "I expressed my bond with my cat by saying, 'He is mentally mine.' This shows how I feel responsible for him."
+                },
+                {
+                    "original": "Only if he feeds, he comes to me.",
+                    "corrected": "He only comes to me when he needs to be fed.",
+                    "explanation": "The original sentence structure is awkward; rephrasing it improves clarity.",
+                    "context": "I explained my cat's behavior, saying, 'He only comes to me when he needs to be fed.' This highlights his independent nature."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I have a problem when I write my email to Netflix for reservation.",
+                    "corrected": "I have a problem when I write my email to Netflix for a reservation.",
+                    "explanation": "The article 'a' is needed before 'reservation' to indicate a single instance.",
+                    "context": "I am trying to set up my Netflix account. I have a problem when I write my email to Netflix for a reservation. It seems like my email is not being accepted."
+                },
+                {
+                    "original": "I think, you know, it just... For... For forming your account?",
+                    "corrected": "I think, you know, it's just for creating your account.",
+                    "explanation": "'Forming' is not the correct verb here; 'creating' is more appropriate for setting up an account.",
+                    "context": "I am trying to explain my issue with Netflix. I think, you know, it's just for creating your account. I need to make sure everything is set up correctly."
+                },
+                {
+                    "original": "It just delete my email and try to write it again.",
+                    "corrected": "It just deletes my email and tells me to try writing it again.",
+                    "explanation": "The verb 'delete' should be in the third person singular form 'deletes,' and the sentence needs clarification.",
+                    "context": "I'm frustrated with the Netflix issue. It just deletes my email and tells me to try writing it again. I don't understand why it's happening."
+                },
+                {
+                    "original": "I have a mail which I made in different country with it and it must work.",
+                    "corrected": "I have an email that I created in a different country, and it should work.",
+                    "explanation": "'Mail' should be 'email,' and 'made' is not the correct verb; 'created' is more suitable. 'Must' should be replaced with 'should' for better clarity.",
+                    "context": "I'm explaining my situation regarding my email. I have an email that I created in a different country, and it should work. I hope Netflix accepts it."
+                },
+                {
+                    "original": "Did you try Gmail or account?",
+                    "corrected": "Did you try your Gmail account?",
+                    "explanation": "The phrase is incomplete; 'your' is needed to specify which account is being referred to.",
+                    "context": "I'm trying to help with the Netflix issue. Did you try your Gmail account? It might be the best option to use."
+                },
+                {
+                    "original": "I think I'll try to do it later again.",
+                    "corrected": "I think I'll try to do it again later.",
+                    "explanation": "The word order is awkward; 'again' should come before 'later' for better flow.",
+                    "context": "I'm planning my next steps. I think I'll try to do it again later. Hopefully, it will work this time."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Wi-Fi",
+                    "definition": "A technology that allows electronic devices to connect to a wireless local area network (WLAN).",
+                    "context": {
+                        "Context 1": "I don't have Wi-Fi on my laptop, so I'm using my phone to connect.",
+                        "Context 2": "The café offers free Wi-Fi for all its customers.",
+                        "Context 3": "During the storm, the Wi-Fi went out, leaving everyone disconnected."
+                    }
+                },
+                {
+                    "word": "Cap",
+                    "definition": "A limit on the amount or speed of something.",
+                    "context": {
+                        "Context 1": "My internet has a cap that restricts the speed to 10 megabits.",
+                        "Context 2": "The company placed a cap on overtime hours to prevent burnout.",
+                        "Context 3": "He wore a cap to shield his eyes from the sun while fishing."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "I'm excited about this new yoga experience at a different gym.",
+                        "Context 2": "Traveling abroad was a life-changing experience for her.",
+                        "Context 3": "He has years of experience in cooking Italian cuisine."
+                    }
+                },
+                {
+                    "word": "Comfortable",
+                    "definition": "Providing physical ease and relaxation.",
+                    "context": {
+                        "Context 1": "This new yoga class is more comfortable than my previous one.",
+                        "Context 2": "She prefers to wear comfortable shoes when going for a walk.",
+                        "Context 3": "The couch is so comfortable that I fell asleep while watching TV."
+                    }
+                },
+                {
+                    "word": "Yoga",
+                    "definition": "A group of physical, mental, and spiritual practices or disciplines that originated in ancient India.",
+                    "context": {
+                        "Context 1": "I have a group yoga workout scheduled for this afternoon.",
+                        "Context 2": "She practices yoga every morning to start her day with focus.",
+                        "Context 3": "Yoga can help improve flexibility and reduce stress."
+                    }
+                },
+                {
+                    "word": "Studio",
+                    "definition": "A place where an artist, photographer, or other creative person works.",
+                    "context": {
+                        "Context 1": "I used to attend yoga classes at a yoga studio.",
+                        "Context 2": "The artist's studio was filled with vibrant paintings and sculptures.",
+                        "Context 3": "They rented a recording studio to produce their new album."
+                    }
+                },
+                {
+                    "word": "Modern",
+                    "definition": "Relating to the present or recent times as opposed to the remote past.",
+                    "context": {
+                        "Context 1": "My gym is more modern compared to my old yoga studio.",
+                        "Context 2": "The architect designed a modern building with sleek lines.",
+                        "Context 3": "She prefers modern art over classical paintings."
+                    }
+                },
+                {
+                    "word": "Expect",
+                    "definition": "To regard something as likely to happen.",
+                    "context": {
+                        "Context 1": "I expect the yoga class to be better than my previous experience.",
+                        "Context 2": "They expect a lot of visitors at the festival this year.",
+                        "Context 3": "He expects his team to win the championship."
+                    }
+                },
+                {
+                    "word": "Switch",
+                    "definition": "To change or exchange something.",
+                    "context": {
+                        "Context 1": "I decided to switch to a different gym for my yoga classes.",
+                        "Context 2": "She plans to switch her major from biology to psychology.",
+                        "Context 3": "They will switch the lights off when they leave the room."
+                    }
+                },
+                {
+                    "word": "Attend",
+                    "definition": "To be present at an event or activity.",
+                    "context": {
+                        "Context 1": "I will attend a yoga class after our lesson.",
+                        "Context 2": "He plans to attend the conference next month.",
+                        "Context 3": "She couldn't attend the party because she was sick."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Yoga",
+                    "fact": "Did you know that the word 'yoga' comes from the Sanskrit word 'yuj,' which means 'to unite' or 'to join'?"
+                },
+                {
+                    "word": "Wi-Fi",
+                    "fact": "Wi-Fi was originally called 'IEEE 802.11b Direct Sequence'—thankfully, they changed it!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes of emotional baggage!"
+                },
+                {
+                    "question": "Why did the yoga instructor break up with their partner?",
+                    "answer": "Because they just couldn't find common ground!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "She-cat",
+                    "definition": "A female cat.",
+                    "context": {
+                        "Context 1": "I have a she-cat who loves to play with yarn.",
+                        "Context 2": "In the wild, a she-cat often hunts for her kittens.",
+                        "Context 3": "The she-cat in the story was known for her cleverness."
+                    }
+                },
+                {
+                    "word": "Inanimate",
+                    "definition": "Not alive; lacking the qualities of life.",
+                    "context": {
+                        "Context 1": "In English, we refer to inanimate objects as 'it'.",
+                        "Context 2": "The inanimate statue stood silently in the park.",
+                        "Context 3": "Inanimate objects cannot feel emotions like living beings."
+                    }
+                },
+                {
+                    "word": "Temperament",
+                    "definition": "A person's or animal's nature, especially as it affects behavior.",
+                    "context": {
+                        "Context 1": "My cat has a bad-tempered temperament; he often hisses at strangers.",
+                        "Context 2": "The dog's friendly temperament makes him a great companion.",
+                        "Context 3": "Temperament can vary widely among different breeds of animals."
+                    }
+                },
+                {
+                    "word": "Pet",
+                    "definition": "An animal kept for companionship or pleasure.",
+                    "context": {
+                        "Context 1": "All animals that we keep at home are our pets.",
+                        "Context 2": "He decided to adopt a pet from the local shelter.",
+                        "Context 3": "My favorite pet is a turtle because they are low maintenance."
+                    }
+                },
+                {
+                    "word": "Bite",
+                    "definition": "To use the teeth to cut into something.",
+                    "context": {
+                        "Context 1": "My cat likes to bite my fingers when he wants to play.",
+                        "Context 2": "The dog gave a playful bite to the ball.",
+                        "Context 3": "Be careful not to bite into that sour lemon!"
+                    }
+                },
+                {
+                    "word": "Follow",
+                    "definition": "To go or come after; to move behind someone or something.",
+                    "context": {
+                        "Context 1": "My cat likes to follow me around the house.",
+                        "Context 2": "The puppy would follow its owner everywhere.",
+                        "Context 3": "In the game, you must follow the clues to find the treasure."
+                    }
+                },
+                {
+                    "word": "Warm",
+                    "definition": "Having or showing a friendly and affectionate manner.",
+                    "context": {
+                        "Context 1": "My cat loves to sleep in a warm place by the window.",
+                        "Context 2": "The warm sun felt nice on my skin during the picnic.",
+                        "Context 3": "She gave me a warm smile when I entered the room."
+                    }
+                },
+                {
+                    "word": "Approach",
+                    "definition": "A way of dealing with something; a method.",
+                    "context": {
+                        "Context 1": "You need a different approach to train a cat than a dog.",
+                        "Context 2": "His approach to solving the math problem was unique.",
+                        "Context 3": "The teacher's approach to education focuses on creativity."
+                    }
+                },
+                {
+                    "word": "Character",
+                    "definition": "The mental and moral qualities distinctive to an individual.",
+                    "context": {
+                        "Context 1": "Cats have different characters, just like humans do.",
+                        "Context 2": "The character in the book was very relatable.",
+                        "Context 3": "Her character shone through in her volunteer work."
+                    }
+                },
+                {
+                    "word": "Run away",
+                    "definition": "To leave a place quickly, often to escape.",
+                    "context": {
+                        "Context 1": "When I tried to pet him, he would run away.",
+                        "Context 2": "The rabbit decided to run away when it saw the fox.",
+                        "Context 3": "Sometimes, kids just want to run away from home for fun."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "She-cat",
+                    "fact": "Did you know that female cats can have up to three litters of kittens in a year?"
+                },
+                {
+                    "word": "Temperament",
+                    "fact": "Cats have a reputation for being moody, but they can also be incredibly affectionate!"
+                },
+                {
+                    "word": "Inanimate",
+                    "fact": "Inanimate objects can’t talk back, but they sure can collect dust!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the cat sit on the computer?",
+                    "answer": "Because it wanted to keep an eye on the mouse!"
+                },
+                {
+                    "question": "What do you call a pile of cats?",
+                    "answer": "A meow-tain!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Solitary",
+                    "definition": "Living or being alone; not social.",
+                    "context": {
+                        "Context 1": "Cats are generally solitary animals, preferring to be alone rather than in groups.",
+                        "Context 2": "The solitary traveler enjoyed exploring the world without any companions.",
+                        "Context 3": "He spent his solitary evenings reading books by the fireplace."
+                    }
+                },
+                {
+                    "word": "Stubborn",
+                    "definition": "Having or showing dogged determination not to change one's attitude or position on something.",
+                    "context": {
+                        "Context 1": "My brother is very stubborn; he refuses to listen to anyone's advice.",
+                        "Context 2": "The stubborn mule wouldn’t move no matter how hard the farmer tried.",
+                        "Context 3": "She was stubborn about her decision to climb the mountain alone."
+                    }
+                },
+                {
+                    "word": "Determined",
+                    "definition": "Having made a firm decision and being resolved not to change it.",
+                    "context": {
+                        "Context 1": "She is determined to finish her project by the deadline.",
+                        "Context 2": "Despite the challenges, he was determined to win the championship.",
+                        "Context 3": "The determined athlete trained every day to improve her performance."
+                    }
+                },
+                {
+                    "word": "Affection",
+                    "definition": "A gentle feeling of fondness or liking.",
+                    "context": {
+                        "Context 1": "Cats show affection by purring and rubbing against their owners.",
+                        "Context 2": "He expressed his affection for her with a heartfelt letter.",
+                        "Context 3": "The puppy's affection was evident as it wagged its tail excitedly."
+                    }
+                },
+                {
+                    "word": "Respect",
+                    "definition": "A feeling of deep admiration for someone or something elicited by their abilities, qualities, or achievements.",
+                    "context": {
+                        "Context 1": "It's important to respect a cat's need for space and independence.",
+                        "Context 2": "She earned the respect of her colleagues through hard work and dedication.",
+                        "Context 3": "He showed respect for nature by picking up litter during his hike."
+                    }
+                },
+                {
+                    "word": "Purring",
+                    "definition": "A low continuous vibratory sound made by some animals, especially cats.",
+                    "context": {
+                        "Context 1": "When my cat is happy, she starts purring softly.",
+                        "Context 2": "The engine was purring smoothly after the tune-up.",
+                        "Context 3": "The baby was purring with delight as she played with her toys."
+                    }
+                },
+                {
+                    "word": "Roam",
+                    "definition": "To move about or travel aimlessly or unsystematically.",
+                    "context": {
+                        "Context 1": "Cats love to roam freely around the house and explore.",
+                        "Context 2": "The tourists decided to roam the city without a map.",
+                        "Context 3": "He likes to roam the countryside on his bicycle during weekends."
+                    }
+                },
+                {
+                    "word": "Hunters",
+                    "definition": "People or animals that hunt for food or sport.",
+                    "context": {
+                        "Context 1": "Cats are natural hunters, often stalking their prey silently.",
+                        "Context 2": "The hunters returned with a large deer after a long day in the woods.",
+                        "Context 3": "She watched the documentary about the hunters of the Arctic."
+                    }
+                },
+                {
+                    "word": "Companions",
+                    "definition": "A person or animal with whom one spends a lot of time or with whom one travels.",
+                    "context": {
+                        "Context 1": "Cats do not see humans as companions in the same way dogs do.",
+                        "Context 2": "He brought his companions along for the road trip.",
+                        "Context 3": "The elderly woman found comfort in the company of her feline companions."
+                    }
+                },
+                {
+                    "word": "Territory",
+                    "definition": "An area defended by an animal or group of animals against others of the same species.",
+                    "context": {
+                        "Context 1": "Cats are very territorial and do not like to share their space.",
+                        "Context 2": "The dog marked its territory by leaving its scent around the yard.",
+                        "Context 3": "The explorers claimed the territory for their country."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Stubborn",
+                    "fact": "Did you know that donkeys are known for being stubborn? They actually just have a strong sense of self-preservation!"
+                },
+                {
+                    "word": "Purring",
+                    "fact": "Cats can purr at a frequency that promotes healing in their bones and tissues. They might just be little furry doctors!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the cat sit on the computer?",
+                    "answer": "Because it wanted to keep an eye on the mouse!"
+                },
+                {
+                    "question": "What do you call a pile of cats?",
+                    "answer": "A meow-tain!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Scent",
+                    "definition": "A distinctive smell, especially one that is pleasant.",
+                    "context": {
+                        "Context 1": "Cats have a strong scent that helps them identify their territory.",
+                        "Context 2": "The scent of fresh baked cookies filled the kitchen.",
+                        "Context 3": "He could detect the scent of rain in the air before the storm arrived."
+                    }
+                },
+                {
+                    "word": "Distinguish",
+                    "definition": "To recognize or treat as different; to tell apart.",
+                    "context": {
+                        "Context 1": "Cats can distinguish between different sounds and scents.",
+                        "Context 2": "She could distinguish the different flavors in the dish.",
+                        "Context 3": "It's hard to distinguish between identical twins at first glance."
+                    }
+                },
+                {
+                    "word": "Prey",
+                    "definition": "An animal that is hunted and killed by another for food.",
+                    "context": {
+                        "Context 1": "Cats often stalk their prey before pouncing.",
+                        "Context 2": "The eagle swooped down to catch its prey.",
+                        "Context 3": "In the wild, the lion is a fierce predator that hunts its prey."
+                    }
+                },
+                {
+                    "word": "Hiding",
+                    "definition": "To conceal oneself or something from view.",
+                    "context": {
+                        "Context 1": "Cats often find hiding spots to stalk their prey.",
+                        "Context 2": "The children were hiding during the game of hide and seek.",
+                        "Context 3": "He was hiding his true feelings from everyone."
+                    }
+                },
+                {
+                    "word": "Occasionally",
+                    "definition": "From time to time; not regularly.",
+                    "context": {
+                        "Context 1": "Cats will occasionally come to you for affection.",
+                        "Context 2": "I occasionally go for a walk in the park on weekends.",
+                        "Context 3": "She occasionally treats herself to a spa day."
+                    }
+                },
+                {
+                    "word": "Purr",
+                    "definition": "The low, continuous, vibrating sound made by a cat.",
+                    "context": {
+                        "Context 1": "When happy, cats often purr to show contentment.",
+                        "Context 2": "The engine of the car purred smoothly as it started.",
+                        "Context 3": "She could hear the purr of the baby as it slept peacefully."
+                    }
+                },
+                {
+                    "word": "VPN",
+                    "definition": "A Virtual Private Network that provides a secure connection over the internet.",
+                    "context": {
+                        "Context 1": "Using a VPN can help you access Netflix from different countries.",
+                        "Context 2": "He set up a VPN to protect his online privacy.",
+                        "Context 3": "Many companies use a VPN to allow employees to work remotely."
+                    }
+                },
+                {
+                    "word": "Account",
+                    "definition": "A record of financial transactions or a user profile on a platform.",
+                    "context": {
+                        "Context 1": "She was having trouble creating her Netflix account.",
+                        "Context 2": "He checked his bank account balance online.",
+                        "Context 3": "You need an account to access the website's premium features."
+                    }
+                },
+                {
+                    "word": "Reservation",
+                    "definition": "An arrangement made in advance to secure accommodations or services.",
+                    "context": {
+                        "Context 1": "She was trying to make a reservation for her Netflix account.",
+                        "Context 2": "We made a reservation at the restaurant for dinner.",
+                        "Context 3": "He canceled his reservation for the hotel due to a change in plans."
+                    }
+                },
+                {
+                    "word": "Delete",
+                    "definition": "To remove or erase something.",
+                    "context": {
+                        "Context 1": "The system kept deleting her email when she tried to register.",
+                        "Context 2": "He accidentally deleted the important file from his computer.",
+                        "Context 3": "She decided to delete her social media accounts for privacy reasons."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Purr",
+                    "fact": "Did you know that cats can purr at a frequency that promotes healing? It's like their own built-in medicine!"
+                },
+                {
+                    "word": "VPN",
+                    "fact": "The term VPN sounds like a secret agent gadget, but it's just a way to keep your internet connection safe!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the cat sit on the computer?",
+                    "answer": "Because it wanted to keep an eye on the mouse!"
+                },
+                {
+                    "question": "What do you call a pile of cats?",
+                    "answer": "A meow-tain!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Good morning! How's it going?"
+                },
+                {
+                    "Person 2": "Good morning! I'm doing well, just trying to wake up. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I could use a little more coffee, though. Got any plans for today?"
+                },
+                {
+                    "Person 2": "Yeah, I'm heading to the gym later. I signed up for a yoga class."
+                },
+                {
+                    "Person 1": "Oh nice! Is it your first time doing yoga?"
+                },
+                {
+                    "Person 2": "Actually, no. I’ve done yoga before, but at a different place."
+                },
+                {
+                    "Person 1": "Cool! What made you switch gyms?"
+                },
+                {
+                    "Person 2": "Well, this one has better facilities and the classes are included in my membership."
+                },
+                {
+                    "Person 1": "That sounds like a win! Are you excited for the class?"
+                },
+                {
+                    "Person 2": "Not really. I’m a bit nervous since it’s a new place."
+                },
+                {
+                    "Person 1": "I get that. But new experiences can be fun! You might love it."
+                },
+                {
+                    "Person 2": "True! I guess I’ll just see how it goes."
+                },
+                {
+                    "Person 1": "What kind of yoga are you doing? Like, hot yoga or something?"
+                },
+                {
+                    "Person 2": "No, just regular yoga. I prefer to keep it simple for now."
+                },
+                {
+                    "Person 1": "Sounds good! I’ve heard that yoga can really help with stress."
+                },
+                {
+                    "Person 2": "Yeah, I hope it helps me relax. I’ve been feeling a bit overwhelmed lately."
+                },
+                {
+                    "Person 1": "Totally understand. Just remember to breathe and enjoy it!"
+                },
+                {
+                    "Person 2": "Thanks! I’ll try to keep that in mind. What about you? Any plans?"
+                },
+                {
+                    "Person 1": "Just catching up on some work and maybe binge-watch a show later."
+                },
+                {
+                    "Person 2": "Nice! What show are you watching?"
+                },
+                {
+                    "Person 1": "I just started that new crime series everyone’s talking about. It’s pretty good!"
+                },
+                {
+                    "Person 2": "Awesome! I’ll have to check it out. Enjoy your day!"
+                },
+                {
+                    "Person 1": "You too! Good luck with yoga!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Do you have any pets?"
+                },
+                {
+                    "Person 2": "Yeah, I have a cat! She's a little diva, though."
+                },
+                {
+                    "Person 1": "Oh really? What's her name?"
+                },
+                {
+                    "Person 2": "Her name is Bella. She thinks she owns the place."
+                },
+                {
+                    "Person 1": "That's cute! I have a dog named Max. He's super friendly but can be a bit of a goofball."
+                },
+                {
+                    "Person 2": "I love dogs! They’re so loyal. Does Max get along with Bella?"
+                },
+                {
+                    "Person 1": "Not really. Bella just hisses at him. It’s like she thinks he’s invading her territory."
+                },
+                {
+                    "Person 2": "Classic cat behavior! My Bella does the same thing with other pets."
+                },
+                {
+                    "Person 1": "Yeah, cats can be so sassy! What does Bella like to do?"
+                },
+                {
+                    "Person 2": "She loves to chase after little toys and nap in the sun. What about Max?"
+                },
+                {
+                    "Person 1": "Max is all about playing fetch and going for walks. He gets so excited when he sees his leash!"
+                },
+                {
+                    "Person 2": "That sounds fun! I wish Bella liked to play fetch, but she just stares at me like I'm crazy."
+                },
+                {
+                    "Person 1": "Haha, sounds like Bella! Cats have their own way of having fun, I guess."
+                },
+                {
+                    "Person 2": "For sure! They definitely have their own personalities."
+                },
+                {
+                    "Person 1": "So true! Do you think Bella would ever warm up to Max?"
+                },
+                {
+                    "Person 2": "Maybe! If he keeps his distance and doesn’t bother her too much."
+                },
+                {
+                    "Person 1": "Sounds like a plan! Maybe one day they’ll be best friends."
+                },
+                {
+                    "Person 2": "Fingers crossed! Until then, I’ll just keep Bella entertained."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever thought about how cats are so independent?"
+                },
+                {
+                    "Person 2": "Totally! It's like they don't need anyone around to be happy."
+                },
+                {
+                    "Person 1": "Right? I mean, think about tigers. They’re solitary hunters."
+                },
+                {
+                    "Person 2": "Exactly! Unlike lions, which form prides and stick together."
+                },
+                {
+                    "Person 1": "Yeah, lions are the only big cats that do that. All the others just prefer to be alone."
+                },
+                {
+                    "Person 2": "I guess that’s why I like cats. They’re so low-maintenance."
+                },
+                {
+                    "Person 1": "For sure! They don’t need constant attention like dogs do."
+                },
+                {
+                    "Person 2": "And they have such unique personalities. My cat can be so stubborn sometimes."
+                },
+                {
+                    "Person 1": "Stubborn? How so?"
+                },
+                {
+                    "Person 2": "Well, if she wants to sit on my lap, nothing can stop her. She’ll just jump right back up!"
+                },
+                {
+                    "Person 1": "That sounds like my cat! He’ll knock things off the table just to get my attention."
+                },
+                {
+                    "Person 2": "Haha! They definitely have their own way of getting what they want."
+                },
+                {
+                    "Person 1": "Yeah, and when they want food, they’re relentless with the meowing."
+                },
+                {
+                    "Person 2": "So true! It’s like they have a built-in alarm for meal times."
+                },
+                {
+                    "Person 1": "But I love how they can be affectionate on their own terms."
+                },
+                {
+                    "Person 2": "Exactly! They’ll come to you when they feel like it, and that makes it special."
+                },
+                {
+                    "Person 1": "Cats really know how to keep us on our toes!"
+                },
+                {
+                    "Person 2": "For sure! I wouldn’t trade my cat for anything."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new cat cafe that opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I saw it on Instagram! It looks so cute! Have you been yet?"
+                },
+                {
+                    "Person 1": "Not yet, but I really want to go. I heard they have a ton of cats just lounging around."
+                },
+                {
+                    "Person 2": "That sounds amazing! I love how cats just do their own thing. Did you know they don’t really like being touched all the time?"
+                },
+                {
+                    "Person 1": "Really? I thought they loved attention."
+                },
+                {
+                    "Person 2": "Well, they do, but they also like to feel like hunters. They want to keep their scent hidden when they’re stalking prey."
+                },
+                {
+                    "Person 1": "That makes sense! So, when you pet them, they smell like you, and it gives them away?"
+                },
+                {
+                    "Person 2": "Exactly! And that’s why they don’t like water either. It messes with their scent."
+                },
+                {
+                    "Person 1": "Wow, I never thought about it that way. My cat hates baths!"
+                },
+                {
+                    "Person 2": "Same here! They just want to be left alone to do their thing until they decide they want some love."
+                },
+                {
+                    "Person 1": "Right? It’s like they come to you on their own terms. So, are you planning to check out the cafe soon?"
+                },
+                {
+                    "Person 2": "I think I might go this weekend! Want to join?"
+                },
+                {
+                    "Person 1": "Absolutely! Let’s make it a cat date!"
+                },
+                {
+                    "Person 2": "Perfect! I’ll look up the hours and we can plan it out."
+                },
+                {
+                    "Person 1": "Sounds good! I can’t wait to hang out with some cats."
+                },
+                {
+                    "Person 2": "Me too! It’ll be a fun way to relax."
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
