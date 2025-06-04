@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 1,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "It's important to leave the past behind and getting rid of cluttered house.",
+                    "corrected": "It's important to leave the past behind and get rid of a cluttered house.",
+                    "explanation": "The verb 'getting' should be 'get' to match the infinitive form used with 'to leave.' Also, 'a cluttered house' is the correct noun phrase.",
+                    "context": "I believe it's important to leave the past behind. It's important to leave the past behind and get rid of a cluttered house. This helps create a fresh start for the New Year."
+                },
+                {
+                    "original": "I think that people are very naive if they think they can change their lives at a certain midnight.",
+                    "corrected": "I think that people are very naive if they believe they can change their lives at a certain midnight.",
+                    "explanation": "'Think' is less formal than 'believe' in this context, which fits better with the idea of naivety.",
+                    "context": "I find it strange that people make all these New Year resolutions. I think that people are very naive if they believe they can change their lives at a certain midnight. There is no magic about it."
+                },
+                {
+                    "original": "Just another midnight, that's it.",
+                    "corrected": "Just another midnight; that's it.",
+                    "explanation": "A semicolon is more appropriate here to connect two closely related independent clauses.",
+                    "context": "I don't see the significance of New Year. Just another midnight; that's it. It's just a continuation of time, not a magical moment."
+                },
+                {
+                    "original": "If you really want to do something, you should just go ahead.",
+                    "corrected": "If you really want to do something, you should just go for it.",
+                    "explanation": "'Go ahead' is informal; 'go for it' is a more idiomatic expression in this context.",
+                    "context": "I believe in taking action. If you really want to do something, you should just go for it. Don't wait for the New Year to make changes."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Designated",
+                    "definition": "Officially assigned to a specific role or purpose.",
+                    "context": {
+                        "Context 1": "The designated driver ensured everyone got home safely after the party.",
+                        "Context 2": "She was the designated cook for the family reunion, preparing all the meals.",
+                        "Context 3": "The designated area for picnics was filled with families enjoying the sunny day."
+                    }
+                },
+                {
+                    "word": "Cluttered",
+                    "definition": "Filled with a disorganized collection of things; messy.",
+                    "context": {
+                        "Context 1": "Her cluttered desk made it difficult to find important documents.",
+                        "Context 2": "The cluttered streets of the city were filled with vendors selling their goods.",
+                        "Context 3": "He felt overwhelmed by the cluttered thoughts in his mind during the exam."
+                    }
+                },
+                {
+                    "word": "Naive",
+                    "definition": "Lacking experience or sophistication; innocent.",
+                    "context": {
+                        "Context 1": "It's naive to think that everything will change just because it's a new year.",
+                        "Context 2": "The naive puppy thought every stranger wanted to play with him.",
+                        "Context 3": "Her naive belief in fairy tales made her disappointed in real life."
+                    }
+                },
+                {
+                    "word": "Resolution",
+                    "definition": "A firm decision to do or not to do something.",
+                    "context": {
+                        "Context 1": "Many people make New Year resolutions to improve their lives.",
+                        "Context 2": "The resolution of the conflict took longer than expected.",
+                        "Context 3": "She made a resolution to read more books this year."
+                    }
+                },
+                {
+                    "word": "Confirm",
+                    "definition": "To acknowledge or verify something as true or correct.",
+                    "context": {
+                        "Context 1": "Please confirm your attendance at the meeting by Friday.",
+                        "Context 2": "The scientist needed to confirm her hypothesis with further experiments.",
+                        "Context 3": "He called to confirm the restaurant reservation for dinner."
+                    }
+                },
+                {
+                    "word": "Period",
+                    "definition": "A length or portion of time.",
+                    "context": {
+                        "Context 1": "This period of reflection is important for personal growth.",
+                        "Context 2": "The medieval period was marked by feudalism and the rise of kingdoms.",
+                        "Context 3": "She spent a period of time traveling across Europe last summer."
+                    }
+                },
+                {
+                    "word": "Fresh start",
+                    "definition": "A new beginning or opportunity to do something differently.",
+                    "context": {
+                        "Context 1": "The New Year is often seen as a chance for a fresh start.",
+                        "Context 2": "After moving to a new city, he felt like he had a fresh start in life.",
+                        "Context 3": "The fresh start of spring brings new life to the garden."
+                    }
+                },
+                {
+                    "word": "Get rid of",
+                    "definition": "To remove or dispose of something unwanted.",
+                    "context": {
+                        "Context 1": "She decided to get rid of old clothes she no longer wore.",
+                        "Context 2": "He tried to get rid of the weeds in his garden.",
+                        "Context 3": "They needed to get rid of the old furniture before moving."
+                    }
+                },
+                {
+                    "word": "Magic",
+                    "definition": "The power of apparently influencing events using mysterious or supernatural forces.",
+                    "context": {
+                        "Context 1": "Many believe that New Year's Eve holds a kind of magic for new beginnings.",
+                        "Context 2": "The magician performed a series of tricks that left the audience in awe.",
+                        "Context 3": "She felt the magic of the moment when he proposed under the stars."
+                    }
+                },
+                {
+                    "word": "Go ahead",
+                    "definition": "To proceed with an action or decision.",
+                    "context": {
+                        "Context 1": "If you want to start exercising, just go ahead and join the gym.",
+                        "Context 2": "He decided to go ahead with his plans to travel despite the weather.",
+                        "Context 3": "She told him to go ahead and ask the question he had in mind."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Resolution",
+                    "fact": "Did you know that about 80% of New Year resolutions fail by February? Maybe they need a 'resolution coach'!"
+                },
+                {
+                    "word": "Naive",
+                    "fact": "The word 'naive' comes from the Latin 'nativus,' meaning 'native' or 'natural.' So, being naive might just mean you're too natural for this world!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the calendar apply for a job?",
+                    "answer": "Because it wanted to get a new date!"
+                },
+                {
+                    "question": "What do you call a New Year's resolution that you don't keep?",
+                    "answer": "A 're-solution'!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you have a good New Year’s Eve?"
+                },
+                {
+                    "Person 2": "Yeah, it was pretty chill. Just hung out with some friends and watched the ball drop. How about you?"
+                },
+                {
+                    "Person 1": "Nice! I went to a party, but honestly, I’m not really into New Year’s resolutions."
+                },
+                {
+                    "Person 2": "Really? Why not?"
+                },
+                {
+                    "Person 1": "I just think it’s kind of silly to wait for a specific date to make changes. If you want to do something, why not just start?"
+                },
+                {
+                    "Person 2": "I get that. I mean, I always say I’ll eat healthier or hit the gym more, but it never lasts long."
+                },
+                {
+                    "Person 1": "Exactly! It feels like pressure to make big changes all at once. I’d rather just make small adjustments over time."
+                },
+                {
+                    "Person 2": "That makes sense. Maybe I should focus on one thing at a time instead of overwhelming myself."
+                },
+                {
+                    "Person 1": "Yeah! Like, if you want to eat better, just start by adding more veggies to your meals instead of going all out."
+                },
+                {
+                    "Person 2": "That sounds way more manageable! I might give that a shot."
+                },
+                {
+                    "Person 1": "For sure! And if you slip up, it’s not the end of the world. Just keep going."
+                },
+                {
+                    "Person 2": "Totally! I like that mindset. Here’s to a year of small wins!"
+                },
+                {
+                    "Person 1": "Cheers to that! Let’s keep each other accountable."
+                },
+                {
+                    "Person 2": "Definitely! We got this!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
