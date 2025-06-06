@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 6,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I'm afraid that it will be Truth.",
+                    "corrected": "I'm afraid that it will be true.",
+                    "explanation": "\"Truth\" is a noun, while \"true\" is the correct adjective to describe a situation.",
+                    "context": "I was discussing some news I saw about IELTS. I'm afraid that it will be true. It's concerning to think about the implications."
+                },
+                {
+                    "original": "you can just choose IDP instead of British Council centers.",
+                    "corrected": "you can just choose IDP centers instead of British Council.",
+                    "explanation": "The structure of the sentence is awkward; it is more natural to place 'centers' directly after 'IDP.'",
+                    "context": "We were talking about options for taking the IELTS exam. You can just choose IDP centers instead of British Council. It's good to have alternatives."
+                },
+                {
+                    "original": "I wrote exam of math.",
+                    "corrected": "I wrote a math exam.",
+                    "explanation": "The phrase should include the article 'a' and 'math exam' is the correct noun phrase.",
+                    "context": "I was explaining my recent academic activities. I wrote a math exam. I'm now waiting for the results."
+                },
+                {
+                    "original": "I think it was good.",
+                    "corrected": "I think it went well.",
+                    "explanation": "'It was good' is vague; 'it went well' is a more idiomatic expression for describing an exam performance.",
+                    "context": "After discussing my math exam, I reflected on my experience. I think it went well. I'm hopeful about my grade."
+                },
+                {
+                    "original": "I will write chemistry, biology and Russian.",
+                    "corrected": "I will take chemistry, biology, and Russian.",
+                    "explanation": "'Write' is not the correct verb for taking exams; 'take' is the appropriate term.",
+                    "context": "I was outlining my future exams for the next year. I will take chemistry, biology, and Russian. I need to prepare for them."
+                },
+                {
+                    "original": "the chemistry exam.",
+                    "corrected": "the chemistry exam.",
+                    "explanation": "The phrase is correct, but it should be used consistently with the previous sentence.",
+                    "context": "I expressed my concerns about the upcoming exams. I don't want to write the chemistry exam. It's particularly challenging for me."
+                },
+                {
+                    "original": "the word challenging is quite challenging to remember.",
+                    "corrected": "the word 'challenging' is quite difficult to remember.",
+                    "explanation": "Using 'difficult' instead of 'challenging' avoids redundancy and improves clarity.",
+                    "context": "We were discussing vocabulary and exam preparation. The word 'challenging' is quite difficult to remember. I struggle with some terms."
+                },
+                {
+                    "original": "results for chemistry, for example, in Moscow already, and students saw them yesterday.",
+                    "corrected": "results for chemistry, for example, have already been released in Moscow, and students saw them yesterday.",
+                    "explanation": "The original sentence lacks proper verb tense and structure, making it unclear.",
+                    "context": "I was sharing information about exam results. Results for chemistry, for example, have already been released in Moscow. Students were eager to see their scores."
+                },
+                {
+                    "original": "But in this year, I have only five grades, only grades about five.",
+                    "corrected": "But this year, I have only five grades, all of which are fives.",
+                    "explanation": "The phrase 'only grades about five' is awkward; 'all of which are fives' is clearer.",
+                    "context": "I was discussing my academic performance. But this year, I have only five grades, all of which are fives. I'm quite pleased with that."
+                },
+                {
+                    "original": "they don't see at results of exam.",
+                    "corrected": "they don't look at exam results.",
+                    "explanation": "'See at' is incorrect; the correct phrase is 'look at' when referring to examining something.",
+                    "context": "We were talking about university admissions criteria. They don't look at exam results. They focus on other factors."
+                },
+                {
+                    "original": "I think IELTS is easier than TOEFL.",
+                    "corrected": "I think IELTS is easier than TOEFL.",
+                    "explanation": "The original sentence is correct, but it could be more nuanced.",
+                    "context": "In our discussion about English proficiency tests, I expressed my opinion. I think IELTS is easier than TOEFL. It's more familiar to me."
+                },
+                {
+                    "original": "SAT is less about English and more about like math and all these other things.",
+                    "corrected": "SAT is less about English and more about math and other subjects.",
+                    "explanation": "The phrase 'more about like math' is informal and should be simplified.",
+                    "context": "We were comparing different exams. SAT is less about English and more about math and other subjects. It's a different focus."
+                },
+                {
+                    "original": "I don't want to write this exam because my sister always studies in math schools.",
+                    "corrected": "I don't want to take this exam because my sister always studies in math schools.",
+                    "explanation": "'Write' is not the correct verb for taking exams; 'take' is the appropriate term.",
+                    "context": "I was expressing my reluctance about the SAT. I don't want to take this exam because my sister always studies in math schools. It's intimidating."
+                },
+                {
+                    "original": "I think that is your best choice for now.",
+                    "corrected": "I think that is your best choice for now.",
+                    "explanation": "The original sentence is correct, but it could be more assertive.",
+                    "context": "I was advising on exam options. I think that is your best choice for now. It aligns with your strengths."
+                },
+                {
+                    "original": "you already writing quite solid essays on IELTS.",
+                    "corrected": "you are already writing quite solid essays on IELTS.",
+                    "explanation": "The verb 'are' is missing; the correct form is 'you are writing.'",
+                    "context": "I was complimenting your writing skills. You are already writing quite solid essays on IELTS. Keep it up!"
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I will work to a high salary.",
+                    "corrected": "I will work for a high salary.",
+                    "explanation": "'Work to' is incorrect; 'work for' is the correct preposition to indicate the purpose of working.",
+                    "context": "When discussing job preferences, I mentioned that I will work for a high salary. I believe that earning a good income is essential for my lifestyle."
+                },
+                {
+                    "original": "Because if I will write that job satisfaction is more important, it will be easier to explain.",
+                    "corrected": "Because if I write that job satisfaction is more important, it will be easier to explain.",
+                    "explanation": "The use of 'will' is unnecessary here; the present simple is sufficient for conditional sentences.",
+                    "context": "I was contemplating how to structure my essay. I thought that if I write that job satisfaction is more important, it will be easier to explain my points."
+                },
+                {
+                    "original": "I couldn't buy all these things.",
+                    "corrected": "I wouldn't be able to buy all these things.",
+                    "explanation": "'Couldn't' implies past ability; 'wouldn't be able to' correctly expresses future inability.",
+                    "context": "While discussing my financial goals, I expressed concern about my purchasing power. I said that if the salary is low, I wouldn't be able to buy all these things."
+                },
+                {
+                    "original": "I mean, I need a job which I can pay for my conditions.",
+                    "corrected": "I mean, I need a job that can support my needs.",
+                    "explanation": "'Which I can pay for my conditions' is awkward; 'that can support my needs' is clearer and more idiomatic.",
+                    "context": "I was explaining my job requirements. I clarified that I need a job that can support my needs, ensuring I can afford my lifestyle."
+                },
+                {
+                    "original": "So idea one is that people need to work... People need to have the jobs that they like.",
+                    "corrected": "So idea one is that people need to work in jobs that they like.",
+                    "explanation": "The phrase 'have the jobs' is awkward; 'work in jobs' is more natural.",
+                    "context": "As I was outlining the essay, I stated that the first idea is that people need to work in jobs that they like. This is essential for job satisfaction."
+                },
+                {
+                    "original": "It is agree.",
+                    "corrected": "I agree.",
+                    "explanation": "'It is agree' is grammatically incorrect; 'I agree' is the correct expression of personal agreement.",
+                    "context": "When asked if I agreed with the statement about job satisfaction, I responded that I agree. This reflects my personal belief."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "My father is businessman.",
+                    "corrected": "My father is a businessman.",
+                    "explanation": "The article 'a' is needed before 'businessman' to indicate that he is one of many.",
+                    "context": "I was discussing my parents' professions. My father is a businessman. My mother is a doctor."
+                },
+                {
+                    "original": "My mother, all life works on night shifts.",
+                    "corrected": "My mother has worked night shifts all her life.",
+                    "explanation": "The phrase 'all life works' is incorrect; it should be 'has worked' to indicate ongoing action.",
+                    "context": "We were talking about my mother's job. My mother has worked night shifts all her life. She has a high salary for Moscow."
+                },
+                {
+                    "original": "Like, he doesn't have days off, he doesn't have a vacation.",
+                    "corrected": "She doesn't have days off, she doesn't have a vacation.",
+                    "explanation": "The pronoun 'he' is incorrect; it should be 'she' to refer to the female anesthesiologist.",
+                    "context": "I was explaining my mother's friend's work situation. She doesn't have days off, she doesn't have a vacation."
+                },
+                {
+                    "original": "I think that he wants to earn money. Only.",
+                    "corrected": "I think that she only wants to earn money.",
+                    "explanation": "The pronoun 'he' is incorrect; it should be 'she' to refer to the female anesthesiologist.",
+                    "context": "We were discussing the motivations behind my mother's friend's work. I think that she only wants to earn money."
+                },
+                {
+                    "original": "It should be not about you, and it should be more than like a hundred people.",
+                    "corrected": "It should not be about you, and it should be more than just a hundred people.",
+                    "explanation": "The phrase 'should be not' is incorrect; it should be 'should not be.' 'More than like' should be 'more than just.'",
+                    "context": "I was explaining the criteria for a representative example. It should not be about you, and it should be more than just a hundred people."
+                },
+                {
+                    "original": "If you have a job that you don't like, you will be angry at work.",
+                    "corrected": "If you have a job that you don't like, you will be angry at work.",
+                    "explanation": "This sentence is correct but could be improved by using 'angry with' instead of 'angry at.'",
+                    "context": "We were discussing the emotional impact of job dissatisfaction. If you have a job that you don't like, you will be angry at work."
+                },
+                {
+                    "original": "It will not bring you a pleasure.",
+                    "corrected": "It will not bring you pleasure.",
+                    "explanation": "The article 'a' is unnecessary before 'pleasure' in this context.",
+                    "context": "We were discussing the consequences of working in a job you dislike. It will not bring you pleasure."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I will choose a high salary that job satisfaction.",
+                    "corrected": "I will choose a high salary over job satisfaction.",
+                    "explanation": "The phrase 'that job satisfaction' is incorrect; it should be 'over job satisfaction' to indicate a choice between two options.",
+                    "context": "When considering job offers, I think about what matters most to me. I will choose a high salary over job satisfaction, even if it means I won't enjoy my work."
+                },
+                {
+                    "original": "Because you can go to different countries and you can get a job that has a low salary.",
+                    "corrected": "Because you can go to different countries and get a job that pays a low salary.",
+                    "explanation": "The phrase 'has a low salary' is awkward; 'pays a low salary' is more idiomatic.",
+                    "context": "When discussing the benefits of a high salary, I mentioned that you can go to different countries. Because you can go to different countries and get a job that pays a low salary, you might find happiness in those experiences."
+                },
+                {
+                    "original": "If you have a job that you don't like, you will not have a success.",
+                    "corrected": "If you have a job that you don't like, you will not have success.",
+                    "explanation": "'A success' is incorrect; 'success' should be used without the article in this context.",
+                    "context": "In our discussion about job satisfaction, I pointed out a key idea. If you have a job that you don't like, you will not have success in your career."
+                },
+                {
+                    "original": "This is just a general statement. If you have low salary, you are poor.",
+                    "corrected": "This is just a general statement. If you have a low salary, you are poor.",
+                    "explanation": "The phrase 'low salary' is missing an article; it should be 'a low salary.'",
+                    "context": "While clarifying my thoughts, I realized I was making a broad claim. This is just a general statement. If you have a low salary, you are poor, which can lead to unhappiness."
+                },
+                {
+                    "original": "So because you can buy a lot of things to yourself, to your parents, to your friends.",
+                    "corrected": "So because you can buy a lot of things for yourself, for your parents, for your friends.",
+                    "explanation": "'To yourself' should be 'for yourself' to indicate purpose; 'for' is the correct preposition here.",
+                    "context": "In discussing the advantages of a high salary, I emphasized the ability to purchase gifts. So because you can buy a lot of things for yourself, for your parents, for your friends, you can find happiness in those purchases."
+                },
+                {
+                    "original": "You can travel around the world. And you can travel around the world.",
+                    "corrected": "You can travel around the world.",
+                    "explanation": "The repetition of 'You can travel around the world' is unnecessary; it should only be stated once.",
+                    "context": "While arguing the benefits of a high salary, I reiterated the opportunities it provides. You can travel around the world and experience new cultures, which can bring happiness."
+                },
+                {
+                    "original": "So basically, what what what you can live in your flat.",
+                    "corrected": "So basically, you can live in your flat.",
+                    "explanation": "The repetition of 'what' is a mistake; it should be simplified to just 'you can live in your flat.'",
+                    "context": "In summarizing my points, I wanted to clarify the benefits of a high salary. So basically, you can live in your flat and enjoy the comforts it provides."
+                },
+                {
+                    "original": "This is your idea one. This is your idea two.",
+                    "corrected": "This is your first idea. This is your second idea.",
+                    "explanation": "'Idea one' and 'idea two' are not idiomatic; 'first idea' and 'second idea' are clearer.",
+                    "context": "As we organized our thoughts, I wanted to label our arguments clearly. This is your first idea. This is your second idea, which helps in structuring our discussion."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "Like I do things every day.",
+                    "corrected": "I do the same things every day.",
+                    "explanation": "The phrase 'like I do things' is informal and vague; 'I do the same things' is clearer and more precise.",
+                    "context": "He had a high salary, but he hated his job because he said that this is too boring. I do the same things every day. However, thanks to his boring job, he can give his child a good education."
+                },
+                {
+                    "original": "But how we can spend money differently.",
+                    "corrected": "But how can we spend money differently?",
+                    "explanation": "The word order is incorrect; the auxiliary verb 'can' should come before the subject 'we' in questions.",
+                    "context": "This is a general statement, but we need to remember that we need two ideas that we can develop in two main body paragraphs. But how can we spend money differently?"
+                },
+                {
+                    "original": "You see, again, two different experiences, two different examples, two different explanations.",
+                    "corrected": "You see, again, there are two different experiences, two different examples, and two different explanations.",
+                    "explanation": "The original sentence lacks clarity; adding 'there are' improves the structure and makes it grammatically correct.",
+                    "context": "We need our two ideas to be different. You see, again, there are two different experiences, two different examples, and two different explanations."
+                },
+                {
+                    "original": "You can on a high salary job, you can meet your friends that spend time out of job really interesting because they have money.",
+                    "corrected": "In a high-salary job, you can meet your friends and spend your free time in interesting ways because you have money.",
+                    "explanation": "The original sentence is awkward and contains grammatical errors; restructuring it clarifies the meaning.",
+                    "context": "You can meet your friends and spend your free time in interesting ways because you have money. Like here we will talk about when we are not working."
+                },
+                {
+                    "original": "Thanks for not very easy to come up with examples here.",
+                    "corrected": "It's not very easy to come up with examples here.",
+                    "explanation": "The original sentence is awkward and lacks proper structure; 'It's' clarifies the subject.",
+                    "context": "I would actually, I think that actually, the two ideas when one is spending money on yourself and the other is spending money on your family. It's not very easy to come up with examples here."
+                },
+                {
+                    "original": "If you have a low salary, you can't like your job.",
+                    "corrected": "If you have a low salary, you might not enjoy your job.",
+                    "explanation": "'Can't like' is informal and incorrect; 'might not enjoy' is more appropriate and idiomatic.",
+                    "context": "Let's pretend we're speaking with a person who is a doctor and has a low salary. If you have a low salary, you might not enjoy your job."
+                },
+                {
+                    "original": "But the result is not always what we can.",
+                    "corrected": "But the result is not always what we expect.",
+                    "explanation": "The phrase 'what we can' is incomplete and unclear; 'what we expect' provides clarity.",
+                    "context": "The result is not always what we expect. This person would say that I have different benefits."
+                },
+                {
+                    "original": "It's a bad to see.",
+                    "corrected": "It's bad to see.",
+                    "explanation": "The article 'a' is unnecessary here; the correct phrase is 'It's bad to see.'",
+                    "context": "I don't know. It's bad to see. I'm just showing you two examples."
+                },
+                {
+                    "original": "Each of them should be developed.",
+                    "corrected": "Each of them should be developed further.",
+                    "explanation": "The addition of 'further' clarifies that development is needed beyond the initial ideas.",
+                    "context": "The examiner, when they look at it, they don't see the difference. Each of them should be developed further."
+                },
+                {
+                    "original": "Seeing the results of your work is satisfying.",
+                    "corrected": "Seeing the results of your work can be satisfying.",
+                    "explanation": "The original sentence is too absolute; adding 'can be' makes it more flexible and realistic.",
+                    "context": "If I were to write this essay from the doctor's perspective, I would say that seeing the results of your work can be satisfying."
+                },
+                {
+                    "original": "If you have an interesting job, you don't really need to do anything in your life besides that job.",
+                    "corrected": "If you have an interesting job, you might not need to do anything else in your life.",
+                    "explanation": "The phrase 'don't really need to do anything in your life' is too informal; 'might not need to do anything else' is clearer.",
+                    "context": "If you have an interesting job, you might not need to do anything else in your life. For example, and as an example, I would give an archaeologist."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "The results of your work are satisfying.",
+                    "corrected": "The results of your work are satisfactory.",
+                    "explanation": "'Satisfying' describes an action or feeling, while 'satisfactory' refers to something meeting a standard.",
+                    "context": "I want to show you how to present your ideas effectively. The results of your work are satisfactory. This will help you support your chosen perspective."
+                },
+                {
+                    "original": "Not only on weekends in weekends.",
+                    "corrected": "Not only on weekends.",
+                    "explanation": "The phrase 'in weekends' is incorrect; it should simply be 'on weekends.'",
+                    "context": "When discussing work-life balance, I mentioned that you can be happy not only on weekends. Not only on weekends, but also during the week, you can find joy in your work."
+                },
+                {
+                    "original": "The job of a doctor is quite boring.",
+                    "corrected": "The job of a doctor can be quite boring.",
+                    "explanation": "Using 'can be' indicates that it is not always boring, allowing for variability in experiences.",
+                    "context": "While discussing various professions, I noted that the job of a doctor can be quite boring. However, it also has its rewarding moments."
+                },
+                {
+                    "original": "A historian who works.",
+                    "corrected": "A historian who works at a regional university.",
+                    "explanation": "The sentence is incomplete; it needs more information to clarify the subject.",
+                    "context": "I was giving an example of a profession. A historian who works at a regional university is often deeply engaged in their projects."
+                },
+                {
+                    "original": "Not about one historian.",
+                    "corrected": "Not just one historian.",
+                    "explanation": "'Not about one historian' is awkward; 'not just one historian' is more idiomatic.",
+                    "context": "In discussing the field of history, I emphasized that it's not just one historian. Historians as a group contribute significantly to research."
+                },
+                {
+                    "original": "Historians who works at regional.",
+                    "corrected": "Historians who work at regional universities.",
+                    "explanation": "Subject-verb agreement error; 'historians' is plural, so it should be 'work' instead of 'works.'",
+                    "context": "I was explaining the role of historians. Historians who work at regional universities often have diverse research interests."
+                },
+                {
+                    "original": "You can spend money on your own.",
+                    "corrected": "You can spend money on yourself.",
+                    "explanation": "'Your own' is incorrect in this context; 'yourself' is the appropriate reflexive pronoun.",
+                    "context": "In discussing personal finance, I mentioned that you can spend money on yourself. This can lead to greater happiness and fulfillment."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Exam",
+                    "definition": "A formal test of a person's knowledge or proficiency in a subject or skill.",
+                    "context": {
+                        "Context 1": "I wrote my exam for math last week and I'm waiting for the results.",
+                        "Context 2": "The exam for the cooking class was to prepare a three-course meal.",
+                        "Context 3": "She felt nervous before her driving exam, but she passed with flying colors."
+                    }
+                },
+                {
+                    "word": "Challenging",
+                    "definition": "Testing one's abilities; difficult but rewarding.",
+                    "context": {
+                        "Context 1": "I find the chemistry exam to be more challenging than the biology exam.",
+                        "Context 2": "The challenging hike up the mountain was worth the breathtaking view at the top.",
+                        "Context 3": "Learning to play the violin can be challenging, but it’s very fulfilling."
+                    }
+                },
+                {
+                    "word": "Results",
+                    "definition": "The outcome or score of an examination or test.",
+                    "context": {
+                        "Context 1": "I'm waiting for the results of my math exam.",
+                        "Context 2": "The results of the marathon were announced, and she finished in first place.",
+                        "Context 3": "The results of the science experiment were surprising and led to new questions."
+                    }
+                },
+                {
+                    "word": "Prepare",
+                    "definition": "To make ready for a specific purpose or event.",
+                    "context": {
+                        "Context 1": "I must prepare for the IELTS exam to improve my chances of getting into university.",
+                        "Context 2": "She prepared a delicious dinner for her friends last night.",
+                        "Context 3": "The team prepared thoroughly for the championship game."
+                    }
+                },
+                {
+                    "word": "Tutor",
+                    "definition": "A private teacher who gives additional or specialized instruction.",
+                    "context": {
+                        "Context 1": "I have a lot of tutors this week to help me with my studies.",
+                        "Context 2": "The tutor helped him understand complex math problems.",
+                        "Context 3": "She decided to tutor younger students in her neighborhood during the summer."
+                    }
+                },
+                {
+                    "word": "Confident",
+                    "definition": "Feeling or showing certainty about something.",
+                    "context": {
+                        "Context 1": "He is quite confident that he will get a high score on his chemistry test.",
+                        "Context 2": "She felt confident walking into the interview after preparing well.",
+                        "Context 3": "The confident dog strutted around the park, showing off its new collar."
+                    }
+                },
+                {
+                    "word": "Research",
+                    "definition": "The systematic investigation into and study of materials and sources to establish facts.",
+                    "context": {
+                        "Context 1": "You should do your research to compare IELTS and TOEFL.",
+                        "Context 2": "The scientist conducted research on climate change for several years.",
+                        "Context 3": "She spent hours doing research for her history project."
+                    }
+                },
+                {
+                    "word": "Recognize",
+                    "definition": "To identify someone or something from previous encounters or knowledge.",
+                    "context": {
+                        "Context 1": "Universities recognize only the IELTS test results for admission.",
+                        "Context 2": "I can recognize that song from the first few notes.",
+                        "Context 3": "He was recognized for his contributions to the community at the awards ceremony."
+                    }
+                },
+                {
+                    "word": "Difficult",
+                    "definition": "Hard to do, make, or carry out; requiring much effort.",
+                    "context": {
+                        "Context 1": "For me, the chemistry exam is very difficult.",
+                        "Context 2": "Climbing that steep hill was difficult but rewarding.",
+                        "Context 3": "She found it difficult to solve the puzzle without any hints."
+                    }
+                },
+                {
+                    "word": "Average",
+                    "definition": "The result obtained by adding several quantities together and then dividing this total by the number of quantities.",
+                    "context": {
+                        "Context 1": "They will see only the average grades of my diploma.",
+                        "Context 2": "The average temperature in July is usually quite high.",
+                        "Context 3": "His average score in the class was higher than he expected."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Exam",
+                    "fact": "In some countries, students take exams so seriously that they have special 'exam day' outfits!"
+                },
+                {
+                    "word": "Challenging",
+                    "fact": "The word 'challenging' is often used to describe math problems, but it can also describe trying to assemble IKEA furniture!"
+                },
+                {
+                    "word": "Tutor",
+                    "fact": "The word 'tutor' comes from the Latin word 'tutorem,' which means 'guardian'—so tutors are like academic superheroes!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "Why did the student eat his homework?",
+                    "answer": "Because the teacher said it was a piece of cake!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude towards or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "After a break, your brain takes a different perspective on things.",
+                        "Context 2": "From her perspective, the project was a success.",
+                        "Context 3": "Traveling can give you a new perspective on life."
+                    }
+                },
+                {
+                    "word": "Unified State Exam",
+                    "definition": "A standardized test used in some countries to assess students' academic performance.",
+                    "context": {
+                        "Context 1": "He recently took a Unified State Exam on English.",
+                        "Context 2": "The Unified State Exam results will be released next month.",
+                        "Context 3": "Preparing for the Unified State Exam requires a lot of study."
+                    }
+                },
+                {
+                    "word": "Interlocutor",
+                    "definition": "A person who takes part in a dialogue or conversation.",
+                    "context": {
+                        "Context 1": "You need to get your idea across so that your interlocutor will understand you.",
+                        "Context 2": "During the debate, each interlocutor presented their arguments clearly.",
+                        "Context 3": "The teacher acted as an interlocutor in the student discussion."
+                    }
+                },
+                {
+                    "word": "Job Satisfaction",
+                    "definition": "The feeling of fulfillment or enjoyment that comes from work.",
+                    "context": {
+                        "Context 1": "Some people believe job satisfaction is more important than a high salary.",
+                        "Context 2": "High job satisfaction often leads to increased productivity.",
+                        "Context 3": "She left her job in search of greater job satisfaction."
+                    }
+                },
+                {
+                    "word": "High Salary",
+                    "definition": "A large amount of money paid regularly for work.",
+                    "context": {
+                        "Context 1": "I will work for a high salary because it is more important to me.",
+                        "Context 2": "A high salary can compensate for a lack of job satisfaction.",
+                        "Context 3": "He accepted the job offer because of the high salary."
+                    }
+                },
+                {
+                    "word": "Revise",
+                    "definition": "To review, alter, and amend, especially in order to improve.",
+                    "context": {
+                        "Context 1": "We will revise the essay before submitting it.",
+                        "Context 2": "She decided to revise her plans after receiving new information.",
+                        "Context 3": "Students are advised to revise their notes before exams."
+                    }
+                },
+                {
+                    "word": "Plan",
+                    "definition": "A detailed proposal for doing or achieving something.",
+                    "context": {
+                        "Context 1": "Let's write a plan for this essay.",
+                        "Context 2": "The company unveiled its plan for expansion.",
+                        "Context 3": "He devised a plan to improve his grades."
+                    }
+                },
+                {
+                    "word": "Communicate",
+                    "definition": "To share or exchange information, news, or ideas.",
+                    "context": {
+                        "Context 1": "They don't use English as a way of communicating.",
+                        "Context 2": "It's important to communicate clearly in a team.",
+                        "Context 3": "She used gestures to communicate with the tourists."
+                    }
+                },
+                {
+                    "word": "Natural",
+                    "definition": "Existing in or derived from nature; not made or caused by humankind.",
+                    "context": {
+                        "Context 1": "He does not use English in a natural way.",
+                        "Context 2": "The park is a natural habitat for many species.",
+                        "Context 3": "Her response was spontaneous and natural."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A thing characteristic of its kind or illustrating a general rule.",
+                    "context": {
+                        "Context 1": "Think of a good example to support your argument.",
+                        "Context 2": "The teacher gave an example to clarify the concept.",
+                        "Context 3": "He set a good example for his younger siblings."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Perspective",
+                    "fact": "Did you know that astronauts in space often have a “cosmic perspective,” realizing how small Earth is?"
+                },
+                {
+                    "word": "Unified State Exam",
+                    "fact": "In some countries, the Unified State Exam is so important that students often dream about it!"
+                },
+                {
+                    "word": "Interlocutor",
+                    "fact": "The word 'interlocutor' comes from the Latin 'interloqui,' which means 'to speak between.'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to the exam?",
+                    "answer": "Because they heard the questions were going to be challenging!"
+                },
+                {
+                    "question": "Why did the vocabulary book break up with the dictionary?",
+                    "answer": "Because it couldn’t find the right words!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Satisfaction",
+                    "definition": "The feeling of pleasure or contentment that comes from achieving something.",
+                    "context": {
+                        "Context 1": "Many people find job satisfaction in helping others.",
+                        "Context 2": "After finishing the marathon, she felt a deep sense of satisfaction.",
+                        "Context 3": "Eating a delicious meal can bring great satisfaction."
+                    }
+                },
+                {
+                    "word": "Salary",
+                    "definition": "A fixed regular payment made by an employer to an employee, typically paid on a monthly or biweekly basis.",
+                    "context": {
+                        "Context 1": "Doctors often have a higher salary compared to teachers.",
+                        "Context 2": "His salary increased after he received a promotion.",
+                        "Context 3": "The salary of a professional athlete can be millions of dollars."
+                    }
+                },
+                {
+                    "word": "Anesthesiologist",
+                    "definition": "A medical doctor specialized in administering anesthesia and managing pain during surgery.",
+                    "context": {
+                        "Context 1": "My mother’s friend is an anesthesiologist who works long hours.",
+                        "Context 2": "Anesthesiologists play a crucial role in ensuring patients are comfortable during surgery.",
+                        "Context 3": "He wanted to become an anesthesiologist because he was fascinated by medicine."
+                    }
+                },
+                {
+                    "word": "Job Satisfaction",
+                    "definition": "The level of contentment a person feels regarding their job.",
+                    "context": {
+                        "Context 1": "Many believe that job satisfaction is more important than a high salary.",
+                        "Context 2": "She found job satisfaction in teaching children.",
+                        "Context 3": "His job satisfaction increased after he started working from home."
+                    }
+                },
+                {
+                    "word": "Calling",
+                    "definition": "A strong urge toward a particular way of life or career; a vocation.",
+                    "context": {
+                        "Context 1": "She feels that being a nurse is her calling.",
+                        "Context 2": "His calling to be an artist came at a young age.",
+                        "Context 3": "Many people believe their calling is to help others."
+                    }
+                },
+                {
+                    "word": "Representative",
+                    "definition": "Serving as a typical example or specimen of a group.",
+                    "context": {
+                        "Context 1": "Teachers in Russia are a representative group for discussing job satisfaction.",
+                        "Context 2": "The representative from the company presented their new product.",
+                        "Context 3": "She was chosen as a representative for her class in the student council."
+                    }
+                },
+                {
+                    "word": "Emotions",
+                    "definition": "Complex psychological states that involve three distinct components: a subjective experience, a physiological response, and a behavioral or expressive response.",
+                    "context": {
+                        "Context 1": "If you dislike your job, negative emotions can affect your performance.",
+                        "Context 2": "She expressed her emotions through art.",
+                        "Context 3": "Emotions can influence our decisions in everyday life."
+                    }
+                },
+                {
+                    "word": "Professional",
+                    "definition": "Relating to or connected with a profession.",
+                    "context": {
+                        "Context 1": "To be a successful anesthesiologist, you must be a true professional.",
+                        "Context 2": "He acted in a very professional manner during the meeting.",
+                        "Context 3": "She is a professional dancer who performs worldwide."
+                    }
+                },
+                {
+                    "word": "Support",
+                    "definition": "To bear all or part of the weight of; hold up or serve as a foundation for.",
+                    "context": {
+                        "Context 1": "Some people support the idea that salary is more important than job satisfaction.",
+                        "Context 2": "Friends and family often provide emotional support during tough times.",
+                        "Context 3": "The bridge was built to support heavy traffic."
+                    }
+                },
+                {
+                    "word": "Pleasure",
+                    "definition": "A feeling of happy satisfaction and enjoyment.",
+                    "context": {
+                        "Context 1": "Working in a job you love can bring great pleasure.",
+                        "Context 2": "He took pleasure in reading his favorite book.",
+                        "Context 3": "The pleasure of eating chocolate is hard to resist."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Anesthesiologist",
+                    "fact": "Anesthesiologists are sometimes called 'the unsung heroes' of the operating room because they make sure you don't feel a thing!"
+                },
+                {
+                    "word": "Satisfaction",
+                    "fact": "Did you know that the word 'satisfaction' comes from the Latin 'satisfacere,' which means 'to make enough'?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the doctor carry a red pen?",
+                    "answer": "In case they needed to draw blood!"
+                },
+                {
+                    "question": "Why did the teacher go to the beach?",
+                    "answer": "Because she wanted to test the waters!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Emotional State",
+                    "definition": "The current feelings or mood of a person.",
+                    "context": {
+                        "Context 1": "Her emotional state was affected by the stressful work environment.",
+                        "Context 2": "The emotional state of the audience shifted when the music changed.",
+                        "Context 3": "He tried to maintain a positive emotional state despite the challenges."
+                    }
+                },
+                {
+                    "word": "Job Satisfaction",
+                    "definition": "The level of contentment a person feels regarding their job.",
+                    "context": {
+                        "Context 1": "Job satisfaction is crucial for long-term employee retention.",
+                        "Context 2": "She found job satisfaction in helping others as a teacher.",
+                        "Context 3": "His job satisfaction increased after receiving a promotion."
+                    }
+                },
+                {
+                    "word": "High Salary",
+                    "definition": "A large amount of money paid to an employee for their work.",
+                    "context": {
+                        "Context 1": "Many people choose jobs based on a high salary rather than job satisfaction.",
+                        "Context 2": "The high salary allowed him to travel extensively.",
+                        "Context 3": "She was offered a high salary but decided to pursue her passion instead."
+                    }
+                },
+                {
+                    "word": "Consequences",
+                    "definition": "The results or effects of an action or condition.",
+                    "context": {
+                        "Context 1": "The consequences of not liking your job can lead to unhappiness.",
+                        "Context 2": "He faced serious consequences for breaking the law.",
+                        "Context 3": "The consequences of climate change are becoming more evident."
+                    }
+                },
+                {
+                    "word": "Miserable",
+                    "definition": "Extremely unhappy or uncomfortable.",
+                    "context": {
+                        "Context 1": "She felt miserable working in a job she hated.",
+                        "Context 2": "The weather was miserable, with rain and cold temperatures.",
+                        "Context 3": "He was miserable after losing his favorite video game."
+                    }
+                },
+                {
+                    "word": "Structured",
+                    "definition": "Organized in a clear and systematic way.",
+                    "context": {
+                        "Context 1": "A structured plan can help achieve your goals more effectively.",
+                        "Context 2": "The structured layout of the garden made it easy to navigate.",
+                        "Context 3": "Her structured approach to studying improved her grades."
+                    }
+                },
+                {
+                    "word": "Poverty",
+                    "definition": "The state of being extremely poor.",
+                    "context": {
+                        "Context 1": "Poverty can lead to various social issues.",
+                        "Context 2": "He dedicated his life to fighting poverty in his community.",
+                        "Context 3": "The documentary highlighted the effects of poverty on education."
+                    }
+                },
+                {
+                    "word": "Success",
+                    "definition": "The accomplishment of a goal or purpose.",
+                    "context": {
+                        "Context 1": "Success in her career came after years of hard work.",
+                        "Context 2": "He defined success as happiness rather than wealth.",
+                        "Context 3": "The team's success was celebrated with a big party."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something.",
+                    "context": {
+                        "Context 1": "Changing your perspective can help you see solutions to problems.",
+                        "Context 2": "From her perspective, the project was a complete failure.",
+                        "Context 3": "His perspective on life changed after traveling abroad."
+                    }
+                },
+                {
+                    "word": "Agree",
+                    "definition": "To have the same opinion or to concur.",
+                    "context": {
+                        "Context 1": "They both agree that job satisfaction is important.",
+                        "Context 2": "I agree with your assessment of the situation.",
+                        "Context 3": "They couldn't agree on where to go for dinner."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Miserable",
+                    "fact": "Did you know that the word 'miserable' comes from the Latin 'miserabilis,' which means 'worthy of pity'?"
+                },
+                {
+                    "word": "Poverty",
+                    "fact": "In some cultures, it's considered bad luck to talk about poverty, as it might 'invite' it into your life!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the employee bring a ladder to work?",
+                    "answer": "Because they heard the job had great potential for advancement!"
+                },
+                {
+                    "question": "Why did the worker get fired from the calendar factory?",
+                    "answer": "Because they took a day off!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Boring",
+                    "definition": "Not interesting; tedious.",
+                    "context": {
+                        "Context 1": "He described his job in logistics as boring because it involved repetitive tasks.",
+                        "Context 2": "The lecture was so boring that many students fell asleep.",
+                        "Context 3": "She found the movie boring and decided to leave halfway through."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "This is one perspective that we take when discussing job satisfaction.",
+                        "Context 2": "From her perspective, the project was a success despite the challenges.",
+                        "Context 3": "His perspective on life changed after traveling to different countries."
+                    }
+                },
+                {
+                    "word": "Satisfaction",
+                    "definition": "The feeling of pleasure or contentment that comes from achieving something.",
+                    "context": {
+                        "Context 1": "Seeing the results of your work can bring a sense of satisfaction.",
+                        "Context 2": "She felt great satisfaction after completing the marathon.",
+                        "Context 3": "The satisfaction of a well-cooked meal is hard to beat."
+                    }
+                },
+                {
+                    "word": "Salary",
+                    "definition": "A fixed regular payment, typically paid on a monthly or biweekly basis, made by an employer to an employee.",
+                    "context": {
+                        "Context 1": "Despite having a high salary, he was unhappy with his job.",
+                        "Context 2": "Her salary increased significantly after she received a promotion.",
+                        "Context 3": "Many people believe that a high salary guarantees happiness."
+                    }
+                },
+                {
+                    "word": "Benefit",
+                    "definition": "An advantage or profit gained from something.",
+                    "context": {
+                        "Context 1": "The doctor mentioned that the benefits of his job go beyond just financial gain.",
+                        "Context 2": "The benefits of exercise include improved health and mood.",
+                        "Context 3": "He enjoyed the benefits of working from home, such as flexibility."
+                    }
+                },
+                {
+                    "word": "Valid",
+                    "definition": "Having a sound basis in logic or fact; reasonable or cogent.",
+                    "context": {
+                        "Context 1": "Both perspectives on job satisfaction are valid and deserve consideration.",
+                        "Context 2": "Her argument was valid, supported by strong evidence.",
+                        "Context 3": "The ticket was valid for one month after purchase."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern; an instance that illustrates a rule or principle.",
+                    "context": {
+                        "Context 1": "He provided an example of a doctor who enjoys their job despite a low salary.",
+                        "Context 2": "For example, many people enjoy hiking as a way to relax.",
+                        "Context 3": "She used her own experience as an example to inspire others."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "Different experiences can shape how we view our jobs.",
+                        "Context 2": "Traveling abroad was a life-changing experience for him.",
+                        "Context 3": "She gained valuable experience during her internship."
+                    }
+                },
+                {
+                    "word": "Job Satisfaction",
+                    "definition": "A feeling of fulfillment or enjoyment that a person derives from their job.",
+                    "context": {
+                        "Context 1": "Job satisfaction can vary greatly between individuals, even in similar roles.",
+                        "Context 2": "He found job satisfaction in helping others through his work.",
+                        "Context 3": "Many studies show that job satisfaction is linked to overall happiness."
+                    }
+                },
+                {
+                    "word": "Repetitive",
+                    "definition": "Involving or characterized by repetition, especially when unnecessary or tiresome.",
+                    "context": {
+                        "Context 1": "His job was repetitive, leading to feelings of boredom.",
+                        "Context 2": "The repetitive nature of the exercise made it less enjoyable.",
+                        "Context 3": "She disliked the repetitive tasks assigned to her at work."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Boring",
+                    "fact": "Did you know that the world's longest recorded yawn lasted 6 seconds? Talk about boring!"
+                },
+                {
+                    "word": "Salary",
+                    "fact": "In some countries, the average salary is so low that people joke about being 'rich' if they can afford a pizza!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the employee bring a ladder to work?",
+                    "answer": "Because they wanted to reach new heights in their career!"
+                },
+                {
+                    "question": "Why did the scarecrow win an award?",
+                    "answer": "Because he was outstanding in his field!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "In the lesson, the teacher emphasized the importance of choosing one perspective to support in the essay.",
+                        "Context 2": "From her perspective, the movie was a masterpiece, but he found it boring.",
+                        "Context 3": "The artist painted the landscape from a unique perspective that captivated viewers."
+                    }
+                },
+                {
+                    "word": "Satisfying",
+                    "definition": "Providing fulfillment or happiness; giving pleasure.",
+                    "context": {
+                        "Context 1": "The teacher mentioned that the results of your work can be satisfying if you choose the right perspective.",
+                        "Context 2": "After finishing the puzzle, she felt a satisfying sense of accomplishment.",
+                        "Context 3": "Eating a delicious meal can be a satisfying experience after a long day."
+                    }
+                },
+                {
+                    "word": "Boring",
+                    "definition": "Not interesting; tedious.",
+                    "context": {
+                        "Context 1": "The lesson discussed how some jobs, like a doctor’s, can be perceived as boring despite their importance.",
+                        "Context 2": "He found the lecture on tax regulations incredibly boring and struggled to stay awake.",
+                        "Context 3": "The movie was so boring that many people left the theater before it ended."
+                    }
+                },
+                {
+                    "word": "Interesting",
+                    "definition": "Arousing curiosity or interest; holding or catching the attention.",
+                    "context": {
+                        "Context 1": "The teacher suggested that doing something interesting can lead to happiness in work.",
+                        "Context 2": "She found the documentary about ancient civilizations very interesting.",
+                        "Context 3": "His stories about traveling to different countries were always interesting to hear."
+                    }
+                },
+                {
+                    "word": "Significant",
+                    "definition": "Sufficiently great or important to be worthy of attention; noteworthy.",
+                    "context": {
+                        "Context 1": "The teacher used the example of a doctor seeing significant results in patient recovery.",
+                        "Context 2": "The significant changes in climate patterns have raised concerns among scientists.",
+                        "Context 3": "Winning the award was a significant achievement in her career."
+                    }
+                },
+                {
+                    "word": "Job",
+                    "definition": "A paid position of regular employment.",
+                    "context": {
+                        "Context 1": "The lesson discussed how different jobs can be perceived in various ways.",
+                        "Context 2": "His job as a firefighter is both challenging and rewarding.",
+                        "Context 3": "She applied for a job at the local bookstore because she loves reading."
+                    }
+                },
+                {
+                    "word": "Research",
+                    "definition": "The systematic investigation into and study of materials and sources to establish facts and reach new conclusions.",
+                    "context": {
+                        "Context 1": "The teacher mentioned historians who focus on their research at regional universities.",
+                        "Context 2": "The scientist conducted research to find a cure for the disease.",
+                        "Context 3": "Her research on renewable energy sources won her a scholarship."
+                    }
+                },
+                {
+                    "word": "Relatives",
+                    "definition": "Members of your family.",
+                    "context": {
+                        "Context 1": "The lesson suggested spending money on relatives can bring happiness.",
+                        "Context 2": "During the holidays, she enjoys visiting her relatives in the countryside.",
+                        "Context 3": "He invited all his relatives to celebrate his graduation."
+                    }
+                },
+                {
+                    "word": "Free time",
+                    "definition": "Time when one is not working or occupied; leisure time.",
+                    "context": {
+                        "Context 1": "The teacher discussed how spending free time on work can be fulfilling.",
+                        "Context 2": "In her free time, she enjoys painting and hiking.",
+                        "Context 3": "He prefers to read books in his free time rather than watch TV."
+                    }
+                },
+                {
+                    "word": "Agree",
+                    "definition": "To have the same opinion; to concur.",
+                    "context": {
+                        "Context 1": "The teacher asked if everyone agrees with the ideas presented in the lesson.",
+                        "Context 2": "They couldn't agree on where to go for dinner, leading to a long discussion.",
+                        "Context 3": "It's important to agree on the rules before starting the game."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Perspective",
+                    "fact": "The word 'perspective' comes from the Latin 'perspectivus,' which means 'to look through.'"
+                },
+                {
+                    "word": "Boring",
+                    "fact": "The longest recorded joke in history is so boring that it takes over 10 hours to tell!"
+                },
+                {
+                    "word": "Job",
+                    "fact": "In ancient Egypt, being a professional 'mummy maker' was a highly respected job!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the teacher go to the beach?",
+                    "answer": "Because she wanted to test the waters!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Long time no see! How have you been?"
+                },
+                {
+                    "Person 2": "I know, right? I've been good, just busy with exams. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I just finished my math exam. It was a bit stressful, but I think I did okay."
+                },
+                {
+                    "Person 2": "That's great! I remember math being tough. What grade are you in now?"
+                },
+                {
+                    "Person 1": "I'm in 10th grade. No major exams this year, just math. But next year, I have to take chemistry and biology."
+                },
+                {
+                    "Person 2": "Oh wow, those can be challenging! Are you feeling ready for them?"
+                },
+                {
+                    "Person 1": "Not really! I’m more worried about chemistry. It’s just so complicated!"
+                },
+                {
+                    "Person 2": "I get that. I had a friend who aced his chemistry exam, but he studied like crazy for it."
+                },
+                {
+                    "Person 1": "Yeah, I wish I could be that confident. I think I might need a tutor."
+                },
+                {
+                    "Person 2": "That could help! I have a tutor for biology, and it makes a big difference."
+                },
+                {
+                    "Person 1": "Nice! I should look into that. By the way, have you heard about the IELTS exam?"
+                },
+                {
+                    "Person 2": "Yeah, I have! I think it’s important for studying abroad, right?"
+                },
+                {
+                    "Person 1": "Exactly! I need to prepare for it since I want to apply to universities outside the U.S."
+                },
+                {
+                    "Person 2": "That sounds exciting! Do you think IELTS is harder than TOEFL?"
+                },
+                {
+                    "Person 1": "I’ve heard mixed opinions. Some say IELTS is tougher, while others think TOEFL is more challenging."
+                },
+                {
+                    "Person 2": "It might depend on your strengths. Are you more comfortable with speaking or writing?"
+                },
+                {
+                    "Person 1": "I think writing is my strong suit, but speaking can be nerve-wracking."
+                },
+                {
+                    "Person 2": "Totally get that! Just practice speaking with friends. It helps a lot."
+                },
+                {
+                    "Person 1": "Good idea! I’ll try that. So, what are your plans for the summer?"
+                },
+                {
+                    "Person 2": "I’m planning to relax a bit and maybe take some trips. How about you?"
+                },
+                {
+                    "Person 1": "I’ll probably be studying for IELTS, but I hope to squeeze in some fun too!"
+                },
+                {
+                    "Person 2": "Balance is key! Let’s make sure to hang out when we can."
+                },
+                {
+                    "Person 1": "Definitely! I miss our hangouts."
+                },
+                {
+                    "Person 2": "Same here! Let’s plan something soon."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you thought about what we need to do for that essay?"
+                },
+                {
+                    "Person 2": "Yeah, I was thinking we could start with a simple opinion piece. Maybe focus on job satisfaction versus salary?"
+                },
+                {
+                    "Person 1": "That sounds good! I feel like job satisfaction is really important, but I get why some people prioritize salary."
+                },
+                {
+                    "Person 2": "Exactly! I mean, if you love what you do but don’t make enough to pay the bills, that can be tough."
+                },
+                {
+                    "Person 1": "Right? But then again, if you’re stuck in a job you hate just for the money, that’s not great either."
+                },
+                {
+                    "Person 2": "Totally! It’s a tricky balance. What do you think we should argue in our essay?"
+                },
+                {
+                    "Person 1": "I think I’d lean towards job satisfaction being more important. It just makes sense to enjoy what you do."
+                },
+                {
+                    "Person 2": "I can see that. But I might argue that a high salary can lead to more opportunities and a better lifestyle."
+                },
+                {
+                    "Person 1": "That’s a valid point! Maybe we can present both sides and then conclude with our opinions?"
+                },
+                {
+                    "Person 2": "Yeah, that could work! Let’s start with a plan. Do you have a Google Doc we can use?"
+                },
+                {
+                    "Person 1": "I do! I’ll share it with you. Just give me a second."
+                },
+                {
+                    "Person 2": "Awesome! I can’t wait to get started. It’ll be fun to brainstorm ideas together."
+                },
+                {
+                    "Person 1": "For sure! I always come up with better ideas when we collaborate."
+                },
+                {
+                    "Person 2": "Same here! Plus, we can keep each other on track. No distractions!"
+                },
+                {
+                    "Person 1": "Deal! Let’s make this essay great!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new coffee shop that opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I saw it on Instagram! Have you been there yet?"
+                },
+                {
+                    "Person 1": "Not yet, but I’m planning to check it out this weekend. I heard they have some amazing lattes."
+                },
+                {
+                    "Person 2": "Oh, I love a good latte! Do they have any special flavors?"
+                },
+                {
+                    "Person 1": "I think they have a lavender latte and a matcha one. Sounds interesting, right?"
+                },
+                {
+                    "Person 2": "Definitely! I’ve never tried a lavender latte. I might have to join you this weekend."
+                },
+                {
+                    "Person 1": "The more, the merrier! Plus, we can catch up. It’s been a while."
+                },
+                {
+                    "Person 2": "For sure! Last time we hung out was at that taco place, wasn’t it?"
+                },
+                {
+                    "Person 1": "Yeah! That was a fun night. We should do that again sometime."
+                },
+                {
+                    "Person 2": "Absolutely! Maybe we can do tacos one weekend and coffee the next?"
+                },
+                {
+                    "Person 1": "Sounds like a plan! I’ll text you the details for the coffee."
+                },
+                {
+                    "Person 2": "Perfect! Can’t wait to try that lavender latte!"
+                },
+                {
+                    "Person 1": "Me too! See you this weekend!"
+                },
+                {
+                    "Person 2": "See you then!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to figure out if I should stick with my job or look for something new."
+                },
+                {
+                    "Person 1": "Oh, tough choice! What’s making you think about switching?"
+                },
+                {
+                    "Person 2": "Well, I mean, the pay is good, but I’m not really happy there. I feel like I’m always stressed out."
+                },
+                {
+                    "Person 1": "I get that. A high salary is nice, but if you’re miserable, is it really worth it?"
+                },
+                {
+                    "Person 2": "Exactly! I keep telling myself that money can’t buy happiness, but it’s hard to let go of the paycheck."
+                },
+                {
+                    "Person 1": "Yeah, but imagine waking up excited to go to work instead of dreading it."
+                },
+                {
+                    "Person 2": "That would be amazing! I just don’t know if I can find a job that pays well and makes me happy."
+                },
+                {
+                    "Person 1": "Maybe you could look for something in a field you’re passionate about? Sometimes lower pay can be worth it if you love what you do."
+                },
+                {
+                    "Person 2": "True! I’ve always wanted to work in environmental conservation, but the salaries are usually lower."
+                },
+                {
+                    "Person 1": "But think about the impact you’d have! Plus, you could find ways to make it work financially."
+                },
+                {
+                    "Person 2": "That’s a good point. I guess I need to weigh my options and see what truly matters to me."
+                },
+                {
+                    "Person 1": "For sure! At the end of the day, you want to feel fulfilled, right?"
+                },
+                {
+                    "Person 2": "Absolutely! Thanks for the chat, it really helps to talk it out."
+                },
+                {
+                    "Person 1": "Anytime! Let me know what you decide."
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to get through the week. How about you?"
+                },
+                {
+                    "Person 1": "Same here! Work's been a bit boring lately. You know how it is."
+                },
+                {
+                    "Person 2": "Totally! I feel like I’m just going through the motions sometimes."
+                },
+                {
+                    "Person 1": "Right? I had a friend who works in logistics, and he says his job is super repetitive."
+                },
+                {
+                    "Person 2": "Yeah, I can imagine. But I guess it pays the bills, right?"
+                },
+                {
+                    "Person 1": "Exactly! He said he doesn’t love the job, but it helps him provide for his family."
+                },
+                {
+                    "Person 2": "That’s a good point. Sometimes the results of our work can make us happy, even if the work itself isn’t exciting."
+                },
+                {
+                    "Person 1": "For sure! Like, I might not love my job, but I enjoy the little things I can do with my paycheck."
+                },
+                {
+                    "Person 2": "Absolutely! Treating yourself or your family makes it worth it."
+                },
+                {
+                    "Person 1": "Speaking of which, I’ve been thinking about planning a little trip. Just to break the routine."
+                },
+                {
+                    "Person 2": "That sounds awesome! A change of scenery can do wonders."
+                },
+                {
+                    "Person 1": "Yeah! Plus, it’s nice to spend quality time with loved ones."
+                },
+                {
+                    "Person 2": "Definitely! It’s all about those moments that really matter."
+                },
+                {
+                    "Person 1": "So, what’s your plan for the weekend? Any fun plans?"
+                },
+                {
+                    "Person 2": "I might just relax and catch up on some shows. Nothing too crazy!"
+                },
+                {
+                    "Person 1": "Sounds perfect! Sometimes a chill weekend is just what you need."
+                },
+                {
+                    "Person 2": "Exactly! Let’s catch up later and see how our weekends went."
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that new documentary on Netflix about the ocean?"
+                },
+                {
+                    "Person 2": "Not yet! I’ve heard it’s really good. Is it worth watching?"
+                },
+                {
+                    "Person 1": "Absolutely! The visuals are stunning, and it really dives into the different ecosystems."
+                },
+                {
+                    "Person 2": "Sounds amazing! I love documentaries that make you think about the environment."
+                },
+                {
+                    "Person 1": "Yeah, it really makes you appreciate how important it is to protect our oceans."
+                },
+                {
+                    "Person 2": "For sure! I feel like we often take nature for granted."
+                },
+                {
+                    "Person 1": "Exactly! And the way they filmed the underwater scenes is just breathtaking."
+                },
+                {
+                    "Person 2": "I can’t wait to see it! I might binge-watch it this weekend."
+                },
+                {
+                    "Person 1": "Good plan! Let me know what you think after you watch it."
+                },
+                {
+                    "Person 2": "Definitely! I’ll probably have a lot to say about it."
+                },
+                {
+                    "Person 1": "I love that! Documentaries always spark great conversations."
+                },
+                {
+                    "Person 2": "Totally! Speaking of which, have you seen any good movies lately?"
+                },
+                {
+                    "Person 1": "I watched a thriller last night that kept me on the edge of my seat!"
+                },
+                {
+                    "Person 2": "Nice! I’m always looking for a good thriller. What was it called?"
+                },
+                {
+                    "Person 1": "It’s called 'The Silent Witness.' You should check it out!"
+                },
+                {
+                    "Person 2": "I will! Thanks for the recommendation. I’ll add it to my list."
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
