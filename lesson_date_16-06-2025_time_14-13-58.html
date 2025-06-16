@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 6,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Do you see me well?",
+                    "corrected": "Do you see me clearly?",
+                    "explanation": "\"Well\" is not the appropriate adverb here; \"clearly\" should be used to describe visibility.",
+                    "context": "During the lesson, I asked if the student could see me. Do you see me clearly? I wanted to ensure that the video quality was good."
+                },
+                {
+                    "original": "I thought it's a smudge on my cheek.",
+                    "corrected": "I thought it was a smudge on my cheek.",
+                    "explanation": "The verb 'thought' requires the past tense 'was' instead of the present 'is'.",
+                    "context": "I noticed something on the screen and was confused. I thought it was a smudge on my cheek. Thankfully, it was just a smudge on the screen."
+                },
+                {
+                    "original": "It's textured wallpaper.",
+                    "corrected": "It's a textured wallpaper.",
+                    "explanation": "The article 'a' is needed before 'textured wallpaper' to indicate a specific type.",
+                    "context": "We were discussing the appearance of the wall. It's a textured wallpaper. I find it quite interesting."
+                },
+                {
+                    "original": "You're not studying, right?",
+                    "corrected": "You aren't studying, right?",
+                    "explanation": "The contraction 'aren't' is more commonly used in spoken English than 'are not'.",
+                    "context": "I was checking if the student had classes that day. You aren't studying, right? I wanted to confirm their schedule."
+                },
+                {
+                    "original": "I want to write exams next year.",
+                    "corrected": "I want to take exams next year.",
+                    "explanation": "'Write exams' is not idiomatic; 'take exams' is the correct phrase.",
+                    "context": "The student expressed their academic goals. I want to take exams next year. They are preparing for their future."
+                },
+                {
+                    "original": "my sister wrote exam this year",
+                    "corrected": "my sister took an exam this year.",
+                    "explanation": "'Wrote exam' should be 'took an exam' as 'take' is the correct verb used with exams.",
+                    "context": "The student mentioned their sister's recent academic achievement. My sister took an exam this year. She did very well."
+                },
+                {
+                    "original": "Maybe I must study five years.",
+                    "corrected": "Maybe I have to study for five years.",
+                    "explanation": "'Must' is too strong; 'have to' is more appropriate for expressing necessity.",
+                    "context": "The student was unsure about their study duration. Maybe I have to study for five years. They were contemplating their future."
+                },
+                {
+                    "original": "I will choose the job on what I would like to work in the future.",
+                    "corrected": "I will choose the job I would like to do in the future.",
+                    "explanation": "The phrase 'on what I would like to work' is awkward; 'I would like to do' is clearer.",
+                    "context": "The student was discussing their future career plans. I will choose the job I would like to do in the future. They are excited about their options."
+                },
+                {
+                    "original": "What is native people?",
+                    "corrected": "What are native people?",
+                    "explanation": "The subject 'native people' is plural, so the verb should be 'are' instead of 'is'.",
+                    "context": "The student was unsure about the term used. What are native people? They were trying to clarify their understanding."
+                },
+                {
+                    "original": "Because I like calm and safety streets.",
+                    "corrected": "Because I like calm and safe streets.",
+                    "explanation": "'Safety' is a noun; 'safe' is the correct adjective to describe 'streets'.",
+                    "context": "The student expressed their preference for quieter areas. Because I like calm and safe streets. They value a peaceful environment."
+                },
+                {
+                    "original": "In my country, the most popular are big houses with a lot of flats in it.",
+                    "corrected": "In my country, the most popular are big buildings with a lot of flats in them.",
+                    "explanation": "The term 'houses' is incorrect; 'buildings' is more appropriate for structures with multiple flats.",
+                    "context": "The student was discussing housing trends. In my country, the most popular are big buildings with a lot of flats in them. They wanted to share their observations."
+                },
+                {
+                    "original": "For example, I live in this house and it is very big, modern, and also it is very comfortable for me.",
+                    "corrected": "For example, I live in this building, and it is very big, modern, and comfortable for me.",
+                    "explanation": "The term 'house' should be replaced with 'building' to match the previous context about flats.",
+                    "context": "The student was giving a personal example. For example, I live in this building, and it is very big, modern, and comfortable for me. They were sharing their living situation."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "all your explanations was from your personal perspective.",
+                    "corrected": "all your explanations were from your personal perspective.",
+                    "explanation": "The verb 'was' should be 'were' because 'explanations' is plural.",
+                    "context": "In the discussion about the exam answer, I pointed out that all your explanations were from your personal perspective. This made the answer less relevant to the question asked."
+                },
+                {
+                    "original": "you can't suffer from different noises from your neighbors.",
+                    "corrected": "you can't suffer from different noises from your neighbors.",
+                    "explanation": "The phrase 'suffer from different noises' is awkward; it would be better to say 'you won't be disturbed by noise from your neighbors.'",
+                    "context": "When discussing the advantages of living in a house, I mentioned that you can't suffer from different noises from your neighbors. This is a key reason why many prefer houses over apartments."
+                },
+                {
+                    "original": "always houses are under nature.",
+                    "corrected": "houses are always surrounded by nature.",
+                    "explanation": "The phrase 'under nature' is incorrect; 'surrounded by nature' is the correct expression.",
+                    "context": "In my explanation of the benefits of living in a house, I stated that houses are always surrounded by nature. This is an appealing aspect for many people."
+                },
+                {
+                    "original": "I don't know what I can say.",
+                    "corrected": "I don't know what to say.",
+                    "explanation": "The phrase 'what I can say' is incorrect; it should be 'what to say' for proper infinitive usage.",
+                    "context": "When asked to provide an example, I expressed uncertainty by saying I don't know what to say. This reflects my hesitation in contributing to the discussion."
+                },
+                {
+                    "original": "registered by students from disadvantaged families.",
+                    "corrected": "registered as students from disadvantaged families.",
+                    "explanation": "The phrase 'registered by students' is confusing; it should be 'registered as students' to clarify the meaning.",
+                    "context": "In discussing the education system, I mentioned that minors are registered as students from disadvantaged families. This highlights the challenges faced by these children."
+                },
+                {
+                    "original": "Minors are mostly registered by students from disadvantaged families.",
+                    "corrected": "Many children from disadvantaged families are enrolled in schools.",
+                    "explanation": "The original sentence is awkward and unclear; it should be simplified for clarity.",
+                    "context": "I tried to illustrate a point about education by saying that many children from disadvantaged families are enrolled in schools. This is crucial for understanding the broader issue."
+                },
+                {
+                    "original": "they are not thinking when they do this.",
+                    "corrected": "they don't think about the consequences of their actions.",
+                    "explanation": "The phrase 'not thinking when they do this' is vague; it should specify that they don't consider the consequences.",
+                    "context": "In discussing parental responsibility, I noted that children from these families often don't think about the consequences of their actions. This reflects a lack of guidance."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "I thought that... Like... If you write difficult words, your level will be better?",
+                    "corrected": "I thought that if you write difficult words, your level will be better.",
+                    "explanation": "The use of 'Like' is unnecessary and informal in this context; it disrupts the flow of the sentence.",
+                    "context": "I was reflecting on how using complex vocabulary might improve my writing. I thought that if you write difficult words, your level will be better. However, I’m starting to realize that clarity is more important."
+                },
+                {
+                    "original": "Parents should raise a good people.",
+                    "corrected": "Parents should raise good people.",
+                    "explanation": "'A good people' is incorrect; 'good people' is the correct plural form without the article.",
+                    "context": "In my writing, I wanted to emphasize the role of parents. I believe parents should raise good people. This is crucial for the development of children."
+                },
+                {
+                    "original": "They are same.",
+                    "corrected": "They are the same.",
+                    "explanation": "The definite article 'the' is needed before 'same' to indicate a specific comparison.",
+                    "context": "I was discussing how different ideas can be confusing in writing. I mentioned that they are the same. This can lead to a lack of clarity in essays."
+                },
+                {
+                    "original": "Children don't want to do... bad things.",
+                    "corrected": "Children don't want to do bad things.",
+                    "explanation": "The ellipsis is unnecessary and disrupts the sentence structure; it should be a straightforward statement.",
+                    "context": "I was considering the motivations of children. I believe children don't want to do bad things. They often seek approval from their parents."
+                },
+                {
+                    "original": "To throw parents' money?",
+                    "corrected": "To waste parents' money?",
+                    "explanation": "'Throw' is not the correct verb here; 'waste' better conveys the idea of misusing money.",
+                    "context": "I was trying to articulate a child's perspective on financial consequences. I was asking if children want to waste parents' money. This reflects their awareness of parental feelings."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I can write example about my friends, but I can't do this in... In... Peace.",
+                    "corrected": "I can write an example about my friends, but I can't do this in... In... Peace.",
+                    "explanation": "Missing article 'an' before 'example'; it is necessary to specify a singular noun.",
+                    "context": "I want to provide a personal example to illustrate my point. I can write an example about my friends, but I can't do this in... In... Peace."
+                },
+                {
+                    "original": "if they're already afraid of their parents, why should we make their parents responsible legally if everything is working already?",
+                    "corrected": "if they're already afraid of their parents, why should we make their parents legally responsible if everything is already working?",
+                    "explanation": "Incorrect word order; 'legally responsible' should come before 'if everything is already working.'",
+                    "context": "I’m questioning the logic behind holding parents accountable. If they're already afraid of their parents, why should we make their parents legally responsible if everything is already working?"
+                },
+                {
+                    "original": "I don't know what children... what people think.",
+                    "corrected": "I don't know what children... what people think.",
+                    "explanation": "Repetition of 'what' is unnecessary; it can be streamlined.",
+                    "context": "I’m expressing my uncertainty about the mindset of youth. I don't know what children... what people think."
+                },
+                {
+                    "original": "So, I can say that a lot of my friends are smoking, for example.",
+                    "corrected": "So, I can say that a lot of my friends smoke, for example.",
+                    "explanation": "Incorrect verb form; 'are smoking' suggests ongoing action, while 'smoke' is the correct simple present tense.",
+                    "context": "I’m sharing an observation about my peers. So, I can say that a lot of my friends smoke, for example."
+                },
+                {
+                    "original": "If it is discovered that they are smoking, will they be punished for that?",
+                    "corrected": "If it is discovered that they smoke, will they be punished for that?",
+                    "explanation": "Similar to the previous mistake; 'are smoking' suggests ongoing action, while 'smoke' is the correct simple present tense.",
+                    "context": "I’m questioning the consequences of my friends' actions. If it is discovered that they smoke, will they be punished for that?"
+                },
+                {
+                    "original": "So, in Russia, we have a system, we have actually an opposite system.",
+                    "corrected": "So, in Russia, we actually have an opposite system.",
+                    "explanation": "Redundant phrasing; 'we have a system' is unnecessary when stating 'we actually have an opposite system.'",
+                    "context": "I’m explaining the legal framework in Russia. So, in Russia, we actually have an opposite system."
+                },
+                {
+                    "original": "If a child commits a crime, then parents are also held accountable.",
+                    "corrected": "If a child commits a crime, then the parents are also held accountable.",
+                    "explanation": "Missing article 'the' before 'parents'; it specifies which parents are being referred to.",
+                    "context": "I’m discussing the implications of crime on family. If a child commits a crime, then the parents are also held accountable."
+                },
+                {
+                    "original": "In some countries, they think that parents should be punished for all the crimes that children committed.",
+                    "corrected": "In some countries, they think that parents should be punished for all the crimes that children commit.",
+                    "explanation": "Incorrect verb tense; 'committed' should be 'commit' to match the general statement.",
+                    "context": "I’m comparing different legal perspectives. In some countries, they think that parents should be punished for all the crimes that children commit."
+                },
+                {
+                    "original": "So, what should we do? How is this connected with the topic?",
+                    "corrected": "So, what should we do? How is this connected to the topic?",
+                    "explanation": "Incorrect preposition; 'connected to' is the correct phrase.",
+                    "context": "I’m seeking clarity on our discussion. So, what should we do? How is this connected to the topic?"
+                },
+                {
+                    "original": "So that they have motivation to look after their children.",
+                    "corrected": "So that they have the motivation to look after their children.",
+                    "explanation": "Missing article 'the' before 'motivation'; it specifies the type of motivation.",
+                    "context": "I’m emphasizing the need for parental responsibility. So that they have the motivation to look after their children."
+                },
+                {
+                    "original": "It's stupid, of course, but that's why they commit crimes so that their parents don't suffer.",
+                    "corrected": "It's stupid, of course, but that's why they commit crimes so their parents don't suffer.",
+                    "explanation": "Unnecessary use of 'that'; it can be omitted for smoother phrasing.",
+                    "context": "I’m reflecting on the reasoning behind certain behaviors. It's stupid, of course, but that's why they commit crimes so their parents don't suffer."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "If the parents would...",
+                    "corrected": "If the parents...",
+                    "explanation": "Using 'would' here is incorrect; the first conditional requires the present simple form in the 'if' clause.",
+                    "context": "We were discussing how parents should raise their children. If the parents raise them properly, they will not be legally responsible for their actions."
+                },
+                {
+                    "original": "They should raise them in a normal way so that they do not carry legal responsibility for them in the future.",
+                    "corrected": "They should raise them in a normal way so that they do not bear legal responsibility for them in the future.",
+                    "explanation": "'Carry legal responsibility' is not idiomatic; 'bear legal responsibility' is the correct phrase.",
+                    "context": "We talked about the importance of parenting. They should raise them in a normal way so that they do not bear legal responsibility for them in the future."
+                },
+                {
+                    "original": "If a person has thoughts about some crime, then why should this legal punishment for parents interfere with him?",
+                    "corrected": "If a person has thoughts about committing a crime, then why should the legal punishment for parents interfere with him?",
+                    "explanation": "The phrase 'thoughts about some crime' is awkward; 'thoughts about committing a crime' is clearer.",
+                    "context": "I was trying to understand the relationship between crime and parental responsibility. If a person has thoughts about committing a crime, then why should the legal punishment for parents interfere with him?"
+                },
+                {
+                    "original": "People who don't care, they will commit a crime anyway.",
+                    "corrected": "People who don't care will commit a crime anyway.",
+                    "explanation": "The use of 'they' after a comma is unnecessary; the sentence can be simplified.",
+                    "context": "We were discussing the mindset of potential criminals. People who don't care will commit a crime anyway."
+                },
+                {
+                    "original": "There is just a set of some chaotic thoughts.",
+                    "corrected": "There is just a set of chaotic thoughts.",
+                    "explanation": "The phrase 'some chaotic thoughts' is redundant; 'chaotic thoughts' is sufficient.",
+                    "context": "I was explaining the lack of clarity in many essays. There is just a set of chaotic thoughts."
+                },
+                {
+                    "original": "You do not need to convince the examiner.",
+                    "corrected": "You don't need to convince the examiner.",
+                    "explanation": "Using 'do not' is more formal; 'don't' is more conversational and fits the context better.",
+                    "context": "I was emphasizing the importance of clarity in writing. You don't need to convince the examiner."
+                },
+                {
+                    "original": "There are a lot of children who do not think about their parents, about some children, before the crime.",
+                    "corrected": "There are a lot of children who do not think about their parents before committing a crime.",
+                    "explanation": "The phrase 'about some children' is confusing and unnecessary; simplifying the sentence improves clarity.",
+                    "context": "We were discussing children's thoughts before committing crimes. There are a lot of children who do not think about their parents before committing a crime."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "All the crimes are there under age children.",
+                    "corrected": "All the crimes are committed by underage children.",
+                    "explanation": "The phrase 'there under age children' is incorrect; it should be 'by underage children' to indicate who commits the crimes.",
+                    "context": "In discussing crime rates, I mentioned that all the crimes are committed by underage children. This highlights the issue of juvenile delinquency."
+                },
+                {
+                    "original": "That individuals under the age of 18.",
+                    "corrected": "Those are individuals under the age of 18.",
+                    "explanation": "The original sentence is incomplete; it should be 'Those are individuals under the age of 18' to form a complete thought.",
+                    "context": "I was explaining the demographic involved in certain behaviors. Those are individuals under the age of 18, which is often a way to refer to children."
+                },
+                {
+                    "original": "That children very often.",
+                    "corrected": "That children are very often rebellious.",
+                    "explanation": "The original phrase lacks a verb; it should include 'are' to form a complete sentence.",
+                    "context": "I was discussing the behavior of children in relation to their parents. That children are very often rebellious is a common observation."
+                },
+                {
+                    "original": "They hope that they will not be caught.",
+                    "corrected": "They hope that they won't be caught.",
+                    "explanation": "The phrase 'will not' can be contracted to 'won't' for a more natural spoken English.",
+                    "context": "In my argument about illegal activities, I stated that they hope that they won't be caught. This reflects a common mindset among those who break the law."
+                },
+                {
+                    "original": "They usually do not think of consequences they will have to face.",
+                    "corrected": "They usually do not think about the consequences they will have to face.",
+                    "explanation": "The phrase 'think of' should be 'think about' when referring to considering something.",
+                    "context": "I was emphasizing the lack of foresight in people's actions. They usually do not think about the consequences they will have to face, which leads to poor decisions."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Texture",
+                    "definition": "The feel, appearance, or consistency of a surface or substance.",
+                    "context": {
+                        "Context 1": "The wall has an interesting texture that adds character to the room.",
+                        "Context 2": "The texture of the cake was light and fluffy, making it delicious.",
+                        "Context 3": "She chose a fabric with a rough texture for her new jacket."
+                    }
+                },
+                {
+                    "word": "Apartment",
+                    "definition": "A set of rooms forming an individual residence, typically located in a building.",
+                    "context": {
+                        "Context 1": "She lives in a modern apartment in Manhattan.",
+                        "Context 2": "The cat made itself comfortable on the sofa in the apartment.",
+                        "Context 3": "He decided to rent an apartment near the beach for the summer."
+                    }
+                },
+                {
+                    "word": "Neighborhood",
+                    "definition": "A district or area within a town or city.",
+                    "context": {
+                        "Context 1": "Manhattan is a bustling neighborhood with many tourists.",
+                        "Context 2": "The neighborhood was quiet and perfect for families.",
+                        "Context 3": "She loved the vibrant neighborhood filled with cafes and shops."
+                    }
+                },
+                {
+                    "word": "Tourist",
+                    "definition": "A person who is traveling or visiting a place for pleasure.",
+                    "context": {
+                        "Context 1": "There are many tourists in Manhattan during the summer.",
+                        "Context 2": "The tourist took a lot of pictures of the famous landmarks.",
+                        "Context 3": "He was a tourist in Paris and enjoyed visiting the Eiffel Tower."
+                    }
+                },
+                {
+                    "word": "Modern",
+                    "definition": "Relating to the present or recent times; contemporary.",
+                    "context": {
+                        "Context 1": "The apartment has a very modern design with minimalist furniture.",
+                        "Context 2": "She prefers modern art over classical paintings.",
+                        "Context 3": "The modern technology in the car makes it very efficient."
+                    }
+                },
+                {
+                    "word": "Safety",
+                    "definition": "The condition of being protected from or unlikely to cause danger, risk, or injury.",
+                    "context": {
+                        "Context 1": "She prefers calm and safe streets for walking at night.",
+                        "Context 2": "Safety is a top priority in construction sites.",
+                        "Context 3": "He installed a security system for the safety of his home."
+                    }
+                },
+                {
+                    "word": "Exams",
+                    "definition": "Formal tests of a person's knowledge or proficiency in a subject or skill.",
+                    "context": {
+                        "Context 1": "She wants to write exams next year to continue her studies.",
+                        "Context 2": "He studied hard for his math exams and felt prepared.",
+                        "Context 3": "The exams were so difficult that many students were stressed."
+                    }
+                },
+                {
+                    "word": "Essay",
+                    "definition": "A short piece of writing on a particular subject.",
+                    "context": {
+                        "Context 1": "Did you manage to write the essay that I sent you?",
+                        "Context 2": "She received an A on her essay about climate change.",
+                        "Context 3": "He spent the entire night writing an essay for his English class."
+                    }
+                },
+                {
+                    "word": "Chemistry",
+                    "definition": "The branch of science that deals with the identification of the substances of which matter is composed.",
+                    "context": {
+                        "Context 1": "Why would you have chemistry classes in summer?",
+                        "Context 2": "She found chemistry fascinating and wanted to become a scientist.",
+                        "Context 3": "The chemistry between the two actors made the movie more enjoyable."
+                    }
+                },
+                {
+                    "word": "Locals",
+                    "definition": "People who live in a particular area or neighborhood.",
+                    "context": {
+                        "Context 1": "There are many locals in Manhattan who enjoy the vibrant atmosphere.",
+                        "Context 2": "The locals welcomed the tourists with open arms.",
+                        "Context 3": "He often visited the local market to buy fresh produce."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Apartment",
+                    "fact": "Did you know that the world's smallest apartment is just 10 square meters? It's like living in a tiny house but without the house!"
+                },
+                {
+                    "word": "Tourist",
+                    "fact": "In some cities, tourists are known to take pictures of everything, including their own feet! It's a new trend called 'foot selfies.'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the computer go to the doctor?",
+                    "answer": "Because it had a virus!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "In the lesson, the teacher emphasized the importance of considering different perspectives when answering questions.",
+                        "Context 2": "From her perspective, the movie was a masterpiece, but others found it boring.",
+                        "Context 3": "The artist's unique perspective on life is reflected in her vibrant paintings."
+                    }
+                },
+                {
+                    "word": "Abstract",
+                    "definition": "Existing in thought or as an idea but not having a physical or concrete existence.",
+                    "context": {
+                        "Context 1": "The teacher mentioned that the question was abstract, requiring a broader understanding of societal norms.",
+                        "Context 2": "His abstract concepts in philosophy often puzzled his classmates.",
+                        "Context 3": "The abstract painting left viewers wondering about its meaning."
+                    }
+                },
+                {
+                    "word": "Convenient",
+                    "definition": "Fitting in well with a person's needs, activities, and plans; easy to use.",
+                    "context": {
+                        "Context 1": "The student noted that living in a house is convenient because of nearby shops and restaurants.",
+                        "Context 2": "The new app is very convenient for managing my daily tasks.",
+                        "Context 3": "It’s convenient to have a grocery store just a block away from home."
+                    }
+                },
+                {
+                    "word": "Calm",
+                    "definition": "Not showing or feeling nervousness, anger, or other emotions; peaceful.",
+                    "context": {
+                        "Context 1": "The student described a house as a calm place, free from neighbor noise.",
+                        "Context 2": "She remained calm during the storm, knowing she was safe indoors.",
+                        "Context 3": "The calm waters of the lake reflected the clear blue sky."
+                    }
+                },
+                {
+                    "word": "Safety",
+                    "definition": "The condition of being protected from or unlikely to cause danger, risk, or injury.",
+                    "context": {
+                        "Context 1": "The teacher highlighted that safety is important when discussing living environments.",
+                        "Context 2": "The safety of the children was the top priority during the field trip.",
+                        "Context 3": "He installed a security system for the safety of his home."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "The student was encouraged to share their experience of living in a house versus an apartment.",
+                        "Context 2": "Her experience as a volunteer taught her valuable life lessons.",
+                        "Context 3": "Traveling abroad was a life-changing experience for him."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern; a case or instance that illustrates a concept.",
+                    "context": {
+                        "Context 1": "The teacher suggested using personal examples to support answers in the lesson.",
+                        "Context 2": "For example, she cited a famous scientist to illustrate her point.",
+                        "Context 3": "He used an example from history to explain his argument."
+                    }
+                },
+                {
+                    "word": "Disadvantaged",
+                    "definition": "In a situation that makes it difficult to succeed; lacking basic necessities.",
+                    "context": {
+                        "Context 1": "The lesson discussed how students from disadvantaged families may struggle in school.",
+                        "Context 2": "The charity aims to support disadvantaged communities with education and resources.",
+                        "Context 3": "He volunteered to help disadvantaged children learn to read."
+                    }
+                },
+                {
+                    "word": "Responsible",
+                    "definition": "Having an obligation to do something, or having control over or care for someone.",
+                    "context": {
+                        "Context 1": "The teacher stated that parents should be responsible for raising their children properly.",
+                        "Context 2": "As a team leader, she felt responsible for the project's success.",
+                        "Context 3": "He was responsible for feeding the pets while his family was away."
+                    }
+                },
+                {
+                    "word": "Raise",
+                    "definition": "To bring up a child or to increase something.",
+                    "context": {
+                        "Context 1": "The lesson emphasized that parents should raise their children with care and attention.",
+                        "Context 2": "They plan to raise funds for the local animal shelter.",
+                        "Context 3": "She hopes to raise her children to be kind and respectful."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Perspective",
+                    "fact": "The word 'perspective' comes from the Latin 'perspectivus,' which means 'to look through'—just like how we look through our biases!"
+                },
+                {
+                    "word": "Abstract",
+                    "fact": "Abstract art can be so confusing that even the artist might not know what it means!"
+                },
+                {
+                    "word": "Disadvantaged",
+                    "fact": "Did you know that the term 'disadvantaged' is often used in social sciences to describe those who are not just poor but also lack access to opportunities?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Vocabulary",
+                    "definition": "The body of words used in a particular language or by a particular person or group.",
+                    "context": {
+                        "Context 1": "Expanding your vocabulary can help you express your thoughts more clearly.",
+                        "Context 2": "The chef had a unique vocabulary of culinary terms that impressed everyone.",
+                        "Context 3": "In the world of technology, new vocabulary is created every day."
+                    }
+                },
+                {
+                    "word": "Consequences",
+                    "definition": "The result or effect of an action or condition.",
+                    "context": {
+                        "Context 1": "Children often do not think about the consequences of their actions.",
+                        "Context 2": "The consequences of skipping school can include falling behind in studies.",
+                        "Context 3": "Eating too much candy can have negative consequences for your health."
+                    }
+                },
+                {
+                    "word": "Simplify",
+                    "definition": "To make something easier to understand or do.",
+                    "context": {
+                        "Context 1": "It’s important to simplify your vocabulary for better communication.",
+                        "Context 2": "The teacher asked the students to simplify their math problems for the test.",
+                        "Context 3": "To simplify the recipe, she removed some of the more complex ingredients."
+                    }
+                },
+                {
+                    "word": "Motivation",
+                    "definition": "The reason or reasons one has for acting or behaving in a particular way.",
+                    "context": {
+                        "Context 1": "Parents should provide motivation for their children to behave well.",
+                        "Context 2": "His motivation for running the marathon was to raise money for charity.",
+                        "Context 3": "The motivation behind her artwork is to express her feelings."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Considering different perspectives can lead to better understanding.",
+                        "Context 2": "From his perspective, the movie was a masterpiece.",
+                        "Context 3": "The artist painted from a unique perspective, capturing the essence of the city."
+                    }
+                },
+                {
+                    "word": "Coherence",
+                    "definition": "The quality of being logical and consistent.",
+                    "context": {
+                        "Context 1": "Coherence in writing helps the reader follow the argument easily.",
+                        "Context 2": "The coherence of the team’s strategy was praised by their coach.",
+                        "Context 3": "In music, coherence can be achieved through rhythm and melody."
+                    }
+                },
+                {
+                    "word": "Cohesion",
+                    "definition": "The action or fact of forming a united whole.",
+                    "context": {
+                        "Context 1": "Cohesion in a text is important for clarity and flow.",
+                        "Context 2": "The cohesion of the community was evident during the festival.",
+                        "Context 3": "Water molecules exhibit cohesion, allowing them to form droplets."
+                    }
+                },
+                {
+                    "word": "Examiner",
+                    "definition": "A person who inspects or assesses something.",
+                    "context": {
+                        "Context 1": "The examiner evaluates the students' understanding of the material.",
+                        "Context 2": "An examiner at the airport checked the passengers' luggage.",
+                        "Context 3": "The driving examiner was strict but fair during the test."
+                    }
+                },
+                {
+                    "word": "Express",
+                    "definition": "To convey a thought or feeling in words, gestures, or artistic forms.",
+                    "context": {
+                        "Context 1": "Students should express their ideas clearly in their writing.",
+                        "Context 2": "He used music to express his emotions after a tough day.",
+                        "Context 3": "The artist wanted to express the beauty of nature in her paintings."
+                    }
+                },
+                {
+                    "word": "Legal Responsibility",
+                    "definition": "The obligation to adhere to laws and regulations.",
+                    "context": {
+                        "Context 1": "Parents have a legal responsibility to care for their children.",
+                        "Context 2": "The company faced legal responsibility for the environmental damage.",
+                        "Context 3": "Understanding legal responsibility is crucial for business owners."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Vocabulary",
+                    "fact": "The longest word in the English language is 189,819 letters long and refers to a protein! Good luck trying to use that in a sentence!"
+                },
+                {
+                    "word": "Consequences",
+                    "fact": "In some cultures, the consequence of not finishing your meal is that you have to do the dishes!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Punished",
+                    "definition": "To impose a penalty on someone for an offense or wrongdoing.",
+                    "context": {
+                        "Context 1": "If a child commits a crime, they should be punished accordingly.",
+                        "Context 2": "The teacher punished the student for being late to class.",
+                        "Context 3": "In some cultures, children are punished for not following family traditions."
+                    }
+                },
+                {
+                    "word": "Accountable",
+                    "definition": "Required or expected to justify actions or decisions; responsible.",
+                    "context": {
+                        "Context 1": "Parents should be held accountable for their children's actions.",
+                        "Context 2": "The manager is accountable for the team's performance.",
+                        "Context 3": "In a democracy, elected officials are accountable to the voters."
+                    }
+                },
+                {
+                    "word": "Responsibility",
+                    "definition": "The state or fact of having a duty to deal with something or having control over someone.",
+                    "context": {
+                        "Context 1": "In some countries, parents have legal responsibility for their children's actions.",
+                        "Context 2": "As a pet owner, it’s your responsibility to care for your animal.",
+                        "Context 3": "The responsibility of organizing the event fell on the committee."
+                    }
+                },
+                {
+                    "word": "Crimes",
+                    "definition": "Acts that are against the law and punishable by the state.",
+                    "context": {
+                        "Context 1": "Teenagers in some countries may face severe consequences for committing crimes.",
+                        "Context 2": "The detective was called to investigate a series of crimes in the neighborhood.",
+                        "Context 3": "In the movie, the main character was wrongfully accused of crimes he didn't commit."
+                    }
+                },
+                {
+                    "word": "Legal",
+                    "definition": "Relating to the law; permitted by law.",
+                    "context": {
+                        "Context 1": "In Russia, there are legal consequences for parents if their children commit crimes.",
+                        "Context 2": "He sought legal advice before signing the contract.",
+                        "Context 3": "The legal age for drinking alcohol varies from country to country."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern used to illustrate a concept.",
+                    "context": {
+                        "Context 1": "The teacher asked for an example of how parents can be held responsible.",
+                        "Context 2": "For my presentation, I need a good example to support my argument.",
+                        "Context 3": "She used her own experiences as an example to motivate others."
+                    }
+                },
+                {
+                    "word": "Motivate",
+                    "definition": "To provide someone with a reason for doing something; to encourage.",
+                    "context": {
+                        "Context 1": "Legal responsibility can motivate parents to raise their children properly.",
+                        "Context 2": "The coach tried to motivate the players before the big game.",
+                        "Context 3": "A good teacher knows how to motivate students to learn."
+                    }
+                },
+                {
+                    "word": "Afraid",
+                    "definition": "Feeling fear or anxiety; frightened.",
+                    "context": {
+                        "Context 1": "Many teenagers are afraid of disappointing their parents.",
+                        "Context 2": "She was afraid of the dark and always slept with a nightlight.",
+                        "Context 3": "He was afraid of heights but decided to go skydiving anyway."
+                    }
+                },
+                {
+                    "word": "Cultural",
+                    "definition": "Relating to the ideas, customs, and social behavior of a society.",
+                    "context": {
+                        "Context 1": "Cultural norms can influence how parents are held accountable for their children.",
+                        "Context 2": "The festival showcased the cultural diversity of the community.",
+                        "Context 3": "Cultural differences can lead to misunderstandings in international business."
+                    }
+                },
+                {
+                    "word": "Consequences",
+                    "definition": "Results or effects of an action or condition.",
+                    "context": {
+                        "Context 1": "There are serious consequences for parents if their children commit crimes.",
+                        "Context 2": "The consequences of skipping school can affect a student's grades.",
+                        "Context 3": "He learned the hard way that every action has consequences."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Punished",
+                    "fact": "In ancient Rome, they used to punish people by making them sit on a giant wooden chair until they confessed!"
+                },
+                {
+                    "word": "Accountable",
+                    "fact": "The word 'accountable' comes from the Latin word 'computare,' which means 'to count.' So, if you're accountable, you better count your actions!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the parent bring a ladder to the bar?",
+                    "answer": "Because they heard the drinks were on the house!"
+                },
+                {
+                    "question": "Why did the student eat their homework?",
+                    "answer": "Because the teacher said it was a piece of cake!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "In the lesson, we discussed the children's perspective on legal responsibility.",
+                        "Context 2": "From her perspective, the movie was a masterpiece, but others disagreed.",
+                        "Context 3": "The artist's unique perspective on nature is evident in her paintings."
+                    }
+                },
+                {
+                    "word": "Legal Responsibility",
+                    "definition": "The obligation to follow the law and be accountable for one's actions.",
+                    "context": {
+                        "Context 1": "Parents may face legal responsibility if their children commit crimes.",
+                        "Context 2": "The company was held to legal responsibility for the environmental damage caused.",
+                        "Context 3": "He was unsure of his legal responsibility in the contract he signed."
+                    }
+                },
+                {
+                    "word": "Educate",
+                    "definition": "To provide someone with knowledge or skills through teaching.",
+                    "context": {
+                        "Context 1": "Parents should educate their children about the consequences of crime.",
+                        "Context 2": "The school aims to educate students on the importance of mental health.",
+                        "Context 3": "She decided to educate herself on different cultures by traveling."
+                    }
+                },
+                {
+                    "word": "Motivate",
+                    "definition": "To provide someone with a reason for doing something; to encourage.",
+                    "context": {
+                        "Context 1": "The teacher tried to motivate her students to do their best in exams.",
+                        "Context 2": "He needed a good reason to motivate him to start exercising.",
+                        "Context 3": "The motivational speaker inspired the audience with his success story."
+                    }
+                },
+                {
+                    "word": "Normal",
+                    "definition": "Conforming to a standard; usual, typical, or expected.",
+                    "context": {
+                        "Context 1": "The discussion was about what constitutes a normal upbringing for children.",
+                        "Context 2": "In a normal world, everyone would have equal opportunities.",
+                        "Context 3": "She felt normal after returning to her routine following the vacation."
+                    }
+                },
+                {
+                    "word": "Commit",
+                    "definition": "To carry out or perpetrate (a mistake, crime, or immoral act).",
+                    "context": {
+                        "Context 1": "Children may commit crimes if they are not properly guided.",
+                        "Context 2": "He decided to commit to his fitness goals this year.",
+                        "Context 3": "The artist wanted to commit her thoughts to paper in a new book."
+                    }
+                },
+                {
+                    "word": "Chaotic",
+                    "definition": "In a state of complete confusion and disorder.",
+                    "context": {
+                        "Context 1": "The lesson highlighted how chaotic thoughts can lead to unclear arguments.",
+                        "Context 2": "The chaotic traffic made it difficult to reach the airport on time.",
+                        "Context 3": "Her chaotic room reflected her busy lifestyle."
+                    }
+                },
+                {
+                    "word": "Thesis Statement",
+                    "definition": "A statement or sentence that summarizes the main point or claim of an essay.",
+                    "context": {
+                        "Context 1": "The teacher emphasized the importance of a clear thesis statement in essays.",
+                        "Context 2": "His thesis statement was so strong that it captivated the audience's attention.",
+                        "Context 3": "She struggled to formulate a thesis statement for her research paper."
+                    }
+                },
+                {
+                    "word": "Argument",
+                    "definition": "An exchange of diverging or opposite views, typically a heated or angry one.",
+                    "context": {
+                        "Context 1": "The lesson involved constructing a logical argument about parental responsibility.",
+                        "Context 2": "Their argument about the best pizza toppings lasted for hours.",
+                        "Context 3": "He presented a compelling argument in favor of renewable energy."
+                    }
+                },
+                {
+                    "word": "Clarify",
+                    "definition": "To make a statement or situation less confused and more comprehensible.",
+                    "context": {
+                        "Context 1": "The teacher asked the student to clarify their point about legal responsibility.",
+                        "Context 2": "She needed to clarify the instructions before starting the project.",
+                        "Context 3": "To clarify the misunderstanding, they held a meeting."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Perspective",
+                    "fact": "The word 'perspective' comes from the Latin 'perspectivus,' which means 'to look through.' So, it’s all about how you look at things!"
+                },
+                {
+                    "word": "Chaotic",
+                    "fact": "Did you know that the word 'chaos' originally meant 'the void state preceding the creation of the universe'? Talk about a chaotic beginning!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Underage",
+                    "definition": "Referring to individuals who are below the legal age of adulthood.",
+                    "context": {
+                        "Context 1": "In many countries, underage drinking is illegal.",
+                        "Context 2": "The movie was rated R, so it was not suitable for underage viewers.",
+                        "Context 3": "Underage individuals often face restrictions on certain activities."
+                    }
+                },
+                {
+                    "word": "Rebellious",
+                    "definition": "Showing a desire to resist authority, control, or convention.",
+                    "context": {
+                        "Context 1": "Teenagers are often rebellious as they seek independence.",
+                        "Context 2": "The rebellious puppy chewed on the furniture despite being told not to.",
+                        "Context 3": "His rebellious attitude in class often got him into trouble."
+                    }
+                },
+                {
+                    "word": "Accountable",
+                    "definition": "Required or expected to justify actions or decisions; responsible.",
+                    "context": {
+                        "Context 1": "Parents are accountable for their children's actions until they reach adulthood.",
+                        "Context 2": "The manager was held accountable for the project's failure.",
+                        "Context 3": "In a team, everyone should be accountable for their tasks."
+                    }
+                },
+                {
+                    "word": "Consequences",
+                    "definition": "The results or effects of an action or condition.",
+                    "context": {
+                        "Context 1": "Young people often do not think about the consequences of their actions.",
+                        "Context 2": "The consequences of skipping school can include falling behind in studies.",
+                        "Context 3": "He faced serious consequences for his reckless driving."
+                    }
+                },
+                {
+                    "word": "Paraphrase",
+                    "definition": "To express the meaning of something written or spoken using different words.",
+                    "context": {
+                        "Context 1": "In academic writing, it's important to paraphrase sources to avoid plagiarism.",
+                        "Context 2": "She had to paraphrase the poem to make it easier for her classmates to understand.",
+                        "Context 3": "Paraphrasing a recipe can help simplify complex cooking instructions."
+                    }
+                },
+                {
+                    "word": "Psychological",
+                    "definition": "Relating to the mental and emotional state of a person.",
+                    "context": {
+                        "Context 1": "The psychological effects of parental pressure can be significant on children.",
+                        "Context 2": "He studied psychological theories to understand human behavior better.",
+                        "Context 3": "The psychological thriller kept the audience on the edge of their seats."
+                    }
+                },
+                {
+                    "word": "Legally",
+                    "definition": "In a way that is permitted by law.",
+                    "context": {
+                        "Context 1": "In many countries, parents are legally responsible for their underage children.",
+                        "Context 2": "She was legally allowed to drive once she turned 16.",
+                        "Context 3": "Legally, the contract was binding and enforceable."
+                    }
+                },
+                {
+                    "word": "Crime rate",
+                    "definition": "The number of crimes committed per unit of population over a specific period.",
+                    "context": {
+                        "Context 1": "The crime rate among underage individuals is often lower than that of adults.",
+                        "Context 2": "The city implemented new policies to reduce the crime rate.",
+                        "Context 3": "High crime rates can affect property values in a neighborhood."
+                    }
+                },
+                {
+                    "word": "Confront",
+                    "definition": "To face someone in a challenging or hostile manner.",
+                    "context": {
+                        "Context 1": "Children may confront their parents when they feel misunderstood.",
+                        "Context 2": "He decided to confront his fears by going skydiving.",
+                        "Context 3": "The detective had to confront the suspect to get the truth."
+                    }
+                },
+                {
+                    "word": "Harsher",
+                    "definition": "More severe or strict in terms of punishment or treatment.",
+                    "context": {
+                        "Context 1": "Some believe that harsher penalties are necessary to deter crime among youth.",
+                        "Context 2": "The teacher imposed harsher rules after the class misbehaved.",
+                        "Context 3": "Harsher weather conditions can lead to dangerous travel situations."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Rebellious",
+                    "fact": "Did you know that some animals, like cats, can be rebellious too? They often ignore commands just to assert their independence!"
+                },
+                {
+                    "word": "Consequences",
+                    "fact": "In ancient Rome, the consequences of being caught cheating were so severe that some people would rather take a chance on a lion than face them!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the teenager bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the parent go to jail?",
+                    "answer": "Because they were caught trying to ground their rebellious child!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Good afternoon! How's your day going?"
+                },
+                {
+                    "Person 2": "Hey! It's going pretty well, thanks! Just enjoying the sunny weather. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I actually went for a walk earlier. The fresh air felt amazing."
+                },
+                {
+                    "Person 2": "Nice! Did you see anything interesting on your walk?"
+                },
+                {
+                    "Person 1": "Yeah, I saw a couple of cute dogs playing in the park. Made me want to get one!"
+                },
+                {
+                    "Person 2": "Dogs are the best! What kind are you thinking about?"
+                },
+                {
+                    "Person 1": "I’m not sure yet. Maybe a golden retriever? They seem so friendly."
+                },
+                {
+                    "Person 2": "Great choice! They’re super loyal and fun. Just be ready for lots of energy!"
+                },
+                {
+                    "Person 1": "Haha, I can handle it! So, any plans for the weekend?"
+                },
+                {
+                    "Person 2": "I might go hiking if the weather stays nice. How about you?"
+                },
+                {
+                    "Person 1": "That sounds awesome! I’m thinking of having a movie night with some friends."
+                },
+                {
+                    "Person 2": "Nice! What movies are you planning to watch?"
+                },
+                {
+                    "Person 1": "Probably some comedies. I need a good laugh!"
+                },
+                {
+                    "Person 2": "Comedies are always a good choice! Let me know how it goes!"
+                },
+                {
+                    "Person 1": "Will do! And if you go hiking, take lots of pictures!"
+                },
+                {
+                    "Person 2": "Definitely! Catch up later?"
+                },
+                {
+                    "Person 1": "For sure! Have a great day!"
+                },
+                {
+                    "Person 2": "You too! Bye!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a finish, right? I thought the other team had it in the bag."
+                },
+                {
+                    "Person 1": "I know! I was on the edge of my seat. That last-minute goal was insane!"
+                },
+                {
+                    "Person 2": "Totally! And the crowd went wild. I could hear them cheering from my living room."
+                },
+                {
+                    "Person 1": "Same here! I had to turn the volume up. I love when the games get that intense."
+                },
+                {
+                    "Person 2": "For sure! It makes it so much more exciting. Do you think they’ll make it to the playoffs?"
+                },
+                {
+                    "Person 1": "I hope so! They’ve been playing really well this season. What do you think?"
+                },
+                {
+                    "Person 2": "I think they have a good shot. As long as they keep their momentum going."
+                },
+                {
+                    "Person 1": "Exactly! And if they can stay healthy, that’ll be key."
+                },
+                {
+                    "Person 2": "Right! Injuries can really mess up a team’s chances. Let’s hope for the best!"
+                },
+                {
+                    "Person 1": "Definitely! So, are we watching the next game together?"
+                },
+                {
+                    "Person 2": "Absolutely! I’ll bring the snacks!"
+                },
+                {
+                    "Person 1": "Perfect! I’ll bring the drinks. It’s going to be a blast!"
+                },
+                {
+                    "Person 2": "Can’t wait! See you then!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh man, I missed it! How did it go?"
+                },
+                {
+                    "Person 1": "It was intense! We were down by ten points at halftime, but we made a comeback in the second half."
+                },
+                {
+                    "Person 2": "No way! That's awesome! Who scored the winning points?"
+                },
+                {
+                    "Person 1": "It was our new guy, Jake. He hit a three-pointer right at the buzzer!"
+                },
+                {
+                    "Person 2": "Wow, that’s clutch! I’ve heard a lot about him. Is he really that good?"
+                },
+                {
+                    "Person 1": "Yeah, he’s been a game changer for us. I think he’s going to be a star."
+                },
+                {
+                    "Person 2": "Nice! I need to start watching the games again. I used to be so into it."
+                },
+                {
+                    "Person 1": "You should! It’s way more fun when you’re following along."
+                },
+                {
+                    "Person 2": "For sure! Maybe we can catch a game together next week?"
+                },
+                {
+                    "Person 1": "Absolutely! Let’s grab some snacks and make a night of it."
+                },
+                {
+                    "Person 2": "Sounds like a plan! I’ll bring the chips!"
+                },
+                {
+                    "Person 1": "And I’ll handle the drinks. It’s going to be a blast!"
+                },
+                {
+                    "Person 2": "Can’t wait! Let’s hope for another exciting game."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new coffee shop that just opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I saw it on Instagram! I’ve been wanting to check it out. Have you been yet?"
+                },
+                {
+                    "Person 1": "Not yet, but I heard they have some amazing pastries too. We should go together!"
+                },
+                {
+                    "Person 2": "Definitely! I’m always down for good coffee and pastries. What’s your favorite kind of pastry?"
+                },
+                {
+                    "Person 1": "I’m a sucker for chocolate croissants. How about you?"
+                },
+                {
+                    "Person 2": "Ooh, chocolate croissants are the best! I love a good blueberry muffin."
+                },
+                {
+                    "Person 1": "Nice choice! So, when do you want to go? Maybe this weekend?"
+                },
+                {
+                    "Person 2": "This weekend sounds perfect! Saturday morning?"
+                },
+                {
+                    "Person 1": "Saturday morning it is! Should we invite a few more friends?"
+                },
+                {
+                    "Person 2": "Yeah, that would be fun! The more, the merrier!"
+                },
+                {
+                    "Person 1": "Awesome! I’ll text everyone and see who’s in."
+                },
+                {
+                    "Person 2": "Great! I can’t wait to try that place out. It’ll be a nice little outing."
+                },
+                {
+                    "Person 1": "For sure! Plus, we can catch up and enjoy some good food."
+                },
+                {
+                    "Person 2": "Exactly! I’m looking forward to it. Let’s make it a fun morning!"
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch the game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a finish, right? I thought they were done for."
+                },
+                {
+                    "Person 1": "I know! I was on the edge of my seat. That last-minute goal was insane!"
+                },
+                {
+                    "Person 2": "Totally! I couldn't believe they pulled it off. Did you see the crowd's reaction?"
+                },
+                {
+                    "Person 1": "It was wild! Everyone was jumping and cheering. I wish I could have been there."
+                },
+                {
+                    "Person 2": "Same here! Watching it on TV just doesn't compare to the atmosphere in the stadium."
+                },
+                {
+                    "Person 1": "Right? So, are you planning to watch the next game?"
+                },
+                {
+                    "Person 2": "Absolutely! I’m hoping they keep up the momentum. What about you?"
+                },
+                {
+                    "Person 1": "For sure! I’ll be there with snacks and drinks ready."
+                },
+                {
+                    "Person 2": "Nice! We should make it a game day tradition. Invite some friends over."
+                },
+                {
+                    "Person 1": "That sounds like a blast! I’ll bring the chips and dip."
+                },
+                {
+                    "Person 2": "Perfect! I’ll handle the drinks. Can’t wait!"
+                },
+                {
+                    "Person 1": "Me neither! Let’s hope for another exciting match."
+                },
+                {
+                    "Person 2": "Definitely! See you then!"
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! What a comeback, right? I thought they were done for!"
+                },
+                {
+                    "Person 1": "I know! I was on the edge of my seat. That last-minute goal was insane!"
+                },
+                {
+                    "Person 2": "Totally! I couldn't believe it. I was jumping around my living room!"
+                },
+                {
+                    "Person 1": "Same here! I even spilled my popcorn. Worth it, though!"
+                },
+                {
+                    "Person 2": "Haha, I can relate! So, what do you think about the next game? Do they have a chance?"
+                },
+                {
+                    "Person 1": "I think they do! If they play like that again, they might just pull it off."
+                },
+                {
+                    "Person 2": "Yeah, but they need to tighten up their defense. That was a bit shaky."
+                },
+                {
+                    "Person 1": "True. I hope the coach addresses that. I want to see them go all the way this season!"
+                },
+                {
+                    "Person 2": "Me too! Let’s plan to watch it together next time."
+                },
+                {
+                    "Person 1": "Definitely! I’ll bring the snacks this time."
+                },
+                {
+                    "Person 2": "Deal! Can’t wait!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
