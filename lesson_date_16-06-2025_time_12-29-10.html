@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I can't hear.",
+                    "corrected": "I can't hear anything.",
+                    "explanation": "The addition of 'anything' clarifies the extent of the inability to hear.",
+                    "context": "During the lesson, I struggled with the audio. I can't hear anything. It was frustrating because I wanted to participate."
+                },
+                {
+                    "original": "I can hear you very well.",
+                    "corrected": "I can hear you well.",
+                    "explanation": "'Very well' is often used for emphasis, but 'well' is sufficient here.",
+                    "context": "After some technical issues, I finally got the audio working. I can hear you well. It’s a relief to communicate again."
+                },
+                {
+                    "original": "I even turned off the bluetooth and that's it.",
+                    "corrected": "I even turned off the Bluetooth, and that was it.",
+                    "explanation": "Capitalization of 'Bluetooth' is necessary as it is a proper noun, and 'that's it' should be 'that was it' for past tense consistency.",
+                    "context": "I was trying everything to fix the sound issue. I even turned off the Bluetooth, and that was it. Nothing seemed to work."
+                },
+                {
+                    "original": "I'm in the inversion.",
+                    "corrected": "I'm in an inversion.",
+                    "explanation": "The article 'an' is needed before 'inversion' to indicate it is a singular noun.",
+                    "context": "I was trying to explain my confusion about the mirrored image on the screen. I'm in an inversion. It's hard to tell left from right."
+                },
+                {
+                    "original": "How did you end up there?",
+                    "corrected": "How did you end up here?",
+                    "explanation": "The speaker is currently in the location being discussed, so 'here' is more appropriate than 'there.'",
+                    "context": "I was curious about my friend's situation. How did you end up here? I wanted to know more about their journey."
+                },
+                {
+                    "original": "Why win?",
+                    "corrected": "Why do you ask if I won?",
+                    "explanation": "The original phrasing is unclear; a complete question is needed for clarity.",
+                    "context": "I was asked about a competition I participated in. Why do you ask if I won? I was unsure how to respond."
+                },
+                {
+                    "original": "It was boring for me.",
+                    "corrected": "I found it boring.",
+                    "explanation": "Using 'I found it boring' is a more natural way to express the sentiment.",
+                    "context": "Reflecting on the show I attended, I shared my feelings. I found it boring. I had to wait too long."
+                },
+                {
+                    "original": "I forgot all English.",
+                    "corrected": "I forgot all my English.",
+                    "explanation": "The possessive 'my' is necessary to indicate ownership of the language.",
+                    "context": "I was feeling overwhelmed during the conversation. I forgot all my English. It was hard to express myself."
+                },
+                {
+                    "original": "Like visagist, I'm not sure.",
+                    "corrected": "Like a visagist, I'm not sure.",
+                    "explanation": "The article 'a' is needed before 'visagist' to indicate it is a singular noun.",
+                    "context": "I was trying to recall the term for a makeup artist. Like a visagist, I'm not sure. I wanted to get it right."
+                },
+                {
+                    "original": "It was like a rehearsal.",
+                    "corrected": "It was like a rehearsal.",
+                    "explanation": "This sentence is correct but could be clearer with more context.",
+                    "context": "I was explaining the nature of the event I attended. It was like a rehearsal. There were no viewers, just practice."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "For me just small experience",
+                    "corrected": "For me, it's just a small experience.",
+                    "explanation": "The sentence lacks a verb; adding 'it's' clarifies the subject and verb structure.",
+                    "context": "I attended a show recently. For me, it's just a small experience. I didn't find it particularly impressive."
+                },
+                {
+                    "original": "I don't think so Everybody Are you hearing me?",
+                    "corrected": "I don't think so. Everybody, are you hearing me?",
+                    "explanation": "Punctuation is needed to separate thoughts; a period is required after 'think so' to indicate the end of the sentence.",
+                    "context": "During our discussion, I expressed my doubts. I don't think so. Everybody, are you hearing me? I want to make sure my point is understood."
+                },
+                {
+                    "original": "No, no It's like It starts to be easier Easier maybe",
+                    "corrected": "No, no. It's like it starts to get easier. Easier, maybe.",
+                    "explanation": "The sentence lacks proper punctuation and verb form; 'get' should be used to indicate a change in state.",
+                    "context": "I was talking about adjusting to a new time zone. No, no. It's like it starts to get easier. Easier, maybe."
+                },
+                {
+                    "original": "I haven't any goals For today",
+                    "corrected": "I don't have any goals for today.",
+                    "explanation": "The correct form is 'I don't have' instead of 'I haven't' for expressing possession.",
+                    "context": "When asked about my plans, I realized I had none. I don't have any goals for today. Just taking it easy."
+                },
+                {
+                    "original": "I think I want to call Any Of my friends to walk For a walk",
+                    "corrected": "I think I want to call any of my friends to go for a walk.",
+                    "explanation": "'For a walk' is redundant; 'go for a walk' is the correct phrase.",
+                    "context": "I was considering my options for exploring the city. I think I want to call any of my friends to go for a walk. It would be nice to have company."
+                },
+                {
+                    "original": "1 pm is not morning",
+                    "corrected": "1 pm is not morning.",
+                    "explanation": "The sentence is missing a period at the end to indicate completion.",
+                    "context": "We were discussing flight times and schedules. I clarified, 1 pm is not morning. It's important to distinguish between the two."
+                },
+                {
+                    "original": "It's too early Maybe",
+                    "corrected": "It's too early, maybe.",
+                    "explanation": "A comma is needed before 'maybe' to separate the clauses properly.",
+                    "context": "I was reflecting on the time I had to wake up for my flight. It's too early, maybe. I prefer to wake up a bit later."
+                },
+                {
+                    "original": "Like dead quiet Like on the cemetery",
+                    "corrected": "Like dead quiet, like in a cemetery.",
+                    "explanation": "The phrase 'on the cemetery' is incorrect; 'in a cemetery' is the proper preposition.",
+                    "context": "I was describing the silence in my apartment. It's like dead quiet, like in a cemetery. There’s no noise at all."
+                },
+                {
+                    "original": "Because they are so quiet Okay Are you enjoying your",
+                    "corrected": "Because they are so quiet. Okay? Are you enjoying your...",
+                    "explanation": "Punctuation is needed to separate the statements; a period is required after 'quiet'.",
+                    "context": "I was trying to understand why I couldn't hear my neighbors. Because they are so quiet. Okay? Are you enjoying your time here?"
+                },
+                {
+                    "original": "Like there are 5 suitcases Somewhere in your room",
+                    "corrected": "There are like 5 suitcases somewhere in your room.",
+                    "explanation": "The word 'like' should be used to indicate approximation, not as a filler; the sentence structure needs adjustment.",
+                    "context": "I was estimating how many suitcases I had. There are like 5 suitcases somewhere in your room. It’s a bit chaotic."
+                },
+                {
+                    "original": "My mother And it's her first pictures",
+                    "corrected": "My mother, and they're her first pictures.",
+                    "explanation": "The conjunction needs proper punctuation; 'they're' clarifies that the pictures belong to the mother.",
+                    "context": "I was discussing my mother's artistic background. My mother, and they're her first pictures. It's a special part of her journey."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Bluetooth",
+                    "definition": "A wireless technology standard for exchanging data over short distances.",
+                    "context": {
+                        "Context 1": "I couldn't connect my headphones because the Bluetooth was turned off.",
+                        "Context 2": "The Bluetooth speaker played music from my phone without any wires.",
+                        "Context 3": "He used Bluetooth to connect his laptop to the printer."
+                    }
+                },
+                {
+                    "word": "Mirrored",
+                    "definition": "Reflected in a way that shows a reversed image.",
+                    "context": {
+                        "Context 1": "The image on the screen was mirrored, making it look like my left hand was my right.",
+                        "Context 2": "She admired her mirrored reflection in the lake.",
+                        "Context 3": "The mirrored walls of the gym made the space feel larger."
+                    }
+                },
+                {
+                    "word": "End up",
+                    "definition": "To arrive at a particular place or situation after a series of events.",
+                    "context": {
+                        "Context 1": "I didn't plan to go to the party, but I ended up having a great time.",
+                        "Context 2": "After a long journey, we ended up at a beautiful beach.",
+                        "Context 3": "He studied hard, but he ended up failing the exam."
+                    }
+                },
+                {
+                    "word": "Makeup artist",
+                    "definition": "A professional who applies cosmetics to enhance or alter a person's appearance.",
+                    "context": {
+                        "Context 1": "The makeup artist took hours to prepare the performers for the show.",
+                        "Context 2": "She always wanted to be a makeup artist after watching beauty tutorials online.",
+                        "Context 3": "The makeup artist used bright colors for the Halloween party."
+                    }
+                },
+                {
+                    "word": "Rehearse",
+                    "definition": "To practice a performance or presentation in preparation for the actual event.",
+                    "context": {
+                        "Context 1": "Before the show, the cast had to rehearse their lines multiple times.",
+                        "Context 2": "He likes to rehearse his speech in front of a mirror.",
+                        "Context 3": "The orchestra will rehearse for the concert next week."
+                    }
+                },
+                {
+                    "word": "Boring",
+                    "definition": "Not interesting; dull.",
+                    "context": {
+                        "Context 1": "The show was boring for her because she had to wait all day.",
+                        "Context 2": "He found the lecture on statistics incredibly boring.",
+                        "Context 3": "The movie was so boring that many people left the theater early."
+                    }
+                },
+                {
+                    "word": "Performance",
+                    "definition": "An act of presenting a play, concert, or other form of entertainment.",
+                    "context": {
+                        "Context 1": "The performance went well despite the long wait.",
+                        "Context 2": "She received a standing ovation for her performance in the play.",
+                        "Context 3": "The circus performance was filled with acrobatics and magic tricks."
+                    }
+                },
+                {
+                    "word": "Competition",
+                    "definition": "An event in which people compete against each other to win.",
+                    "context": {
+                        "Context 1": "She was nervous about the competition but did her best.",
+                        "Context 2": "The baking competition had many talented chefs participating.",
+                        "Context 3": "He won the competition for the best science project in school."
+                    }
+                },
+                {
+                    "word": "Guarding",
+                    "definition": "To watch over something to protect it from danger or harm.",
+                    "context": {
+                        "Context 1": "There was a person guarding the exit to prevent anyone from sneaking out.",
+                        "Context 2": "The dog was guarding the house while its owner was away.",
+                        "Context 3": "The security guard was guarding the entrance to the concert."
+                    }
+                },
+                {
+                    "word": "Instant",
+                    "definition": "A very short period of time; a moment.",
+                    "context": {
+                        "Context 1": "It was an instant when everything changed for her.",
+                        "Context 2": "He made an instant decision to join the team.",
+                        "Context 3": "The instant coffee dissolved quickly in hot water."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Bluetooth",
+                    "fact": "The name 'Bluetooth' comes from a 10th-century Danish king, Harald Bluetooth, who united Denmark and Norway!"
+                },
+                {
+                    "word": "Makeup artist",
+                    "fact": "The world's first makeup artist was a man named Max Factor, who created makeup for Hollywood stars in the early 1900s!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the makeup artist break up with their partner?",
+                    "answer": "Because they just couldn't find the right shade of love!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Applause",
+                    "definition": "The clapping of hands to show approval or appreciation.",
+                    "context": {
+                        "Context 1": "Did you hear the applause after the performance? It seemed like the audience really enjoyed it.",
+                        "Context 2": "The chef received applause from the diners after serving the delicious meal.",
+                        "Context 3": "At the end of the movie, the audience erupted in applause, showing their appreciation for the film."
+                    }
+                },
+                {
+                    "word": "Adjusting",
+                    "definition": "To change or adapt to a new situation or environment.",
+                    "context": {
+                        "Context 1": "Your body is adjusting to the new climate after your flight to St. Petersburg.",
+                        "Context 2": "He is adjusting his schedule to fit in more exercise.",
+                        "Context 3": "The team is adjusting their strategy based on the opponent's weaknesses."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "The process of doing and seeing things, or an event that leaves an impression.",
+                    "context": {
+                        "Context 1": "For me, the show was just a small experience, nothing more.",
+                        "Context 2": "Traveling to new countries can be a life-changing experience.",
+                        "Context 3": "She shared her experience of skydiving with her friends."
+                    }
+                },
+                {
+                    "word": "Schedule",
+                    "definition": "A plan for carrying out a process or procedure, giving lists of intended events and times.",
+                    "context": {
+                        "Context 1": "The show had a tight schedule, which made it feel serious.",
+                        "Context 2": "He checked his schedule to see if he was free for dinner.",
+                        "Context 3": "The school schedule includes classes, breaks, and extracurricular activities."
+                    }
+                },
+                {
+                    "word": "No matter",
+                    "definition": "Regardless of; without consideration for.",
+                    "context": {
+                        "Context 1": "No matter how serious the show was, I still didn't enjoy it.",
+                        "Context 2": "No matter what happens, I will always support you.",
+                        "Context 3": "No matter the weather, we will go hiking this weekend."
+                    }
+                },
+                {
+                    "word": "Comfortable",
+                    "definition": "Providing physical ease and relaxation.",
+                    "context": {
+                        "Context 1": "Is it comfortable for you to stay in this apartment?",
+                        "Context 2": "She wore her comfortable shoes for the long walk.",
+                        "Context 3": "The couch is so comfortable that I fell asleep while watching TV."
+                    }
+                },
+                {
+                    "word": "Background noise",
+                    "definition": "Sounds that are not the main focus of attention, often present in the environment.",
+                    "context": {
+                        "Context 1": "Usually, I hear some background noise, but today it’s dead quiet.",
+                        "Context 2": "I find it hard to concentrate with background noise while studying.",
+                        "Context 3": "The background noise of the city can be overwhelming at times."
+                    }
+                },
+                {
+                    "word": "Nurtured",
+                    "definition": "To care for and encourage the growth or development of someone or something.",
+                    "context": {
+                        "Context 1": "Her mother nurtured her love for art from a young age.",
+                        "Context 2": "The gardener nurtured the plants to ensure they thrived.",
+                        "Context 3": "Teachers play a vital role in nurturing students' talents."
+                    }
+                },
+                {
+                    "word": "Goals",
+                    "definition": "The object of a person's ambition or effort; an aim or desired result.",
+                    "context": {
+                        "Context 1": "You probably have a lot of goals for today since you woke up early.",
+                        "Context 2": "Setting clear goals can help you stay focused and motivated.",
+                        "Context 3": "Her goal is to run a marathon by the end of the year."
+                    }
+                },
+                {
+                    "word": "Flight",
+                    "definition": "The act of flying; a journey made by air.",
+                    "context": {
+                        "Context 1": "You had a flight scheduled for 1 pm in Novosibirsk.",
+                        "Context 2": "The flight to Paris was delayed due to bad weather.",
+                        "Context 3": "He enjoys watching the flight of birds in the sky."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Applause",
+                    "fact": "In ancient Rome, applause was often given by snapping fingers instead of clapping hands!"
+                },
+                {
+                    "word": "Adjusting",
+                    "fact": "Did you know that it takes about 21 days to adjust to a new habit? So, if you want to eat more vegetables, just keep trying!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the airplane break up with the helicopter?",
+                    "answer": "Because it felt like they were just going in circles!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to figure out this new video call setup. Can you hear me okay?"
+                },
+                {
+                    "Person 1": "Yeah, I can hear you loud and clear! Can you see me?"
+                },
+                {
+                    "Person 2": "Yep, I see you! But you look a bit different. Is your camera flipped or something?"
+                },
+                {
+                    "Person 1": "Oh, I think it is! It’s like a mirror image. Makes me look like I have two left feet!"
+                },
+                {
+                    "Person 2": "Haha! Well, at least you can still wave with your right hand, right?"
+                },
+                {
+                    "Person 1": "True! Speaking of hands, where are you right now? It looks cozy."
+                },
+                {
+                    "Person 2": "I’m at my grandma's place. She has all these old photos on the wall. It’s like stepping back in time!"
+                },
+                {
+                    "Person 1": "That sounds nice! Did you come here for a special occasion?"
+                },
+                {
+                    "Person 2": "Yeah, there was a performance I was part of. It was fun, but I had to wait all day to go on stage."
+                },
+                {
+                    "Person 1": "Wow, that sounds like a long wait! What did you do to pass the time?"
+                },
+                {
+                    "Person 2": "Honestly, I just sat around and tried not to fall asleep. Waiting can be so boring!"
+                },
+                {
+                    "Person 1": "I get that! Did you at least get to hang out with your friends?"
+                },
+                {
+                    "Person 2": "Not really. We were all in different makeup schedules, so I was just stuck waiting."
+                },
+                {
+                    "Person 1": "That’s rough! Did you have a makeup artist helping you?"
+                },
+                {
+                    "Person 2": "Yeah, she was great! But she had to do everyone’s makeup, so we all had to wait our turn."
+                },
+                {
+                    "Person 1": "Sounds like a lot of work! Did you get to rehearse before the actual performance?"
+                },
+                {
+                    "Person 2": "We did! It was just us practicing without an audience, but it helped calm my nerves."
+                },
+                {
+                    "Person 1": "That’s good! I bet the performance went well in the end."
+                },
+                {
+                    "Person 2": "It did! I was so relieved once it was over. Now I just want to relax!"
+                },
+                {
+                    "Person 1": "You deserve it! Let’s catch up more later. Enjoy your time at grandma's!"
+                },
+                {
+                    "Person 2": "Thanks! Talk soon!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How was your trip to St. Petersburg?"
+                },
+                {
+                    "Person 2": "It was pretty good! I arrived yesterday at 1 PM. The flight was about four hours."
+                },
+                {
+                    "Person 1": "Nice! Did you have to wake up super early for your flight?"
+                },
+                {
+                    "Person 2": "Yeah, I had to wake up at 4 AM. It was rough, but I made it!"
+                },
+                {
+                    "Person 1": "Oof, that’s early! So, what’s the first thing you did when you got there?"
+                },
+                {
+                    "Person 2": "I went for a walk around the city. It’s beautiful, as always."
+                },
+                {
+                    "Person 1": "That sounds lovely! Did you visit any of your favorite spots?"
+                },
+                {
+                    "Person 2": "Not yet, but I plan to. I want to explore a bit more today."
+                },
+                {
+                    "Person 1": "Are you going to walk alone or with someone?"
+                },
+                {
+                    "Person 2": "I might call a friend to join me. It’s always more fun with company!"
+                },
+                {
+                    "Person 1": "Definitely! So, do you have any plans for the rest of your stay?"
+                },
+                {
+                    "Person 2": "Not really. Just enjoying the city and relaxing. No shows or anything this time."
+                },
+                {
+                    "Person 1": "Sounds like a nice break! How’s the apartment you’re staying in?"
+                },
+                {
+                    "Person 2": "It’s really quiet, actually. I kind of like it, but it feels a bit eerie sometimes."
+                },
+                {
+                    "Person 1": "Haha, I get that! Is it just you there?"
+                },
+                {
+                    "Person 2": "No, there are other people, but they’re super quiet. I barely hear them."
+                },
+                {
+                    "Person 1": "That’s good! So, do you have any books with you to read?"
+                },
+                {
+                    "Person 2": "I brought one book, but I also have a little library here. I love having options!"
+                },
+                {
+                    "Person 1": "Nice! What kind of books do you like?"
+                },
+                {
+                    "Person 2": "Mostly fiction, but I enjoy some art books too. My mom is a painter, so I grew up around art."
+                },
+                {
+                    "Person 1": "That’s awesome! It must be inspiring to have that background."
+                },
+                {
+                    "Person 2": "For sure! It definitely nurtured my love for art."
+                },
+                {
+                    "Person 1": "Well, enjoy your time there! Can’t wait to hear all about your adventures."
+                },
+                {
+                    "Person 2": "Thanks! I’ll keep you posted!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
