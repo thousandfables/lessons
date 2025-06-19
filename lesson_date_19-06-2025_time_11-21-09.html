@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "He understood very good.",
+                    "corrected": "He understood very well.",
+                    "explanation": "\"Very good\" is incorrect here; \"well\" should be used to describe the verb \"understood.\"",
+                    "context": "I was discussing a student who took a test recently. He was a chemist with a structured mindset. He understood very well how to use the vocabulary needed for writing reports."
+                },
+                {
+                    "original": "They are. I'm not saying I don't like they just make me boring.",
+                    "corrected": "I'm not saying I don't like them; they just make me bored.",
+                    "explanation": "The pronoun \"they\" should be used instead of \"they\" to refer to reports, and the correct adjective form is \"bored\" instead of \"boring\" when describing feelings.",
+                    "context": "I was expressing my feelings about writing reports. I'm not saying I don't like them; they just make me bored. I find essays more interesting to write."
+                },
+                {
+                    "original": "You need like your potential.",
+                    "corrected": "You need to unlock your potential.",
+                    "explanation": "The phrase is missing a verb; it should be \"to unlock\" instead of just \"like.\"",
+                    "context": "I was advising the student on how to improve their writing skills. You need to unlock your potential in the writing part. This will help you excel in essays."
+                },
+                {
+                    "original": "You can do whatever you want.",
+                    "corrected": "You can do whatever you like.",
+                    "explanation": "\"Want\" is less idiomatic in this context; \"like\" is more commonly used when referring to preferences.",
+                    "context": "I was comparing essays to reports. In essays, you can do whatever you like. This flexibility makes them more enjoyable for me."
+                },
+                {
+                    "original": "You need again to master them as well to do to practice them yet to use child GPT to practice.",
+                    "corrected": "You need to master them as well, to practice and use ChatGPT.",
+                    "explanation": "The sentence structure is awkward and unclear; it needs better punctuation and clarity.",
+                    "context": "I was emphasizing the importance of practice for writing tasks. You need to master them as well, to practice and use ChatGPT effectively."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "Build up area, it should be spelled with built up area and does make much sense.",
+                    "corrected": "Built-up area, it should be spelled as built-up area and it doesn't make much sense.",
+                    "explanation": "The term 'build up area' is incorrect; it should be 'built-up area' as it refers to an area that has been developed. Additionally, 'does' should be 'it doesn't' for grammatical correctness.",
+                    "context": "I'm trying to analyze the map, but I keep finding mistakes. Built-up area should be spelled as built-up area, and it doesn't make much sense."
+                },
+                {
+                    "original": "I think there is there are any shops in here with on the.",
+                    "corrected": "I think there are some shops in here.",
+                    "explanation": "The phrase 'there is there are' is incorrect; it should be 'there are' to match the plural noun 'shops.' The phrase 'with on the' is unnecessary and confusing.",
+                    "context": "As I look at the map, I'm trying to identify the features. I think there are some shops in here."
+                },
+                {
+                    "original": "Sometimes, sometimes, sometimes, on the real test, they would give tasks that don't make much sense at first glance.",
+                    "corrected": "Sometimes, on the real test, they give tasks that don't make much sense at first glance.",
+                    "explanation": "The repetition of 'sometimes' is unnecessary. The phrase should be streamlined for clarity.",
+                    "context": "When preparing for the test, I reflect on the types of tasks we might encounter. Sometimes, on the real test, they give tasks that don't make much sense at first glance."
+                },
+                {
+                    "original": "We need to like to practice on ideal tasks that are already clear and need not very good idea as well.",
+                    "corrected": "We need to practice on ideal tasks that are already clear; it's not a very good idea as well.",
+                    "explanation": "The phrase 'need to like to practice' is awkward; it should be simplified to 'need to practice.' The second part of the sentence is also unclear and should be rephrased for better coherence.",
+                    "context": "In our lessons, we focus on improving our skills. We need to practice on ideal tasks that are already clear; it's not a very good idea to complicate things."
+                },
+                {
+                    "original": "If you don't understand how it works.",
+                    "corrected": "If you don't understand how it works,",
+                    "explanation": "The original sentence is a fragment and lacks a main clause; it should be connected to a complete thought.",
+                    "context": "While discussing the map, I emphasize the importance of clarity. If you don't understand how it works, it's better to ask for help."
+                },
+                {
+                    "original": "And then you wrote farms slowly disappeared as well.",
+                    "corrected": "And then you said farms slowly disappeared as well.",
+                    "explanation": "The verb 'wrote' is incorrect in this context; it should be 'said' to refer to spoken communication.",
+                    "context": "As we analyze the changes on the map, I summarize the observations. And then you said farms slowly disappeared as well."
+                },
+                {
+                    "original": "How do you call a man without a body on the nose?",
+                    "corrected": "How do you call a man without a body and with a nose?",
+                    "explanation": "The phrase 'without a body on the nose' is confusing and incorrect; it should clarify that the man has no body but has a nose.",
+                    "context": "In a light-hearted moment, I try to make a joke. How do you call a man without a body and with a nose?"
+                },
+                {
+                    "original": "If it's homes or village, yeah, that's residential area.",
+                    "corrected": "If it's homes or a village, yeah, that's a residential area.",
+                    "explanation": "The phrase is missing an article before 'village' and 'residential area'; it should include 'a' for grammatical correctness.",
+                    "context": "While discussing terminology, I clarify definitions. If it's homes or a village, yeah, that's a residential area."
+                },
+                {
+                    "original": "Like wetland. We don't know whether it's what kind of reservoir is that, whether it's a natural reservoir or artificial.",
+                    "corrected": "Like wetland, we don't know what kind of reservoir that is, whether it's natural or artificial.",
+                    "explanation": "The original sentence has awkward phrasing and redundancy; it should be streamlined for clarity.",
+                    "context": "As we analyze the map features, I express uncertainty. Like wetland, we don't know what kind of reservoir that is, whether it's natural or artificial."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Continuous",
+                    "definition": "Forming an unbroken whole; without interruption.",
+                    "context": {
+                        "Context 1": "The past continuous tense is used to describe actions that were ongoing in the past.",
+                        "Context 2": "The continuous sound of the waves was soothing as we relaxed on the beach.",
+                        "Context 3": "She enjoyed a continuous stream of visitors throughout the day."
+                    }
+                },
+                {
+                    "word": "Report",
+                    "definition": "To give a spoken or written account of something that one has observed, heard, done, or investigated.",
+                    "context": {
+                        "Context 1": "In the lesson, we discussed how to report ongoing processes in the past.",
+                        "Context 2": "The teacher asked the students to report their findings from the science experiment.",
+                        "Context 3": "He decided to report the suspicious activity to the authorities."
+                    }
+                },
+                {
+                    "word": "Phrasing",
+                    "definition": "The way in which words and phrases are arranged to create meaning.",
+                    "context": {
+                        "Context 1": "We need to work on the phrasing of your sentences to make them clearer.",
+                        "Context 2": "The musician focused on the phrasing of the melody to convey emotion.",
+                        "Context 3": "Good phrasing in speech can make a big difference in public speaking."
+                    }
+                },
+                {
+                    "word": "Emphasize",
+                    "definition": "To give special importance or prominence to something in speaking or writing.",
+                    "context": {
+                        "Context 1": "In the lesson, we learned how to emphasize ongoing actions using the past continuous.",
+                        "Context 2": "The coach wanted to emphasize teamwork during the training session.",
+                        "Context 3": "She used bold text to emphasize the key points in her presentation."
+                    }
+                },
+                {
+                    "word": "Clarify",
+                    "definition": "To make a statement or situation less confused and more comprehensible.",
+                    "context": {
+                        "Context 1": "We need to clarify the details of the assignment to avoid confusion.",
+                        "Context 2": "The teacher took time to clarify the instructions for the project.",
+                        "Context 3": "He asked the doctor to clarify the treatment options available."
+                    }
+                },
+                {
+                    "word": "Structure",
+                    "definition": "The arrangement of and relations between the parts or elements of something complex.",
+                    "context": {
+                        "Context 1": "The lesson focused on the structure of reports and essays.",
+                        "Context 2": "The structure of the building was designed to withstand earthquakes.",
+                        "Context 3": "She admired the intricate structure of the spider's web."
+                    }
+                },
+                {
+                    "word": "Potential",
+                    "definition": "Having or showing the capacity to develop into something in the future.",
+                    "context": {
+                        "Context 1": "The teacher encouraged her students to realize their potential in writing.",
+                        "Context 2": "He saw potential in the young athlete and decided to coach her.",
+                        "Context 3": "The company's potential for growth attracted many investors."
+                    }
+                },
+                {
+                    "word": "Master",
+                    "definition": "To become very skilled or proficient in a particular area.",
+                    "context": {
+                        "Context 1": "You need to master the writing task to excel in your exams.",
+                        "Context 2": "He worked hard to master the art of cooking gourmet meals.",
+                        "Context 3": "She aimed to master the piano before her next recital."
+                    }
+                },
+                {
+                    "word": "Rigid",
+                    "definition": "Not able to be changed or adapted; strict and inflexible.",
+                    "context": {
+                        "Context 1": "The lesson highlighted how reports can be more rigid compared to essays.",
+                        "Context 2": "The company's rigid policies made it difficult for employees to express their ideas.",
+                        "Context 3": "His rigid schedule left little room for spontaneity."
+                    }
+                },
+                {
+                    "word": "Process",
+                    "definition": "A series of actions or steps taken to achieve a particular end.",
+                    "context": {
+                        "Context 1": "We discussed the process of using the past continuous in our lesson.",
+                        "Context 2": "The hiring process can take several weeks to complete.",
+                        "Context 3": "Cooking is a process that requires patience and attention to detail."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Continuous",
+                    "fact": "Did you know that the word 'continuous' is often used in math to describe functions that don't have breaks, much like a good Netflix binge-watch?"
+                },
+                {
+                    "word": "Master",
+                    "fact": "The term 'master' comes from the Old English 'mægester,' which means 'one who has control,' like a cat who masters the art of getting treats!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Glitching",
+                    "definition": "Experiencing a sudden malfunction or error, especially in technology.",
+                    "context": {
+                        "Context 1": "The video call was glitching, making it hard to hear each other.",
+                        "Context 2": "My computer started glitching when I tried to open too many applications at once.",
+                        "Context 3": "The video game was glitching, causing characters to disappear randomly."
+                    }
+                },
+                {
+                    "word": "Prototype",
+                    "definition": "An original model or version of something from which other forms are developed.",
+                    "context": {
+                        "Context 1": "We discussed the two prototypes for the new app during the meeting.",
+                        "Context 2": "The artist created a prototype of the sculpture before making the final version.",
+                        "Context 3": "The chef's prototype for the new dish was a hit at the restaurant's tasting event."
+                    }
+                },
+                {
+                    "word": "Synchronized",
+                    "definition": "Operating at the same time or rate; coordinated.",
+                    "context": {
+                        "Context 1": "The road and the bridge were not synchronized in the map.",
+                        "Context 2": "The dancers performed a synchronized routine that amazed the audience.",
+                        "Context 3": "The clocks in the building were synchronized to ensure everyone was on time."
+                    }
+                },
+                {
+                    "word": "Infrastructure",
+                    "definition": "The basic physical and organizational structures needed for the operation of a society or enterprise.",
+                    "context": {
+                        "Context 1": "We need to improve the transportation infrastructure in our city.",
+                        "Context 2": "The infrastructure of the internet allows for global communication.",
+                        "Context 3": "Good infrastructure is essential for a successful business environment."
+                    }
+                },
+                {
+                    "word": "Wetland",
+                    "definition": "Land consisting of marshes or swamps; saturated land.",
+                    "context": {
+                        "Context 1": "The map showed a wetland for birds that appeared in 2000.",
+                        "Context 2": "Wetlands are crucial for maintaining biodiversity and water quality.",
+                        "Context 3": "The wetland was home to many unique species of plants and animals."
+                    }
+                },
+                {
+                    "word": "Residential area",
+                    "definition": "A section of a city or town where people live, typically consisting of houses.",
+                    "context": {
+                        "Context 1": "The residential area near the park is very popular with families.",
+                        "Context 2": "She moved to a residential area to enjoy a quieter lifestyle.",
+                        "Context 3": "The residential area was filled with colorful houses and friendly neighbors."
+                    }
+                },
+                {
+                    "word": "Controversial",
+                    "definition": "Giving rise or likely to give rise to public disagreement.",
+                    "context": {
+                        "Context 1": "The topic was controversial and sparked a heated debate.",
+                        "Context 2": "His controversial opinion on the matter surprised everyone.",
+                        "Context 3": "The film was controversial due to its portrayal of historical events."
+                    }
+                },
+                {
+                    "word": "Facilities",
+                    "definition": "Spaces or equipment necessary for a particular purpose.",
+                    "context": {
+                        "Context 1": "The new sports facilities were a great addition to the community.",
+                        "Context 2": "The hotel offers excellent facilities for business travelers.",
+                        "Context 3": "The school has modern facilities for science experiments."
+                    }
+                },
+                {
+                    "word": "Disappeared",
+                    "definition": "Ceased to be visible or to exist.",
+                    "context": {
+                        "Context 1": "The trees disappeared to make way for new buildings.",
+                        "Context 2": "The magician made the rabbit disappear in a puff of smoke.",
+                        "Context 3": "The old traditions have slowly disappeared over the years."
+                    }
+                },
+                {
+                    "word": "Arrangements",
+                    "definition": "Plans or preparations made in advance.",
+                    "context": {
+                        "Context 1": "She made arrangements to take the test before summer.",
+                        "Context 2": "The wedding arrangements took months to finalize.",
+                        "Context 3": "He had to change his travel arrangements due to a scheduling conflict."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Glitching",
+                    "fact": "The term 'glitch' comes from the Yiddish word 'glitsh,' meaning 'to slip'!"
+                },
+                {
+                    "word": "Wetland",
+                    "fact": "Wetlands are often called 'nature's kidneys' because they filter pollutants from water!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many glitches in its system!"
+                },
+                {
+                    "question": "Why did the map break up with the road?",
+                    "answer": "Because they just couldn't find common ground!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh, totally! It was intense! I can't believe they pulled off that last-minute win."
+                },
+                {
+                    "Person 1": "Right? I was on the edge of my seat! I thought they were done for."
+                },
+                {
+                    "Person 2": "Same here! And that last play was just incredible. I mean, who even thought they could pull that off?"
+                },
+                {
+                    "Person 1": "I know! It was like something out of a movie. Did you see the reaction from the crowd?"
+                },
+                {
+                    "Person 2": "Yes! Everyone went wild! I wish I could have been there."
+                },
+                {
+                    "Person 1": "Me too! Watching it live must have been a whole different experience."
+                },
+                {
+                    "Person 2": "For sure! So, are you planning to watch the next game?"
+                },
+                {
+                    "Person 1": "Absolutely! I’m already looking forward to it. Gotta see if they can keep the momentum going."
+                },
+                {
+                    "Person 2": "Definitely! Let’s grab some snacks and watch it together."
+                },
+                {
+                    "Person 1": "Sounds like a plan! I’ll bring the popcorn!"
+                },
+                {
+                    "Person 2": "Awesome! I’ll bring some drinks. Can’t wait!"
+                },
+                {
+                    "Person 1": "Me neither! It’s going to be a blast!"
+                },
+                {
+                    "Person 2": "Yeah! Let’s hope for another exciting game!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you seen the new coffee shop that opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I went there last weekend! The vibe is really cool."
+                },
+                {
+                    "Person 1": "Nice! What did you order?"
+                },
+                {
+                    "Person 2": "I tried their caramel macchiato. It was delicious! How about you?"
+                },
+                {
+                    "Person 1": "I haven't been yet, but I heard their pastries are amazing too."
+                },
+                {
+                    "Person 2": "Oh, for sure! I got a blueberry muffin, and it was super fresh."
+                },
+                {
+                    "Person 1": "Sounds tempting! We should go together sometime."
+                },
+                {
+                    "Person 2": "Definitely! Maybe this weekend?"
+                },
+                {
+                    "Person 1": "That works for me! Saturday morning?"
+                },
+                {
+                    "Person 2": "Perfect! I’ll bring my laptop so we can work a bit too."
+                },
+                {
+                    "Person 1": "Great idea! A coffee and some productivity sounds like a plan."
+                },
+                {
+                    "Person 2": "Awesome! I’ll see you Saturday then."
+                },
+                {
+                    "Person 1": "Looking forward to it! Have a good week!"
+                },
+                {
+                    "Person 2": "You too! Bye!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
