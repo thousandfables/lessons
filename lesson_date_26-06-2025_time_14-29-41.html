@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "This week I stay at the country house until this weekend.",
+                    "corrected": "This week I am staying at the country house until this weekend.",
+                    "explanation": "The present continuous 'am staying' is needed to indicate an ongoing action in the present.",
+                    "context": "I have been at my country house for a while now. This week I am staying at the country house until this weekend. After that, I will go to Moscow."
+                },
+                {
+                    "original": "I go to Tver to meet with my friends or doing my deal.",
+                    "corrected": "I go to Tver to meet with my friends or to do my errands.",
+                    "explanation": "The verb form 'doing' is incorrect here; it should be 'to do' to match the infinitive form used earlier.",
+                    "context": "When I'm not at home, I often visit Tver. I go to Tver to meet with my friends or to do my errands. It keeps me busy."
+                },
+                {
+                    "original": "I running my errands and chill.",
+                    "corrected": "I am running my errands and chilling.",
+                    "explanation": "The present continuous 'am running' is needed to indicate an ongoing action.",
+                    "context": "I have a lot to do while I'm here. I am running my errands and chilling. It keeps my days interesting."
+                },
+                {
+                    "original": "To conclusion.",
+                    "corrected": "To conclude.",
+                    "explanation": "'To conclusion' is incorrect; the correct infinitive form is 'to conclude.'",
+                    "context": "I have a presentation to finish. I need to conclude my presentation. It's my last exam preparation."
+                },
+                {
+                    "original": "I can say I can't do nothing or I can't do anything.",
+                    "corrected": "I can say I can't do anything.",
+                    "explanation": "'I can't do nothing' is a double negative; the correct phrase is 'I can't do anything.'",
+                    "context": "When I feel overwhelmed, I struggle to find motivation. I can say I can't do anything. It just happens sometimes."
+                },
+                {
+                    "original": "I had these days when I tired very much.",
+                    "corrected": "I have had these days when I am very tired.",
+                    "explanation": "The present perfect 'have had' is needed for past experiences that are relevant now, and 'am very tired' is the correct present form.",
+                    "context": "There are days when I feel completely exhausted. I have had these days when I am very tired. It can be hard to get motivated."
+                },
+                {
+                    "original": "I restored my timetable.",
+                    "corrected": "I have restored my timetable.",
+                    "explanation": "The present perfect 'have restored' is needed to indicate a recent action with relevance to the present.",
+                    "context": "I've been working on getting my schedule back on track. I have restored my timetable. Now I feel more organized."
+                },
+                {
+                    "original": "I don't understand what it is.",
+                    "corrected": "I don't understand what you mean.",
+                    "explanation": "The phrase 'what it is' is vague; 'what you mean' clarifies the misunderstanding.",
+                    "context": "Sometimes I find it hard to follow the conversation. I don't understand what you mean. It can be confusing."
+                },
+                {
+                    "original": "Did you let it go or do you still feel some kind of sadness?",
+                    "corrected": "Did you let it go, or do you still feel sad?",
+                    "explanation": "'Some kind of sadness' is awkward; 'feel sad' is more idiomatic.",
+                    "context": "I want to check in on how you're feeling. Did you let it go, or do you still feel sad? It's important to talk about it."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I need a little bit sun and warm temperature.",
+                    "corrected": "I need a little bit of sun and warm temperatures.",
+                    "explanation": "The phrase 'a little bit sun' is incorrect; it should be 'a little bit of sun.' Additionally, 'warm temperature' should be pluralized to 'warm temperatures' for consistency.",
+                    "context": "The weather has been terrible lately. I need a little bit of sun and warm temperatures. I'm really looking forward to my trip to Turkey."
+                },
+                {
+                    "original": "That's why I very wait this trip.",
+                    "corrected": "That's why I am looking forward to this trip.",
+                    "explanation": "'Very wait' is incorrect; the correct phrase is 'looking forward to' when expressing anticipation.",
+                    "context": "The weather has been terrible lately. That's why I am looking forward to this trip. I can't wait to enjoy the sun and the sea."
+                },
+                {
+                    "original": "The main, my goal is to pass my last exam and today to prepare for... To prepare for...for it.",
+                    "corrected": "My main goal is to pass my last exam and prepare for it today.",
+                    "explanation": "The phrase 'the main, my goal' is awkward; it should be 'my main goal.' The structure of the sentence is also jumbled.",
+                    "context": "I have a lot on my plate right now. My main goal is to pass my last exam and prepare for it today. I need to focus on my studies."
+                },
+                {
+                    "original": "I strive don't think about it.",
+                    "corrected": "I try not to think about it.",
+                    "explanation": "'Strive don't think' is incorrect; it should be 'try not to think' to convey the intended meaning.",
+                    "context": "I have a lot of work to do. I try not to think about it. It's overwhelming, but I have to focus."
+                },
+                {
+                    "original": "It's not gonna be that hard, right?",
+                    "corrected": "It's not going to be that hard, right?",
+                    "explanation": "The phrase 'gonna' is informal; 'going to' should be used in more formal contexts.",
+                    "context": "I want to reassure you about your exam. It's not going to be that hard, right? You've prepared well."
+                },
+                {
+                    "original": "I think it can be that I can have a different mood in a day and it can be like waves.",
+                    "corrected": "I think I can have different moods throughout the day, and they can be like waves.",
+                    "explanation": "The structure is awkward; it should be 'I can have different moods' and 'throughout the day' for clarity.",
+                    "context": "Sometimes I feel down for no reason. I think I can have different moods throughout the day, and they can be like waves. It's unpredictable."
+                },
+                {
+                    "original": "I need to complete all these files, all this information in one presentation and to describe my idea very well.",
+                    "corrected": "I need to complete all these files and information in one presentation and describe my idea very well.",
+                    "explanation": "The phrase 'all this information in one presentation and to describe' is awkward; it should be 'and describe' for better flow.",
+                    "context": "I'm feeling overwhelmed with my studies. I need to complete all these files and information in one presentation and describe my idea very well. It's a lot of pressure."
+                },
+                {
+                    "original": "Working on projects, for example. On projects, to management events in real life, not in my presentation.",
+                    "corrected": "Working on projects, for example, managing events in real life, not just in my presentation.",
+                    "explanation": "The phrasing is fragmented; it should be combined for clarity and coherence.",
+                    "context": "I enjoy practical experience. Working on projects, for example, managing events in real life, not just in my presentation, is what I prefer."
+                },
+                {
+                    "original": "Do you, whenever you do something in English, is there any kind of activity that, you know, that lifts your mood that is done in English?",
+                    "corrected": "Whenever you do something in English, is there any activity that lifts your mood?",
+                    "explanation": "The original sentence is overly complicated and contains unnecessary phrases; it should be simplified.",
+                    "context": "I want to know about your experiences with English. Whenever you do something in English, is there any activity that lifts your mood? It's important to find joy in learning."
+                },
+                {
+                    "original": "I don't know what's on any, on any, any series in English.",
+                    "corrected": "I don't know what's on any series in English.",
+                    "explanation": "The repetition of 'on any, on any, any' is unnecessary; it should be concise.",
+                    "context": "I'm struggling to find something to watch. I don't know what's on any series in English. I need something to lift my spirits."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "It's not very easy, but it's not very difficult.",
+                    "corrected": "It's not very easy, but it's not very hard.",
+                    "explanation": "\"Difficult\" is often paired with \"hard\" in casual contexts; using \"hard\" is more idiomatic.",
+                    "context": "I was discussing how challenging it is to watch films in English. It's not very easy, but it's not very hard either. I think it's at a middle level."
+                },
+                {
+                    "original": "People who don't, who have very basic language.",
+                    "corrected": "People who have a very basic language.",
+                    "explanation": "The phrase is awkward; it should be simplified to avoid unnecessary repetition.",
+                    "context": "I was describing the tribes in the game. People who have a very basic language often struggle to communicate. They lack the skills of more civilized societies."
+                },
+                {
+                    "original": "We are building for three hours, for four hours, for six hours.",
+                    "corrected": "We built for three hours, for four hours, for six hours.",
+                    "explanation": "The present continuous tense is incorrect here; the past tense should be used to describe completed actions.",
+                    "context": "I was recounting our gaming experience. We built for three hours, for four hours, for six hours. We were eager to find enemies."
+                },
+                {
+                    "original": "It says peaceful here.",
+                    "corrected": "It says 'peaceful' here.",
+                    "explanation": "Quotation marks are needed to indicate that 'peaceful' is a term from the game settings.",
+                    "context": "I was explaining the game's settings. It says 'peaceful' here, which means no enemies. I was surprised to learn this."
+                },
+                {
+                    "original": "It's very awful.",
+                    "corrected": "It's very bad.",
+                    "explanation": "\"Awful\" is not typically used in this context; \"bad\" is more common for describing weather.",
+                    "context": "I was expressing my feelings about the weather. It's very bad outside. The stormy weather affects my mood negatively."
+                },
+                {
+                    "original": "I think that this stormy and cloudy weather is, have a very bad impact on my mood.",
+                    "corrected": "I think that this stormy and cloudy weather has a very bad impact on my mood.",
+                    "explanation": "The verb \"have\" should be changed to \"has\" to agree with the singular subject 'weather.'",
+                    "context": "I was discussing how the weather affects me. I think that this stormy and cloudy weather has a very bad impact on my mood. It always seems to bring me down."
+                },
+                {
+                    "original": "As we have, we must had a camp.",
+                    "corrected": "As we have, we should have had a camp.",
+                    "explanation": "The phrase is incorrect; 'must had' should be 'should have had' to indicate a past obligation.",
+                    "context": "I was reflecting on missed plans. As we have, we should have had a camp. It's disappointing that we couldn't go."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "We were going to have a camp trip last week, it's last week, but the weather was awful.",
+                    "corrected": "We were going to have a camping trip last week, but the weather was awful.",
+                    "explanation": "The term 'camp trip' is incorrect; 'camping trip' is the appropriate phrase.",
+                    "context": "We had planned to go on a camping trip last week, but the weather was awful. It was very rainy, so we decided to postpone our plans."
+                },
+                {
+                    "original": "And all our plans was broken.",
+                    "corrected": "And all our plans were broken.",
+                    "explanation": "'Was' should be 'were' because 'plans' is plural.",
+                    "context": "Unfortunately, all our plans were broken due to the bad weather. We had to reschedule everything."
+                },
+                {
+                    "original": "The weather to blame, to blame to this.",
+                    "corrected": "The weather is to blame for this.",
+                    "explanation": "The phrase is missing the verb 'is' and should use 'for' instead of 'to.'",
+                    "context": "The weather is to blame for this change in our plans. We couldn't go out because it was raining."
+                },
+                {
+                    "original": "Who works when it's rain, when it rains?",
+                    "corrected": "Who works when it rains?",
+                    "explanation": "The phrase 'it's rain' is incorrect; it should simply be 'it rains.'",
+                    "context": "I was thinking about how nobody works when it rains. Who works when it rains? It's a perfect excuse to stay home."
+                },
+                {
+                    "original": "I will go to bicycle trip.",
+                    "corrected": "I will go on a bicycle trip.",
+                    "explanation": "The phrase should include 'on' to indicate the activity of going on a trip.",
+                    "context": "I plan to go on a bicycle trip soon. It's a great way to enjoy the outdoors, even if it's raining."
+                },
+                {
+                    "original": "It's kind of, you know, hatred mixed with love and with envy.",
+                    "corrected": "It's kind of hatred mixed with love and envy.",
+                    "explanation": "The phrase 'with' is unnecessary before 'envy.'",
+                    "context": "I feel a mix of emotions about my friend going to Turkey. It's kind of hatred mixed with love and envy."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Amuse",
+                    "definition": "To entertain or make someone laugh.",
+                    "context": {
+                        "Context 1": "I try to amuse my friends with funny stories.",
+                        "Context 2": "The clown at the party was there to amuse the children.",
+                        "Context 3": "He found a way to amuse himself while waiting for the bus."
+                    }
+                },
+                {
+                    "word": "Errands",
+                    "definition": "Short trips taken to carry out tasks or chores.",
+                    "context": {
+                        "Context 1": "I have to run some errands before I can meet you.",
+                        "Context 2": "She enjoys running errands because it gets her out of the house.",
+                        "Context 3": "He forgot to do his errands and ended up staying home all day."
+                    }
+                },
+                {
+                    "word": "Timetable",
+                    "definition": "A schedule of events or activities.",
+                    "context": {
+                        "Context 1": "I need to check my timetable to see when my next class is.",
+                        "Context 2": "The train timetable shows all the departure and arrival times.",
+                        "Context 3": "She created a timetable for her daily exercise routine."
+                    }
+                },
+                {
+                    "word": "Chill",
+                    "definition": "To relax or take it easy.",
+                    "context": {
+                        "Context 1": "After a long week, I just want to chill at home.",
+                        "Context 2": "They decided to chill by the pool on their day off.",
+                        "Context 3": "He likes to chill with his friends while watching movies."
+                    }
+                },
+                {
+                    "word": "Stream",
+                    "definition": "To transmit or receive data (especially video) over the internet in real-time.",
+                    "context": {
+                        "Context 1": "I love to stream my favorite shows on weekends.",
+                        "Context 2": "Many gamers stream their gameplay on platforms like Twitch.",
+                        "Context 3": "She decided to stream her cooking session for her followers."
+                    }
+                },
+                {
+                    "word": "Recover",
+                    "definition": "To return to a normal state after a period of difficulty or illness.",
+                    "context": {
+                        "Context 1": "He took a week off to recover from his cold.",
+                        "Context 2": "After the storm, the town worked hard to recover.",
+                        "Context 3": "She needed time to recover emotionally after the breakup."
+                    }
+                },
+                {
+                    "word": "Presentation",
+                    "definition": "A formal display or demonstration of information.",
+                    "context": {
+                        "Context 1": "I have to prepare my presentation for class tomorrow.",
+                        "Context 2": "The presentation on climate change was very informative.",
+                        "Context 3": "He practiced his presentation in front of his family."
+                    }
+                },
+                {
+                    "word": "Boring",
+                    "definition": "Not interesting; dull.",
+                    "context": {
+                        "Context 1": "I find lectures boring when the teacher doesn't engage the class.",
+                        "Context 2": "The movie was so boring that I fell asleep.",
+                        "Context 3": "He thought the book was boring and stopped reading it."
+                    }
+                },
+                {
+                    "word": "Wasted",
+                    "definition": "Extremely tired or unable to function well.",
+                    "context": {
+                        "Context 1": "After studying all night, I felt completely wasted the next day.",
+                        "Context 2": "He was wasted after running the marathon.",
+                        "Context 3": "She felt wasted after a long week of work."
+                    }
+                },
+                {
+                    "word": "Silly",
+                    "definition": "Lacking in seriousness or common sense; foolish.",
+                    "context": {
+                        "Context 1": "We watched a silly movie that made us laugh a lot.",
+                        "Context 2": "He made a silly mistake on his test.",
+                        "Context 3": "The children were being silly and playing games in the park."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Chill",
+                    "fact": "Did you know that the word 'chill' originally referred to a cold sensation, but now it means relaxing? Talk about a glow-up!"
+                },
+                {
+                    "word": "Silly",
+                    "fact": "The word 'silly' comes from the Old English word 'sælig,' which meant 'happy' or 'blessed.' So being silly might just be a sign of happiness!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Sunbathe",
+                    "definition": "To sit or lie in the sun to absorb sunlight, often for relaxation or tanning.",
+                    "context": {
+                        "Context 1": "I want to sunbathe on the beach during my trip to Turkey.",
+                        "Context 2": "He decided to sunbathe in his backyard instead of going to the beach.",
+                        "Context 3": "The cat loves to sunbathe on the windowsill every afternoon."
+                    }
+                },
+                {
+                    "word": "Warm temperature",
+                    "definition": "A comfortable or pleasant level of heat in the environment.",
+                    "context": {
+                        "Context 1": "I need a warm temperature to enjoy my vacation in Turkey.",
+                        "Context 2": "The warm temperature in the greenhouse helps the plants grow.",
+                        "Context 3": "During winter, I miss the warm temperature of summer days."
+                    }
+                },
+                {
+                    "word": "Prepare",
+                    "definition": "To make ready or get set for a specific purpose or event.",
+                    "context": {
+                        "Context 1": "I need to prepare for my upcoming exam on entrepreneurialism.",
+                        "Context 2": "She likes to prepare her meals in advance for the week.",
+                        "Context 3": "The team must prepare the stadium for the big game."
+                    }
+                },
+                {
+                    "word": "Worried",
+                    "definition": "Feeling anxious or concerned about something.",
+                    "context": {
+                        "Context 1": "I am worried about my upcoming exam.",
+                        "Context 2": "She was worried when her dog didn't come home on time.",
+                        "Context 3": "He felt worried about the weather before the outdoor event."
+                    }
+                },
+                {
+                    "word": "Coping",
+                    "definition": "Dealing effectively with something difficult or challenging.",
+                    "context": {
+                        "Context 1": "I cope with stress by spending time with my family.",
+                        "Context 2": "He is coping well with the changes in his life.",
+                        "Context 3": "Coping strategies can help students manage their workload."
+                    }
+                },
+                {
+                    "word": "Mood swings",
+                    "definition": "Rapid changes in mood, often from one extreme to another.",
+                    "context": {
+                        "Context 1": "I experience mood swings when I think about my exams.",
+                        "Context 2": "Teenagers are known for having mood swings as they grow.",
+                        "Context 3": "Mood swings can be common during stressful situations."
+                    }
+                },
+                {
+                    "word": "Quality time",
+                    "definition": "Time spent in a meaningful way, often with loved ones.",
+                    "context": {
+                        "Context 1": "I like to spend quality time with my family when I feel down.",
+                        "Context 2": "Quality time with friends can improve your mood.",
+                        "Context 3": "They planned a weekend trip to have some quality time together."
+                    }
+                },
+                {
+                    "word": "Presentation",
+                    "definition": "A formal display or demonstration of information to an audience.",
+                    "context": {
+                        "Context 1": "I need to create a presentation for my exam on event management.",
+                        "Context 2": "The teacher asked us to give a presentation on our favorite books.",
+                        "Context 3": "He practiced his presentation multiple times before the conference."
+                    }
+                },
+                {
+                    "word": "Chill",
+                    "definition": "To relax or take it easy.",
+                    "context": {
+                        "Context 1": "I like to chill at home after a long day of studying.",
+                        "Context 2": "They decided to chill by the pool on their day off.",
+                        "Context 3": "Chilling with friends can be a great way to unwind."
+                    }
+                },
+                {
+                    "word": "Occasionally",
+                    "definition": "From time to time; not regularly.",
+                    "context": {
+                        "Context 1": "I feel sad occasionally, but it usually passes.",
+                        "Context 2": "He occasionally visits his grandparents on weekends.",
+                        "Context 3": "Occasionally, I like to try new recipes in the kitchen."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Sunbathe",
+                    "fact": "Did you know that sunbathing can actually help your body produce vitamin D, which is essential for bone health?"
+                },
+                {
+                    "word": "Coping",
+                    "fact": "Some people cope with stress by laughing, which releases endorphins and can actually improve your mood!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What do you call a bear with no teeth?",
+                    "answer": "A gummy bear!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Subtitles",
+                    "definition": "Text displayed at the bottom of a movie or television screen that translates or transcribes the dialogue.",
+                    "context": {
+                        "Context 1": "How do you watch it? With subtitles.",
+                        "Context 2": "I prefer watching foreign films with subtitles to understand the dialogue better.",
+                        "Context 3": "The documentary had subtitles in multiple languages."
+                    }
+                },
+                {
+                    "word": "Facile",
+                    "definition": "Easily achieved; effortless.",
+                    "context": {
+                        "Context 1": "No, there is not a word like facile. Easy.",
+                        "Context 2": "The exam was so facile that everyone passed with high marks.",
+                        "Context 3": "His facile success in the competition surprised everyone."
+                    }
+                },
+                {
+                    "word": "Tribe",
+                    "definition": "A social division in a traditional society consisting of families or communities linked by social, economic, religious, or blood ties.",
+                    "context": {
+                        "Context 1": "There are tribes, you know, like wild tribes there of people.",
+                        "Context 2": "The tribe gathered for their annual festival.",
+                        "Context 3": "Anthropologists studied the customs of the indigenous tribe."
+                    }
+                },
+                {
+                    "word": "Civilized",
+                    "definition": "At an advanced stage of social and cultural development.",
+                    "context": {
+                        "Context 1": "Before people got civilized, they were very wild.",
+                        "Context 2": "The museum exhibits artifacts from the first civilized societies.",
+                        "Context 3": "Civilized discourse is essential for a healthy democracy."
+                    }
+                },
+                {
+                    "word": "Scorching",
+                    "definition": "Extremely hot or intense.",
+                    "context": {
+                        "Context 1": "In Kazakhstan it's very hot in summer, like scorching hot.",
+                        "Context 2": "The scorching sun made it difficult to stay outside for long.",
+                        "Context 3": "She took a sip of the scorching coffee and burned her tongue."
+                    }
+                },
+                {
+                    "word": "Optimistic",
+                    "definition": "Hopeful and confident about the future.",
+                    "context": {
+                        "Context 1": "These two days have not very optimistic mood.",
+                        "Context 2": "Despite the challenges, she remained optimistic about her chances.",
+                        "Context 3": "The optimistic forecast predicts economic growth next year."
+                    }
+                },
+                {
+                    "word": "Hormones",
+                    "definition": "Chemical substances produced in the body that regulate and control the activity of certain cells or organs.",
+                    "context": {
+                        "Context 1": "Maybe it's hormones in your body.",
+                        "Context 2": "Teenagers often experience mood swings due to changing hormones.",
+                        "Context 3": "The doctor explained how hormones affect metabolism."
+                    }
+                },
+                {
+                    "word": "Garlic",
+                    "definition": "A plant of the onion family that has a strong taste and smell and is used in cooking.",
+                    "context": {
+                        "Context 1": "That's my garlic sauce.",
+                        "Context 2": "She added garlic to the pasta sauce for extra flavor.",
+                        "Context 3": "Garlic is known for its health benefits, including boosting the immune system."
+                    }
+                },
+                {
+                    "word": "Encounter",
+                    "definition": "Unexpectedly experience or be faced with something.",
+                    "context": {
+                        "Context 1": "We're ready to encounter enemies.",
+                        "Context 2": "During the hike, they encountered a bear in the woods.",
+                        "Context 3": "The travelers encountered many challenges on their journey."
+                    }
+                },
+                {
+                    "word": "Peaceful",
+                    "definition": "Free from disturbance; tranquil.",
+                    "context": {
+                        "Context 1": "It says peaceful here.",
+                        "Context 2": "The garden was a peaceful retreat from the busy city.",
+                        "Context 3": "They resolved the conflict through peaceful negotiations."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Subtitles",
+                    "fact": "Did you know that the first movie with subtitles was shown in 1903?"
+                },
+                {
+                    "word": "Garlic",
+                    "fact": "Garlic was once used as currency in ancient Egypt!"
+                },
+                {
+                    "word": "Tribe",
+                    "fact": "The word 'tribe' comes from the Latin word 'tribus,' which referred to the three original tribes of ancient Rome."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the game developer go broke?",
+                    "answer": "Because they kept choosing 'peaceful mode'!"
+                },
+                {
+                    "question": "What do you call a garlic that tells jokes?",
+                    "answer": "A pun-ion!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Reschedule",
+                    "definition": "To change the time or date of a planned event.",
+                    "context": {
+                        "Context 1": "We decided to reschedule our picnic to next week due to the bad weather.",
+                        "Context 2": "The meeting was rescheduled for next Friday after the team couldn't make it.",
+                        "Context 3": "She had to reschedule her dentist appointment because of a family emergency."
+                    }
+                },
+                {
+                    "word": "Blame",
+                    "definition": "To hold someone or something responsible for a fault or wrong.",
+                    "context": {
+                        "Context 1": "The weather is to blame for our canceled picnic last week.",
+                        "Context 2": "He didn't want to blame his teammates for the loss in the game.",
+                        "Context 3": "She always blames her cat for knocking over the vase."
+                    }
+                },
+                {
+                    "word": "Mood",
+                    "definition": "A temporary state of mind or feeling.",
+                    "context": {
+                        "Context 1": "Rain sets a certain mood that makes people want to stay indoors.",
+                        "Context 2": "Her cheerful mood brightened everyone's day at the office.",
+                        "Context 3": "He was in a bad mood after losing his favorite book."
+                    }
+                },
+                {
+                    "word": "Excuse",
+                    "definition": "A reason or explanation put forward to defend or justify a fault or offense.",
+                    "context": {
+                        "Context 1": "Rain is a perfect excuse for not doing anything productive.",
+                        "Context 2": "He used the traffic as an excuse for being late to the meeting.",
+                        "Context 3": "She made an excuse for not attending the party, saying she was sick."
+                    }
+                },
+                {
+                    "word": "Envy",
+                    "definition": "A feeling of discontented or resentful longing aroused by someone else's possessions, qualities, or luck.",
+                    "context": {
+                        "Context 1": "I envy you for going to Turkey this summer.",
+                        "Context 2": "She felt envy when she saw her friend's new car.",
+                        "Context 3": "His envy of his brother's success motivated him to work harder."
+                    }
+                },
+                {
+                    "word": "Detective story",
+                    "definition": "A narrative in which a detective investigates and solves a crime.",
+                    "context": {
+                        "Context 1": "Watching a detective story is a great way to spend a rainy day.",
+                        "Context 2": "She loves reading detective stories, especially those set in the 1920s.",
+                        "Context 3": "The detective story had so many twists that I couldn't predict the ending."
+                    }
+                },
+                {
+                    "word": "Podcast",
+                    "definition": "A digital audio file made available on the Internet for downloading, typically as a series.",
+                    "context": {
+                        "Context 1": "You can listen to a beauty podcast while relaxing at home.",
+                        "Context 2": "He started a podcast about history and has gained many listeners.",
+                        "Context 3": "The podcast on true crime has become very popular lately."
+                    }
+                },
+                {
+                    "word": "Camping trip",
+                    "definition": "An outdoor excursion where participants stay in tents or other temporary accommodations.",
+                    "context": {
+                        "Context 1": "We were going to have a camping trip last week, but the weather was awful.",
+                        "Context 2": "Their camping trip in the mountains was filled with adventure.",
+                        "Context 3": "She packed all her gear for the camping trip at the lake."
+                    }
+                },
+                {
+                    "word": "Power",
+                    "definition": "The ability or capacity to do something or act in a particular way.",
+                    "context": {
+                        "Context 1": "I need to find the power to do my project.",
+                        "Context 2": "The power of teamwork can lead to great results.",
+                        "Context 3": "He felt a surge of power when he completed the marathon."
+                    }
+                },
+                {
+                    "word": "Colors",
+                    "definition": "The property possessed by an object of producing different sensations on the eye as a result of the way it reflects or emits light.",
+                    "context": {
+                        "Context 1": "I wish you two pass your exams with flying colors.",
+                        "Context 2": "The colors of the sunset were breathtaking.",
+                        "Context 3": "She loves to paint with vibrant colors to express her emotions."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Excuse",
+                    "fact": "Did you know that the most common excuse for being late is 'traffic'? Even if you live next door!"
+                },
+                {
+                    "word": "Mood",
+                    "fact": "There’s a scientific term called 'sundowning' that describes how some people get grumpy in the evening. So, if you’re moody at night, it’s not just you!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What do you call a bear with no teeth?",
+                    "answer": "A gummy bear!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey there! How's it going?"
+                },
+                {
+                    "Person 2": "Hey! I'm doing well, just hanging out at my parents' place. How about you?"
+                },
+                {
+                    "Person 1": "Nice! I'm good, just trying to keep busy. What are you up to over there?"
+                },
+                {
+                    "Person 2": "Not much, just wearing my comfy home clothes. You know how it is!"
+                },
+                {
+                    "Person 1": "Haha, I get that! What’s on your shirt? Is that an animal print?"
+                },
+                {
+                    "Person 2": "Yeah, it’s just a fun animal print. No special meaning, just comfy vibes."
+                },
+                {
+                    "Person 1": "Sounds perfect for relaxing! So, how long are you staying there?"
+                },
+                {
+                    "Person 2": "I’ll be here until the weekend, then I’m heading back to the city."
+                },
+                {
+                    "Person 1": "Gotcha! Any plans for when you get back?"
+                },
+                {
+                    "Person 2": "Yeah, actually! I’m going to Turkey next week. Super excited!"
+                },
+                {
+                    "Person 1": "Turkey? That sounds amazing! Do you know where you’re going?"
+                },
+                {
+                    "Person 2": "I think it’s Antalya, but I’m not 100% sure. I’ll figure it out!"
+                },
+                {
+                    "Person 1": "Cool! So what do you do to keep yourself entertained while you’re there?"
+                },
+                {
+                    "Person 2": "I usually just hang out with friends or run some errands. Keeps me busy!"
+                },
+                {
+                    "Person 1": "Running errands? Like grocery shopping or something?"
+                },
+                {
+                    "Person 2": "Exactly! Just little tasks that need to get done. It’s not boring, though."
+                },
+                {
+                    "Person 1": "I hear you! Sometimes I just want a day to do absolutely nothing."
+                },
+                {
+                    "Person 2": "Oh, for sure! I have those days too. Just binge-watching shows or scrolling through videos."
+                },
+                {
+                    "Person 1": "What kind of shows do you like to watch?"
+                },
+                {
+                    "Person 2": "I love watching game streams on Twitch. It’s pretty entertaining!"
+                },
+                {
+                    "Person 1": "I’ve never really gotten into that. I prefer watching movies or chatting with friends."
+                },
+                {
+                    "Person 2": "That’s cool! Everyone has their own thing. What’s your favorite movie genre?"
+                },
+                {
+                    "Person 1": "I’m a sucker for comedies! They always make me laugh."
+                },
+                {
+                    "Person 2": "Same here! Laughter is the best way to unwind."
+                },
+                {
+                    "Person 1": "For sure! So, what’s on your agenda for today?"
+                },
+                {
+                    "Person 2": "I’ve got to prepare for my last exam. Just wrapping things up!"
+                },
+                {
+                    "Person 1": "Good luck with that! I’m sure you’ll do great."
+                },
+                {
+                    "Person 2": "Thanks! I appreciate it. How about you? Any plans for the day?"
+                },
+                {
+                    "Person 1": "Just catching up on some reading and maybe a nap later."
+                },
+                {
+                    "Person 2": "Sounds like a perfect day! Enjoy it!"
+                },
+                {
+                    "Person 1": "You too! Let’s catch up later."
+                },
+                {
+                    "Person 2": "Definitely! Talk soon!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Are you excited about your trip to Turkey next week?"
+                },
+                {
+                    "Person 2": "Absolutely! I can't wait to get some sun. The weather here has been terrible."
+                },
+                {
+                    "Person 1": "I know what you mean. It's been so gloomy lately. What do you want to do there?"
+                },
+                {
+                    "Person 2": "I just want to relax on the beach and swim in the sea. It's been too long since I've had a vacation."
+                },
+                {
+                    "Person 1": "That sounds amazing! When exactly do you leave?"
+                },
+                {
+                    "Person 2": "I fly out on the 4th of July. So, just a few days away!"
+                },
+                {
+                    "Person 1": "Nice! Are you all packed and ready to go?"
+                },
+                {
+                    "Person 2": "Not yet! I still have to finish studying for my exam first. That's my priority right now."
+                },
+                {
+                    "Person 1": "What subject is the exam on?"
+                },
+                {
+                    "Person 2": "It's on event management. I have to prepare a presentation for it."
+                },
+                {
+                    "Person 1": "That sounds challenging. Are you feeling stressed about it?"
+                },
+                {
+                    "Person 2": "A little, but I'm trying not to think about it too much. I have a lot on my plate."
+                },
+                {
+                    "Person 1": "I get that. Remember how worried you were about that English test last year? You did great on that!"
+                },
+                {
+                    "Person 2": "Yeah, but this is different. That was just an essay. This is a whole presentation!"
+                },
+                {
+                    "Person 1": "You’ll do fine! Just think of it as another opportunity to show what you know."
+                },
+                {
+                    "Person 2": "Thanks! I hope so. Sometimes I just feel overwhelmed."
+                },
+                {
+                    "Person 1": "What do you do to relax when you're feeling that way?"
+                },
+                {
+                    "Person 2": "I usually call my mom and talk things out. It helps a lot."
+                },
+                {
+                    "Person 1": "That’s a good idea! Family time can really lift your spirits."
+                },
+                {
+                    "Person 2": "Yeah, and I also like to chill at home and have a little spa time."
+                },
+                {
+                    "Person 1": "Sounds perfect! You should definitely take some time for yourself before the exam."
+                },
+                {
+                    "Person 2": "I will! And maybe I’ll watch a series in English to get my mind off things."
+                },
+                {
+                    "Person 1": "That’s a great plan! What was the last series you watched?"
+                },
+                {
+                    "Person 2": "Honestly, I can't remember. I need to find something new to watch."
+                },
+                {
+                    "Person 1": "Let’s look for some recommendations together! It’ll be fun."
+                },
+                {
+                    "Person 2": "Definitely! I could use a good laugh right now."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you seen any good movies lately?"
+                },
+                {
+                    "Person 2": "Not really, just some random stuff on Netflix. You know how it is."
+                },
+                {
+                    "Person 1": "Yeah, I feel like I just scroll through options forever and end up watching something I don’t even care about."
+                },
+                {
+                    "Person 2": "Right? I tried watching a documentary last night, but I ended up on my phone halfway through."
+                },
+                {
+                    "Person 1": "Same here! It’s like my attention span is getting shorter every day."
+                },
+                {
+                    "Person 2": "Totally! I used to binge-watch series, but now I can barely sit through a movie."
+                },
+                {
+                    "Person 1": "I think all those short clips on social media are messing with our brains."
+                },
+                {
+                    "Person 2": "For sure! I read somewhere that it actually changes how we focus."
+                },
+                {
+                    "Person 1": "Exactly! I tried reading a book last week, and I kept checking my phone every few minutes."
+                },
+                {
+                    "Person 2": "That’s the struggle! I’ve been thinking about setting some limits on my screen time."
+                },
+                {
+                    "Person 1": "Yeah, maybe no phone an hour before bed or something like that."
+                },
+                {
+                    "Person 2": "Sounds like a plan! But let’s be real, it’s hard to stick to it."
+                },
+                {
+                    "Person 1": "I know, right? I’ll probably end up scrolling through TikTok instead."
+                },
+                {
+                    "Person 2": "Haha! Well, we can try starting tomorrow. Maybe we’ll actually stick to it."
+                },
+                {
+                    "Person 1": "Tomorrow it is! Unless we get distracted again."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you end up going camping last weekend?"
+                },
+                {
+                    "Person 2": "No, we had to cancel. The weather was terrible! It rained the whole time."
+                },
+                {
+                    "Person 1": "That’s a bummer! We were supposed to have a picnic, but it got rained out too."
+                },
+                {
+                    "Person 2": "Yeah, it seems like all our plans got messed up because of the rain."
+                },
+                {
+                    "Person 1": "I guess we’ll just have to reschedule. Maybe next month?"
+                },
+                {
+                    "Person 2": "Sounds good! I actually don’t mind the rain sometimes. It’s a nice excuse to stay in and relax."
+                },
+                {
+                    "Person 1": "Totally! Perfect weather for binge-watching shows or reading a book."
+                },
+                {
+                    "Person 2": "Exactly! I’ve been meaning to catch up on some crime series. You know, the dark and twisty kind."
+                },
+                {
+                    "Person 1": "Ooh, those are the best! Just don’t forget to keep some snacks handy."
+                },
+                {
+                    "Person 2": "Of course! And maybe some garlic too, just in case any vampires show up."
+                },
+                {
+                    "Person 1": "Haha! You never know! Speaking of shows, have you seen Twilight? It’s a classic for rainy days."
+                },
+                {
+                    "Person 2": "I haven’t watched it in ages! That might be a good one to revisit."
+                },
+                {
+                    "Person 1": "Definitely! Anyway, I hope you do well on your project. You’ve got this!"
+                },
+                {
+                    "Person 2": "Thanks! I appreciate it. And good luck with your exams too!"
+                },
+                {
+                    "Person 1": "Thanks! Let’s catch up soon, hopefully when the weather is better."
+                },
+                {
+                    "Person 2": "For sure! Have a great day!"
+                },
+                {
+                    "Person 1": "You too! Bye!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
