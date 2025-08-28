@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I need to go to a train.",
+                    "corrected": "I need to go to the train.",
+                    "explanation": "The article 'the' is needed here to specify which train is being referred to.",
+                    "context": "I have some errands to run today. I need to go to the train. After that, I plan to visit my class."
+                },
+                {
+                    "original": "I started it reading from Monday.",
+                    "corrected": "I started reading it on Monday.",
+                    "explanation": "The phrase 'started it reading' is awkward; it should be 'started reading it' for clarity.",
+                    "context": "I'm currently reading a new book. I started reading it on Monday. It's a Russian book by Jenny Cogan."
+                },
+                {
+                    "original": "it's plausible.",
+                    "corrected": "it's interesting.",
+                    "explanation": "'Plausible' is not the right word here; 'interesting' better conveys the speaker's opinion about the book.",
+                    "context": "I find the book intriguing. For me, yes, it's interesting. I enjoy the story so far."
+                },
+                {
+                    "original": "I can't read something but it's working and downloading so long.",
+                    "corrected": "I can't read anything, but it's working and downloading very slowly.",
+                    "explanation": "The phrase 'read something' should be 'read anything' for a negative statement, and 'so long' should be 'very slowly' for clarity.",
+                    "context": "My internet connection is really poor. I can't read anything, but it's working and downloading very slowly."
+                },
+                {
+                    "original": "I did it with interruptions maybe 20-25.",
+                    "corrected": "I did it with interruptions for maybe 20-25 minutes.",
+                    "explanation": "The phrase is missing 'minutes' to clarify the time duration.",
+                    "context": "I worked on my essay today. I did it with interruptions for maybe 20-25 minutes. It was challenging to focus."
+                },
+                {
+                    "original": "Maybe improve something like with best vocabulary or something like this.",
+                    "corrected": "Maybe we could improve something, like using better vocabulary.",
+                    "explanation": "The phrase 'with best vocabulary' is awkward; 'using better vocabulary' is more idiomatic.",
+                    "context": "I'm considering how to enhance my writing. Maybe we could improve something, like using better vocabulary."
+                },
+                {
+                    "original": "That pet can take care of person and that is a good company.",
+                    "corrected": "That pets can take care of a person and that they are good company.",
+                    "explanation": "The subject 'pet' should be pluralized to 'pets,' and 'is' should be changed to 'are' for grammatical agreement.",
+                    "context": "In my essay, I discussed the benefits of having pets. That pets can take care of a person and that they are good company."
+                },
+                {
+                    "original": "Like pet is a true friend to a person.",
+                    "corrected": "A pet is a true friend to a person.",
+                    "explanation": "The phrase should start with 'A' instead of 'Like' for proper sentence structure.",
+                    "context": "I believe pets have a special role in our lives. A pet is a true friend to a person. They provide companionship."
+                },
+                {
+                    "original": "It's the same.",
+                    "corrected": "They are the same.",
+                    "explanation": "The subject 'it's' should be changed to 'they' to refer to the previously mentioned ideas.",
+                    "context": "I was explaining my ideas in the essay. They are the same. I don't see a clear difference between them."
+                },
+                {
+                    "original": "What is home animal?",
+                    "corrected": "What is a home animal?",
+                    "explanation": "The article 'a' is needed to properly introduce the noun 'home animal.'",
+                    "context": "During our discussion, I was confused about terminology. What is a home animal? I thought it was a synonym for pet."
+                },
+                {
+                    "original": "If you're not sure that some word exists, just simply don't use it.",
+                    "corrected": "If you're not sure that a word exists, just simply don't use it.",
+                    "explanation": "The phrase 'some word' should be changed to 'a word' for clarity and correctness.",
+                    "context": "When writing, it's important to be confident in word choice. If you're not sure that a word exists, just simply don't use it."
+                },
+                {
+                    "original": "What does it mean? Improve the owner's quality of life?",
+                    "corrected": "What does it mean? Does it improve the owner's quality of life?",
+                    "explanation": "The sentence structure is incorrect; it should be a question form.",
+                    "context": "I was trying to clarify a point in my essay. What does it mean? Does it improve the owner's quality of life?"
+                },
+                {
+                    "original": "Why the way... why here you're putting the word man?",
+                    "corrected": "Why are you using the word 'man' here?",
+                    "explanation": "The sentence structure is awkward; it should be rephrased for clarity.",
+                    "context": "We were discussing language use in my writing. Why are you using the word 'man' here? I thought it was inclusive."
+                },
+                {
+                    "original": "Like only to men, not women?",
+                    "corrected": "Does it refer only to men, not women?",
+                    "explanation": "The phrase 'like only to men' is unclear; it should be rephrased as a question.",
+                    "context": "I was questioning the use of gendered language. Does it refer only to men, not women? I want to be respectful."
+                },
+                {
+                    "original": "Gratefully, what does it mean?",
+                    "corrected": "Grateful, what does it mean?",
+                    "explanation": "'Gratefully' is an adverb; 'grateful' is the correct adjective to use in this context.",
+                    "context": "I was unsure about a word I encountered. Grateful, what does it mean? I want to understand its usage."
+                },
+                {
+                    "original": "Individual plays with a cat in interactive games that ideal for spending time for his favorite.",
+                    "corrected": "An individual plays with a cat in interactive games that are ideal for spending time with their favorite pet.",
+                    "explanation": "The sentence is missing 'are' and should use 'with their favorite pet' for clarity and grammatical correctness.",
+                    "context": "I was discussing activities with pets. An individual plays with a cat in interactive games that are ideal for spending time with their favorite pet."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "It's better to formulate sentences with simple, clear sentences that you know for sure that don't work in English.",
+                    "corrected": "It's better to formulate sentences with simple, clear structures that you know work in English.",
+                    "explanation": "The phrase 'that don't work in English' is confusing; it should be 'that you know work in English' to clarify the intention.",
+                    "context": "When learning English, it's essential to express thoughts clearly. It's better to formulate sentences with simple, clear structures that you know work in English. This helps avoid confusion."
+                },
+                {
+                    "original": "The more difficult the structure, the more likely it will be wrong.",
+                    "corrected": "The more difficult the structure, the more likely it is to be wrong.",
+                    "explanation": "The phrase 'it will be wrong' is incorrect; 'it is to be wrong' is the correct form to express likelihood.",
+                    "context": "When constructing sentences, simplicity is key. The more difficult the structure, the more likely it is to be wrong. This means we should aim for clarity."
+                },
+                {
+                    "original": "But simply put, that's cool.",
+                    "corrected": "But simply put, that's great.",
+                    "explanation": "'Cool' is informal; 'great' is more appropriate in this context to convey approval.",
+                    "context": "When discussing language learning, clarity is essential. But simply put, that's great. It emphasizes the importance of straightforward communication."
+                },
+                {
+                    "original": "What is approach? Approach is... Approach is... Approach is... Approach is... Approach is... Approach is... Approach is... Approach is... Approach is... Approach is... Approach is... Approach is... Approach is get closer to someone.",
+                    "corrected": "What is an approach? An approach is... An approach is... An approach is... An approach is... An approach is... An approach is... An approach is... An approach is... An approach is... An approach is... An approach is... An approach is... An approach is getting closer to someone.",
+                    "explanation": "The article 'an' is missing before 'approach'; 'approach' should be in the singular form, and 'is getting' is the correct present continuous form.",
+                    "context": "In discussing language concepts, clarity is crucial. What is an approach? An approach is getting closer to someone. This helps define the term effectively."
+                },
+                {
+                    "original": "they are pretty much the same so we need to choose to pick one that we will keep but pick another one another aspect to make or to for the second idea.",
+                    "corrected": "They are pretty much the same, so we need to choose one to keep and pick another aspect for the second idea.",
+                    "explanation": "The phrase is overly complicated; simplifying it improves clarity and flow.",
+                    "context": "When comparing ideas, clarity is key. They are pretty much the same, so we need to choose one to keep and pick another aspect for the second idea. This will help structure our thoughts."
+                },
+                {
+                    "original": "how broad is this formulation, how much space it gives us for freedom any good aspect that makes your life better can be mentioned.",
+                    "corrected": "How broad is this formulation? It gives us a lot of freedom; any good aspect that makes your life better can be mentioned.",
+                    "explanation": "The original sentence lacks proper punctuation and structure, making it difficult to understand.",
+                    "context": "In discussing ideas, it's important to consider their scope. How broad is this formulation? It gives us a lot of freedom; any good aspect that makes your life better can be mentioned."
+                },
+                {
+                    "original": "it's written here distracted from physical interaction with the pet helping to relax.",
+                    "corrected": "It's written here that being distracted by physical interaction with the pet helps to relax.",
+                    "explanation": "The original sentence is missing necessary conjunctions and articles, making it unclear.",
+                    "context": "When discussing the benefits of pets, clarity is essential. It's written here that being distracted by physical interaction with the pet helps to relax. This highlights the positive impact pets can have."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "what is accountable and uncountable nouns?",
+                    "corrected": "what are countable and uncountable nouns?",
+                    "explanation": "The term 'accountable' is incorrect; the correct term is 'countable' when referring to nouns that can be counted.",
+                    "context": "In our discussion about grammar, I asked about countable and uncountable nouns. What are countable and uncountable nouns? They are categories that help us understand how to use different types of nouns."
+                },
+                {
+                    "original": "the thing that can be counted and the thing that can't be counted",
+                    "corrected": "the things that can be counted and the things that can't be counted",
+                    "explanation": "The subject should be plural ('things') to match the plural context of countable and uncountable nouns.",
+                    "context": "When explaining the difference between countable and uncountable nouns, I mentioned the things that can be counted and the things that can't be counted. This distinction is crucial for understanding noun usage."
+                },
+                {
+                    "original": "the word individual and if the word starts with a vowel yes",
+                    "corrected": "the word 'individual' and if the word starts with a vowel, yes",
+                    "explanation": "The word 'individual' should be enclosed in quotation marks for clarity, and a comma is needed before 'yes' to separate the clauses.",
+                    "context": "In our lesson, I was discussing the word 'individual' and its usage. The word 'individual' and if the word starts with a vowel, yes, it changes how we use articles."
+                },
+                {
+                    "original": "the fact that it is not counted well, an example, what can be an example?",
+                    "corrected": "the fact that it is not counted. Well, an example—what can be an example?",
+                    "explanation": "The sentence needs punctuation to separate the clauses and improve clarity.",
+                    "context": "While discussing uncountable nouns, I pointed out that the fact that it is not counted. Well, an example—what can be an example? This helps illustrate the concept."
+                },
+                {
+                    "original": "money in multiple numbers well, in the sense that if there is money or cash there are many uncountable numbers",
+                    "corrected": "money in multiple numbers. Well, in the sense that if there is money or cash, there are many uncountable nouns.",
+                    "explanation": "The phrase 'multiple numbers' is awkward; 'uncountable nouns' is the correct term. Additionally, punctuation is needed for clarity.",
+                    "context": "In our discussion about money, I mentioned money in multiple numbers. Well, in the sense that if there is money or cash, there are many uncountable nouns. This distinction is important for understanding grammar."
+                },
+                {
+                    "original": "the amount is the amount so there is no point in putting A in front of it",
+                    "corrected": "the amount is the amount, so there is no point in putting 'a' in front of it.",
+                    "explanation": "'A' should be in quotation marks to indicate it is a word being discussed, and a comma is needed before 'so' to separate the clauses.",
+                    "context": "While explaining uncountable nouns, I stated that the amount is the amount, so there is no point in putting 'a' in front of it. This helps clarify the rules of noun usage."
+                },
+                {
+                    "original": "can we say that we can divide this amount into some pieces?",
+                    "corrected": "can we say that we can divide this amount into pieces?",
+                    "explanation": "The word 'some' is unnecessary and makes the sentence awkward.",
+                    "context": "During our lesson, I asked if we can say that we can divide this amount into pieces. This question relates to how we understand uncountable nouns."
+                },
+                {
+                    "original": "the only form is money or the money",
+                    "corrected": "the only forms are 'money' or 'the money.'",
+                    "explanation": "The word 'form' should be plural ('forms') to match the options being presented, and the terms should be in quotation marks.",
+                    "context": "In our discussion about money, I concluded that the only forms are 'money' or 'the money.' This distinction is key in understanding how to use the word correctly."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "taking care of animals it can be an interest to a person",
+                    "corrected": "taking care of animals can be an interest for a person",
+                    "explanation": "The preposition 'to' is incorrect here; 'for' should be used to indicate that something is of interest to someone.",
+                    "context": "Taking care of animals can be an interest for a person. Many people enjoy dressing their pets in different outfits."
+                },
+                {
+                    "original": "how does it improve life?",
+                    "corrected": "how does it improve one's life?",
+                    "explanation": "The phrase 'one's life' is more appropriate here to refer to a person's life in a general sense.",
+                    "context": "How does it improve one's life? Taking care of a dog can bring pleasure and joy to many people."
+                },
+                {
+                    "original": "it's a better example we won't walk this dog again",
+                    "corrected": "it's a better example; we won't walk this dog again.",
+                    "explanation": "A semicolon is needed to separate two independent clauses properly.",
+                    "context": "It's a better example; we won't walk this dog again. Instead, we might dress it in something cute."
+                },
+                {
+                    "original": "in the process of taking care of animals in the process of taking care of animals",
+                    "corrected": "in the process of taking care of animals",
+                    "explanation": "The phrase is repeated unnecessarily, which can confuse the listener.",
+                    "context": "Taking care of a dog can bring pleasure in the process of taking care of animals. It's rewarding for many pet owners."
+                },
+                {
+                    "original": "they don't think that it's one of many dogs",
+                    "corrected": "they don't think of it as one of many dogs.",
+                    "explanation": "The phrase 'think of it as' is more idiomatic and clearer in this context.",
+                    "context": "When you write about a specific dog, they don't think of it as one of many dogs. They need a clear image in their mind."
+                },
+                {
+                    "original": "is it specific now?",
+                    "corrected": "Is it specific now?",
+                    "explanation": "The sentence should start with a capital letter to indicate the beginning of a question.",
+                    "context": "Is it specific now? I hope the idea is clearer after our discussion about the hobby."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Plausible",
+                    "definition": "Seeming reasonable or probable.",
+                    "context": {
+                        "Context 1": "The plot of the book is plausible, making it an engaging read.",
+                        "Context 2": "He gave a plausible excuse for being late to the meeting.",
+                        "Context 3": "The scientist presented a plausible theory about climate change."
+                    }
+                },
+                {
+                    "word": "Corruption",
+                    "definition": "Dishonest or fraudulent conduct by those in power.",
+                    "context": {
+                        "Context 1": "The internet connection was clear without any corruption.",
+                        "Context 2": "The government was accused of corruption after the scandal broke.",
+                        "Context 3": "Corruption in the software can lead to data loss."
+                    }
+                },
+                {
+                    "word": "Navigate",
+                    "definition": "To find one's way or to manage a course.",
+                    "context": {
+                        "Context 1": "You can quickly navigate through the document by clicking on my avatar.",
+                        "Context 2": "He learned to navigate the waters of the river using a map.",
+                        "Context 3": "Navigating through the crowded market was a challenge."
+                    }
+                },
+                {
+                    "word": "Interruptions",
+                    "definition": "Breaks in continuity or disruption of an ongoing activity.",
+                    "context": {
+                        "Context 1": "I did my work with interruptions, which made it difficult to concentrate.",
+                        "Context 2": "The movie was full of interruptions due to technical difficulties.",
+                        "Context 3": "She faced many interruptions while trying to read her book."
+                    }
+                },
+                {
+                    "word": "Aspect",
+                    "definition": "A particular part or feature of something.",
+                    "context": {
+                        "Context 1": "The two ideas need to explore different aspects of pet ownership.",
+                        "Context 2": "One aspect of the project is its environmental impact.",
+                        "Context 3": "The aspect of friendship is important in any relationship."
+                    }
+                },
+                {
+                    "word": "Quality of Life",
+                    "definition": "The standard of health, comfort, and happiness experienced by an individual or group.",
+                    "context": {
+                        "Context 1": "Pets can improve the owner's quality of life significantly.",
+                        "Context 2": "The city has initiatives to enhance the quality of life for its residents.",
+                        "Context 3": "Access to clean water is essential for a good quality of life."
+                    }
+                },
+                {
+                    "word": "Grateful",
+                    "definition": "Feeling or showing an appreciation for something done or received.",
+                    "context": {
+                        "Context 1": "I am very grateful to my parents for their support.",
+                        "Context 2": "She felt grateful for the unexpected help during her project.",
+                        "Context 3": "He wrote a letter to express how grateful he was for the opportunity."
+                    }
+                },
+                {
+                    "word": "Individual",
+                    "definition": "A single human being as distinct from a group.",
+                    "context": {
+                        "Context 1": "An individual can play with a cat in interactive games.",
+                        "Context 2": "Each individual has unique talents and abilities.",
+                        "Context 3": "The individual was recognized for their contributions to the community."
+                    }
+                },
+                {
+                    "word": "Improve",
+                    "definition": "To make or become better.",
+                    "context": {
+                        "Context 1": "We could improve the vocabulary used in the essay.",
+                        "Context 2": "She took classes to improve her painting skills.",
+                        "Context 3": "The company aims to improve customer service."
+                    }
+                },
+                {
+                    "word": "True Friend",
+                    "definition": "A person who is loyal and supportive.",
+                    "context": {
+                        "Context 1": "A pet can be a true friend to a person.",
+                        "Context 2": "He considered her a true friend, always there in tough times.",
+                        "Context 3": "Finding a true friend can be rare in life."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Plausible",
+                    "fact": "The word 'plausible' comes from the Latin 'plausibilis,' which means 'worthy of applause'—so if your excuse is plausible, you might just get a round of applause!"
+                },
+                {
+                    "word": "Grateful",
+                    "fact": "The word 'grateful' is often confused with 'greatful,' but remember: you can be grateful for a great meal, but you can't be greatful for it!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many unresolved issues!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Grateful",
+                    "definition": "Feeling or showing an appreciation of kindness; thankful.",
+                    "context": {
+                        "Context 1": "She felt grateful for the support her friends provided during tough times.",
+                        "Context 2": "He was grateful to receive a new video game for his birthday.",
+                        "Context 3": "The cat was grateful for the warm sunbeam on the windowsill."
+                    }
+                },
+                {
+                    "word": "Approach",
+                    "definition": "A way of dealing with something; a method or technique.",
+                    "context": {
+                        "Context 1": "Her approach to solving the problem was very effective.",
+                        "Context 2": "The artist's approach to painting was unconventional and unique.",
+                        "Context 3": "He decided to take a different approach to his workout routine."
+                    }
+                },
+                {
+                    "word": "Complex",
+                    "definition": "Consisting of many different and connected parts; complicated.",
+                    "context": {
+                        "Context 1": "The complex structure of the building amazed the architects.",
+                        "Context 2": "The movie had a complex plot that kept the audience guessing.",
+                        "Context 3": "Her recipe was complex, requiring many unusual ingredients."
+                    }
+                },
+                {
+                    "word": "Express",
+                    "definition": "To convey a thought or feeling in words, gestures, or actions.",
+                    "context": {
+                        "Context 1": "He tried to express his feelings through poetry.",
+                        "Context 2": "The artist wanted to express her vision through her paintings.",
+                        "Context 3": "She found it hard to express her excitement when she received the news."
+                    }
+                },
+                {
+                    "word": "Structure",
+                    "definition": "The arrangement of and relations between the parts or elements of something complex.",
+                    "context": {
+                        "Context 1": "The structure of the essay was clear and logical.",
+                        "Context 2": "The structure of the building was designed to withstand earthquakes.",
+                        "Context 3": "He admired the structure of the intricate spider web."
+                    }
+                },
+                {
+                    "word": "Aspect",
+                    "definition": "A particular part or feature of something.",
+                    "context": {
+                        "Context 1": "One important aspect of learning a language is practice.",
+                        "Context 2": "The aspect of the movie that stood out was the cinematography.",
+                        "Context 3": "She considered every aspect of the project before making a decision."
+                    }
+                },
+                {
+                    "word": "Routine",
+                    "definition": "A sequence of actions regularly followed; a fixed program.",
+                    "context": {
+                        "Context 1": "He followed a strict morning routine to start his day.",
+                        "Context 2": "The dog enjoyed its daily routine of walks and playtime.",
+                        "Context 3": "Her workout routine included yoga and strength training."
+                    }
+                },
+                {
+                    "word": "Mental",
+                    "definition": "Related to the mind; involving the process of thinking.",
+                    "context": {
+                        "Context 1": "Mental health is just as important as physical health.",
+                        "Context 2": "He faced a mental challenge when trying to solve the puzzle.",
+                        "Context 3": "The mental exercise of reading helps improve concentration."
+                    }
+                },
+                {
+                    "word": "Physical",
+                    "definition": "Relating to the body as opposed to the mind; tangible.",
+                    "context": {
+                        "Context 1": "Physical activity is essential for maintaining good health.",
+                        "Context 2": "The physical appearance of the sculpture was stunning.",
+                        "Context 3": "He felt a physical rush of adrenaline during the race."
+                    }
+                },
+                {
+                    "word": "Interact",
+                    "definition": "To act in such a way as to have an effect on another; to communicate or work together.",
+                    "context": {
+                        "Context 1": "Children learn best when they interact with their peers.",
+                        "Context 2": "The software allows users to interact with the application easily.",
+                        "Context 3": "She loves to interact with her pets during playtime."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Grateful",
+                    "fact": "Did you know that in some cultures, it's customary to express gratitude by giving gifts, like a cat bringing a 'gift' to its owner?"
+                },
+                {
+                    "word": "Approach",
+                    "fact": "The word 'approach' comes from the Latin 'approchiare,' which means 'to come near.' So, if you're close to someone, you're literally 'approaching' them!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Countable",
+                    "definition": "Referring to nouns that can be counted as individual units.",
+                    "context": {
+                        "Context 1": "In English, 'apple' is a countable noun because you can say one apple, two apples.",
+                        "Context 2": "The teacher explained that countable nouns can be singular or plural.",
+                        "Context 3": "During the picnic, we counted the countable items like sandwiches and drinks."
+                    }
+                },
+                {
+                    "word": "Uncountable",
+                    "definition": "Referring to nouns that cannot be counted as individual units.",
+                    "context": {
+                        "Context 1": "In English, 'water' is an uncountable noun because you cannot say one water.",
+                        "Context 2": "The uncountable nature of love makes it difficult to measure.",
+                        "Context 3": "At the buffet, I noticed several uncountable dishes like rice and pasta."
+                    }
+                },
+                {
+                    "word": "Noun",
+                    "definition": "A word that represents a person, place, thing, or idea.",
+                    "context": {
+                        "Context 1": "In the lesson, we discussed how 'dog' is a noun.",
+                        "Context 2": "The noun 'happiness' represents an abstract idea.",
+                        "Context 3": "He used a noun to name his favorite city during the geography quiz."
+                    }
+                },
+                {
+                    "word": "Article",
+                    "definition": "A word used to modify a noun, typically 'a,' 'an,' or 'the.'",
+                    "context": {
+                        "Context 1": "In the lesson, we learned that 'a' is an article used with countable nouns.",
+                        "Context 2": "She forgot to use an article before 'elephant' in her sentence.",
+                        "Context 3": "The article in the newspaper discussed the latest sports events."
+                    }
+                },
+                {
+                    "word": "Interaction",
+                    "definition": "The action or influence of people or things on one another.",
+                    "context": {
+                        "Context 1": "The interaction between pets and their owners can be very rewarding.",
+                        "Context 2": "The interaction at the party was lively and engaging.",
+                        "Context 3": "During the experiment, the interaction of chemicals produced a surprising reaction."
+                    }
+                },
+                {
+                    "word": "Mass",
+                    "definition": "A term used to describe uncountable nouns that refer to substances or concepts.",
+                    "context": {
+                        "Context 1": "In the lesson, we learned that 'sand' is a mass noun.",
+                        "Context 2": "The mass of the cake made it difficult to lift.",
+                        "Context 3": "The mass of the audience was captivated by the performance."
+                    }
+                },
+                {
+                    "word": "Specific",
+                    "definition": "Clearly defined or identified; particular.",
+                    "context": {
+                        "Context 1": "The teacher asked for a specific example of an uncountable noun.",
+                        "Context 2": "He had a specific plan for his vacation next summer.",
+                        "Context 3": "The specific details of the case were kept confidential."
+                    }
+                },
+                {
+                    "word": "Abstract",
+                    "definition": "Existing in thought or as an idea but not having a physical or concrete existence.",
+                    "context": {
+                        "Context 1": "In the lesson, we discussed how 'money' can be considered an abstract concept.",
+                        "Context 2": "Her painting was an abstract representation of her feelings.",
+                        "Context 3": "The abstract nature of freedom makes it difficult to define."
+                    }
+                },
+                {
+                    "word": "Percentage",
+                    "definition": "A rate, number, or amount in each hundred.",
+                    "context": {
+                        "Context 1": "The lesson mentioned different percentages of correct answers in the exercises.",
+                        "Context 2": "She received a high percentage on her math test.",
+                        "Context 3": "The percentage of rain today is quite low, so we might go for a walk."
+                    }
+                },
+                {
+                    "word": "Grammar",
+                    "definition": "The system and structure of a language, including rules for combining words.",
+                    "context": {
+                        "Context 1": "The lesson focused on grammar rules for countable and uncountable nouns.",
+                        "Context 2": "He struggled with grammar when writing his essay.",
+                        "Context 3": "The grammar of ancient languages can be quite complex."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Countable",
+                    "fact": "Did you know that there are over 1,000 different types of apples? That's a lot of countable apples!"
+                },
+                {
+                    "word": "Uncountable",
+                    "fact": "In English, 'furniture' is uncountable, but in some languages, you can count chairs and tables separately!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the grammar teacher break up with the math teacher?",
+                    "answer": "Because she found him too calculating!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Interaction",
+                    "definition": "The action or influence of people, things, or events on one another.",
+                    "context": {
+                        "Context 1": "The interaction between the dog and its owner is essential for their bond.",
+                        "Context 2": "The interaction of light and water creates beautiful rainbows.",
+                        "Context 3": "In a classroom, the interaction between students and teachers enhances learning."
+                    }
+                },
+                {
+                    "word": "Hobby",
+                    "definition": "An activity done regularly in one's leisure time for pleasure.",
+                    "context": {
+                        "Context 1": "Dressing a dog can be a unique hobby for some people.",
+                        "Context 2": "Gardening is a relaxing hobby that many people enjoy.",
+                        "Context 3": "Collecting stamps is a hobby that can teach you about history."
+                    }
+                },
+                {
+                    "word": "Emotions",
+                    "definition": "Complex psychological states that involve a subjective experience, a physiological response, and a behavioral or expressive response.",
+                    "context": {
+                        "Context 1": "Taking care of a dog can bring a lot of positive emotions.",
+                        "Context 2": "Movies often evoke strong emotions in their audiences.",
+                        "Context 3": "Emotions can influence our decision-making processes significantly."
+                    }
+                },
+                {
+                    "word": "Physical",
+                    "definition": "Relating to the body or material things; tangible.",
+                    "context": {
+                        "Context 1": "The physical presence of a pet can provide comfort to its owner.",
+                        "Context 2": "Physical exercise is important for maintaining good health.",
+                        "Context 3": "The physical characteristics of the sculpture were impressive."
+                    }
+                },
+                {
+                    "word": "Support",
+                    "definition": "To bear all or part of the weight of; to hold up.",
+                    "context": {
+                        "Context 1": "The dog shows support by being there for its owner.",
+                        "Context 2": "Friends often provide emotional support during tough times.",
+                        "Context 3": "The pillars provide structural support to the building."
+                    }
+                },
+                {
+                    "word": "Pleasure",
+                    "definition": "A feeling of happy satisfaction and enjoyment.",
+                    "context": {
+                        "Context 1": "Taking care of animals can bring a lot of pleasure.",
+                        "Context 2": "Eating chocolate is a simple pleasure for many people.",
+                        "Context 3": "The pleasure of reading a good book can transport you to another world."
+                    }
+                },
+                {
+                    "word": "Idea",
+                    "definition": "A thought or suggestion as to a possible course of action.",
+                    "context": {
+                        "Context 1": "The idea of dressing a dog can be seen as a hobby.",
+                        "Context 2": "She had a brilliant idea for her science project.",
+                        "Context 3": "The idea of traveling the world excites many people."
+                    }
+                },
+                {
+                    "word": "Aspect",
+                    "definition": "A particular part or feature of something.",
+                    "context": {
+                        "Context 1": "We need to consider different aspects of taking care of a dog.",
+                        "Context 2": "One aspect of the painting that stood out was its vibrant colors.",
+                        "Context 3": "The financial aspect of running a business is crucial for success."
+                    }
+                },
+                {
+                    "word": "Countable",
+                    "definition": "Able to be counted; having a plural form.",
+                    "context": {
+                        "Context 1": "In English, 'dog' is a countable noun, while 'water' is uncountable.",
+                        "Context 2": "Countable items can be easily quantified, like apples or books.",
+                        "Context 3": "In math, countable sets can be listed one by one."
+                    }
+                },
+                {
+                    "word": "Uncountable",
+                    "definition": "Not able to be counted; typically referring to substances or concepts.",
+                    "context": {
+                        "Context 1": "In English, 'happiness' is an uncountable noun.",
+                        "Context 2": "Water is uncountable, so we say 'some water' instead of 'two waters.'",
+                        "Context 3": "Uncountable nouns often refer to abstract concepts like love or information."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Hobby",
+                    "fact": "Did you know that some people have hobbies like extreme ironing? Yes, they iron clothes while doing extreme sports!"
+                },
+                {
+                    "word": "Emotions",
+                    "fact": "There are over 34,000 different emotions that humans can experience, but most of us can only name a few!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the dog sit in the shade?",
+                    "answer": "Because it didn't want to become a hot dog!"
+                },
+                {
+                    "question": "What do you call a dog magician?",
+                    "answer": "A labracadabrador!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! What are you up to today?"
+                },
+                {
+                    "Person 2": "Not much, just planning to hit the gym later. How about you?"
+                },
+                {
+                    "Person 1": "I need to run some errands, maybe pick up a book too."
+                },
+                {
+                    "Person 2": "Nice! What book are you getting?"
+                },
+                {
+                    "Person 1": "It's a novel by Jenny Cogan. I started it on Monday. It's about a bakery by the sea."
+                },
+                {
+                    "Person 2": "That sounds interesting! Is it good?"
+                },
+                {
+                    "Person 1": "Yeah, I like it so far. A bit slow at times, but it's enjoyable."
+                },
+                {
+                    "Person 2": "Cool! I’ve been trying to read more too, but my internet keeps acting up."
+                },
+                {
+                    "Person 1": "Oh no! Is it still giving you trouble?"
+                },
+                {
+                    "Person 2": "Yeah, it’s been really slow this week. I can barely load anything."
+                },
+                {
+                    "Person 1": "That’s frustrating! Have you talked to your parents about it?"
+                },
+                {
+                    "Person 2": "Yeah, they’re looking into it. I think we might need to upgrade our plan."
+                },
+                {
+                    "Person 1": "Good idea! So, what else is on your agenda today?"
+                },
+                {
+                    "Person 2": "Just working on some essays for class. I have a few to finish up."
+                },
+                {
+                    "Person 1": "How many do you have left?"
+                },
+                {
+                    "Person 2": "Three in total. One new one about pets and two to revise."
+                },
+                {
+                    "Person 1": "Pets? That sounds fun! What’s your angle?"
+                },
+                {
+                    "Person 2": "I’m focusing on how pets can provide companionship and emotional support."
+                },
+                {
+                    "Person 1": "Great points! Just make sure to differentiate between the two in your essay."
+                },
+                {
+                    "Person 2": "Yeah, I need to work on that. I think I might be blending them together."
+                },
+                {
+                    "Person 1": "No worries! Just take your time to outline your ideas clearly."
+                },
+                {
+                    "Person 2": "Thanks! I’ll definitely do that. I appreciate your help!"
+                },
+                {
+                    "Person 1": "Anytime! Let me know if you need more feedback."
+                },
+                {
+                    "Person 2": "Will do! Now, I better get started before I get distracted."
+                },
+                {
+                    "Person 1": "Good luck! I’ll catch you later."
+                },
+                {
+                    "Person 2": "See you!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever noticed how hard it is to focus these days?"
+                },
+                {
+                    "Person 2": "Totally! I used to read books all the time, but now I can barely get through a paragraph without checking my phone."
+                },
+                {
+                    "Person 1": "Right? It's like all those short videos are messing with our brains."
+                },
+                {
+                    "Person 2": "Yeah, I saw something about how too much scrolling can actually change how we think."
+                },
+                {
+                    "Person 1": "Exactly! I tried reading last night, and after a few pages, I just had to check Instagram."
+                },
+                {
+                    "Person 2": "Same here! I used to sit through long movies without a problem, but now I’m pausing every ten minutes."
+                },
+                {
+                    "Person 1": "So what do you think we should do? Just delete social media?"
+                },
+                {
+                    "Person 2": "Honestly, I’ve thought about it, but I’m not sure I could go that far. Maybe just limit our screen time?"
+                },
+                {
+                    "Person 1": "Yeah, that sounds reasonable. Like no phone an hour before bed?"
+                },
+                {
+                    "Person 2": "Exactly! I might actually try that… right after I watch a few more videos."
+                },
+                {
+                    "Person 1": "Ha! That’s the problem! We’re already hooked."
+                },
+                {
+                    "Person 2": "For sure! Alright, let’s aim to start tomorrow."
+                },
+                {
+                    "Person 1": "Tomorrow it is! Unless we get distracted again."
+                },
+                {
+                    "Person 2": "True! But let’s at least give it a shot."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh, totally! It was such a nail-biter! I was on the edge of my seat."
+                },
+                {
+                    "Person 1": "Right? I couldn't believe that last-minute goal!"
+                },
+                {
+                    "Person 2": "I know! It felt like a movie moment. Did you see the crowd go wild?"
+                },
+                {
+                    "Person 1": "Yes! I love how passionate the fans are. It really adds to the excitement."
+                },
+                {
+                    "Person 2": "For sure! Speaking of excitement, are you planning to watch the playoffs?"
+                },
+                {
+                    "Person 1": "Absolutely! I wouldn't miss it for the world. Got my snacks ready!"
+                },
+                {
+                    "Person 2": "Nice! What snacks are you bringing?"
+                },
+                {
+                    "Person 1": "You know, the usual—wings, nachos, and maybe some pizza. Can't go wrong with pizza!"
+                },
+                {
+                    "Person 2": "Sounds perfect! I might join you for that. What time are you starting?"
+                },
+                {
+                    "Person 1": "Game starts at 7, so I'll probably start cooking around 5."
+                },
+                {
+                    "Person 2": "Awesome! Count me in. I’ll bring some drinks!"
+                },
+                {
+                    "Person 1": "Deal! It's going to be a fun night!"
+                },
+                {
+                    "Person 2": "Definitely! Can't wait!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new dog park that just opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I saw it on social media! It looks awesome! Have you been yet?"
+                },
+                {
+                    "Person 1": "Not yet, but I’m planning to take my dog this weekend. I think he’ll love it."
+                },
+                {
+                    "Person 2": "For sure! Dogs love to run around and play with other dogs. What kind of dog do you have?"
+                },
+                {
+                    "Person 1": "I have a golden retriever named Max. He’s super friendly. What about you?"
+                },
+                {
+                    "Person 2": "I have a beagle named Daisy. She’s a little stubborn but so much fun."
+                },
+                {
+                    "Person 1": "Beagles are adorable! I bet Daisy will have a blast at the park too."
+                },
+                {
+                    "Person 2": "Definitely! I love taking her out. It’s a great way for both of us to get some exercise."
+                },
+                {
+                    "Person 1": "Exactly! Plus, it’s nice to meet other dog owners and chat while the dogs play."
+                },
+                {
+                    "Person 2": "Right? It’s like a little community. Do you think you’ll dress Max up for Halloween?"
+                },
+                {
+                    "Person 1": "I was thinking about it! Maybe a superhero costume. What about Daisy?"
+                },
+                {
+                    "Person 2": "I might get her a witch hat! It’ll be hilarious to see her in it."
+                },
+                {
+                    "Person 1": "That sounds perfect! We should take a picture together at the park."
+                },
+                {
+                    "Person 2": "Absolutely! Let’s plan for it this weekend then."
+                },
+                {
+                    "Person 1": "Sounds like a plan! Can’t wait to see you both!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
