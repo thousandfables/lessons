@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I haven't slipped slept nearly enough.",
+                    "corrected": "I haven't slept nearly enough.",
+                    "explanation": "The word 'slipped' is incorrect; the correct verb is 'slept' to indicate the action of sleeping.",
+                    "context": "I've been feeling a bit off lately. I haven't slept nearly enough. Despite that, I'm doing alright."
+                },
+                {
+                    "original": "I almost all burnt my apartment.",
+                    "corrected": "I almost burned my apartment down.",
+                    "explanation": "The phrase 'almost all burnt' is incorrect; it should be 'almost burned down' to convey the idea of nearly causing a fire.",
+                    "context": "I had a bit of a scare a couple of days ago. I almost burned my apartment down. Thankfully, everything is fine now."
+                },
+                {
+                    "original": "I heard a story about a about a an old woman.",
+                    "corrected": "I heard a story about an old woman.",
+                    "explanation": "The repetition of 'a' is incorrect; it should be 'an' to properly introduce the noun 'old woman.'",
+                    "context": "I heard a story about an old woman. She was alone and stopped talking to people. It was quite a sad tale."
+                },
+                {
+                    "original": "The she was are making herself tea.",
+                    "corrected": "She was making herself tea.",
+                    "explanation": "The word 'the' is unnecessary and 'are' is incorrect; it should simply be 'was' to indicate the past tense.",
+                    "context": "She was making herself tea. Unfortunately, the fire was still on, which led to a tragic outcome."
+                },
+                {
+                    "original": "You shouldn't have worried.",
+                    "corrected": "You shouldn't worry.",
+                    "explanation": "The phrase 'shouldn't have worried' implies past action; 'shouldn't worry' is more appropriate for present reassurance.",
+                    "context": "I just want to reassure you. You shouldn't worry. Everything is under control."
+                },
+                {
+                    "original": "Did you do something anything not really this week?",
+                    "corrected": "Did you do anything this week?",
+                    "explanation": "The phrase 'something anything' is redundant; it should be 'anything' for clarity.",
+                    "context": "I've been quite busy lately. Did you do anything this week? Not really, I've just been looking for a job."
+                },
+                {
+                    "original": "It's some when you scheme the text quickly.",
+                    "corrected": "It's when you skim the text quickly.",
+                    "explanation": "'Scheme' is incorrect in this context; 'skim' is the correct term for reading quickly.",
+                    "context": "Today we're focusing on reading skills. It's when you skim the text quickly to find key information."
+                },
+                {
+                    "original": "I did its test 5 questions 125.",
+                    "corrected": "I did test 5, questions 1 to 25.",
+                    "explanation": "The phrase is unclear; it should specify 'test 5' and clarify the range of questions.",
+                    "context": "I was reviewing the material. I did test 5, questions 1 to 25. It was quite challenging."
+                },
+                {
+                    "original": "The task can be much faster done.",
+                    "corrected": "The task can be done much faster.",
+                    "explanation": "The word order is incorrect; it should be 'can be done much faster' for proper syntax.",
+                    "context": "When using the skimming method, the task can be done much faster. This helps save time during reading."
+                },
+                {
+                    "original": "We need to analyze it but here we don't really need that any of that.",
+                    "corrected": "We need to analyze it, but here we don't really need any of that.",
+                    "explanation": "The phrase 'that any of that' is redundant; it should be 'any of that' for clarity.",
+                    "context": "In some cases, we need to analyze the text. But here, we don't really need any of that."
+                },
+                {
+                    "original": "The finance always most needed.",
+                    "corrected": "The finance is always most needed.",
+                    "explanation": "The verb 'is' is missing; it should be included to form a complete sentence.",
+                    "context": "In discussions about resources, the finance is always most needed. It's crucial for planning."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "the text can have many mentions of government in many different some senses",
+                    "corrected": "the text can have many mentions of government in many different senses",
+                    "explanation": "The phrase 'in many different some senses' is incorrect; 'some' is unnecessary and disrupts the flow.",
+                    "context": "When analyzing the text, I realized that the word 'government' appears frequently. The text can have many mentions of government in many different senses. This is important for understanding the context."
+                },
+                {
+                    "original": "I would think of any synonyms that or could for the word assistance",
+                    "corrected": "I would think of any synonyms that could work for the word assistance",
+                    "explanation": "The phrase 'that or could for' is incorrect; it should be 'that could work for' to convey the intended meaning.",
+                    "context": "As we search for relevant terms, I would think of any synonyms that could work for the word assistance. This helps us broaden our understanding of the topic."
+                },
+                {
+                    "original": "the only thing that comes to mind is financial aid I guess need",
+                    "corrected": "the only thing that comes to mind is financial aid, I guess.",
+                    "explanation": "The sentence lacks proper punctuation; a comma is needed before 'I guess' to separate the clauses.",
+                    "context": "While brainstorming terms, the only thing that comes to mind is financial aid, I guess. It's a common term related to support."
+                },
+                {
+                    "original": "we are quickly searching for the word government it should also be there are in the context of farmers",
+                    "corrected": "we are quickly searching for the word government; it should also be there in the context of farmers.",
+                    "explanation": "The sentence is a run-on; a semicolon or period is needed to separate the two independent clauses.",
+                    "context": "During our discussion, we are quickly searching for the word government; it should also be there in the context of farmers. This is crucial for our analysis."
+                },
+                {
+                    "original": "the person speaking is C. I have no idea how it's supposed to be pronounced.",
+                    "corrected": "the person speaking is C. I have no idea how it's pronounced.",
+                    "explanation": "The phrase 'how it's supposed to be pronounced' is unnecessarily wordy; 'how it's pronounced' is more concise.",
+                    "context": "As we analyze the text, I realize that the person speaking is C. I have no idea how it's pronounced. This can be confusing."
+                },
+                {
+                    "original": "it can be implied, but okay, let's No, no, usually",
+                    "corrected": "it can be implied, but okay, let's move on. No, no, usually",
+                    "explanation": "The phrase 'let's No, no, usually' is incorrect; 'let's move on' provides clarity and structure.",
+                    "context": "While discussing the implications, I think it can be implied, but okay, let's move on. No, no, usually we need to be precise."
+                },
+                {
+                    "original": "reducing risks and providing basic services like roads, uh, would improve standards of living.",
+                    "corrected": "reducing risks and providing basic services like roads would improve standards of living.",
+                    "explanation": "The use of 'uh' is informal and disrupts the flow of the sentence.",
+                    "context": "In our conversation, I mention that reducing risks and providing basic services like roads would improve standards of living. This is a key point."
+                },
+                {
+                    "original": "I haven't found, uh, a different mention.",
+                    "corrected": "I haven't found a different mention.",
+                    "explanation": "The use of 'uh' is informal and unnecessary in this context.",
+                    "context": "As we search for references, I realize I haven't found a different mention. This makes it challenging to support our argument."
+                },
+                {
+                    "original": "the government once again.",
+                    "corrected": "the government, once again.",
+                    "explanation": "A comma is needed before 'once again' to clarify the sentence structure.",
+                    "context": "In our analysis, I note that the government, once again, plays a crucial role in the discussion. This is a recurring theme."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "But government does something that helps to reduce variation prices.",
+                    "corrected": "But the government does something that helps to reduce variation in prices.",
+                    "explanation": "The article 'the' is needed before 'government,' and 'variation prices' should be 'variation in prices' for correct phrasing.",
+                    "context": "In discussing the role of government in price stability, I mentioned that government does something that helps to reduce variation in prices. This is an important point in understanding the overall economic context."
+                },
+                {
+                    "original": "I forgot the task already.",
+                    "corrected": "I have already forgotten the task.",
+                    "explanation": "The present perfect tense 'have forgotten' is more appropriate here to indicate a past action relevant to the present.",
+                    "context": "As I was trying to recall the details of our discussion, I realized that I have already forgotten the task. This often happens when I get caught up in the details."
+                },
+                {
+                    "original": "Provence to infrastructure may risk.",
+                    "corrected": "Investment in infrastructure may reduce risk.",
+                    "explanation": "The word 'Provence' is incorrect; it should be 'Investment in.' Additionally, 'may risk' is vague and should be clarified to 'may reduce risk.'",
+                    "context": "While analyzing the text, I mentioned that investment in infrastructure may reduce risk for farmers. This is crucial for understanding the economic implications."
+                },
+                {
+                    "original": "I lost it.",
+                    "corrected": "I have lost it.",
+                    "explanation": "The present perfect tense 'have lost' is more appropriate here to indicate a past action relevant to the present.",
+                    "context": "While searching for the relevant information, I realized that I have lost it. This happens when I get distracted during discussions."
+                },
+                {
+                    "original": "It looks like more infrastructure.",
+                    "corrected": "It looks like it involves more infrastructure.",
+                    "explanation": "The phrase is incomplete; adding 'it involves' clarifies the meaning.",
+                    "context": "In our analysis, I noted that it looks like it involves more infrastructure than just financial assistance. This distinction is important for our understanding."
+                },
+                {
+                    "original": "I wasn't very sure about that but now when I read it again I'm actually sure.",
+                    "corrected": "I wasn't very sure about that, but now that I've read it again, I'm actually sure.",
+                    "explanation": "The sentence needs proper punctuation and the present perfect tense 'I've read' for clarity.",
+                    "context": "Reflecting on our earlier discussion, I admitted that I wasn't very sure about that, but now that I've read it again, I'm actually sure. This shows my evolving understanding."
+                },
+                {
+                    "original": "To hold up something. Means to offer something or someone as an example.",
+                    "corrected": "To hold up something means to offer it or someone as an example.",
+                    "explanation": "The sentence structure is awkward; removing the period and clarifying the subject improves flow.",
+                    "context": "In our discussion about idiomatic expressions, I explained that to hold up something means to offer it or someone as an example. This is a useful phrase to understand."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I feel like I've seen all these.",
+                    "corrected": "I feel like I've seen all of these.",
+                    "explanation": "'All these' is less formal; 'all of these' is more appropriate in this context.",
+                    "context": "As we were discussing the reading materials, I mentioned that I feel like I've seen all of these. I think I've encountered similar content in previous books."
+                },
+                {
+                    "original": "But this paragraph was not easy.",
+                    "corrected": "But this paragraph wasn't easy.",
+                    "explanation": "The contraction 'wasn't' is more natural in spoken English than the full form 'was not.'",
+                    "context": "While reviewing the text, I admitted that this paragraph wasn't easy. I found it challenging to grasp the main ideas."
+                },
+                {
+                    "original": "I have pictures in my room. Because I have pictures in my room.",
+                    "corrected": "I have pictures in my room.",
+                    "explanation": "The repetition of the same sentence is unnecessary and does not add value to the conversation.",
+                    "context": "When discussing my room, I mentioned that I have pictures in my room. They add a personal touch to the space."
+                },
+                {
+                    "original": "It's not perfect, but...",
+                    "corrected": "It's not perfect, but it's good enough.",
+                    "explanation": "Adding 'it's good enough' clarifies the sentiment and completes the thought.",
+                    "context": "While evaluating the answers, I noted that it's not perfect, but it's good enough for our discussion. We can work with it."
+                },
+                {
+                    "original": "The third one is the one that I'm struggling to find.",
+                    "corrected": "The third one is the one I'm struggling to find.",
+                    "explanation": "The contraction 'I'm' is more natural in spoken English than 'that I'm.'",
+                    "context": "As we went through the questions, I mentioned that the third one is the one I'm struggling to find. I needed more time to locate it."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "VPN",
+                    "definition": "A Virtual Private Network that creates a secure connection over the internet.",
+                    "context": {
+                        "Context 1": "I have to use a VPN because Google doesn't work in Moscow.",
+                        "Context 2": "He used a VPN to access his favorite shows while traveling abroad.",
+                        "Context 3": "The company implemented a VPN to protect employees' data during remote work."
+                    }
+                },
+                {
+                    "word": "Skimming",
+                    "definition": "A reading technique used to quickly identify the main ideas of a text.",
+                    "context": {
+                        "Context 1": "Skimming the text helps you find keywords quickly.",
+                        "Context 2": "She was skimming through the magazine when she spotted an interesting article.",
+                        "Context 3": "He decided to skim the menu before ordering to see if anything caught his eye."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or setting surrounding an event or idea.",
+                    "context": {
+                        "Context 1": "Understanding the context of the conversation is important for comprehension.",
+                        "Context 2": "The historical context of the painting adds depth to its meaning.",
+                        "Context 3": "In the context of the meeting, her comments were very relevant."
+                    }
+                },
+                {
+                    "word": "Task",
+                    "definition": "A piece of work to be done or undertaken.",
+                    "context": {
+                        "Context 1": "We have three tasks to complete after reading the text.",
+                        "Context 2": "His task for the day was to organize the files in the office.",
+                        "Context 3": "The teacher assigned a group task for the students to work on together."
+                    }
+                },
+                {
+                    "word": "Burn",
+                    "definition": "To consume fuel or material with fire.",
+                    "context": {
+                        "Context 1": "I almost burned my apartment while boiling water.",
+                        "Context 2": "The campfire burned brightly under the stars.",
+                        "Context 3": "He accidentally burned his toast while distracted by his phone."
+                    }
+                },
+                {
+                    "word": "Evaporate",
+                    "definition": "To turn from liquid into vapor.",
+                    "context": {
+                        "Context 1": "The water evaporated completely while I was distracted.",
+                        "Context 2": "The sun caused the puddles to evaporate quickly.",
+                        "Context 3": "She watched the ice cubes evaporate in her drink on a hot day."
+                    }
+                },
+                {
+                    "word": "Reference",
+                    "definition": "A mention or citation of a source or context.",
+                    "context": {
+                        "Context 1": "We need to find the reference in the text for the task.",
+                        "Context 2": "He included several references in his research paper.",
+                        "Context 3": "The book has a reference section at the end for further reading."
+                    }
+                },
+                {
+                    "word": "Analyze",
+                    "definition": "To examine in detail for purposes of explanation or interpretation.",
+                    "context": {
+                        "Context 1": "We need to analyze the text to understand the author's message.",
+                        "Context 2": "She will analyze the data to find trends in customer behavior.",
+                        "Context 3": "The teacher asked the students to analyze the poem for its themes."
+                    }
+                },
+                {
+                    "word": "Locate",
+                    "definition": "To find or identify the position of something.",
+                    "context": {
+                        "Context 1": "We need to locate the sentence that matches the task.",
+                        "Context 2": "He couldn't locate his keys and was running late.",
+                        "Context 3": "The map helped them locate the nearest gas station."
+                    }
+                },
+                {
+                    "word": "Keyword",
+                    "definition": "A significant word or phrase that captures the essence of a topic.",
+                    "context": {
+                        "Context 1": "Finding keywords in the task can help us skim more effectively.",
+                        "Context 2": "The SEO expert suggested using relevant keywords to improve website traffic.",
+                        "Context 3": "She highlighted the keywords in her notes for easier studying."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "VPN",
+                    "fact": "The term VPN was first used in 1996, but it sounds like a secret agent tool from a spy movie!"
+                },
+                {
+                    "word": "Skimming",
+                    "fact": "Did you know that skimming is not just for reading? You can skim the surface of a pool too!"
+                },
+                {
+                    "word": "Burn",
+                    "fact": "In the U.S., more than 450 people are injured each year while trying to toast marshmallows!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes from past experiences!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Government",
+                    "definition": "The governing body of a nation, state, or community.",
+                    "context": {
+                        "Context 1": "The government announced new policies to support farmers.",
+                        "Context 2": "In the game, players can choose to be part of the government or the opposition.",
+                        "Context 3": "The government of the fictional country was overthrown in the latest novel."
+                    }
+                },
+                {
+                    "word": "Financial Assistance",
+                    "definition": "Monetary support provided to individuals or organizations.",
+                    "context": {
+                        "Context 1": "Many families rely on financial assistance from the government to make ends meet.",
+                        "Context 2": "The charity provided financial assistance to help rebuild homes after the hurricane.",
+                        "Context 3": "He received financial assistance to start his own bakery business."
+                    }
+                },
+                {
+                    "word": "Synonym",
+                    "definition": "A word that has the same or nearly the same meaning as another word.",
+                    "context": {
+                        "Context 1": "In our discussion, we looked for synonyms for 'assistance' like 'help' and 'aid.'",
+                        "Context 2": "The teacher asked the students to find a synonym for 'happy' in the text.",
+                        "Context 3": "In a game of Scrabble, using synonyms can help you score more points."
+                    }
+                },
+                {
+                    "word": "Collective Action",
+                    "definition": "Action taken together by a group of people to achieve a common goal.",
+                    "context": {
+                        "Context 1": "Farmers can improve their bargaining power through collective action.",
+                        "Context 2": "The community organized a collective action to clean up the local park.",
+                        "Context 3": "In the movie, the superheroes engaged in collective action to save the world."
+                    }
+                },
+                {
+                    "word": "Infrastructure",
+                    "definition": "The basic physical and organizational structures needed for the operation of a society.",
+                    "context": {
+                        "Context 1": "The government is investing in infrastructure to improve roads and bridges.",
+                        "Context 2": "The new amusement park will have state-of-the-art infrastructure for safety.",
+                        "Context 3": "In the video game, players must build infrastructure to support their growing city."
+                    }
+                },
+                {
+                    "word": "Bargaining Power",
+                    "definition": "The ability to negotiate favorable terms in a transaction.",
+                    "context": {
+                        "Context 1": "Collective action can enhance farmers' bargaining power when dealing with suppliers.",
+                        "Context 2": "As a large corporation, they had significant bargaining power over smaller competitors.",
+                        "Context 3": "In the negotiation, her bargaining power increased when she presented alternative offers."
+                    }
+                },
+                {
+                    "word": "Subsidy",
+                    "definition": "A sum of money granted by the government or a public body to assist an industry or business.",
+                    "context": {
+                        "Context 1": "The government provides subsidies to support local farmers.",
+                        "Context 2": "The new policy aims to reduce subsidies for fossil fuels.",
+                        "Context 3": "In the board game, players can earn subsidies for developing renewable energy."
+                    }
+                },
+                {
+                    "word": "Cash Transfers",
+                    "definition": "Direct payments of money from the government to individuals or families.",
+                    "context": {
+                        "Context 1": "Cash transfers to poor families can help alleviate poverty.",
+                        "Context 2": "The study showed that cash transfers were effective in improving education outcomes.",
+                        "Context 3": "In the simulation, players received cash transfers to manage their virtual economy."
+                    }
+                },
+                {
+                    "word": "Standard of Living",
+                    "definition": "The degree of wealth and material comfort available to a person or community.",
+                    "context": {
+                        "Context 1": "Financial assistance can improve the standard of living for many families.",
+                        "Context 2": "The documentary explored how the standard of living varies across different countries.",
+                        "Context 3": "In the game, players must manage resources to raise their standard of living."
+                    }
+                },
+                {
+                    "word": "Intervention",
+                    "definition": "The act of becoming involved in a situation to alter the outcome.",
+                    "context": {
+                        "Context 1": "State intervention is necessary to support struggling farmers.",
+                        "Context 2": "The teacher's intervention helped resolve the conflict between students.",
+                        "Context 3": "In the movie, the superhero's intervention saved the city from disaster."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Government",
+                    "fact": "Did you know that the word 'government' comes from the Greek word 'kubernan,' which means 'to steer'?"
+                },
+                {
+                    "word": "Subsidy",
+                    "fact": "In some countries, farmers receive subsidies for growing crops that are not even in demand!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the farmer start a band?",
+                    "answer": "Because he had the best corn-nections!"
+                },
+                {
+                    "question": "Why did the government worker bring a ladder to work?",
+                    "answer": "Because they heard the job had great potential for advancement!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Volatility",
+                    "definition": "The quality of being subject to rapid and unpredictable change, especially in price.",
+                    "context": {
+                        "Context 1": "The stock market's volatility can lead to significant gains or losses for investors.",
+                        "Context 2": "The weather's volatility this year has made planning outdoor events quite challenging.",
+                        "Context 3": "Her emotions were marked by volatility, swinging from joy to sadness in a matter of minutes."
+                    }
+                },
+                {
+                    "word": "Infrastructure",
+                    "definition": "The basic physical and organizational structures and facilities needed for the operation of a society or enterprise.",
+                    "context": {
+                        "Context 1": "Improvements in infrastructure can lead to better transportation and communication.",
+                        "Context 2": "The city’s infrastructure was so outdated that it struggled to handle the growing population.",
+                        "Context 3": "The artist's infrastructure for creating sculptures included a workshop and various tools."
+                    }
+                },
+                {
+                    "word": "Adoption",
+                    "definition": "The action or fact of adopting or being adopted; acceptance of a new idea or practice.",
+                    "context": {
+                        "Context 1": "The adoption of new technology can significantly improve productivity.",
+                        "Context 2": "Her adoption of a vegan diet changed her perspective on food.",
+                        "Context 3": "The adoption of a puppy brought joy to their family."
+                    }
+                },
+                {
+                    "word": "Financial support",
+                    "definition": "Monetary assistance provided to help individuals or organizations meet their financial needs.",
+                    "context": {
+                        "Context 1": "Many students rely on financial support from scholarships to attend college.",
+                        "Context 2": "The financial support from the government helped the small business survive the pandemic.",
+                        "Context 3": "He received financial support from his parents to start his own bakery."
+                    }
+                },
+                {
+                    "word": "Risk",
+                    "definition": "A situation involving exposure to danger or loss.",
+                    "context": {
+                        "Context 1": "Investing in stocks carries a certain level of risk that investors must be aware of.",
+                        "Context 2": "The risk of getting lost in the forest increased as night fell.",
+                        "Context 3": "She took a risk by trying out for the lead role in the school play."
+                    }
+                },
+                {
+                    "word": "Vulnerability",
+                    "definition": "The quality of being open to physical or emotional harm.",
+                    "context": {
+                        "Context 1": "The vulnerability of the coastal city to hurricanes requires extensive disaster planning.",
+                        "Context 2": "His vulnerability made it difficult for him to trust others.",
+                        "Context 3": "The vulnerability of the ancient ruins to weathering is a concern for archaeologists."
+                    }
+                },
+                {
+                    "word": "Specialist",
+                    "definition": "A person who concentrates primarily on a particular subject or activity; an expert.",
+                    "context": {
+                        "Context 1": "The specialist provided valuable insights into the effects of climate change on agriculture.",
+                        "Context 2": "She consulted a specialist in medieval history for her research paper.",
+                        "Context 3": "The dog trainer was a specialist in obedience training."
+                    }
+                },
+                {
+                    "word": "Contribute",
+                    "definition": "To give (something, such as money or time) to help achieve or provide something.",
+                    "context": {
+                        "Context 1": "Many organizations contribute to environmental conservation efforts.",
+                        "Context 2": "He decided to contribute his time to volunteering at the local shelter.",
+                        "Context 3": "The artist wanted to contribute a piece to the community mural."
+                    }
+                },
+                {
+                    "word": "Address",
+                    "definition": "To deal with or discuss a particular issue or problem.",
+                    "context": {
+                        "Context 1": "The government needs to address the rising cost of healthcare.",
+                        "Context 2": "She decided to address her fears by speaking in public more often.",
+                        "Context 3": "The teacher will address the class about the upcoming field trip."
+                    }
+                },
+                {
+                    "word": "Paraphrase",
+                    "definition": "To express the meaning of (something written or spoken) using different words.",
+                    "context": {
+                        "Context 1": "It's important to paraphrase information in your own words to avoid plagiarism.",
+                        "Context 2": "He had to paraphrase the poem to make it easier for his classmates to understand.",
+                        "Context 3": "The teacher asked the students to paraphrase the instructions for clarity."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Volatility",
+                    "fact": "In finance, volatility is often measured by the VIX index, which is sometimes referred to as the 'fear index'!"
+                },
+                {
+                    "word": "Infrastructure",
+                    "fact": "Did you know that the word 'infrastructure' comes from the French word 'infrastructure,' meaning 'below the structure'?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the farmer get a promotion?",
+                    "answer": "Because he was outstanding in his field!"
+                },
+                {
+                    "question": "Why did the scarecrow win an award?",
+                    "answer": "Because he was outstanding in his field too!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Standards of Living",
+                    "definition": "The level of wealth, comfort, material goods, and necessities available to a certain socioeconomic class in a certain geographic area.",
+                    "context": {
+                        "Context 1": "We discussed the standards of living in various countries during our lesson.",
+                        "Context 2": "The standards of living in the city are much higher than in the countryside.",
+                        "Context 3": "After the economic crisis, many families struggled to maintain their standards of living."
+                    }
+                },
+                {
+                    "word": "Prevalent",
+                    "definition": "Widespread in a particular area at a particular time.",
+                    "context": {
+                        "Context 1": "Certain health issues are more prevalent in some regions than others.",
+                        "Context 2": "In the summer, ice cream sales are prevalent at the beach.",
+                        "Context 3": "The prevalent fashion trend this year is oversized jackets."
+                    }
+                },
+                {
+                    "word": "Eradicated",
+                    "definition": "Completely destroyed or removed.",
+                    "context": {
+                        "Context 1": "Many diseases have been eradicated thanks to vaccines.",
+                        "Context 2": "The gardener worked hard to eradicate the weeds from his flowerbed.",
+                        "Context 3": "The team aimed to eradicate all traces of the virus from the computer."
+                    }
+                },
+                {
+                    "word": "Classifying",
+                    "definition": "The action of arranging or organizing things into categories.",
+                    "context": {
+                        "Context 1": "Classifying diseases helps researchers understand their causes.",
+                        "Context 2": "She spent the afternoon classifying her collection of stamps.",
+                        "Context 3": "The librarian is responsible for classifying new books in the library."
+                    }
+                },
+                {
+                    "word": "Obvious",
+                    "definition": "Easily perceived or understood; clear, self-evident, or apparent.",
+                    "context": {
+                        "Context 1": "The examples of pollution in the text were kind of obvious.",
+                        "Context 2": "It was obvious that he was lying by the way he avoided eye contact.",
+                        "Context 3": "The obvious choice for dessert was chocolate cake."
+                    }
+                },
+                {
+                    "word": "Geographers",
+                    "definition": "Experts who study the Earth's landscapes, environments, and the relationships between people and their environments.",
+                    "context": {
+                        "Context 1": "Health geographers map the spread of illnesses.",
+                        "Context 2": "Geographers often travel to remote locations to study climate change.",
+                        "Context 3": "The geographers presented their findings at the international conference."
+                    }
+                },
+                {
+                    "word": "Mapping",
+                    "definition": "The process of creating a visual representation of an area or data.",
+                    "context": {
+                        "Context 1": "Mapping the spread of illnesses can help identify health trends.",
+                        "Context 2": "The city is mapping out new bike lanes to promote cycling.",
+                        "Context 3": "He spent hours mapping the stars in the night sky."
+                    }
+                },
+                {
+                    "word": "Struggling",
+                    "definition": "Experiencing difficulty or hardship.",
+                    "context": {
+                        "Context 1": "I was struggling to find the right answer during the discussion.",
+                        "Context 2": "The athlete is struggling to recover from an injury.",
+                        "Context 3": "She is struggling to learn how to play the piano."
+                    }
+                },
+                {
+                    "word": "Identify",
+                    "definition": "To recognize or establish what something is.",
+                    "context": {
+                        "Context 1": "We need to identify the reasons behind the health issues.",
+                        "Context 2": "Can you identify the bird by its song?",
+                        "Context 3": "The detective worked to identify the suspect in the case."
+                    }
+                },
+                {
+                    "word": "Reasons",
+                    "definition": "Causes or explanations for an action or event.",
+                    "context": {
+                        "Context 1": "We discussed the reasons behind certain health trends.",
+                        "Context 2": "There are many reasons to learn a new language.",
+                        "Context 3": "The reasons for the team's success were clear to everyone."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Obvious",
+                    "fact": "Did you know that the word 'obvious' comes from the Latin 'obvius,' meaning 'in the way'? So, it literally means something that is 'in your face'!"
+                },
+                {
+                    "word": "Geographers",
+                    "fact": "Geographers can be great at parties because they always know how to map out a good time!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the geography teacher break up with the history teacher?",
+                    "answer": "Because they had too many differences in their timelines!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going today?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to get through the week. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I almost burned my kitchen the other day. Can you believe it?"
+                },
+                {
+                    "Person 2": "Oh no! What happened?"
+                },
+                {
+                    "Person 1": "I left some water boiling while I got distracted. When I came back, the pot was completely dry and the bottom was all black!"
+                },
+                {
+                    "Person 2": "Yikes! That sounds scary. At least you didn't start a fire!"
+                },
+                {
+                    "Person 1": "True! I heard a story about an old lady who did something similar and it ended up being really bad."
+                },
+                {
+                    "Person 2": "Wow, that sounds intense. I guess we should be more careful!"
+                },
+                {
+                    "Person 1": "Definitely! So, what have you been up to this week?"
+                },
+                {
+                    "Person 2": "Just job hunting, really. It's been a bit stressful."
+                },
+                {
+                    "Person 1": "I can relate. It feels like a full-time job sometimes!"
+                },
+                {
+                    "Person 2": "Exactly! I haven't had much time for anything else."
+                },
+                {
+                    "Person 1": "Well, hopefully, something good comes your way soon!"
+                },
+                {
+                    "Person 2": "Thanks! I appreciate it. Let's hope for the best!"
+                },
+                {
+                    "Person 1": "For sure! And hey, if you need a break, let me know. We can grab some coffee."
+                },
+                {
+                    "Person 2": "That sounds great! I could definitely use a coffee break."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh, totally! It was intense! I can't believe they pulled off that last-minute win."
+                },
+                {
+                    "Person 1": "Right? I was on the edge of my seat! I thought they were done for."
+                },
+                {
+                    "Person 2": "Same here! And that last play was just brilliant. The quarterback really knows how to read the defense."
+                },
+                {
+                    "Person 1": "For sure! I love how he can stay calm under pressure. Makes the game so exciting."
+                },
+                {
+                    "Person 2": "Absolutely! So, are you planning to watch the next game?"
+                },
+                {
+                    "Person 1": "Definitely! I’m thinking of having some friends over for a little watch party."
+                },
+                {
+                    "Person 2": "That sounds like a blast! I’d love to join if you don’t mind."
+                },
+                {
+                    "Person 1": "Of course! The more, the merrier. We can order some pizza and make it a fun night."
+                },
+                {
+                    "Person 2": "Perfect! I’ll bring some snacks too. Can’t have a game night without chips and dip!"
+                },
+                {
+                    "Person 1": "Exactly! And maybe we can even do a little friendly betting on the score."
+                },
+                {
+                    "Person 2": "Oh, I’m in! Just don’t get mad when I win!"
+                },
+                {
+                    "Person 1": "Ha! We’ll see about that. May the best fan win!"
+                },
+                {
+                    "Person 2": "Deal! Can’t wait for the game!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Yeah! It was intense! I can't believe how close it was."
+                },
+                {
+                    "Person 1": "Right? I thought they were going to lose for sure in the last quarter."
+                },
+                {
+                    "Person 2": "Same here! But that last-minute touchdown was epic!"
+                },
+                {
+                    "Person 1": "Totally! I jumped off the couch when they scored. My dog thought I was crazy."
+                },
+                {
+                    "Person 2": "Haha! I can imagine! Did you have any snacks while watching?"
+                },
+                {
+                    "Person 1": "Of course! I made some nachos. You know me, I can't watch a game without snacks."
+                },
+                {
+                    "Person 2": "Nachos are the best! I just had popcorn. Not as fancy, but it works."
+                },
+                {
+                    "Person 1": "Popcorn is classic! So, are you going to watch the next game?"
+                },
+                {
+                    "Person 2": "Absolutely! I wouldn't miss it for the world. We should watch it together!"
+                },
+                {
+                    "Person 1": "That sounds like a plan! Let’s make it a game night."
+                },
+                {
+                    "Person 2": "For sure! I’ll bring some drinks, and you can handle the snacks."
+                },
+                {
+                    "Person 1": "Deal! I can't wait. It’s going to be so much fun!"
+                },
+                {
+                    "Person 2": "Definitely! Just hope the game is as exciting as last night."
+                },
+                {
+                    "Person 1": "Yeah, fingers crossed! See you then!"
+                },
+                {
+                    "Person 2": "See you!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you finish that assignment for class?"
+                },
+                {
+                    "Person 2": "Not yet! I got stuck on that paragraph about health issues. It was a bit tricky."
+                },
+                {
+                    "Person 1": "I know what you mean. I had to read it a couple of times before it made sense."
+                },
+                {
+                    "Person 2": "Right? I kept second-guessing myself. Like, am I even understanding this correctly?"
+                },
+                {
+                    "Person 1": "Exactly! I thought I was doing fine until I realized I missed a few key points."
+                },
+                {
+                    "Person 2": "Same here! I had to look up some terms just to make sure I wasn’t totally off track."
+                },
+                {
+                    "Person 1": "Yeah, I did that too! It helped a lot. What do you think about the pollution part?"
+                },
+                {
+                    "Person 2": "That one seemed pretty straightforward. I think I got that one right."
+                },
+                {
+                    "Person 1": "I hope so! I feel like that one was more obvious compared to the others."
+                },
+                {
+                    "Person 2": "For sure! But the one about classifying diseases? That one really threw me."
+                },
+                {
+                    "Person 1": "Same! I think I found something in paragraph F, but I’m still not sure."
+                },
+                {
+                    "Person 2": "Let’s go over it together. Maybe we can figure it out."
+                },
+                {
+                    "Person 1": "Good idea! I’ll grab my notes and we can tackle it."
+                },
+                {
+                    "Person 2": "Awesome! Teamwork makes the dream work, right?"
+                },
+                {
+                    "Person 1": "Absolutely! Let’s get this done."
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
