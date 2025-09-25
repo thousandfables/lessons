@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "you are a giraffe I suppose is it or for you it's still yesterday because it looks like you were partying all night long",
+                    "corrected": "you are a giraffe, I suppose. Is it? Or for you, it's still yesterday because it looks like you were partying all night long.",
+                    "explanation": "The original sentence lacks proper punctuation. It should have commas and periods to separate clauses and ideas.",
+                    "context": "I was trying to joke around a bit with Alisa this morning. You are a giraffe, I suppose. Is it? Or for you, it's still yesterday because it looks like you were partying all night long."
+                },
+                {
+                    "original": "I don't hear you very well like you your voice is abrupt",
+                    "corrected": "I don't hear you very well; your voice is abrupt.",
+                    "explanation": "The original sentence runs two clauses together without proper punctuation. A semicolon or period is needed for clarity.",
+                    "context": "During the lesson, I was trying to express my difficulty in hearing Alisa. I don't hear you very well; your voice is abrupt."
+                },
+                {
+                    "original": "do you like it okay so while you were doing them any questions maybe some answers were back or you was you weren't sure of any of them",
+                    "corrected": "Do you like it? Okay, so while you were doing them, any questions? Maybe some answers were back, or you weren’t sure of any of them.",
+                    "explanation": "The original sentence is too long and lacks punctuation, making it hard to follow. It also contains an incorrect form 'you was'.",
+                    "context": "I wanted to check in with Alisa about the tests I sent. Do you like it? Okay, so while you were doing them, any questions? Maybe some answers were back, or you weren’t sure of any of them."
+                },
+                {
+                    "original": "I recommend reading them and kind of like creating maybe some kind of reference or virtual link in your head",
+                    "corrected": "I recommend reading them and creating some kind of reference or virtual link in your head.",
+                    "explanation": "The phrase 'kind of like' is informal and redundant here. It can be simplified for clarity.",
+                    "context": "While discussing the test strategies, I suggested a mental approach. I recommend reading them and creating some kind of reference or virtual link in your head."
+                },
+                {
+                    "original": "the more your understanding of sentences grow, the more it increases",
+                    "corrected": "the more your understanding of sentences grows, the more it increases.",
+                    "explanation": "'Grow' should match the subject 'understanding' (singular), hence 'grows' is correct.",
+                    "context": "I was explaining how reading can improve language skills. The more your understanding of sentences grows, the more it increases."
+                },
+                {
+                    "original": "the ones that you don't know, they really attract your... they really grab your attention",
+                    "corrected": "the ones that you don't know really attract your attention.",
+                    "explanation": "The use of 'they' is unnecessary and makes the statement awkward. It can be simplified.",
+                    "context": "I was describing how encountering new words can lead to curiosity. The ones that you don't know really attract your attention."
+                },
+                {
+                    "original": "you sometimes can't resist that. You sometimes can't stop thinking about this small words that you move.",
+                    "corrected": "You sometimes can't resist that. You sometimes can't stop thinking about these small words that you miss.",
+                    "explanation": "'This' should be 'these' as it refers to multiple words. Also, 'move' is incorrect in this context; 'miss' fits better.",
+                    "context": "I noticed that in reading tasks, Alisa tends to focus on unfamiliar words. You sometimes can't resist that. You sometimes can't stop thinking about these small words that you miss."
+                },
+                {
+                    "original": "okay, when you're putting not given, you need to be twice as attentive",
+                    "corrected": "Okay, when you're marking 'not given', you need to be twice as attentive.",
+                    "explanation": "The phrase 'putting not given' is awkward; 'marking' is a clearer verb to use in this context.",
+                    "context": "I was giving Alisa tips on answering questions in her tests. Okay, when you're marking 'not given', you need to be twice as attentive."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": []
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Abrupt",
+                    "definition": "Sudden or unexpected in a way that may be rude or impolite.",
+                    "context": {
+                        "Context 1": "I noticed your voice is abrupt sometimes when you speak.",
+                        "Context 2": "The weather took an abrupt turn, and we all got soaked.",
+                        "Context 3": "Her abrupt departure from the meeting surprised everyone."
+                    }
+                },
+                {
+                    "word": "Customize",
+                    "definition": "To modify something to suit a particular individual or task.",
+                    "context": {
+                        "Context 1": "Every task is different, so you have to customize your approach.",
+                        "Context 2": "He decided to customize his car with unique paint and accessories.",
+                        "Context 3": "The bakery offered to customize the cake for the wedding."
+                    }
+                },
+                {
+                    "word": "Momentum",
+                    "definition": "The strength or force gained by motion or by a series of events.",
+                    "context": {
+                        "Context 1": "You've built a certain momentum in your studies, keep it up!",
+                        "Context 2": "The car gained momentum as it went downhill.",
+                        "Context 3": "After a few successful meetings, the team generated momentum towards their goals."
+                    }
+                },
+                {
+                    "word": "Tricky",
+                    "definition": "Difficult or requiring careful thought or skill.",
+                    "context": {
+                        "Context 1": "Task D was a little tricky because it had multiple interpretations.",
+                        "Context 2": "The math problem was tricky, and it took me a while to solve it.",
+                        "Context 3": "Replacing the light bulb in that fixture is tricky; you need a ladder."
+                    }
+                },
+                {
+                    "word": "Attention",
+                    "definition": "The act of focusing on a particular person or task.",
+                    "context": {
+                        "Context 1": "The unknown words in the text really grab your attention.",
+                        "Context 2": "The teacher's lecture didn't hold my attention for long.",
+                        "Context 3": "He has a talent for demanding the attention of large crowds."
+                    }
+                },
+                {
+                    "word": "Sufficient",
+                    "definition": "Enough; adequate.",
+                    "context": {
+                        "Context 1": "Make sure you have sufficient time to complete the test.",
+                        "Context 2": "She had sufficient knowledge to handle the situation on her own.",
+                        "Context 3": "There was sufficient food at the party for everyone."
+                    }
+                },
+                {
+                    "word": "Reference",
+                    "definition": "A mention of a source of information.",
+                    "context": {
+                        "Context 1": "Creating a reference in your head can help in understanding the text.",
+                        "Context 2": "He provided a reference for his research paper from a trusted journal.",
+                        "Context 3": "The children learned the importance of proper reference in their science projects."
+                    }
+                },
+                {
+                    "word": "Advanced",
+                    "definition": "Far on in progress or development.",
+                    "context": {
+                        "Context 1": "You have advanced quite far in completing your tasks.",
+                        "Context 2": "The advanced class in programming is filled with skilled students.",
+                        "Context 3": "They designed an advanced prototype to showcase at the technology fair."
+                    }
+                },
+                {
+                    "word": "Aware",
+                    "definition": "Having knowledge or perception of a situation or fact.",
+                    "context": {
+                        "Context 1": "Be aware that some details can slip through when answering.",
+                        "Context 2": "She was not aware of the changes in the schedule.",
+                        "Context 3": "He is very aware of current events and always shares updates."
+                    }
+                },
+                {
+                    "word": "Academic",
+                    "definition": "Related to education, especially at colleges and universities.",
+                    "context": {
+                        "Context 1": "The language used in the text can be very heavy and academic.",
+                        "Context 2": "She won an award for her outstanding academic performance.",
+                        "Context 3": "He has an academic interest in the history of art."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Momentum",
+                    "fact": "Did you know that in physics, momentum is often described as 'mass in motion'? So, if you're feeling heavy and slow, maybe you're just full of momentum!"
+                },
+                {
+                    "word": "Tricky",
+                    "fact": "The word 'tricky' comes from the old English word 'trice,' which means to pull or to draw. Perhaps the real trick is figuring out how to pull off a good punchline!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes and couldn’t process its emotions!"
+                },
+                {
+                    "question": "Why did the student eat his homework?",
+                    "answer": "Because his teacher said it was a piece of cake!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Prohibitively",
+                    "definition": "To an extent that prevents something from being done or achieved; excessively.",
+                    "context": {
+                        "Context 1": "The costs of attending the concert were prohibitively high for most fans.",
+                        "Context 2": "He found the new smartphone prohibitively complex for his needs.",
+                        "Context 3": "The amount of rain was prohibitively low for any outdoor activities."
+                    }
+                },
+                {
+                    "word": "Locate",
+                    "definition": "To find or discover the position of something.",
+                    "context": {
+                        "Context 1": "Can you help me locate the nearest gas station?",
+                        "Context 2": "She struggled to locate her lost keys in the house.",
+                        "Context 3": "The explorers aim to locate ancient ruins of a forgotten civilization."
+                    }
+                },
+                {
+                    "word": "Detail",
+                    "definition": "An individual feature, fact, or item.",
+                    "context": {
+                        "Context 1": "Each detail of the plan was meticulously prepared.",
+                        "Context 2": "His painting captured every detail of the landscape.",
+                        "Context 3": "The report lacked detail, making it hard to understand the findings."
+                    }
+                },
+                {
+                    "word": "Weird",
+                    "definition": "Strange or unusual, often in a way that is unsettling.",
+                    "context": {
+                        "Context 1": "That movie had a weird plot twist that I didn't see coming.",
+                        "Context 2": "It's weird how quickly seasons change around here.",
+                        "Context 3": "She wore a weird combination of colors that surprised everyone."
+                    }
+                },
+                {
+                    "word": "Reference",
+                    "definition": "A mention of something; a source of information.",
+                    "context": {
+                        "Context 1": "Please include a reference to the article when you write your paper.",
+                        "Context 2": "He made a reference to a popular song in his speech.",
+                        "Context 3": "The reference guide was essential in helping students prepare for the exam."
+                    }
+                },
+                {
+                    "word": "Expensive",
+                    "definition": "Costing a lot of money; high-priced.",
+                    "context": {
+                        "Context 1": "The brand-name shoes were prohibitively expensive.",
+                        "Context 2": "Eating out can be expensive if done too often.",
+                        "Context 3": "He found the rare comic book to be surprisingly inexpensive."
+                    }
+                },
+                {
+                    "word": "Task",
+                    "definition": "A piece of work to be done or undertaken.",
+                    "context": {
+                        "Context 1": "Completing this task is crucial for the project deadline.",
+                        "Context 2": "Her task for the day was to organize the files.",
+                        "Context 3": "Playing the piano was a difficult task for him at first."
+                    }
+                },
+                {
+                    "word": "Challenging",
+                    "definition": "Testing one's abilities; demanding.",
+                    "context": {
+                        "Context 1": "The exam was challenging, pushing students to think critically.",
+                        "Context 2": "Learning a new language can be a challenging yet rewarding experience.",
+                        "Context 3": "Building the model airplane became a challenging task for the kids."
+                    }
+                },
+                {
+                    "word": "Approach",
+                    "definition": "A way of dealing with something; a method.",
+                    "context": {
+                        "Context 1": "Her approach to solving problems was very innovative.",
+                        "Context 2": "He decided to take a different approach to the painting style.",
+                        "Context 3": "Their approach to the project was rather traditional."
+                    }
+                },
+                {
+                    "word": "Unusual",
+                    "definition": "Not common, rare, or different from the norm.",
+                    "context": {
+                        "Context 1": "The unusual weather patterns have scientists intrigued.",
+                        "Context 2": "Having purple carrots is quite unusual but healthy!",
+                        "Context 3": "His talent for juggling while singing is pretty unusual."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Weird",
+                    "fact": "Did you know that in some cultures, the color blue is considered 'weird' because it’s so rare in nature?"
+                },
+                {
+                    "word": "Expensive",
+                    "fact": "The most expensive coffee in the world comes from civet cat droppings—it’s called Kopi Luwak!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student take a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What did one pencil say to the other pencil?",
+                    "answer": "You're looking sharp today!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going today?"
+                },
+                {
+                    "Person 2": "Pretty good! Just trying to wake up. I think I need more coffee."
+                },
+                {
+                    "Person 1": "Same here! I had a late night working on some projects. You know how it goes."
+                },
+                {
+                    "Person 2": "Oh, absolutely! I've been in that zone too. What kind of projects are you working on?"
+                },
+                {
+                    "Person 1": "Just some freelance stuff. It takes longer than I expected!"
+                },
+                {
+                    "Person 2": "I hear that. I've been trying to juggle a couple of things myself. It's like there's never enough time!"
+                },
+                {
+                    "Person 1": "Right? And when you finally sit down to focus, it's like your mind's all over the place."
+                },
+                {
+                    "Person 2": "Exactly! I sometimes wish I could just lock myself in a room without distractions."
+                },
+                {
+                    "Person 1": "Ha! That's so true. What do you think your biggest distraction is?"
+                },
+                {
+                    "Person 2": "Honestly, probably my phone. I can't resist checking notifications!"
+                },
+                {
+                    "Person 1": "Same here! I swear, I’ll sit down with a book and then end up scrolling through Instagram."
+                },
+                {
+                    "Person 2": "It's a real struggle! Maybe we should set some rules for ourselves like no phone during work hours."
+                },
+                {
+                    "Person 1": "That sounds like a plan! Let's hold each other accountable."
+                },
+                {
+                    "Person 2": "Definitely! We can check in with each other, see how we're doing."
+                },
+                {
+                    "Person 1": "Great! Alright, let’s get to work then. We got this!"
+                },
+                {
+                    "Person 2": "We sure do! Here’s to a distraction-free day!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Pretty good! Just trying to decide what to do this weekend. Any plans?"
+                },
+                {
+                    "Person 1": "Not really. I was thinking about hitting the beach if the weather's nice."
+                },
+                {
+                    "Person 2": "That sounds awesome! I love the beach. Do you want company?"
+                },
+                {
+                    "Person 1": "Absolutely! The more, the merrier. We could do a beach picnic."
+                },
+                {
+                    "Person 2": "Oh, yes! I can bring some snacks. Maybe some sandwiches and fruit?"
+                },
+                {
+                    "Person 1": "Perfect! I’ll bring some drinks and a speaker for music."
+                },
+                {
+                    "Person 2": "Awesome! Do you have a playlist ready?"
+                },
+                {
+                    "Person 1": "Not yet, but I’ll throw one together. Any song requests?"
+                },
+                {
+                    "Person 2": "Maybe some summer vibes? You know, stuff we can dance to!"
+                },
+                {
+                    "Person 1": "Totally! I'll make sure it’s fun. What time should we meet?"
+                },
+                {
+                    "Person 2": "How about around noon? That way we can snag a good spot."
+                },
+                {
+                    "Person 1": "Sounds great! Can't wait for some sun and fun."
+                },
+                {
+                    "Person 2": "Me too! It’s going to be a blast!"
+                },
+                {
+                    "Person 1": "For sure! See you then."
+                },
+                {
+                    "Person 2": "See you!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
