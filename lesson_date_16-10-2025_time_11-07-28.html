@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I feel already tired.",
+                    "corrected": "I already feel tired.",
+                    "explanation": "The correct word order in English places the adverb 'already' before the verb 'feel'.",
+                    "context": "Waking up early is difficult for me. I already feel tired. I usually go to sleep very late."
+                },
+                {
+                    "original": "she can clean the house cook a meal then to do something more",
+                    "corrected": "she can clean the house, cook a meal, and then do something more.",
+                    "explanation": "A list requires conjunctions and commas to separate items clearly.",
+                    "context": "My mom is very productive in the morning. She can clean the house, cook a meal, and then do something more. I, on the other hand, thrive at night."
+                },
+                {
+                    "original": "building the habit of working up late at night",
+                    "corrected": "building the habit of staying up late at night.",
+                    "explanation": "'Working up late' is a misuse of 'work'; the correct phrase is 'staying up late'.",
+                    "context": "When you force yourself not to sleep late, you are building a habit. Building the habit of staying up late at night is common for some. It can lead to being more productive during those hours."
+                },
+                {
+                    "original": "I've never switched to evening class.",
+                    "corrected": "I never switched to evening classes.",
+                    "explanation": "The plural 'classes' is needed to refer to multiple sessions rather than a singular instance.",
+                    "context": "I have worked as a tutor and learned what works best. I never switched to evening classes because it was very tiring. The students were also not receptive."
+                },
+                {
+                    "original": "you just don't learn or you don't learn as fast as you could",
+                    "corrected": "you just don’t learn as well as you could.",
+                    "explanation": "The phrase 'as fast as' implies speed, whereas 'as well as' indicates quality of learning.",
+                    "context": "In the morning, students tend to absorb information better. You just don’t learn as well as you could in the evening. It's a matter of focus and energy."
+                },
+                {
+                    "original": "It's about physical strength in the sport physical and mental strength in the sport.",
+                    "corrected": "It's about physical and mental strength in sports.",
+                    "explanation": "The phrase was repeated unnecessarily, and 'in sports' should be pluralized to refer generically.",
+                    "context": "I was reviewing the essay topic earlier. It's about physical and mental strength in sports. Understanding both aspects is essential for athletes."
+                },
+                {
+                    "original": "the problem I guess yes because many students don't do mean like physical mental in context of sport",
+                    "corrected": "The problem, I guess, is that many students don’t understand the concepts of physical and mental strength in the context of sports.",
+                    "explanation": "The sentence structure was awkward and lacked clarity; phrases needed reordering for better flow.",
+                    "context": "I was thinking about common misunderstandings in my students' essays. The problem, I guess, is that many students don’t understand the concepts of physical and mental strength in the context of sports. This can lead to confusion in their writing."
+                },
+                {
+                    "original": "like stamina probably I would say that this is mental strength moving to you towards your goal achieve it over to chewing your goal",
+                    "corrected": "Like stamina, I would say that mental strength moves you towards achieving your goal.",
+                    "explanation": "The phrase was convoluted and unclear; restructuring is needed for better clarity.",
+                    "context": "The term 'stamina' came to mind as I explained concepts to students. I would say that mental strength moves you towards achieving your goal. It’s crucial in sports."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I didn't say what we are talking about.",
+                    "corrected": "I didn't say what we were talking about.",
+                    "explanation": "The verb 'are' should be 'were' because it refers to a past context.",
+                    "context": "During our discussion, I realized there were parts missing in my introduction. I didn't say what we were talking about, which made it unclear."
+                },
+                {
+                    "original": "why strength why is but mental strength make more is more important.",
+                    "corrected": "why strength; why is mental strength more important?",
+                    "explanation": "The sentence lacks proper structure and punctuation, making it confusing; it needs clearer wording and a question mark.",
+                    "context": "I need to clarify my points in the introduction. Specifically, I want to ask why strength is important, and why mental strength is even more significant."
+                },
+                {
+                    "original": "think of your introduction yes like kinda like a small a small revision of your whole essay.",
+                    "corrected": "Think of your introduction as a small revision of your whole essay.",
+                    "explanation": "The phrase 'kinda like' is informal and should be replaced with a more precise expression; also, 'small a small' is redundant.",
+                    "context": "When revising, I should think of my introduction as a comprehensive summary of the main points. It should reflect the essence of my entire essay."
+                },
+                {
+                    "original": "they see that everything you're going to be talking about in your first body paragraph in your late your next body paragraph there is a prototype of that.",
+                    "corrected": "They see that everything you're going to talk about in your first body paragraph, in your next body paragraph, has a prototype.",
+                    "explanation": "The sentence is overly convoluted and contains grammatical errors; it needs rephrasing for clarity.",
+                    "context": "I need to ensure that my introduction sets the stage for my essay. They need to see that everything I plan to talk about is summarized in the introduction."
+                },
+                {
+                    "original": "despite the fact that physical strength is important mental strength you athletes couldn't we've just with physical power.",
+                    "corrected": "Despite the fact that physical strength is important, athletes can't rely solely on physical power.",
+                    "explanation": "The sentence is jumbled and unclear; it should be separated with proper punctuation for readability.",
+                    "context": "It's essential to highlight the balance between physical and mental aspects in sports. Despite the importance of physical strength, athletes can't rely solely on physical power."
+                },
+                {
+                    "original": "I least I know this is someone that now people don't use sportsmen firemen because there are men no because sportswoman.",
+                    "corrected": "At least I know that people now don't use 'sportsmen' or 'firemen' because those terms are male-specific; we should use 'sportswomen' instead.",
+                    "explanation": "The sentence lacks clarity and contains incorrect terms; it should cleanly separate thoughts.",
+                    "context": "I realized language evolves. At least I know that now, people don't use 'sportsmen' or 'firemen' since those terms refer specifically to men."
+                },
+                {
+                    "original": "so works not Malika do you do you see how we can improve all introduction.",
+                    "corrected": "So, do you see how we can improve the introduction?",
+                    "explanation": "The sentence is disorganized and contains grammatical errors; it needs to be clearly stated.",
+                    "context": "During our lesson, I wanted to ensure we were on the same page. So, do you see how we can improve the introduction to be more effective?"
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Deflate",
+                    "definition": "To release air or gas from something, causing it to become less inflated or lose shape.",
+                    "context": {
+                        "Context 1": "The balloons began to deflate slowly after the party.",
+                        "Context 2": "After the tire deflated, we had to change it on the side of the road.",
+                        "Context 3": "He felt deflated after receiving critical feedback on his presentation."
+                    }
+                },
+                {
+                    "word": "Productive",
+                    "definition": "Able to produce large amounts of work or results efficiently.",
+                    "context": {
+                        "Context 1": "She feels more productive working at night than during the day.",
+                        "Context 2": "The new office layout was designed to enhance productive collaboration between teams.",
+                        "Context 3": "Being productive doesn’t always mean working harder; sometimes taking breaks is key."
+                    }
+                },
+                {
+                    "word": "Habit",
+                    "definition": "A regular practice or routine that is often difficult to give up.",
+                    "context": {
+                        "Context 1": "He built the habit of studying every evening to improve his grades.",
+                        "Context 2": "Brushing your teeth twice daily can be a healthy habit.",
+                        "Context 3": "Developing a habit of exercising can lead to long-term health benefits."
+                    }
+                },
+                {
+                    "word": "Effectiveness",
+                    "definition": "The degree to which something is successful in producing a desired result.",
+                    "context": {
+                        "Context 1": "Morning classes tend to have a higher effectiveness in learning compared to evening classes.",
+                        "Context 2": "The effectiveness of the new marketing strategy was demonstrated by the increase in sales.",
+                        "Context 3": "A tool's effectiveness depends on how well it meets user needs."
+                    }
+                },
+                {
+                    "word": "Exhausting",
+                    "definition": "Causing extreme tiredness; very tiring.",
+                    "context": {
+                        "Context 1": "He found evening classes to be exhausting after a long day of work.",
+                        "Context 2": "The marathon was exhausting but ultimately rewarding.",
+                        "Context 3": "Cleaning the entire house in one day can be exhausting but satisfying."
+                    }
+                },
+                {
+                    "word": "Accomplish",
+                    "definition": "To successfully complete or achieve a goal.",
+                    "context": {
+                        "Context 1": "With better time management, she could accomplish more tasks during the day.",
+                        "Context 2": "He hopes to accomplish his dream of traveling the world someday.",
+                        "Context 3": "Many people feel a sense of satisfaction when they accomplish their New Year’s resolutions."
+                    }
+                },
+                {
+                    "word": "Energy",
+                    "definition": "The strength and vitality required for sustained physical or mental activity.",
+                    "context": {
+                        "Context 1": "She has a lot of energy at night, which helps her be productive.",
+                        "Context 2": "Solar panels convert sunlight into energy for homes.",
+                        "Context 3": "Yoga can help improve both physical energy and mental focus."
+                    }
+                },
+                {
+                    "word": "Natural",
+                    "definition": "Existing in or produced by nature; not made or caused by humankind.",
+                    "context": {
+                        "Context 1": "Some people find it natural to stay active during the day.",
+                        "Context 2": "Birds using natural materials to build nests is an interesting phenomenon.",
+                        "Context 3": "Natural disasters can have devastating effects on communities."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Different people have different perspectives on productivity and work hours.",
+                        "Context 2": "Her perspective as an artist greatly influences her photography.",
+                        "Context 3": "Travel often provides a broader perspective on life and cultures."
+                    }
+                },
+                {
+                    "word": "Analyze",
+                    "definition": "To examine in detail in order to understand or explain something.",
+                    "context": {
+                        "Context 1": "She had to analyze her study habits to improve her grades.",
+                        "Context 2": "Scientists will analyze the data to make sense of the results.",
+                        "Context 3": "He likes to analyze movies for their deeper meanings and themes."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Exhausting",
+                    "fact": "Did you know that the average person spends about 6 years of their life waiting in lines? Talk about exhausting!"
+                },
+                {
+                    "word": "Accomplish",
+                    "fact": "Some accomplishments are as simple as getting out of bed! That's a victory for many on a tough day."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the balloon go to school?",
+                    "answer": "Because it wanted to get a little inflated with knowledge!"
+                },
+                {
+                    "question": "Why don't scientists trust atoms?",
+                    "answer": "Because they make up everything!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Introduction",
+                    "definition": "The beginning section of a speech or written work that introduces the topic.",
+                    "context": {
+                        "Context 1": "Your introduction should clearly state the main topic of your essay.",
+                        "Context 2": "Before the party started, he gave an introduction about the guest speaker.",
+                        "Context 3": "The introduction of the new product generated a lot of excitement among consumers."
+                    }
+                },
+                {
+                    "word": "Strength",
+                    "definition": "The quality or state of being strong; the capacity to withstand or exert force.",
+                    "context": {
+                        "Context 1": "Mental strength is as important as physical strength in sports.",
+                        "Context 2": "Her strength was evident when she lifted the heavy weights with ease.",
+                        "Context 3": "The strength of the storm caused significant damage to the town."
+                    }
+                },
+                {
+                    "word": "Summary",
+                    "definition": "A brief statement or account of the main points of something.",
+                    "context": {
+                        "Context 1": "Your summary should reflect the main ideas of your entire essay.",
+                        "Context 2": "The teacher asked for a summary of the chapter after the students finished reading.",
+                        "Context 3": "His summary of the movie intrigued everyone to watch it."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or conditions surrounding an event, statement, or idea.",
+                    "context": {
+                        "Context 1": "Providing context is essential for understanding the main argument in your essay.",
+                        "Context 2": "To understand her reaction, you need to consider the context of her past experiences.",
+                        "Context 3": "The historical context of the painting is crucial to appreciating its significance."
+                    }
+                },
+                {
+                    "word": "Prototype",
+                    "definition": "A first or preliminary version of a device or vehicle from which other forms are developed.",
+                    "context": {
+                        "Context 1": "The prototype of the new vehicle was tested for safety last week.",
+                        "Context 2": "He created a prototype of his app to share with potential investors.",
+                        "Context 3": "The artist used a sculpting clay as a prototype before making the final statue."
+                    }
+                },
+                {
+                    "word": "Athletes",
+                    "definition": "Individuals who are proficient in sports and other forms of physical exercise.",
+                    "context": {
+                        "Context 1": "Athletes need both mental and physical strength to excel in their sports.",
+                        "Context 2": "Many athletes train for years to compete in the Olympics.",
+                        "Context 3": "She admired the resilience of athletes who recover from injuries to compete again."
+                    }
+                },
+                {
+                    "word": "Examiner",
+                    "definition": "A person who inspects or tests something to assess its quality or performance.",
+                    "context": {
+                        "Context 1": "The examiner will look for clarity in your argument and structure in your writing.",
+                        "Context 2": "The driving examiner watched carefully as he completed the test course.",
+                        "Context 3": "Each examiner has their own style of grading essays."
+                    }
+                },
+                {
+                    "word": "Revision",
+                    "definition": "The process of reviewing and making changes to a piece of writing.",
+                    "context": {
+                        "Context 1": "You should consider a revision to improve the clarity of your introduction.",
+                        "Context 2": "After receiving feedback, I went through a thorough revision of my research paper.",
+                        "Context 3": "The editor suggested several revisions before the article could be published."
+                    }
+                },
+                {
+                    "word": "Structuring",
+                    "definition": "The act of arranging or organizing something in a systematic way.",
+                    "context": {
+                        "Context 1": "Structuring your essay correctly will help convey your ideas more effectively.",
+                        "Context 2": "The architect focused on structuring the building to ensure stability and aesthetics.",
+                        "Context 3": "She spent hours structuring her playlist for the party."
+                    }
+                },
+                {
+                    "word": "Gender-neutral",
+                    "definition": "Not referring exclusively to one gender; inclusive of all genders.",
+                    "context": {
+                        "Context 1": "Using gender-neutral terms makes your writing more inclusive.",
+                        "Context 2": "The company adopted a gender-neutral dress code for its employees.",
+                        "Context 3": "Many new toys are designed to be gender-neutral, appealing to all children."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Prototype",
+                    "fact": "The first prototype of a toaster didn’t toast bread but melted it! Imagine breakfast time gone wrong."
+                },
+                {
+                    "word": "Strength",
+                    "fact": "Did you know that the world's strongest man once lifted a car? But when asked why, he simply said, 'To get to the other side!'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What did one essay say to the other?",
+                    "answer": "You complete me!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! So, how's it going with the balloons from your birthday?"
+                },
+                {
+                    "Person 2": "Oh, they're still up! But they're definitely starting to lose their shape. I think they'll pop soon."
+                },
+                {
+                    "Person 1": "Nice! Do you consider yourself an early bird?"
+                },
+                {
+                    "Person 2": "Not at all! I can’t stand waking up that early, especially for classes. I'm usually up late."
+                },
+                {
+                    "Person 1": "I get that! Early mornings can feel refreshing, but it’s tough if you sleep late."
+                },
+                {
+                    "Person 2": "Definitely! I feel super tired when I wake up early. I work better at night."
+                },
+                {
+                    "Person 1": "I’ve heard some people are just more productive at night. My mom is the complete opposite; she's up at dawn cleaning and cooking."
+                },
+                {
+                    "Person 2": "That’s interesting! But I think each person has their own rhythm. Like babies, they never stay up late."
+                },
+                {
+                    "Person 1": "True! Maybe we just get used to staying up late. I know I feel more energetic in the evenings."
+                },
+                {
+                    "Person 2": "Same here! I can easily work until 2 or 3 a.m. It’s like my brain gets a second wind."
+                },
+                {
+                    "Person 1": "See? It's all about habits. You can adjust them and feel more energized during the day."
+                },
+                {
+                    "Person 2": "Exactly! I always thought I was a night owl, but maybe I could train myself to be more productive early."
+                },
+                {
+                    "Person 1": "When do you usually finish your studies?"
+                },
+                {
+                    "Person 2": "Usually around 8:40 p.m. It feels so late sometimes!"
+                },
+                {
+                    "Person 1": "Wow, that is late! I remember when I started classes, I only wanted morning slots."
+                },
+                {
+                    "Person 2": "Yeah, it's tough to focus in the evening. You’re just so worn out by then."
+                },
+                {
+                    "Person 1": "Exactly! So, want to take a look at that essay you wrote?"
+                },
+                {
+                    "Person 2": "Sure! It’s about physical versus mental strength in sports."
+                },
+                {
+                    "Person 1": "Sounds like a solid topic! Did you figure out the main points?"
+                },
+                {
+                    "Person 2": "Yeah, I think I connected physical strength to mental strength well. It's all about balance."
+                },
+                {
+                    "Person 1": "Great! I can’t wait to read it. Let’s get started!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you been working on your writing assignment?"
+                },
+                {
+                    "Person 2": "Yeah, I’ve been trying. But I forgot to include what my paper was actually about in the intro."
+                },
+                {
+                    "Person 1": "Oh no! That's kind of a big deal. What’s the topic?"
+                },
+                {
+                    "Person 2": "It’s about the importance of mental strength in sports. I just jumped right into the arguments."
+                },
+                {
+                    "Person 1": "Gotcha! So you need to give a little overview before diving in?"
+                },
+                {
+                    "Person 2": "Exactly! I guess I just rushed it."
+                },
+                {
+                    "Person 1": "You know, a good intro sets the whole tone for the essay. It’s like a sneak peek."
+                },
+                {
+                    "Person 2": "Right! I should probably revise it to include why mental strength matters. It’s not just about physical ability."
+                },
+                {
+                    "Person 1": "Totally! Mental strength is crucial for athletes. It helps them push through tough times."
+                },
+                {
+                    "Person 2": "Yeah, I read that mental focus can be the difference between winning and losing."
+                },
+                {
+                    "Person 1": "For sure! Have you thought about using examples of famous athletes for your arguments?"
+                },
+                {
+                    "Person 2": "That’s a good idea. I could mention how certain athletes thrive under pressure."
+                },
+                {
+                    "Person 1": "Definitely! It will make your points stronger. Need any help revising?"
+                },
+                {
+                    "Person 2": "I might take you up on that! Just need to get my thoughts straight first."
+                },
+                {
+                    "Person 1": "Sounds good! Just let me know when you’re ready."
+                },
+                {
+                    "Person 2": "Will do! Thanks for the support!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
