@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "strict parenting is essential for discipline and safety of a teenager",
+                    "corrected": "strict parenting is essential for the discipline and safety of a teenager",
+                    "explanation": "Missing article 'the' before 'discipline.' 'The discipline' specifies the type of discipline being referred to.",
+                    "context": "I believe that strict parenting is vital for setting boundaries. Strict parenting is essential for the discipline and safety of a teenager."
+                },
+                {
+                    "original": "an example of someone who is under strict control and therefore is safer",
+                    "corrected": "an example of someone who is under strict control and therefore feels safer",
+                    "explanation": "The verb 'is' should be changed to 'feels' to convey the subjective experience of safety.",
+                    "context": "I think we need specific instances to illustrate our point. For example, an example of someone who is under strict control and therefore feels safer."
+                },
+                {
+                    "original": "this body paragraph I can see the outline of it",
+                    "corrected": "I can see the outline of this body paragraph.",
+                    "explanation": "Improper sentence structure; the subject should come before the predicate to form a complete sentence.",
+                    "context": "I’m trying to outline the key points for my writing. I can see the outline of this body paragraph."
+                },
+                {
+                    "original": "they should spend more time on studying or like academic aspects",
+                    "corrected": "they should spend more time studying or on academic aspects.",
+                    "explanation": "The phrasing 'on studying' is more natural than 'on studying or like academic aspects'. The word 'like' is also unnecessary here.",
+                    "context": "Parents often want their children to focus more on education. They should spend more time studying or on academic aspects."
+                },
+                {
+                    "original": "this way they couldn't make any own decisions",
+                    "corrected": "this way they can't make any of their own decisions.",
+                    "explanation": "The phrase 'any own decisions' is incorrect; 'any of their own decisions' is the proper form.",
+                    "context": "When parents exercise excessive control, it impacts teenagers. This way they can't make any of their own decisions."
+                },
+                {
+                    "original": "if parents will control every step or every action in future",
+                    "corrected": "if parents control every step or every action in the future.",
+                    "explanation": "Incorrect verb form 'will control' should be simplified to 'control' for clarity in conditional sentences.",
+                    "context": "It's crucial to understand the implications of over-control. If parents control every step or every action in the future, it hampers independence."
+                },
+                {
+                    "original": "this is what Bytee paragraph wants from you here",
+                    "corrected": "this is what the body paragraph wants from you here.",
+                    "explanation": "Typo in 'Bytee,' should be corrected to 'the body' to convey the intended meaning clearly.",
+                    "context": "When writing, clarity is key. This is what the body paragraph wants from you here."
+                },
+                {
+                    "original": "it may be a counterexample",
+                    "corrected": "it could be a counterexample.",
+                    "explanation": "'Could be' is more appropriate than 'may be' in expressing possibilities in this context.",
+                    "context": "It's essential to back up claims with real examples. It could be a counterexample."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "In USA, teenagers start driving from 16",
+                    "corrected": "In the USA, teenagers start driving at 16.",
+                    "explanation": "The definite article 'the' is needed before 'USA,' and 'from' should be replaced with 'at' to indicate a specific age.",
+                    "context": "In many countries, driving age varies. In the USA, teenagers start driving at 16. This practice emphasizes independence at a young age."
+                },
+                {
+                    "original": "And in the future they won't have any problems with driving.",
+                    "corrected": "And in the future, they won't have any problems with driving.",
+                    "explanation": "A comma is needed after 'future' to separate the clauses for better readability.",
+                    "context": "Many believe that this early start sets teenagers up for success. And in the future, they won't have any problems with driving."
+                },
+                {
+                    "original": "Give me some fact that proves that they don't have troubles.",
+                    "corrected": "Give me some facts that prove that they don't have troubles.",
+                    "explanation": "'Fact' should be plural to match 'some,' and 'proves' should be 'prove' to agree with the plural noun.",
+                    "context": "While considering the independence aspect, I asked for evidence. Give me some facts that prove that they don't have troubles."
+                },
+                {
+                    "original": "I never heard about boarding schools, like maybe only colleges, universities.",
+                    "corrected": "I have never heard about boarding schools, maybe only colleges and universities.",
+                    "explanation": "The present perfect form 'have never heard' is more appropriate for experiences up to now, and 'like' is informal here.",
+                    "context": "While discussing schooling, I realized I was unclear on the topic. I have never heard about boarding schools, maybe only colleges and universities."
+                },
+                {
+                    "original": "I think like every country has boarding colleges and universities, like especially for international students, foreigners.",
+                    "corrected": "I think that every country has boarding colleges and universities, especially for international students and foreigners.",
+                    "explanation": "'Like' is used incorrectly for 'that' and should not appear multiple times for clarity.",
+                    "context": "In discussing education systems, I made a generalization. I think that every country has boarding colleges and universities, especially for international students and foreigners."
+                },
+                {
+                    "original": "Yes, so parents believe that this is really beneficial for their teenagers.",
+                    "corrected": "Yes, parents believe that this is really beneficial for their teenagers.",
+                    "explanation": "'So' is unnecessary here as it does not add meaning and disrupts the flow.",
+                    "context": "While analyzing parental choices, I could see a clear motive. Yes, parents believe that this is really beneficial for their teenagers."
+                },
+                {
+                    "original": "You could send your kid to just a school with strong teachers, with an emphasis on academic performance.",
+                    "corrected": "You could send your kid to just any school with strong teachers, with an emphasis on academic performance.",
+                    "explanation": "The word 'any' clarifies the meaning, indicating that it could apply to a variety of schools.",
+                    "context": "Reflecting on schooling options, I thought about alternatives. You could send your kid to just any school with strong teachers, with an emphasis on academic performance."
+                },
+                {
+                    "original": "But why is boarding schools so popular?",
+                    "corrected": "But why are boarding schools so popular?",
+                    "explanation": "Subject-verb agreement error; 'boarding schools' is plural, so 'are' should be used instead of 'is.'",
+                    "context": "Continuing the conversation about education, I questioned the popularity. But why are boarding schools so popular?"
+                },
+                {
+                    "original": "And why do parents want that?",
+                    "corrected": "And why do parents want that?",
+                    "explanation": "The sentence is correct; however, it lacks context and could use a bit more elaboration for clarity.",
+                    "context": "Addressing the intent behind parental choices, I sought deeper understanding. And why do parents want that?"
+                },
+                {
+                    "original": "This is what I call a good example.",
+                    "corrected": "This is what I would call a good example.",
+                    "explanation": "Using 'would' conveys a more conditional or hypothetical tone appropriate for examples.",
+                    "context": "Discussing effective arguments, I highlighted my view on evidence. This is what I would call a good example."
+                },
+                {
+                    "original": "This would be a level one example Level one example, usually it's very hard to get a band 7 with a level one example.",
+                    "corrected": "This would be a level one example. A level one example is usually very hard to get a band 7 with.",
+                    "explanation": "The sentences need to be separated for clarity, and the repetition of 'level one example' can be avoided for conciseness.",
+                    "context": "In evaluating essay structures, I noticed the challenges. This would be a level one example. A level one example is usually very hard to get a band 7 with."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "I think I would choose that teenagers must have more freedom.",
+                    "corrected": "I think I would choose that teenagers should have more freedom.",
+                    "explanation": "'Must' implies obligation, while 'should' suggests recommendation or preference, which is more appropriate in this context.",
+                    "context": "In a discussion about the freedoms teenagers need, I think I would choose that teenagers should have more freedom. This allows them room to learn and grow responsibly."
+                },
+                {
+                    "original": "Can I, like, restate facts and explanations and examples that I already used, or should I use only new one?",
+                    "corrected": "Can I, like, restate facts, explanations, and examples that I already used, or should I use only new ones?",
+                    "explanation": "'One' should be 'ones' here as it refers back to 'new' in the plural context.",
+                    "context": "While writing my essay, I wondered if I can, like, restate facts, explanations, and examples that I already used, or should I use only new ones? Clarifying this is important for effective writing."
+                },
+                {
+                    "original": "Just paraphrase, just said in different words, all variations of one idea.",
+                    "corrected": "Just paraphrase, just say it in different words, all variations of one idea.",
+                    "explanation": "The verb 'said' should be 'say' to match the imperative form of the sentence.",
+                    "context": "In trying to improve my writing, I was told I should just paraphrase, just say it in different words, all variations of one idea. This will enhance the clarity and depth of my arguments."
+                },
+                {
+                    "original": "We need here at least three ideas, three distinct ideas.",
+                    "corrected": "We need at least three ideas, three distinct ideas here.",
+                    "explanation": "The placement of 'here' at the end weakens the sentence structure; it is more effective at the end.",
+                    "context": "While outlining my discussion, my teacher emphasized that we need at least three ideas, three distinct ideas here, to fully develop my argument."
+                },
+                {
+                    "original": "Because making small mistakes now Let them avoid making bigger mistakes in the future.",
+                    "corrected": "Because making small mistakes now helps them avoid making bigger mistakes in the future.",
+                    "explanation": "The original lacks a subject and verb agreement; 'lets' should be replaced with 'helps' and requires 'them' for proper context.",
+                    "context": "When discussing the rationale behind my opinion, I explained that because making small mistakes now helps them avoid making bigger mistakes in the future, it's important for teenagers to have freedom."
+                },
+                {
+                    "original": "For example, there are a lot of boarding schools in UK.",
+                    "corrected": "For example, there are a lot of boarding schools in the UK.",
+                    "explanation": "The phrase 'in UK' should include 'the' to follow proper usage of country names.",
+                    "context": "To support my argument, I noted that for example, there are a lot of boarding schools in the UK. These institutions can illustrate how teenagers develop independence."
+                },
+                {
+                    "original": "How do we know that they achieve more success? This now is your opinion, personal.",
+                    "corrected": "How do we know that they achieve more success? This is now your personal opinion.",
+                    "explanation": "The word order is incorrect; 'this now' should be 'this is now' for clarity.",
+                    "context": "I was debating evidence for my ideas and raised the question, how do we know that they achieve more success? This is now your personal opinion, which I needed to clarify."
+                },
+                {
+                    "original": "Many famous British actors, prime ministers.",
+                    "corrected": "Many famous British actors and prime ministers.",
+                    "explanation": "The original is incomplete; it needs 'and' to connect the two groups being referenced.",
+                    "context": "In discussing examples, I realized I could say many famous British actors and prime ministers went to these schools, which adds weight to my argument."
+                },
+                {
+                    "original": "Two developed ideas and one idea why you think you would choose one over the other.",
+                    "corrected": "Two developed ideas and one reason why you think you would choose one over the other.",
+                    "explanation": "'Idea' should be 'reason' to accurately reflect the intention behind the statement.",
+                    "context": "To effectively craft my essay, I was advised to include two developed ideas and one reason why I think I would choose one over the other. This structure would strengthen my argument."
+                },
+                {
+                    "original": "It should take more than five minutes.",
+                    "corrected": "It shouldn't take more than five minutes.",
+                    "explanation": "The use of 'should' is incorrect here; 'shouldn't' is needed to convey that it is expected not to take that long.",
+                    "context": "In pacing my writing process, I was informed that it shouldn't take more than five minutes to finalize that part of my essay, which helped set my time expectations."
+                },
+                {
+                    "original": "I do that whenever I am writing plans, I am writing full examples.",
+                    "corrected": "I do that whenever I write plans; I write full examples.",
+                    "explanation": "The context suggests a change in tense; also, a semicolon is necessary to separate two independent clauses.",
+                    "context": "Reflecting on my writing habits, I noted that I do that whenever I write plans; I write full examples to ensure clarity and conciseness in my essays."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "there has been a debate whether teenagers must be richly regulated by their parents or have more autonomy in their actions",
+                    "corrected": "there has been a debate about whether teenagers should be strictly regulated by their parents or have more autonomy in their actions",
+                    "explanation": "The phrase 'richly regulated' is incorrect; 'strictly regulated' is the appropriate term for discussing regulation.",
+                    "context": "In my essay, I want to discuss the different perspectives on teenage autonomy and parental regulation. There has been a debate about whether teenagers should be strictly regulated by their parents or have more autonomy in their actions. This is important for shaping my arguments."
+                },
+                {
+                    "original": "yeah but what is the, why do some people, but why do some people think that",
+                    "corrected": "Yeah, but why do some people think that?",
+                    "explanation": "The sentence structure is confused; the phrase should be streamlined for clarity.",
+                    "context": "I want to express my thoughts clearly during the discussion. Yeah, but why do some people think that? I need to understand their reasoning to address it in my essay."
+                },
+                {
+                    "original": "it's personal opinion",
+                    "corrected": "it's a personal opinion",
+                    "explanation": "The article 'a' is missing before 'personal opinion,' which is necessary to indicate the noun properly.",
+                    "context": "During our discussion, I expressed my thoughts on autonomy. It's a personal opinion, and I feel strongly about it."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Regulate",
+                    "definition": "To control or maintain the rate or speed of a machine or process so that it operates properly.",
+                    "context": {
+                        "Context 1": "Parents often need to regulate their children's screen time to promote healthier habits.",
+                        "Context 2": "The government decided to regulate pollution levels to improve air quality.",
+                        "Context 3": "The teacher asked us to regulate our voices during the school assembly."
+                    }
+                },
+                {
+                    "word": "Discipline",
+                    "definition": "The practice of training people to obey rules or a code of behavior.",
+                    "context": {
+                        "Context 1": "Strict parenting is essential for teaching discipline to teenagers.",
+                        "Context 2": "The sports coach emphasized the importance of discipline in achieving success.",
+                        "Context 3": "Discipline in eating habits can lead to improved health."
+                    }
+                },
+                {
+                    "word": "Safety",
+                    "definition": "The condition of being protected from or unlikely to cause danger, risk, or injury.",
+                    "context": {
+                        "Context 1": "Regulating activities ensures the safety of children in their daily lives.",
+                        "Context 2": "The safety measures implemented at the construction site prevented accidents.",
+                        "Context 3": "Wearing seat belts is essential for safety while driving."
+                    }
+                },
+                {
+                    "word": "Independence",
+                    "definition": "The state of being independent; self-sufficiency.",
+                    "context": {
+                        "Context 1": "Gaining independence is crucial for teenagers to develop life skills.",
+                        "Context 2": "After moving out of her parents' house, she felt a new sense of independence.",
+                        "Context 3": "The country's declaration of independence marked the beginning of a new era."
+                    }
+                },
+                {
+                    "word": "Freedom",
+                    "definition": "The power or right to act, speak, or think as one wants without hindrance or restraint.",
+                    "context": {
+                        "Context 1": "Having some freedom allows teenagers to make personal decisions.",
+                        "Context 2": "The festival celebrated the freedom of expression through art and music.",
+                        "Context 3": "The participants fought for their freedom during the civil rights movement."
+                    }
+                },
+                {
+                    "word": "Obligation",
+                    "definition": "An act or course of action to which a person is bound; a duty or commitment.",
+                    "context": {
+                        "Context 1": "Some people believe teenagers should have obligations to help with household chores.",
+                        "Context 2": "He felt a moral obligation to help the homeless in his community.",
+                        "Context 3": "Legal obligations must be fulfilled to avoid penalties."
+                    }
+                },
+                {
+                    "word": "Monitor",
+                    "definition": "To observe and check the progress or quality of something over a period of time.",
+                    "context": {
+                        "Context 1": "Parents often monitor their children's internet usage for safety reasons.",
+                        "Context 2": "The teacher decided to monitor the students during their exam to prevent cheating.",
+                        "Context 3": "They use software to monitor the performance of the company's computer systems."
+                    }
+                },
+                {
+                    "word": "Counterexample",
+                    "definition": "An example that opposes or contradicts a proposition or theory.",
+                    "context": {
+                        "Context 1": "In the lesson, a counterexample was mentioned to show that strict control may lead to poor decision-making in adulthood.",
+                        "Context 2": "The lawyer presented a counterexample to challenge the witness's testimony.",
+                        "Context 3": "In mathematics, a counterexample can disprove a proposed theorem."
+                    }
+                },
+                {
+                    "word": "Consequences",
+                    "definition": "A result or effect of an action or condition.",
+                    "context": {
+                        "Context 1": "Limiting teenagers' freedom can have consequences on their development.",
+                        "Context 2": "The consequences of not studying for the exam were reflected in his grades.",
+                        "Context 3": "Every action has its consequences, so think carefully before acting."
+                    }
+                },
+                {
+                    "word": "Academic",
+                    "definition": "Relating to education and scholarship.",
+                    "context": {
+                        "Context 1": "Parents want to promote academic success by regulating their children's study time.",
+                        "Context 2": "The academic conference brought together researchers from various fields.",
+                        "Context 3": "His academic performance improved after he started studying consistently."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Independence",
+                    "fact": "Did you know that many countries celebrate their independence day with parades, fireworks, and sometimes even food challenges?"
+                },
+                {
+                    "word": "Monitor",
+                    "fact": "The first computer monitor was introduced in the 1970s and was mostly a flickering green screen, far from our sleek high-definition displays today!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why was the computer cold?",
+                    "answer": "Because it left its Windows open!"
+                },
+                {
+                    "question": "Why did the smartphone go to school?",
+                    "answer": "Because it wanted to improve its texting skills!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Independent",
+                    "definition": "Not relying on others; self-sufficient.",
+                    "context": {
+                        "Context 1": "Teenagers in the US often become independent at a young age.",
+                        "Context 2": "The independent woman started her own business without any help.",
+                        "Context 3": "The cat learned to be independent and now hunts for its own food."
+                    }
+                },
+                {
+                    "word": "Prestigious",
+                    "definition": "Having a high status and respect in society.",
+                    "context": {
+                        "Context 1": "Boarding schools in the UK are often seen as prestigious institutions.",
+                        "Context 2": "Winning the award made him feel prestigious among his peers.",
+                        "Context 3": "The chef worked in a prestigious restaurant known for its exquisite dishes."
+                    }
+                },
+                {
+                    "word": "Beneficial",
+                    "definition": "Producing good results; advantageous.",
+                    "context": {
+                        "Context 1": "Parents believe that boarding schools are beneficial for their children’s independence.",
+                        "Context 2": "Regular exercise is beneficial for maintaining good health.",
+                        "Context 3": "The new software update was beneficial for improving performance."
+                    }
+                },
+                {
+                    "word": "Emphasis",
+                    "definition": "Special importance or significance placed on something.",
+                    "context": {
+                        "Context 1": "Boarding schools often place an emphasis on academic performance.",
+                        "Context 2": "The teacher put an emphasis on the importance of homework.",
+                        "Context 3": "At the party, there was an emphasis on wearing silly hats."
+                    }
+                },
+                {
+                    "word": "Rely",
+                    "definition": "To depend on someone or something.",
+                    "context": {
+                        "Context 1": "Parents want their children not to rely on them too much.",
+                        "Context 2": "Many people rely on coffee to start their day.",
+                        "Context 3": "The comedian relied on his jokes to keep the audience laughing."
+                    }
+                },
+                {
+                    "word": "Academic",
+                    "definition": "Related to education, scholarship, or learning.",
+                    "context": {
+                        "Context 1": "Boarding schools focus heavily on academic achievements.",
+                        "Context 2": "He received an academic award for his excellent grades.",
+                        "Context 3": "The academic conference featured speakers from around the world."
+                    }
+                },
+                {
+                    "word": "Success",
+                    "definition": "The accomplishment of an aim or purpose.",
+                    "context": {
+                        "Context 1": "Many successful people attended boarding schools.",
+                        "Context 2": "His success in business allowed him to travel the world.",
+                        "Context 3": "The artist’s success came after years of hard work."
+                    }
+                },
+                {
+                    "word": "Proof",
+                    "definition": "Evidence or argument establishing a fact or the truth of a statement.",
+                    "context": {
+                        "Context 1": "Statistics can serve as proof of the benefits of boarding schools.",
+                        "Context 2": "She provided proof that she had completed the project on time.",
+                        "Context 3": "The detective needed proof to solve the case."
+                    }
+                },
+                {
+                    "word": "Decision",
+                    "definition": "A choice made after considering different options.",
+                    "context": {
+                        "Context 1": "Teenagers in boarding schools must make daily decisions independently.",
+                        "Context 2": "Making a decision about which college to attend can be tough.",
+                        "Context 3": "The decision to adopt a pet changed their lives."
+                    }
+                },
+                {
+                    "word": "General",
+                    "definition": "Common; applicable to all or most cases.",
+                    "context": {
+                        "Context 1": "In general, teenagers in the US are thought to be more independent.",
+                        "Context 2": "In general, dogs are known to be loyal companions.",
+                        "Context 3": "He prefers general discussions about movies rather than specific critiques."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Independent",
+                    "fact": "Did you know that bees can be considered the most independent creatures? They manage entire colonies!"
+                },
+                {
+                    "word": "Prestigious",
+                    "fact": "The prestigious title of 'World’s Largest Rubber Band Ball' was achieved by a guy who just wouldn’t stop stretching his rubber bands!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the teenager bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Freedom",
+                    "definition": "The state of being free; the power or right to act, speak, or think as one wants.",
+                    "context": {
+                        "Context 1": "Teenagers must have more freedom to make their own choices.",
+                        "Context 2": "The park was designed to offer freedom for outdoor activities and play.",
+                        "Context 3": "He felt a sense of freedom while hiking in the mountains, away from city life."
+                    }
+                },
+                {
+                    "word": "Independence",
+                    "definition": "The fact or state of being independent; self-sufficiency.",
+                    "context": {
+                        "Context 1": "Gaining independence is a crucial part of growing up for teenagers.",
+                        "Context 2": "The country declared its independence from colonial rule in 1960.",
+                        "Context 3": "Her independence was evident when she traveled solo across Europe."
+                    }
+                },
+                {
+                    "word": "Develop",
+                    "definition": "To grow or cause to grow and become more mature, advanced, or elaborate.",
+                    "context": {
+                        "Context 1": "Parents should encourage their children to develop their own opinions.",
+                        "Context 2": "The city plans to develop the old factory site into a park.",
+                        "Context 3": "He wanted to develop a new video game that involves time travel."
+                    }
+                },
+                {
+                    "word": "Opinion",
+                    "definition": "A view or judgment formed about something, not necessarily based on fact or knowledge.",
+                    "context": {
+                        "Context 1": "It’s important to express your opinion during discussions.",
+                        "Context 2": "Her opinion on the movie varied greatly from her friends' views.",
+                        "Context 3": "The opinion of the judge is considered final in court cases."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern; something to illustrate a particular situation.",
+                    "context": {
+                        "Context 1": "Using examples can strengthen your arguments in an essay.",
+                        "Context 2": "The teacher provided an example from history to make the lesson clearer.",
+                        "Context 3": "She used a funny example to explain her point during the presentation."
+                    }
+                },
+                {
+                    "word": "Generalize",
+                    "definition": "To make a general or broad statement by inferring from specific cases.",
+                    "context": {
+                        "Context 1": "You should avoid generalizing about all teenagers based on a few examples.",
+                        "Context 2": "He tends to generalize his experiences, making them seem more relevant than they are.",
+                        "Context 3": "The scientist did not want to generalize the results without further testing."
+                    }
+                },
+                {
+                    "word": "Specificity",
+                    "definition": "The quality of being specific; precision in detail.",
+                    "context": {
+                        "Context 1": "Your argument needs specificity to be convincing.",
+                        "Context 2": "Specificity in recipes can lead to better cooking results.",
+                        "Context 3": "He required specificity in the terms of the contract before signing."
+                    }
+                },
+                {
+                    "word": "Strategy",
+                    "definition": "A plan of action designed to achieve a long-term or overall aim.",
+                    "context": {
+                        "Context 1": "Having a clear strategy can improve the quality of your essays.",
+                        "Context 2": "The team’s strategy was crucial to winning the championship.",
+                        "Context 3": "Investors must develop a strategy to minimize risks when buying stocks."
+                    }
+                },
+                {
+                    "word": "Objective",
+                    "definition": "A specific result that a person or system aims to achieve within a time frame.",
+                    "context": {
+                        "Context 1": "Setting clear objectives will guide your writing process.",
+                        "Context 2": "Her main objective was to finish her degree.",
+                        "Context 3": "The company's objective is to increase sales by 20% this year."
+                    }
+                },
+                {
+                    "word": "Relevance",
+                    "definition": "The quality or state of being closely connected or appropriate.",
+                    "context": {
+                        "Context 1": "The relevance of your examples is important in making your point.",
+                        "Context 2": "They debated the relevance of historical events to current issues.",
+                        "Context 3": "The relevance of fashion trends varies from one culture to another."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Opinion",
+                    "fact": "In some cultures, it’s considered rude to give an opinion unless asked—so think twice before sharing yours!"
+                },
+                {
+                    "word": "Develop",
+                    "fact": "Did you know that developing a new skill can actually grow new neural pathways in your brain? Talk about a workout for your mind!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why don't students like to write essays?",
+                    "answer": "Because their ideas keep getting 'drafted'!"
+                },
+                {
+                    "question": "Why did the essay cross the road?",
+                    "answer": "To get to the other paragraph!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Simplify",
+                    "definition": "To make something easier to understand or do.",
+                    "context": {
+                        "Context 1": "To simplify the essay, I removed unnecessary jargon and complex sentences.",
+                        "Context 2": "The teacher encouraged us to simplify our explanations for younger students.",
+                        "Context 3": "He tried to simplify the recipe by using fewer ingredients."
+                    }
+                },
+                {
+                    "word": "Autonomy",
+                    "definition": "The right or condition of self-government or independence.",
+                    "context": {
+                        "Context 1": "Teenagers should have more autonomy in their decision-making processes.",
+                        "Context 2": "In certain countries, citizens fight for their autonomy against oppressive governments.",
+                        "Context 3": "The robot was programmed to operate with full autonomy in its tasks."
+                    }
+                },
+                {
+                    "word": "Opinion",
+                    "definition": "A personal belief or judgment that is not founded on proof or certainty.",
+                    "context": {
+                        "Context 1": "It's important to express your opinion in the discussion essay.",
+                        "Context 2": "My friend's opinion on the movie was very different from mine.",
+                        "Context 3": "In my opinion, ice cream is the best dessert of all time!"
+                    }
+                },
+                {
+                    "word": "Objective",
+                    "definition": "A goal or purpose that an individual or group aims to achieve.",
+                    "context": {
+                        "Context 1": "The essay has three main objectives that need to be addressed.",
+                        "Context 2": "The objective of their mission was to explore Mars.",
+                        "Context 3": "Her objective during the race was to finish before sunset."
+                    }
+                },
+                {
+                    "word": "Develop",
+                    "definition": "To grow or cause to grow and become more mature or advanced.",
+                    "context": {
+                        "Context 1": "You need to develop your ideas fully in the body paragraphs.",
+                        "Context 2": "The company plans to develop new technology for renewable energy.",
+                        "Context 3": "He wants to develop his skills in painting this year."
+                    }
+                },
+                {
+                    "word": "Filler",
+                    "definition": "Words or phrases used to fill space in writing or speech, often lacking real substance.",
+                    "context": {
+                        "Context 1": "Using filler words can weaken the effectiveness of your argument.",
+                        "Context 2": "The podcast host used a lot of filler before getting to the main topic.",
+                        "Context 3": "She added filler to the speech to make it longer without adding content."
+                    }
+                },
+                {
+                    "word": "Complex",
+                    "definition": "Consisting of many different and connected parts; complicated.",
+                    "context": {
+                        "Context 1": "Don’t use complex phrases when simpler ones will do.",
+                        "Context 2": "The plot of the movie was too complex for younger viewers.",
+                        "Context 3": "Cooking can seem complex if you follow a difficult recipe."
+                    }
+                },
+                {
+                    "word": "Body paragraphs",
+                    "definition": "The main sections of an essay that provide support and elaboration for the thesis.",
+                    "context": {
+                        "Context 1": "The body paragraphs are crucial for presenting your argument effectively.",
+                        "Context 2": "In a novel, body paragraphs might refer to significant moments in the plot.",
+                        "Context 3": "The body paragraphs of the report contained all the important data."
+                    }
+                },
+                {
+                    "word": "Debate",
+                    "definition": "A formal discussion on a particular topic where opposing arguments are put forward.",
+                    "context": {
+                        "Context 1": "There has been a debate about regulating teenagers' actions.",
+                        "Context 2": "The debate on climate change raised significant points from both sides.",
+                        "Context 3": "In class, we will debate the pros and cons of online learning."
+                    }
+                },
+                {
+                    "word": "Regulation",
+                    "definition": "A rule or directive made and maintained by an authority.",
+                    "context": {
+                        "Context 1": "Some people believe there should be more regulation on teenagers' activities.",
+                        "Context 2": "The new regulation on food safety aims to protect customers.",
+                        "Context 3": "Traffic regulation is essential for ensuring safety on the roads."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Filler",
+                    "fact": "Did you know that the word 'um' is officially recognized as a filler word in many languages? It's like the international symbol for thinking!"
+                },
+                {
+                    "word": "Debate",
+                    "fact": "Some debates are so heated, they end up going viral online — like ‘pineapple on pizza’ debates that bring out some serious passion!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What did the teacher say when the student asked if he could go to the bathroom?",
+                    "answer": "Sure, but don’t forget to take your homework with you – it's urgent too!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh, totally! The one with the last-minute goal, right?"
+                },
+                {
+                    "Person 1": "Yes! I couldn’t believe how it turned around in the last few minutes."
+                },
+                {
+                    "Person 2": "Same here! My heart was racing. Do you usually watch all the games?"
+                },
+                {
+                    "Person 1": "I try to! It’s just so exciting, especially when it gets intense like that."
+                },
+                {
+                    "Person 2": "For sure! It’s like you feel part of the team, right?"
+                },
+                {
+                    "Person 1": "Exactly! It’s way more fun than just watching one solo."
+                },
+                {
+                    "Person 2": "Do you go to any live games?"
+                },
+                {
+                    "Person 1": "I’ve been to a couple! The atmosphere is electric."
+                },
+                {
+                    "Person 2": "I need to go! Watching it live must be a whole different experience."
+                },
+                {
+                    "Person 1": "Definitely! You hear the crowd and every cheer just pumps you up."
+                },
+                {
+                    "Person 2": "I have to make that happen. Maybe we should go together next time?"
+                },
+                {
+                    "Person 1": "Yes! That would be awesome. We can cheer our team on together."
+                },
+                {
+                    "Person 2": "For sure! Let’s keep an eye out for tickets."
+                },
+                {
+                    "Person 1": "Absolutely! I can’t wait to experience that with you."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, have you thought about how teens in America get their driver's licenses so early?"
+                },
+                {
+                    "Person 2": "Yeah! It's wild. Starting at 16, they’re behind the wheel while some places wait until 18 or even 21."
+                },
+                {
+                    "Person 1": "Exactly! I wonder if it makes them more independent. What do you think?"
+                },
+                {
+                    "Person 2": "Totally! It’s like they learn responsibility early on. But do you think it always works out for them?"
+                },
+                {
+                    "Person 1": "Hmm, that’s a good point. I mean, maybe some handle it well while others struggle a bit."
+                },
+                {
+                    "Person 2": "Right? I mean, it’s kind of like how some kids do really well in boarding schools. They become super independent."
+                },
+                {
+                    "Person 1": "Oh, boarding schools! I know they exist here, but in other countries like the UK, they’re super prestigious."
+                },
+                {
+                    "Person 2": "Yeah, parents often send their kids there for a better education and to grow up faster."
+                },
+                {
+                    "Person 1": "And they’re mostly away from home. That must teach them to make their own decisions."
+                },
+                {
+                    "Person 2": "Exactly! Plus, it seems like many successful people in the UK came from those schools."
+                },
+                {
+                    "Person 1": "Yeah, like a lot of actors and politicians! I guess parents believe that independence helps them later in life."
+                },
+                {
+                    "Person 2": "For sure! They probably think it helps kids become more successful later."
+                },
+                {
+                    "Person 1": "Do you think it really does? Like, have you seen proof of it?"
+                },
+                {
+                    "Person 2": "Well, I mean, you can find examples of it, but it’s hard to say what really contributes to success."
+                },
+                {
+                    "Person 1": "True. Success can depend on so many factors, not just where someone went to school."
+                },
+                {
+                    "Person 2": "Exactly! It’s all about the experiences they gather along the way, too."
+                },
+                {
+                    "Person 1": "Definitely, and that can happen anywhere, whether it’s driving or boarding school!"
+                },
+                {
+                    "Person 2": "Exactly! Learning to stand on your own two feet is crucial for everyone."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new coffee shop that opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah! I've been meaning to check it out. Is it any good?"
+                },
+                {
+                    "Person 1": "I went there the other day. The coffee was great, and they have some awesome pastries!"
+                },
+                {
+                    "Person 2": "Ooh, pastries sound tempting! What did you try?"
+                },
+                {
+                    "Person 1": "I had a blueberry muffin. It was super moist and so delicious."
+                },
+                {
+                    "Person 2": "Nice! I'm always looking for a good muffin. Any other recommendations?"
+                },
+                {
+                    "Person 1": "Definitely! They also have a chocolate croissant that my friend couldn’t stop raving about."
+                },
+                {
+                    "Person 2": "I love chocolate croissants! Sounds like I need to visit soon."
+                },
+                {
+                    "Person 1": "For sure! Plus, the vibe there is really cozy. Perfect for a casual catch-up."
+                },
+                {
+                    "Person 2": "Sounds like our next hangout spot! When are you free to go?"
+                },
+                {
+                    "Person 1": "How about this weekend? Saturday morning?"
+                },
+                {
+                    "Person 2": "Saturday works for me! Let’s say 10 AM?"
+                },
+                {
+                    "Person 1": "Perfect! I’ll make sure to save some room for that chocolate croissant."
+                },
+                {
+                    "Person 2": "Haha, me too! Can’t wait to check it out with you!"
+                },
+                {
+                    "Person 1": "It’ll be fun! See you Saturday!"
+                },
+                {
+                    "Person 2": "See you then!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How’s your week going so far?"
+                },
+                {
+                    "Person 2": "Pretty good, actually! Just trying to keep up with everything. How about you?"
+                },
+                {
+                    "Person 1": "Same here! Work's been busy, but I finally finished that project I was stressing about."
+                },
+                {
+                    "Person 2": "That’s awesome! It always feels great to check something off the list. What’s next on your plate?"
+                },
+                {
+                    "Person 1": "I guess it's just a bunch of meetings. Not as fun. What about you? Any big plans this weekend?"
+                },
+                {
+                    "Person 2": "I’m planning to go hiking if the weather’s nice. There’s a new trail I want to try."
+                },
+                {
+                    "Person 1": "That sounds like a blast! I love getting outdoors. What trail is it?"
+                },
+                {
+                    "Person 2": "It’s the one at Green Lake. I heard the views are amazing!"
+                },
+                {
+                    "Person 1": "I’ve heard of that one! You should take some pictures. I always forget to do that when I go out."
+                },
+                {
+                    "Person 2": "Yeah, I’ll try to remember. Are you doing anything outdoors this weekend?"
+                },
+                {
+                    "Person 1": "Not planning anything specific, but I might go for a bike ride if it’s nice. Just to unwind a little."
+                },
+                {
+                    "Person 2": "Sounds good! Sometimes you just need to take a break and enjoy the fresh air."
+                },
+                {
+                    "Person 1": "Exactly! Alright, let's make sure to catch up after the weekend. I want to hear all about your hike."
+                },
+                {
+                    "Person 2": "Definitely! And I’ll let you know if I take any good photos. Have a great weekend!"
+                },
+                {
+                    "Person 1": "You too! Enjoy the hike!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
