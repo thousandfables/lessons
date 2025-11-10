@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 7,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I am searching a work.",
+                    "corrected": "I am searching for a job.",
+                    "explanation": "The phrase 'searching a work' is incorrect; 'work' is an uncountable noun in this context, and 'job' is the correct term here.",
+                    "context": "I'm currently looking for employment. I am searching for a job, but right now I am not employed."
+                },
+                {
+                    "original": "I have been studying one year ago.",
+                    "corrected": "I studied a year ago.",
+                    "explanation": "The present perfect 'have been studying' is not appropriate with a specific time reference like 'one year ago.' The simple past is needed.",
+                    "context": "I studied engineering at university. I studied a year ago and I graduated last year."
+                },
+                {
+                    "original": "I graduated at the university last year.",
+                    "corrected": "I graduated from the university last year.",
+                    "explanation": "'Graduated at' is incorrect; the preposition 'from' should be used to indicate the institution from which someone graduates.",
+                    "context": "I completed my degree last year. I graduated from the university last year and I am planning to continue my education."
+                },
+                {
+                    "original": "I have two driver lessons.",
+                    "corrected": "I have two driver's licenses.",
+                    "explanation": "'Driver lessons' is incorrect; the correct term is 'driver's license' which refers to the legal document allowing one to drive.",
+                    "context": "I have gone through the process in both countries. I have two driver's licenses and I passed the examination for them in Russia and Lithuania."
+                },
+                {
+                    "original": "it is much easier the second time, right?",
+                    "corrected": "it is much easier the second time, isn't it?",
+                    "explanation": "The tag question should match the verb tense and form; 'isn't it?' is correct according to the statement made.",
+                    "context": "It's always a learning experience. It is much easier the second time, isn't it, especially when you already know what to expect?"
+                },
+                {
+                    "original": "I am starting to think that you have been living in Lithuania.",
+                    "corrected": "I am starting to think that you lived in Lithuania.",
+                    "explanation": "The present perfect continuous 'have been living' is incorrect here; the speaker is referring to a past experience.",
+                    "context": "Your knowledge of the country is impressive. I am starting to think that you lived in Lithuania based on what you just shared."
+                },
+                {
+                    "original": "Why the private house?",
+                    "corrected": "Why a private house?",
+                    "explanation": "The construction is incorrect; 'the' should be replaced with 'a' to refer to any private house in general.",
+                    "context": "I enjoy the space I have. Why a private house and not an apartment in Moscow? It's an interesting question, to which I don't have a clear answer."
+                },
+                {
+                    "original": "the ecological problem in the center of Moscow.",
+                    "corrected": "the ecological problems in the center of Moscow.",
+                    "explanation": "The use of 'problem' should be pluralized to match the general nature of various ecological issues.",
+                    "context": "One reason is our family's health. I think it is because of ecological problems in the center of Moscow, which concerned us."
+                },
+                {
+                    "original": "all our brothers have the allergy.",
+                    "corrected": "all of us have allergies.",
+                    "explanation": "The phrasing is awkward; 'the allergy' should be changed to 'allergies' to reflect a general condition affecting multiple people.",
+                    "context": "Everyone in my family has health concerns. All of us have allergies, which was a significant reason to relocate."
+                },
+                {
+                    "original": "not even in Moscow, in all Europe, your region.",
+                    "corrected": "not just in Moscow, but in all of Europe, your region.",
+                    "explanation": "The phrase lacks clarity; 'not even' should be replaced with 'not just' for better accuracy, and adding 'but' improves the flow.",
+                    "context": "The pollen issue is widespread. Not just in Moscow, but in all of Europe, your region also has problems."
+                },
+                {
+                    "original": "with outbirds.",
+                    "corrected": "without pollen.",
+                    "explanation": "'Outbirds' is not a correct term; 'without pollen' accurately describes the context of allergies.",
+                    "context": "Certain regions seem blissful. In regions like Spain, we should move there immediately, without pollen to worry about."
+                },
+                {
+                    "original": "I will try to pass the exam a bit.",
+                    "corrected": "I will try to delay the exam a bit.",
+                    "explanation": "'Pass the exam a bit' is vague and inaccurate; 'delay' fits the intention of postponing the test.",
+                    "context": "If I'm not fully prepared, I won’t rush it. I will try to delay the exam a bit so that I can be ready."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "It's real, I know, but not good, not perfect.",
+                    "corrected": "It's true, I know, but not good, not perfect.",
+                    "explanation": "'Real' is not the correct word choice here; 'true' is more appropriate in this context.",
+                    "context": "I’m aware that the information I have about the test is limited. It's true, I know, but not good, not perfect. I need to gain more understanding of the test."
+                },
+                {
+                    "original": "I was trying, but I was never tried to solve all tests.",
+                    "corrected": "I tried, but I never attempted to solve all the tests.",
+                    "explanation": "The verb 'was trying' does not pair well with 'never tried'; it should be simplified to maintain consistency.",
+                    "context": "In preparing for the test, I practiced a bit. I tried, but I never attempted to solve all the tests. I need more practice to feel confident."
+                },
+                {
+                    "original": "The real trouble comes with the writing and speaking sections.",
+                    "corrected": "The real challenge comes with the writing and speaking sections.",
+                    "explanation": "'Trouble' often implies problems; 'challenge' conveys difficulty without negative connotations.",
+                    "context": "When taking the IELTS test, I find certain areas more demanding. The real challenge comes with the writing and speaking sections. I struggle more in those areas."
+                },
+                {
+                    "original": "I might be have some...",
+                    "corrected": "I might have some...",
+                    "explanation": "The phrase 'might be have' is grammatically incorrect; it should use 'might have' instead.",
+                    "context": "During our conversation, I realized we might have family ties. I might have some relatives in Crimea and Orenburg. I'm not entirely sure though."
+                },
+                {
+                    "original": "To get uniforms necessarily in schools.",
+                    "corrected": "To have uniforms in schools is necessary.",
+                    "explanation": "'Get uniforms necessarily' is awkwardly phrased; 'have' is a clearer choice, and 'is necessary' grammatically correct.",
+                    "context": "As I think about the topic of school uniforms, I believe that to have uniforms in schools is necessary. They standardize the dress code for all students."
+                },
+                {
+                    "original": "On one hand, uniforms helps children to stay... ",
+                    "corrected": "On one hand, uniforms help children to stay...",
+                    "explanation": "The subject 'uniforms' is plural, so the verb should be 'help' and not 'helps.'",
+                    "context": "While making my argument about school uniforms, I pointed out their benefits. On one hand, uniforms help children to stay disciplined. They promote a sense of order."
+                },
+                {
+                    "original": "It shouldn't to... Somehow...",
+                    "corrected": "It shouldn't...",
+                    "explanation": "The construction 'shouldn't to' is incorrect; 'shouldn't' alone suffices to express the meaning.",
+                    "context": "While articulating the counterargument, I tried to explain my viewpoint. It shouldn't make such a significant impact on their education. Somehow."
+                },
+                {
+                    "original": "There is no necessary.",
+                    "corrected": "It's not necessary.",
+                    "explanation": "Saying 'there is no necessary' is grammatically incorrect; 'it's not necessary' conveys the intended meaning properly.",
+                    "context": "When asked for my opinion, I had to clarify my stance. In real life, I don't think so. It's not necessary to have uniforms in schools."
+                },
+                {
+                    "original": "By the way, I don't see a clear addiction between uniforms wearing necessarily and education process.",
+                    "corrected": "By the way, I don't see a clear connection between wearing uniforms and the educational process.",
+                    "explanation": "'Addiction' seems to be a misinterpretation; the correct term is 'connection' in this context.",
+                    "context": "As I develop my argument, I reflect on the relationship between dress codes and learning. By the way, I don't see a clear connection between wearing uniforms and the educational process."
+                },
+                {
+                    "original": "Because there are no addictions between two things.",
+                    "corrected": "Because there are no connections between the two things.",
+                    "explanation": "Similar to the previous mistake, 'addictions' is incorrect; 'connections' is the right term to indicate relationships.",
+                    "context": "As I elaborated on my viewpoint, I made sure to express my reasoning clearly. Because there are no connections between the two things involved."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "It works not as good as Google Meet.",
+                    "corrected": "It does not work as well as Google Meet.",
+                    "explanation": "\"Not as good as\" is incorrect; \"as well as\" should be used to compare how something functions.",
+                    "context": "I noticed that the app we are using is a Chinese app. It does not work as well as Google Meet, but unfortunately, Google Meet doesn't work at all in Russia."
+                },
+                {
+                    "original": "He can find more ways to improve his study process, but I definitely don't understand how how wearing the uniform can be connected with study process.",
+                    "corrected": "He can find more ways to improve his study process, but I definitely don't understand how wearing a uniform can be connected with the study process.",
+                    "explanation": "The use of 'how how' is repetitive and a mistake; also, an article 'a' is needed before 'uniform,' and 'study process' should include 'the.'",
+                    "context": "In my opinion, wearing a uniform might connect with discipline. He can find more ways to improve his study process, but I definitely don't understand how wearing a uniform can be connected with the study process."
+                },
+                {
+                    "original": "People who study bad, they usually doesn't wear.",
+                    "corrected": "People who study badly usually don't wear uniforms.",
+                    "explanation": "The adverb 'bad' should be 'badly' to modify the verb 'study'; also, \"doesn't wear\" should be changed to \"don't wear\" to match the plural 'people.'",
+                    "context": "I mentioned a statistic about how uniforms impact studying. People who study badly usually don't wear uniforms, which could suggest some connection."
+                },
+                {
+                    "original": "the examiner in their answer sheet. It doesn't say the person has to agree if they disagree.",
+                    "corrected": "the examiner's answer sheet doesn't say that the person has to agree if they disagree.",
+                    "explanation": "The possessive form is needed here for 'examiner's,' and 'that' should be included for clarity.",
+                    "context": "We need to understand what the examiner wants from us. The examiner's answer sheet doesn't say that the person has to agree if they disagree, just to develop their ideas."
+                },
+                {
+                    "original": "Because again, you can explain it.",
+                    "corrected": "Because again, you can explain it well.",
+                    "explanation": "The phrase lacks a qualifier such as 'well' to indicate how the explanation can be conveyed.",
+                    "context": "The discussion revolves around how to present our arguments. Because again, you can explain it well to support your point."
+                },
+                {
+                    "original": "But I just answering.",
+                    "corrected": "But I am just answering.",
+                    "explanation": "The verb tense is incorrect; 'am' is needed to form the present continuous tense.",
+                    "context": "When I get challenged, I often reflect on my responses. But I am just answering how I would be answering in Russian."
+                },
+                {
+                    "original": "who would be do these rules.",
+                    "corrected": "who would do these rules.",
+                    "explanation": "'Would be do' is grammatically incorrect; it should simply be 'would do'.",
+                    "context": "In this hypothetical example, I was trying to convey how rules affect behavior. People who study well and have good discipline would do these rules."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "But that makes things much, much more difficult than they really are.",
+                    "corrected": "But that makes things much more difficult than they really are.",
+                    "explanation": "The repetition of 'much' is unnecessary; 'much more' suffices.",
+                    "context": "When discussing the complexities of opinions on various topics, it's clear that the situation can be confusing. But that makes things much more difficult than they really are. We need to simplify our approach."
+                },
+                {
+                    "original": "I need to stay on one opinion and trying to open the topic of one idea.",
+                    "corrected": "I need to stay on one opinion and try to open the topic of one idea.",
+                    "explanation": "The use of 'trying' is incorrect; it should be 'try' to match the parallel structure.",
+                    "context": "As I formulate my argument, I realize the importance of focusing on a single perspective. I need to stay on one opinion and try to open the topic of one idea. This will clarify my writing."
+                },
+                {
+                    "original": "He in this state. Invests. His time to.",
+                    "corrected": "He, in this state, invests his time in.",
+                    "explanation": "Punctuation and preposition use are incorrect; commas should be added for clarity and 'to' should be 'in'.",
+                    "context": "While considering the reasons uniforms might impact discipline, I say that when someone is in this mindset, they invest their time in putting on their clothing. This creates a serious and disciplined atmosphere."
+                },
+                {
+                    "original": "The person invest like here.",
+                    "corrected": "The person invests, like here.",
+                    "explanation": "The verb 'invest' should be 'invests' to agree with the subject; a comma is needed for clarity.",
+                    "context": "As I structure my argument, I note that the person invests their time in preparation. The person invests, like here, in dressing up properly."
+                },
+                {
+                    "original": "Study process.",
+                    "corrected": "The study process.",
+                    "explanation": "Missing article 'the'; noun phrases in English typically need an article.",
+                    "context": "While explaining my ideas, I need to emphasize that the study process requires attention. The study process needs focus for better results."
+                },
+                {
+                    "original": "Need in attention of.",
+                    "corrected": "Needs attention.",
+                    "explanation": "The phrase is incorrect; it should be simplified to 'needs attention' for clarity and grammatical correctness.",
+                    "context": "In discussing the requirements for effective studying, I conclude that discipline leads to better focus. Effective study needs attention."
+                },
+                {
+                    "original": "Because study process.",
+                    "corrected": "Because the study process.",
+                    "explanation": "Missing article 'the'; 'study process' needs an article to be grammatically correct.",
+                    "context": "When explaining my reasoning, I intend to clarify that being more disciplined directly impacts performance. Because the study process is affected by discipline, results improve."
+                },
+                {
+                    "original": "That's a bit funny to.",
+                    "corrected": "That's a bit funny.",
+                    "explanation": "The word 'to' is unnecessary and creates an awkward structure.",
+                    "context": "During my analysis, I find some aspects amusing. That's a bit funny, reflecting on the ideas we share."
+                },
+                {
+                    "original": "More attentive on which topic.",
+                    "corrected": "More attentive to which topic.",
+                    "explanation": "'On' should be 'to' to correctly express the relationship between 'attentive' and 'topic.'",
+                    "context": "While refining my argument, I must clarify what focus entails. More attentive to which topic will strengthen my points."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "It was necessary to wear uniform, but it was be very, very.",
+                    "corrected": "It was necessary to wear a uniform, but it was very, very.",
+                    "explanation": "The phrase 'it was be' is incorrect; 'be' should be omitted in this context.",
+                    "context": "When I was in school, it was necessary to wear a uniform, but it was very, very uncomfortable. I remember how much I disliked it."
+                },
+                {
+                    "original": "You can say it wasn't obligatory, but it was highly recommended.",
+                    "corrected": "You could say it wasn't obligatory, but it was highly recommended.",
+                    "explanation": "The phrase 'you can say' should be in past tense as the context refers to a past experience.",
+                    "context": "In my school, you could say it wasn't obligatory, but it was highly recommended. Most students still wore it anyway."
+                },
+                {
+                    "original": "Dressing up to the uniform is not an easy process.",
+                    "corrected": "Dressing up in the uniform is not an easy process.",
+                    "explanation": "'Dressing up to' is incorrect; the correct phrase is 'dressing up in' to indicate what you are wearing.",
+                    "context": "For me, dressing up in the uniform is not an easy process. It always took time to look presentable."
+                },
+                {
+                    "original": "Help me to think about education process more.",
+                    "corrected": "Helped me to think about the education process more.",
+                    "explanation": "The verb 'help' should be in the past tense as it refers to a completed action.",
+                    "context": "That experience helped me to think about the education process more seriously. It changed my perspective on studying."
+                },
+                {
+                    "original": "Here I actually liked what you mentioned before.",
+                    "corrected": "Actually, I liked what you mentioned before.",
+                    "explanation": "The placement of 'actually' at the beginning of the sentence is more idiomatic in English.",
+                    "context": "Actually, I liked what you mentioned before. It resonated with my own experience."
+                },
+                {
+                    "original": "Those who wear uniform. They end up having better.",
+                    "corrected": "Those who wear a uniform end up doing better.",
+                    "explanation": "The sentence is fragmented and lacks a proper verb in the second clause; 'having better' should be changed to 'doing better.'",
+                    "context": "I've noticed that those who wear a uniform end up doing better in academics. There's a distinct correlation."
+                },
+                {
+                    "original": "In every university or school. When people in uniforms.",
+                    "corrected": "In every university or school, people in uniforms.",
+                    "explanation": "A comma should replace the period to connect the two related ideas in one sentence.",
+                    "context": "In every university or school, people in uniforms tend to perform academically better. It's a common observation."
+                },
+                {
+                    "original": "We can say where that works this way.",
+                    "corrected": "We can say where this works.",
+                    "explanation": "The phrase 'where that works this way' is awkward; it should be simplified to 'where this works.'",
+                    "context": "We can say where this works in practice. It often depends on the context or location."
+                },
+                {
+                    "original": "Like we have idea.",
+                    "corrected": "Like we have an idea.",
+                    "explanation": "The phrase 'we have idea' is missing the article 'an' which is necessary in this context.",
+                    "context": "I believe we have an idea to explore. It helps us narrow down our examples."
+                },
+                {
+                    "original": "How to make this example let's make by splitting it into two sentences.",
+                    "corrected": "To make this example, let's split it into two sentences.",
+                    "explanation": "The original phrasing is unclear; the corrected version clarifies the intent.",
+                    "context": "To make this example more understandable, let's split it into two sentences. It will improve clarity."
+                },
+                {
+                    "original": "Because uniform is obligatory there for example obligatory there is this is a bit hard work.",
+                    "corrected": "Because wearing a uniform is obligatory there.",
+                    "explanation": "The phrase is confusing and repetitive; simplifying adds clarity.",
+                    "context": "In some places, wearing a uniform is obligatory. It can be a bit hard work to always adhere to that rule."
+                },
+                {
+                    "original": "Is the fact that most of private schools require children to wear a uniform.",
+                    "corrected": "It is a fact that most private schools require children to wear a uniform.",
+                    "explanation": "The sentence is a fragment and should be revised into a complete sentence.",
+                    "context": "It is a fact that most private schools require children to wear a uniform. This rule is often enforced for discipline."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "In my opinion, this developed perfectly good.",
+                    "corrected": "In my opinion, this developed perfectly well.",
+                    "explanation": "'Perfectly good' is incorrect; 'well' should be used to describe how something develops.",
+                    "context": "We just discussed the idea we were analyzing. In my opinion, this developed perfectly well. I believe we have covered everything important."
+                },
+                {
+                    "original": "When I read, I understand much more than the language itself.",
+                    "corrected": "When I read, I understand much more than I can articulate.",
+                    "explanation": "The phrase 'than the language itself' is unclear; it should be clear that the speaker is comparing reading comprehension with their speaking ability.",
+                    "context": "I've been reflecting on my understanding of the language. When I read, I understand much more than I can articulate. This is a common challenge for many learners."
+                },
+                {
+                    "original": "Yes, this is how it works for everyone.",
+                    "corrected": "Yes, this is how it works for everyone else.",
+                    "explanation": "'Everyone' is correct but should be made specific by adding 'else' in this context.",
+                    "context": "We've been talking about language learning experiences. Yes, this is how it works for everyone else. It can be frustrating but it’s a normal part of the process."
+                },
+                {
+                    "original": "That is, do not listen to a large number of contexts.",
+                    "corrected": "That is, do not engage with a wide variety of contexts.",
+                    "explanation": "The phrase 'listen to a large number of contexts' is awkward; it is clearer to say 'engage with' in this context.",
+                    "context": "We were discussing the importance of context in language learning. That is, do not engage with a wide variety of contexts. It can limit your vocabulary growth."
+                },
+                {
+                    "original": "The main thing is not to burden yourself in this regard.",
+                    "corrected": "The main thing is not to overwhelm yourself in this regard.",
+                    "explanation": "'Burden' is less commonly used in this context; 'overwhelm' is more idiomatic for feelings related to learning.",
+                    "context": "I shared my strategies for language learning. The main thing is not to overwhelm yourself in this regard. Take it one step at a time."
+                }
+            ]
+        },
+        "mistakes_7": {
+            "mistakes_list": [
+                {
+                    "original": "I will give grammar, be sure to work with the GPT chat, with AI, constantly write essay, constantly write essay.",
+                    "corrected": "I will give grammar, be sure to work with the GPT chat and AI, and constantly write essays.",
+                    "explanation": "The verb form 'write essay' should be plural ('essays'). Also, conjunctions are needed to improve sentence structure.",
+                    "context": "I plan to focus on grammar and emphasize the use of GPT chat and AI. Additionally, I will require students to constantly write essays to improve their skills."
+                },
+                {
+                    "original": "I will send a homework a little later.",
+                    "corrected": "I will send homework a little later.",
+                    "explanation": "'A homework' is incorrect; 'homework' is an uncountable noun and does not take the article 'a.'",
+                    "context": "After the lesson, I need to send homework to the students. I will send homework a little later and provide instructions."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or setting surrounding an event or situation.",
+                    "context": {
+                        "Context 1": "Understanding the context of our conversation helps improve communication.",
+                        "Context 2": "In this painting, the context of the artist's life adds depth to the artwork.",
+                        "Context 3": "Without context, the joke might not be funny or make sense."
+                    }
+                },
+                {
+                    "word": "Relocate",
+                    "definition": "To move to a different place.",
+                    "context": {
+                        "Context 1": "My family was forced to relocate due to job changes.",
+                        "Context 2": "The company plans to relocate its headquarters to a bigger city.",
+                        "Context 3": "After winning the lottery, they decided to relocate to a tropical island."
+                    }
+                },
+                {
+                    "word": "Temporary",
+                    "definition": "Lasting for a limited period of time; not permanent.",
+                    "context": {
+                        "Context 1": "Living in Moscow is only a temporary situation for me.",
+                        "Context 2": "Many students find temporary jobs during the summer.",
+                        "Context 3": "The temporary tattoo looked real but washed off after a few days."
+                    }
+                },
+                {
+                    "word": "Citizenship",
+                    "definition": "The status of being a legal member of a particular country.",
+                    "context": {
+                        "Context 1": "Having citizenship in Lithuania allows me to travel freely across Europe.",
+                        "Context 2": "To apply for citizenship, you must meet certain residency requirements.",
+                        "Context 3": "He was proud of his citizenship in the country he had lived in for decades."
+                    }
+                },
+                {
+                    "word": "Assessment",
+                    "definition": "The act of evaluating or estimating the nature, ability, or quality of something.",
+                    "context": {
+                        "Context 1": "The teacher conducted an assessment to identify our weaknesses.",
+                        "Context 2": "The assessment of the damage from the storm took several days.",
+                        "Context 3": "Regular assessment of your health can prevent serious issues later."
+                    }
+                },
+                {
+                    "word": "Allergy",
+                    "definition": "A condition in which the immune system reacts abnormal to a substance.",
+                    "context": {
+                        "Context 1": "My family has allergies to pollen, which is why we relocated.",
+                        "Context 2": "Some people have food allergies that can be life-threatening.",
+                        "Context 3": "He developed an allergy to cats after spending too much time around them."
+                    }
+                },
+                {
+                    "word": "Examination",
+                    "definition": "A detailed inspection or investigation; also an assessment to measure knowledge.",
+                    "context": {
+                        "Context 1": "The driver's examination in another country felt easier for me.",
+                        "Context 2": "She prepared for her final examination for weeks.",
+                        "Context 3": "The doctor recommended an examination every year to check for health issues."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "I have a lot of experience in this field, even though I'm not a professional.",
+                        "Context 2": "They had a wonderful experience traveling through the mountains.",
+                        "Context 3": "Learning from past experience can help us make better decisions."
+                    }
+                },
+                {
+                    "word": "Convenient",
+                    "definition": "Making life easier or more comfortable; fitting in well with one's needs.",
+                    "context": {
+                        "Context 1": "Living in Moscow is convenient for me because of my two citizenships.",
+                        "Context 2": "This new app is so convenient; I can do everything from my phone.",
+                        "Context 3": "She found a convenient place to park right by the entrance."
+                    }
+                },
+                {
+                    "word": "Permanent",
+                    "definition": "Lasting or intended to last indefinitely without change.",
+                    "context": {
+                        "Context 1": "I am currently in a temporary living situation; I don't have permanent residency yet.",
+                        "Context 2": "He got a permanent job after completing his internship.",
+                        "Context 3": "They installed a permanent fixture in the kitchen that can't be moved."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Relocate",
+                    "fact": "Did you know that goldfish can be relocated to larger bowls, but they often forget where they are after a couple of minutes?"
+                },
+                {
+                    "word": "Citizenship",
+                    "fact": "In some countries, you can become a citizen just by taking a nap there for a certain period—what a dream job!"
+                },
+                {
+                    "word": "Assessment",
+                    "fact": "In the past, assessments were often made by reading a person’s astrology signs—imagine getting grades based on your horoscope!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "What did the student say after taking a break in the middle of their exam?",
+                    "answer": "I can't focus when I'm 'testing the waters'!"
+                },
+                {
+                    "question": "Why don't we ever tell secrets on a farm?",
+                    "answer": "Because the potatoes have eyes, and the corn has ears!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Due date",
+                    "definition": "The date by which something must be completed or submitted.",
+                    "context": {
+                        "Context 1": "The due date to submit your application is March 2026.",
+                        "Context 2": "The due date for paying your rent is the first of every month.",
+                        "Context 3": "Her due date for the baby is set for next week."
+                    }
+                },
+                {
+                    "word": "Application",
+                    "definition": "A formal request to an organization for something, typically to enroll or participate.",
+                    "context": {
+                        "Context 1": "You need to send your application by the end of the month.",
+                        "Context 2": "He submitted his job application online last night.",
+                        "Context 3": "The application of that new software took less time than expected."
+                    }
+                },
+                {
+                    "word": "Technically",
+                    "definition": "In a way that relates to the detailed or specialized aspects of a subject.",
+                    "context": {
+                        "Context 1": "Technically, January is the last month to take the exam.",
+                        "Context 2": "Technically, a potato is a vegetable, but it's often treated like a starch.",
+                        "Context 3": "She technically could go to the party, but she has an earlier appointment."
+                    }
+                },
+                {
+                    "word": "Challenging",
+                    "definition": "Difficult in a way that tests someone's abilities.",
+                    "context": {
+                        "Context 1": "The writing and speaking sections of the test are the most challenging.",
+                        "Context 2": "Learning a new language is challenging but rewarding.",
+                        "Context 3": "He found the video game incredibly challenging, yet it kept him engaged."
+                    }
+                },
+                {
+                    "word": "Generate",
+                    "definition": "To produce or create something.",
+                    "context": {
+                        "Context 1": "Let's try to generate ideas for the essay plan.",
+                        "Context 2": "The power plant generates electricity for the entire city.",
+                        "Context 3": "They need to generate more sales to keep the business afloat."
+                    }
+                },
+                {
+                    "word": "Output",
+                    "definition": "The result produced by a system or process.",
+                    "context": {
+                        "Context 1": "You have to produce some output during the writing section.",
+                        "Context 2": "The output of the machine increased after the upgrade.",
+                        "Context 3": "Her artistic output this year has been incredibly diverse."
+                    }
+                },
+                {
+                    "word": "Draft",
+                    "definition": "A preliminary version of a written work.",
+                    "context": {
+                        "Context 1": "We are just creating a draft of our future essay.",
+                        "Context 2": "He wrote the first draft of his novel in just one month.",
+                        "Context 3": "The draft for the new law was debated in parliament last week."
+                    }
+                },
+                {
+                    "word": "Relocate",
+                    "definition": "To move to a different place or position.",
+                    "context": {
+                        "Context 1": "I will relocate to another room for the discussion.",
+                        "Context 2": "They plan to relocate the company's headquarters to a new city.",
+                        "Context 3": "After the storm, many families had to relocate to safer areas."
+                    }
+                },
+                {
+                    "word": "Discipline",
+                    "definition": "Training to improve strength or self-control.",
+                    "context": {
+                        "Context 1": "Uniforms help children to stay disciplined in school.",
+                        "Context 2": "She practices discipline by sticking to her workout routine.",
+                        "Context 3": "Discipline in the classroom is crucial for effective learning."
+                    }
+                },
+                {
+                    "word": "Assessment",
+                    "definition": "The evaluation or estimation of the nature, quality, or ability of someone or something.",
+                    "context": {
+                        "Context 1": "Listening, reading, and writing are essential parts of the assessment process.",
+                        "Context 2": "The teacher prepared an assessment to gauge the students' understanding.",
+                        "Context 3": "His assessment of the situation was thorough and informative."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Application",
+                    "fact": "In Japan, there's a theme park where you can apply to become a 'professional tourist' and just enjoy all the attractions!"
+                },
+                {
+                    "word": "Draft",
+                    "fact": "The word 'draft' comes from the Old English word 'dragan,' which means 'to pull or draw.' So essentially, we are pulling our ideas out on paper!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student eat their homework?",
+                    "answer": "Because their teacher said it was a piece of cake!"
+                },
+                {
+                    "question": "Why did the scarecrow become a successful student?",
+                    "answer": "Because he was outstanding in his field!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Confusing",
+                    "definition": "Causing bewilderment or perplexity; hard to understand.",
+                    "context": {
+                        "Context 1": "The instructions were confusing, making it difficult for students to complete the assignment.",
+                        "Context 2": "His confusing jokes always leave everyone puzzled at the party.",
+                        "Context 3": "The confusing layout of the new shopping mall caused many visitors to get lost."
+                    }
+                },
+                {
+                    "word": "Connection",
+                    "definition": "A relationship or link between two or more things.",
+                    "context": {
+                        "Context 1": "The teacher explained that there might be no connection between wearing uniforms and academic performance.",
+                        "Context 2": "The connection between the ocean currents and the weather is a fascinating area of study.",
+                        "Context 3": "The connection between the two friends grew stronger after they traveled together."
+                    }
+                },
+                {
+                    "word": "Discipline",
+                    "definition": "The practice of training people to obey rules or a code of behavior.",
+                    "context": {
+                        "Context 1": "Wearing uniforms may instill discipline in students, according to some educators.",
+                        "Context 2": "She showed great discipline when she trained for the marathon every morning at 5 AM.",
+                        "Context 3": "In martial arts, discipline is essential for mastering techniques and respect."
+                    }
+                },
+                {
+                    "word": "Statistics",
+                    "definition": "A branch of mathematics dealing with the collection, analysis, interpretation, presentation, and organization of data.",
+                    "context": {
+                        "Context 1": "The use of statistics helped to show a correlation between uniforms and student performance.",
+                        "Context 2": "The statistics indicate a rise in smartphone usage among teenagers.",
+                        "Context 3": "He studied statistics in college and loved analyzing sports data."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude towards something; a way of relating to something.",
+                    "context": {
+                        "Context 1": "From one perspective, uniforms improve discipline; from another, they stifle individuality.",
+                        "Context 2": "Her perspective on the art piece changed after reading about its history.",
+                        "Context 3": "The perspective of a teacher can differ significantly from that of a student."
+                    }
+                },
+                {
+                    "word": "Prove",
+                    "definition": "To demonstrate the truth or existence of something by evidence or argument.",
+                    "context": {
+                        "Context 1": "He needed to prove his point about uniforms and academic success with solid examples.",
+                        "Context 2": "The detective worked tirelessly to prove the suspect's innocence.",
+                        "Context 3": "Scientists continue to find evidence that could prove the theory of climate change."
+                    }
+                },
+                {
+                    "word": "Explain",
+                    "definition": "To make (an idea, situation, or problem) clear to someone by describing it in more detail.",
+                    "context": {
+                        "Context 1": "The teacher asked him to explain why he believed there was no connection between uniforms and performance.",
+                        "Context 2": "He had to explain the rules of chess to his friends before they could play.",
+                        "Context 3": "Can you explain how gravity works to a five-year-old?"
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern; a sample used to illustrate a concept.",
+                    "context": {
+                        "Context 1": "She provided an example that showed how uniforms might enhance discipline.",
+                        "Context 2": "In his speech, he gave a great example of teamwork to inspire his audience.",
+                        "Context 3": "Using historical events as examples can help students understand complex concepts."
+                    }
+                },
+                {
+                    "word": "Logical",
+                    "definition": "Characterized by or capable of clear, sound reasoning.",
+                    "context": {
+                        "Context 1": "His argument was logical, making it easier to accept his point on uniforms.",
+                        "Context 2": "It is logical to bring an umbrella when the weather forecast predicts rain.",
+                        "Context 3": "Using logical reasoning is essential in solving math problems."
+                    }
+                },
+                {
+                    "word": "Contradict",
+                    "definition": "To assert the opposite of a statement made by someone.",
+                    "context": {
+                        "Context 1": "She attempted to contradict his claim by providing additional evidence.",
+                        "Context 2": "Her actions seemed to contradict her words about being cautious.",
+                        "Context 3": "In the debate, he was quick to contradict the opposing side’s argument."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Confusing",
+                    "fact": "The term 'buffalo buffalo Buffalo buffalo buffalo buffalo Buffalo buffalo' is a grammatically correct sentence that confuses many!"
+                },
+                {
+                    "word": "Discipline",
+                    "fact": "In some disciplines like competitive eating, practice is key—but most people wouldn't want that on their resume!"
+                },
+                {
+                    "word": "Statistics",
+                    "fact": "A surprising statistic: about 7% of the people who see this fact might actually remember it in 10 minutes!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "Why did the student eat his homework?",
+                    "answer": "Because the teacher said it was a piece of cake!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "straightforward",
+                    "definition": "Easy to understand or do; clear and direct.",
+                    "context": {
+                        "Context 1": "We need to do things that make the process of writing easy and straightforward.",
+                        "Context 2": "The instructions for the experiment were straightforward, so everyone finished on time.",
+                        "Context 3": "Choosing a straightforward route on the map saved us an hour of driving."
+                    }
+                },
+                {
+                    "word": "one-sided",
+                    "definition": "Favoring only one side or opinion; not balanced.",
+                    "context": {
+                        "Context 1": "We often don't have a straightforward, one-sided opinion about a topic.",
+                        "Context 2": "The news article was criticized for presenting a one-sided view of the debate.",
+                        "Context 3": "A one-sided diet can lead to vitamin deficiencies."
+                    }
+                },
+                {
+                    "word": "pros and cons",
+                    "definition": "The advantages and disadvantages of something.",
+                    "context": {
+                        "Context 1": "Everything has its minuses and pluses — its pros and cons.",
+                        "Context 2": "Before buying the car she listed the pros and cons of each model.",
+                        "Context 3": "We weighed the pros and cons of moving to another city."
+                    }
+                },
+                {
+                    "word": "efficient",
+                    "definition": "Working in a well-organized and productive way, with little wasted effort or expense.",
+                    "context": {
+                        "Context 1": "In some countries that approach is probably efficient; in others, it is not.",
+                        "Context 2": "The new software made the accounting process much more efficient.",
+                        "Context 3": "Riding a bike is an efficient way to travel short distances in the city."
+                    }
+                },
+                {
+                    "word": "examiner",
+                    "definition": "A person who assesses or tests other people's knowledge or skills (e.g., in an exam).",
+                    "context": {
+                        "Context 1": "The examiner doesn't expect highly academic facts; they want to assess your English ability.",
+                        "Context 2": "The examiner marked the speaking test and gave useful feedback on pronunciation.",
+                        "Context 3": "A customs examiner checked the packages at the airport."
+                    }
+                },
+                {
+                    "word": "academic",
+                    "definition": "Related to education, schools, universities, or scholarly study.",
+                    "context": {
+                        "Context 1": "They don't want very academic facts; simple, clear language is enough for this task.",
+                        "Context 2": "Her academic achievements earned her a scholarship.",
+                        "Context 3": "The paper was too academic for the general audience."
+                    }
+                },
+                {
+                    "word": "reasoning",
+                    "definition": "The process of thinking about something in a logical way to form a conclusion or judgment.",
+                    "context": {
+                        "Context 1": "This task doesn't test your reasoning abilities; it's mainly about writing clearly in English.",
+                        "Context 2": "His courtroom success was due to careful reasoning and strong evidence.",
+                        "Context 3": "Puzzle games help kids develop logical reasoning skills."
+                    }
+                },
+                {
+                    "word": "discipline",
+                    "definition": "Training that corrects, molds, or perfects behavior; self-control and order.",
+                    "context": {
+                        "Context 1": "Wearing a uniform can help teach students to be disciplined.",
+                        "Context 2": "Daily practice requires discipline but leads to steady improvement.",
+                        "Context 3": "The coach enforced discipline so the team arrived on time for practice."
+                    }
+                },
+                {
+                    "word": "logical chain",
+                    "definition": "A sequence of connected ideas or steps that link an initial point to a final conclusion.",
+                    "context": {
+                        "Context 1": "A logical chain links the entry point 'students wear uniforms' to the final point 'students study better' through clear middle steps.",
+                        "Context 2": "The scientist explained a logical chain from hypothesis to experiment to conclusion.",
+                        "Context 3": "Assembling the furniture required following a logical chain of steps in the manual."
+                    }
+                },
+                {
+                    "word": "entry point",
+                    "definition": "The starting idea or initial condition in an argument, process, or system.",
+                    "context": {
+                        "Context 1": "The entry point of our logical chain is 'students wear uniforms.'",
+                        "Context 2": "The entry point to the app is a simple login screen.",
+                        "Context 3": "In the story, the entry point for the mystery was a missing key."
+                    }
+                },
+                {
+                    "word": "invest (time)",
+                    "definition": "To spend time, effort, or resources on something with the expectation of benefit.",
+                    "context": {
+                        "Context 1": "A student invests time in dressing before school, which can help them feel ready and focused.",
+                        "Context 2": "She decided to invest an extra hour each day in learning Spanish.",
+                        "Context 3": "Farmers invest money in better seeds to increase future yields."
+                    }
+                },
+                {
+                    "word": "attentive",
+                    "definition": "Paying close attention; alert and watchful.",
+                    "context": {
+                        "Context 1": "Becoming more disciplined can lead students to be more attentive in class.",
+                        "Context 2": "The nurse was attentive to the patient's needs throughout the night.",
+                        "Context 3": "An attentive audience laughed at every joke the comedian made."
+                    }
+                },
+                {
+                    "word": "crystal clear",
+                    "definition": "Extremely clear and easy to understand.",
+                    "context": {
+                        "Context 1": "Between our logical steps, the connection should be crystal clear to anyone reading the essay.",
+                        "Context 2": "After the demonstration, the instructions were crystal clear.",
+                        "Context 3": "The lake water was crystal clear, so we could see the fish below."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "uniform",
+                    "fact": "In some schools in Japan, students clean their classrooms while wearing uniforms — so uniforms sometimes double as cleaning outfits!"
+                },
+                {
+                    "word": "discipline",
+                    "fact": "The word 'discipline' comes from the Latin 'disciplina', related to 'disciple' — people who learn or follow. So discipline originally meant 'learning'!"
+                },
+                {
+                    "word": "invest",
+                    "fact": "People often say 'invest time' — but if you could literally invest time like money, retirement plans would be interesting: 'I put 2 hours into gardening and it returned 3 tomatoes.'"
+                },
+                {
+                    "word": "crystal clear",
+                    "fact": "The phrase 'crystal clear' became popular because crystals (especially clear quartz) were used historically to make fine lenses and look 'transparent' — so seeing through crystal was literally clear!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student wear a uniform to the logic class?",
+                    "answer": "Because they wanted their argument to be well 'dressed' and their logical chain to be neat!"
+                },
+                {
+                    "question": "What did the examiner say to the student who used fancy vocabulary but confused ideas?",
+                    "answer": "Nice words — now make your reasoning as clear as your thesaurus."
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "uniform",
+                    "definition": "Standardized clothing worn by members of a group (e.g., students, workers) to create a shared appearance.",
+                    "context": {
+                        "Context 1": "In some Russian schools the uniform wasn't obligatory but was highly recommended; many students said wearing a uniform helped them take school more seriously.",
+                        "Context 2": "The airline crew all wore a navy uniform so passengers could identify them easily.",
+                        "Context 3": "When scientists say conditions were 'uniform' in the experiment, they mean temperature and other factors were kept the same everywhere."
+                    }
+                },
+                {
+                    "word": "obligatory",
+                    "definition": "Required; compulsory; something that must be done or followed.",
+                    "context": {
+                        "Context 1": "Wearing the uniform wasn't obligatory at my school — it was recommended but not forced.",
+                        "Context 2": "Completing the safety training is obligatory before you can enter the lab.",
+                        "Context 3": "At that festival it was obligatory to register in advance to get a ticket."
+                    }
+                },
+                {
+                    "word": "highly recommended",
+                    "definition": "Strongly advised; suggested as very beneficial though not mandatory.",
+                    "context": {
+                        "Context 1": "Although uniform use wasn't obligatory, the school director said it was highly recommended for creating discipline.",
+                        "Context 2": "A full night's sleep is highly recommended before a big exam.",
+                        "Context 3": "For best results, it is highly recommended to let the sauce simmer for at least an hour."
+                    }
+                },
+                {
+                    "word": "maintain focus",
+                    "definition": "To keep attention concentrated on a task without becoming distracted.",
+                    "context": {
+                        "Context 1": "Many students felt that wearing a uniform helped them maintain focus during lessons.",
+                        "Context 2": "To maintain focus while studying, he used a five-minute timer and short breaks.",
+                        "Context 3": "Drivers maintain focus on long trips by rotating drivers and taking rest stops."
+                    }
+                },
+                {
+                    "word": "example",
+                    "definition": "A specific case or illustration used to explain or support a point.",
+                    "context": {
+                        "Context 1": "For example, in some Russian high schools, students who wore uniforms were observed to take their studies more seriously.",
+                        "Context 2": "She gave the example of a balanced meal to show how to plan lunches.",
+                        "Context 3": "The teacher used a toy car as an example to demonstrate friction."
+                    }
+                },
+                {
+                    "word": "generalization",
+                    "definition": "A broad statement or conclusion drawn from specific cases; often risks being oversimplified.",
+                    "context": {
+                        "Context 1": "Be careful not to make a generalization from just one person's story; that doesn't prove the trend applies to everyone.",
+                        "Context 2": "Calling all teenagers 'lazy' is a harmful generalization that ignores individual differences.",
+                        "Context 3": "From only two experiments you shouldn't make a generalization about how a drug works."
+                    }
+                },
+                {
+                    "word": "specific / specificity",
+                    "definition": "Being precise and detailed; specificity is the quality of having clear, exact details.",
+                    "context": {
+                        "Context 1": "Make your example more specific: say which country, which schools, and provide a timeframe or statistic.",
+                        "Context 2": "The recipe's specificity—exact temperatures and times—helps bakers avoid mistakes.",
+                        "Context 3": "In medical tests, specificity measures how well a test identifies people who do not have a condition."
+                    }
+                },
+                {
+                    "word": "detail",
+                    "definition": "A small piece of information that adds clarity, color, or precision to a description or argument.",
+                    "context": {
+                        "Context 1": "Add more details to the example—such as the city, school type, or year—to make it more convincing.",
+                        "Context 2": "He loved the tiny details in the painting, like the reflections in the water.",
+                        "Context 3": "Always double-check the flight details: departure time, terminal and gate number."
+                    }
+                },
+                {
+                    "word": "statistic",
+                    "definition": "A numerical piece of information derived from data that summarizes or represents a trend.",
+                    "context": {
+                        "Context 1": "If possible, include a statistic to support the claim that students who wear uniforms perform better on average.",
+                        "Context 2": "The latest statistic shows that 64% of commuters prefer the new transit line.",
+                        "Context 3": "Before using a statistic in an essay, check its source and sample size."
+                    }
+                },
+                {
+                    "word": "convince",
+                    "definition": "To persuade someone to believe or accept a view or to take action.",
+                    "context": {
+                        "Context 1": "Providing a specific example and a supporting statistic will help convince someone who doubts your claim.",
+                        "Context 2": "She used photos and testimonials to convince clients that her cleaning service was reliable.",
+                        "Context 3": "A clear demonstration can often convince colleagues to adopt a new tool."
+                    }
+                },
+                {
+                    "word": "core idea",
+                    "definition": "The main point or central concept around which an explanation or argument is built.",
+                    "context": {
+                        "Context 1": "Keep the core idea simple: wearing uniforms may help students concentrate and take school more seriously.",
+                        "Context 2": "The core idea of the lecture was that small habits lead to big results over time.",
+                        "Context 3": "Before writing a summary, identify the text's core idea to avoid irrelevant details."
+                    }
+                },
+                {
+                    "word": "customize / customized",
+                    "definition": "To modify or adapt something so that it fits particular needs or preferences.",
+                    "context": {
+                        "Context 1": "Customize your example to your audience by specifying which schools or regions you're discussing so it feels relevant.",
+                        "Context 2": "You can customize your phone's home screen to show the apps you use most.",
+                        "Context 3": "The bakery customized the cake with the couple's favorite flavors and decorations."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "uniform",
+                    "fact": "Some traditional British school uniforms are so formal that alumni joke they feel like they're dressing for a royal audience — blazers and ties included."
+                },
+                {
+                    "word": "statistic",
+                    "fact": "The phrase 'There are three kinds of lies: lies, damned lies, and statistics' shows how people have mistrusted statistics for over a century — numbers can persuade, but they can also mislead if used carelessly."
+                },
+                {
+                    "word": "generalization",
+                    "fact": "Psychologists warn about hasty generalizations: our brains like patterns so much we sometimes jump from one example to a rule — which is why stereotypes spread easily."
+                },
+                {
+                    "word": "specific / specificity",
+                    "fact": "Specificity is so important that lawyers and product instructions often include pages of tiny print—because a single missing detail can change everything."
+                },
+                {
+                    "word": "obligatory",
+                    "fact": "Some university traditions include 'obligatory' rituals (like silly photos or songs) that students treat as mandatory even though they're officially optional."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the school uniform get a promotion?",
+                    "answer": "Because it always dressed for success."
+                },
+                {
+                    "question": "Why do teachers love statistics about uniforms?",
+                    "answer": "Because a tidy dataset is easier to discipline than a messy classroom!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Uniform",
+                    "definition": "A special set of clothes worn by members of a group or organization.",
+                    "context": {
+                        "Context 1": "Students in expensive private schools must wear a uniform as per the school's rules.",
+                        "Context 2": "The police officers wear a uniform to maintain authority and identity.",
+                        "Context 3": "In my school, we were allowed to create our own uniform for the science fair."
+                    }
+                },
+                {
+                    "word": "Threshold",
+                    "definition": "The level at which something begins or changes.",
+                    "context": {
+                        "Context 1": "The threshold for passing the exam is set at six and a half points.",
+                        "Context 2": "He crossed the threshold of the old house and felt a chill run down his spine.",
+                        "Context 3": "The company raised the sales threshold to encourage more effort among employees."
+                    }
+                },
+                {
+                    "word": "Assessment",
+                    "definition": "An evaluation or estimation of the nature, quality, or ability of someone or something.",
+                    "context": {
+                        "Context 1": "I would like to hear your assessment of my progress in learning English.",
+                        "Context 2": "The teacher's assessment of the student's project helped them improve further.",
+                        "Context 3": "After the assessment of the construction site, they decided to start the project."
+                    }
+                },
+                {
+                    "word": "Passive Vocabulary",
+                    "definition": "Words that a person understands but does not use actively in speech or writing.",
+                    "context": {
+                        "Context 1": "My passive vocabulary is much wider than my active vocabulary in English.",
+                        "Context 2": "Another language learner might also have a large passive vocabulary from reading.",
+                        "Context 3": "His passive vocabulary in gardening terms is impressive, even though he never gardens."
+                    }
+                },
+                {
+                    "word": "Function",
+                    "definition": "To work or operate in a proper or particular way.",
+                    "context": {
+                        "Context 1": "You can already function well in an English-speaking country.",
+                        "Context 2": "The new software is designed to function on multiple platforms seamlessly.",
+                        "Context 3": "The old radio still functions, despite its age and wear."
+                    }
+                },
+                {
+                    "word": "Situation",
+                    "definition": "A set of circumstances in which one finds oneself.",
+                    "context": {
+                        "Context 1": "I would like to tell you a little bit about my situation regarding exam scores.",
+                        "Context 2": "Her situation changed drastically when she decided to move to a new city.",
+                        "Context 3": "In a situation like this, you should always remain calm and think clearly."
+                    }
+                },
+                {
+                    "word": "Optimistic",
+                    "definition": "Hopeful and confident about the future.",
+                    "context": {
+                        "Context 1": "I understand that asking for six and a half points might be too optimistic.",
+                        "Context 2": "She is optimistic that tomorrow will be a better day.",
+                        "Context 3": "His optimistic nature helped the team stay positive even during tough times."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "The circumstances that form the setting for an event or idea.",
+                    "context": {
+                        "Context 1": "Understanding the context will make it easier to apply vocabulary correctly.",
+                        "Context 2": "In a historical context, her actions were considered brave and groundbreaking.",
+                        "Context 3": "Without the proper context, jokes can often fall flat."
+                    }
+                },
+                {
+                    "word": "Practice",
+                    "definition": "Repetition of an activity to improve skill.",
+                    "context": {
+                        "Context 1": "You will need to practice a lot to prepare for the exam.",
+                        "Context 2": "They say practice makes perfect, especially for learning a musical instrument.",
+                        "Context 3": "In basketball, he participates in drills for one hour of practice every day."
+                    }
+                },
+                {
+                    "word": "Gradual",
+                    "definition": "Taking place or progressing slowly or by degrees.",
+                    "context": {
+                        "Context 1": "Passive vocabulary gradually turns into active vocabulary with use.",
+                        "Context 2": "The change in climate was gradual, not sudden.",
+                        "Context 3": "She made gradual improvements to her health through diet and exercise."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Uniform",
+                    "fact": "The word 'uniform' comes from Latin unis (one) and forma (shape), meaning every member looks the same."
+                },
+                {
+                    "word": "Threshold",
+                    "fact": "The term 'threshold' originally referred to an entrance made of planks, where you would put a mat to wipe your feet!"
+                },
+                {
+                    "word": "Assessment",
+                    "fact": "Did you know assessments can be as simple as a thumbs up or down, or even an elaborate performance review?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because he wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_7": {
+            "vocabulary_list": [
+                {
+                    "word": "Optimal",
+                    "definition": "The best or most favorable condition or level.",
+                    "context": {
+                        "Context 1": "I have determined the optimal amount of time for preparation for two classes per week.",
+                        "Context 2": "She made an optimal choice by studying a little each day rather than cramming before the exam.",
+                        "Context 3": "Finding the optimal temperature for baking cookies is crucial to their taste and texture."
+                    }
+                },
+                {
+                    "word": "Comfortable",
+                    "definition": "Providing physical ease and relaxation.",
+                    "context": {
+                        "Context 1": "Some people say, I'm in a comfortable pace, I will prepare until next summer.",
+                        "Context 2": "I always feel comfortable wearing my favorite pair of sneakers.",
+                        "Context 3": "The hotel room was designed to make guests feel comfortable and relaxed."
+                    }
+                },
+                {
+                    "word": "Effective",
+                    "definition": "Successful in producing a desired or intended result.",
+                    "context": {
+                        "Context 1": "The most effective option is two classes per week.",
+                        "Context 2": "Regular feedback is an effective way to improve student performance.",
+                        "Context 3": "This new marketing strategy proved to be effective in increasing sales."
+                    }
+                },
+                {
+                    "word": "Homework",
+                    "definition": "Assignments given to students by their teachers to be completed outside of class.",
+                    "context": {
+                        "Context 1": "I will give a large number of homework.",
+                        "Context 2": "Every student groaned when the teacher announced there would be homework over the weekend.",
+                        "Context 3": "My dog ate my homework, and I had to explain it to my teacher."
+                    }
+                },
+                {
+                    "word": "Constant",
+                    "definition": "Occurring continuously over a period of time.",
+                    "context": {
+                        "Context 1": "We will have constant feedback.",
+                        "Context 2": "He was in constant search of a good pizza place in town.",
+                        "Context 3": "The constant noise from the construction site made it hard to concentrate."
+                    }
+                },
+                {
+                    "word": "Feedback",
+                    "definition": "Information or criticism about someone's performance or work.",
+                    "context": {
+                        "Context 1": "We will have constant feedback.",
+                        "Context 2": "She sought feedback from her peers to improve her presentation.",
+                        "Context 3": "The coach provided feedback to help the players understand their strengths and weaknesses."
+                    }
+                },
+                {
+                    "word": "Discuss",
+                    "definition": "To talk about something in detail in order to reach a decision or to exchange ideas.",
+                    "context": {
+                        "Context 1": "We can discuss everything later.",
+                        "Context 2": "After lunch, the team will discuss the new project ideas.",
+                        "Context 3": "They sat down to discuss their travel plans for summer vacation."
+                    }
+                },
+                {
+                    "word": "Essay",
+                    "definition": "A short piece of writing on a particular subject.",
+                    "context": {
+                        "Context 1": "I will give homework to constantly write essays.",
+                        "Context 2": "She wrote a brilliant essay on climate change for her course.",
+                        "Context 3": "He decided to write an essay about his childhood memories."
+                    }
+                },
+                {
+                    "word": "Generated",
+                    "definition": "Produced as a result or by an action.",
+                    "context": {
+                        "Context 1": "I will send a review a little later when it is generated.",
+                        "Context 2": "The machine generated a lot of electricity to power the city.",
+                        "Context 3": "Her creative ideas generated excitement among the team."
+                    }
+                },
+                {
+                    "word": "Telegram",
+                    "definition": "A messaging platform used for communication.",
+                    "context": {
+                        "Context 1": "I will reach you in Telegram.",
+                        "Context 2": "I prefer using Telegram for group chats because of its features.",
+                        "Context 3": "In the past, telegrams were sent as urgent messages, often requiring a fee."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Essay",
+                    "fact": "The longest essay ever written was 15,000 words long—about the author's favorite pizza toppings!"
+                },
+                {
+                    "word": "Feedback",
+                    "fact": "The word feedback was originally a term in engineering, describing how systems adjust after a change."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "How do you organize a space party?",
+                    "answer": "You planet!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How are you doing today?"
+                },
+                {
+                    "Person 2": "I'm good, thanks! Just trying to get through the week. How about you?"
+                },
+                {
+                    "Person 1": "Same here! Just counting down the days to the weekend. Got any plans?"
+                },
+                {
+                    "Person 2": "Thinking of going hiking. I heard the weather's supposed to be great!"
+                },
+                {
+                    "Person 1": "That sounds awesome! I love hiking. Which trail are you thinking about?"
+                },
+                {
+                    "Person 2": "Probably the one at the state park. It has some really nice views."
+                },
+                {
+                    "Person 1": "Nice choice! Have you been there before?"
+                },
+                {
+                    "Person 2": "Yeah, a couple of times. But it's always different with the seasons."
+                },
+                {
+                    "Person 1": "For sure! I bet the fall colors are stunning right now."
+                },
+                {
+                    "Person 2": "Absolutely! I can't wait to see them in person. You should come with us!"
+                },
+                {
+                    "Person 1": "I’d love to! Just let me know what time."
+                },
+                {
+                    "Person 2": "How about we meet up early, around 8 AM?"
+                },
+                {
+                    "Person 1": "Sounds perfect! I’ll bring snacks."
+                },
+                {
+                    "Person 2": "Awesome! I’ll bring the water. It’s going to be a great day!"
+                },
+                {
+                    "Person 1": "For sure! Looking forward to it."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you thought about what universities you want to apply to?"
+                },
+                {
+                    "Person 2": "Yeah! I was looking at a few, but the application deadlines feel overwhelming. I think they're all around March or April?"
+                },
+                {
+                    "Person 1": "Exactly! I heard you can actually submit some stuff earlier, like in January or February, right?"
+                },
+                {
+                    "Person 2": "Right! But March is usually when I need to get everything finalized. Are you planning on taking any tests in Lithuania?"
+                },
+                {
+                    "Person 1": "Yes! I’m planning to take the test there. It seems like a good experience."
+                },
+                {
+                    "Person 2": "Nice! The IELTS, right? Have you practiced the listening and reading parts yet?"
+                },
+                {
+                    "Person 1": "I tried! But honestly, I always get stuck on the writing and speaking. Those parts are so tough for me."
+                },
+                {
+                    "Person 2": "I know what you mean! It's one thing to understand, but actually producing ideas is a whole different story."
+                },
+                {
+                    "Person 1": "Exactly! It’s like my brain freezes when it’s time to write something down."
+                },
+                {
+                    "Person 2": "So true! What if we brainstorm some topics together? It might help us."
+                },
+                {
+                    "Person 1": "Great idea! What should we start with? How about school uniforms?"
+                },
+                {
+                    "Person 2": "Cool! Do you think they’re necessary in schools?"
+                },
+                {
+                    "Person 1": "Honestly, I think they’re not really that important. Kids should express themselves, right?"
+                },
+                {
+                    "Person 2": "I get that! But they do help with discipline, I guess. It’s a mixed bag."
+                },
+                {
+                    "Person 1": "Yeah, but at the end of the day, does wearing a uniform really impact learning?"
+                },
+                {
+                    "Person 2": "Probably not! Let’s write down our points and see where it goes!"
+                },
+                {
+                    "Person 1": "Sounds like a plan. Let’s make a draft and refine it later."
+                },
+                {
+                    "Person 2": "Perfect! We’ve got this. Just remember, it doesn’t have to be perfect the first time."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch the game last night? It was intense!"
+                },
+                {
+                    "Person 2": "I did! I was on the edge of my seat the whole time. Did you see that last-minute goal?"
+                },
+                {
+                    "Person 1": "Absolutely! I couldn’t believe it. It felt like a movie moment!"
+                },
+                {
+                    "Person 2": "Right? I was so pumped! I actually jumped off the couch when they scored."
+                },
+                {
+                    "Person 1": "Ha! I can picture that! Who were you cheering for again?"
+                },
+                {
+                    "Person 2": "The home team, of course. Always rooting for them! What about you?"
+                },
+                {
+                    "Person 1": "Same here! There’s just something about the atmosphere at their games."
+                },
+                {
+                    "Person 2": "Totally! It's like everyone is a part of something special. We should go to a game together sometime."
+                },
+                {
+                    "Person 1": "Definitely! I’ll look up their schedule. It would be fun to tailgate, too!"
+                },
+                {
+                    "Person 2": "Oh, for sure! Can’t have a game day without some good food and drinks."
+                },
+                {
+                    "Person 1": "Exactly! I can already taste those nachos. So, what’s the next game?"
+                },
+                {
+                    "Person 2": "I think it’s this Saturday. We should plan something for it!"
+                },
+                {
+                    "Person 1": "Sounds like a plan! I’ll bring the snacks!"
+                },
+                {
+                    "Person 2": "Awesome! I’ll bring the drinks. Can’t wait!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever thought about why schools have uniforms?"
+                },
+                {
+                    "Person 2": "Yeah, it's an interesting topic. Some people say it promotes discipline."
+                },
+                {
+                    "Person 1": "Exactly! Wearing a uniform can make students more focused on their studies."
+                },
+                {
+                    "Person 2": "For sure. It kind of sets the tone for the day, like you're in 'school mode' right away."
+                },
+                {
+                    "Person 1": "Totally. I mean, if you take time to dress up, you might feel a bit more serious about learning."
+                },
+                {
+                    "Person 2": "I can see that. It’s like a mental switch. When you're in uniform, it’s time to pay attention."
+                },
+                {
+                    "Person 1": "Yeah, and if everyone is wearing the same thing, it might reduce distractions, too."
+                },
+                {
+                    "Person 2": "Right! No one is focused on what others are wearing, just on the lessons."
+                },
+                {
+                    "Person 1": "Exactly! So, it seems the connection is pretty clear: more discipline leads to better studying."
+                },
+                {
+                    "Person 2": "Absolutely! And that attention to detail can help with learning new topics more effectively."
+                },
+                {
+                    "Person 1": "So, do you think uniforms should be a must for schools?"
+                },
+                {
+                    "Person 2": "I think they help. But then again, students should also learn to express themselves in other ways."
+                },
+                {
+                    "Person 1": "True, balance is key! Maybe schools could allow some customization with accessories."
+                },
+                {
+                    "Person 2": "That would be cool! A little personal touch while still keeping the uniform look."
+                },
+                {
+                    "Person 1": "Definitely! That way, it combines discipline with self-expression."
+                },
+                {
+                    "Person 2": "Exactly! I think we covered that pretty well."
+                },
+                {
+                    "Person 1": "Yeah, for sure! Let’s keep this discussion going next time!"
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you have to wear a uniform when you were in school?"
+                },
+                {
+                    "Person 2": "Yeah, we did! It was pretty strict. Every day, the same outfit."
+                },
+                {
+                    "Person 1": "That sounds kind of boring. But did it help you focus more?"
+                },
+                {
+                    "Person 2": "Honestly, I think it did. It made the whole school day feel a bit more serious for me."
+                },
+                {
+                    "Person 1": "Interesting! I wonder if there’s actual research on that."
+                },
+                {
+                    "Person 2": "I heard somewhere that students who wear uniforms tend to perform better academically."
+                },
+                {
+                    "Person 1": "That makes sense! Less time deciding what to wear means more time to study."
+                },
+                {
+                    "Person 2": "Exactly! Plus, I think it builds a sense of community, you know?"
+                },
+                {
+                    "Person 1": "Yeah, everyone looks the same, so it feels less competitive."
+                },
+                {
+                    "Person 2": "Right! But I guess some people might feel restricted by it."
+                },
+                {
+                    "Person 1": "True, personal expression is important too. It's a tough balance!"
+                },
+                {
+                    "Person 2": "Definitely! But I'm glad I had the experience, even if it was a bit uniform."
+                },
+                {
+                    "Person 1": "Same here! Just makes me curious about how schools can improve learning environments."
+                },
+                {
+                    "Person 2": "For sure! Let’s keep this conversation going next time."
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you checked out any of those new coffee shops downtown?"
+                },
+                {
+                    "Person 2": "Not yet! I heard there’s one that serves a mean pumpkin spice latte though."
+                },
+                {
+                    "Person 1": "Oh, definitely! I don't even care if it’s basic, I love those things."
+                },
+                {
+                    "Person 2": "Right? And it just feels cozy to sip on one when the weather gets chilly."
+                },
+                {
+                    "Person 1": "Totally! Plus, it's a good excuse to sit down and people-watch for a bit."
+                },
+                {
+                    "Person 2": "Exactly! Speaking of people-watching, did you see that street performer near the park last weekend?"
+                },
+                {
+                    "Person 1": "I missed it! What were they doing?"
+                },
+                {
+                    "Person 2": "They were juggling flaming torches! It was wild, but I was a bit worried for them."
+                },
+                {
+                    "Person 1": "Yikes! That sounds dangerous. I would have been too nervous to watch."
+                },
+                {
+                    "Person 2": "Same here! I prefer my entertainment a little less risky, haha."
+                },
+                {
+                    "Person 1": "Yeah, like a good movie or a concert. Speaking of which, any plans for this weekend?"
+                },
+                {
+                    "Person 2": "I was thinking of catching that new superhero movie. Want to join?"
+                },
+                {
+                    "Person 1": "Absolutely! I’m always up for some popcorn and superhero battles!"
+                },
+                {
+                    "Person 2": "Awesome! I'll grab the tickets, and you can bring the snacks."
+                },
+                {
+                    "Person 1": "Deal! Can’t wait!"
+                },
+                {
+                    "Person 2": "Same here! It’ll be fun!"
+                }
+            ]
+        },
+        "dialogue_7": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Hey! Not too bad. Just finished up some work. You?"
+                },
+                {
+                    "Person 1": "Same here! I've got a couple of classes lined up this week. Trying to keep up with everything."
+                },
+                {
+                    "Person 2": "I know the feeling! I’ve been juggling a lot lately too. How do you manage your time for classes?"
+                },
+                {
+                    "Person 1": "I try to set a schedule. I usually go for two classes a week, but I also give myself time to finish assignments."
+                },
+                {
+                    "Person 2": "That sounds smart! I’ve been thinking of doing that too. Sometimes I feel like I’m cramming too much into one day."
+                },
+                {
+                    "Person 1": "Yeah, it can be a bit overwhelming. I find that spreading it out helps a lot."
+                },
+                {
+                    "Person 2": "Totally! I also started using some apps to keep track of my homework. It’s been a game changer."
+                },
+                {
+                    "Person 1": "Nice! I need to try that. I usually just write it down but I end up losing the paper."
+                },
+                {
+                    "Person 2": "Same here! I used to lose track of things all the time. The app gives me reminders, so I can’t forget."
+                },
+                {
+                    "Person 1": "That’s clever! Maybe I’ll make a plan to start using an app too. After I finish my next essay, of course."
+                },
+                {
+                    "Person 2": "Haha! Procrastination is real. But hey, we got to get stuff done, right?"
+                },
+                {
+                    "Person 1": "Right! Let’s hold each other accountable. We can check in and see how we’re doing."
+                },
+                {
+                    "Person 2": "Definitely! Looking forward to it. Let’s chat later this week!"
+                },
+                {
+                    "Person 1": "Sounds good! Have a great day!"
+                },
+                {
+                    "Person 2": "You too! Catch you later!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
