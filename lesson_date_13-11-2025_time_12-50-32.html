@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I would go out more often. And as a result, but that's not the final point.",
+                    "corrected": "I would go out more often. And as a result, that's not the final point.",
+                    "explanation": "'But' is incorrectly used before 'that's not the final point'; it should connect two contrasting ideas.",
+                    "context": "If there were fewer cars in the city, I would go out more often. And as a result, that's not the final point. I need to consider other factors affecting my mental health."
+                },
+                {
+                    "original": "I would not have it.",
+                    "corrected": "I would not have asthma.",
+                    "explanation": "The phrase 'have it' is vague; specifying 'asthma' makes it clear what is being referred to.",
+                    "context": "I have asthma and allergies that affect my physical health. I would not have asthma if there were more green spaces."
+                },
+                {
+                    "original": "Kind of they connected.",
+                    "corrected": "Kind of connected.",
+                    "explanation": "The phrase 'they connected' is incorrect; 'kind of connected' is the appropriate form here.",
+                    "context": "I was trying to explain the relationship between mental health and environment. Kind of connected, but we need to focus on green spaces improving mental health."
+                },
+                {
+                    "original": "A lot of people want to go to some very, very decent place...",
+                    "corrected": "A lot of people want to go to some very nice places...",
+                    "explanation": "'Decent' doesn't convey the intended positive sentiment; 'nice' is more appropriate here.",
+                    "context": "Many people seek places to relax away from urban life. A lot of people want to go to some very nice places where there is a lot of nature."
+                },
+                {
+                    "original": "We don't have to prove it.",
+                    "corrected": "We don't have to prove that.",
+                    "explanation": "The phrase 'prove it' is grammatically vague; 'prove that' makes the statement clearer.",
+                    "context": "The point about Moscow's population wanting summer houses is evident. We don't have to prove that; it's already widely understood."
+                },
+                {
+                    "original": "Moscovites are, is a citizen of Moscow.",
+                    "corrected": "Moscovites are citizens of Moscow.",
+                    "explanation": "The structure is incorrect as it mixes singular and plural; it should simply state 'Moscovites are citizens of Moscow.'",
+                    "context": "When discussing the population in Moscow, I said, 'Moscovites are citizens of Moscow.' It's important to get terms right for clarity."
+                },
+                {
+                    "original": "The number of cars is much more bigger.",
+                    "corrected": "The number of cars is much larger.",
+                    "explanation": "'Much more bigger' is redundant; 'much larger' is the correct comparative form.",
+                    "context": "In discussing traffic safety, I mentioned that the number of cars is much larger in Moscow than in other places."
+                },
+                {
+                    "original": "I can guess, and I can bet that this guess would be pretty accurate.",
+                    "corrected": "I can guess that this prediction would be pretty accurate.",
+                    "explanation": "The word 'bet' is informal; 'prediction' is more appropriate for academic context.",
+                    "context": "When considering car accidents, I can guess that this prediction would be pretty accurate regarding the number of incidents in Moscow."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "Serenity means less of, lack of noises.",
+                    "corrected": "Serenity means less noise, a lack of noise.",
+                    "explanation": "The phrase 'less of, lack of noises' is awkward; it should be simplified to 'less noise' for clarity.",
+                    "context": "In my discussion about mental health, I mentioned that nature represents peace and serenity. Serenity means less noise, a lack of noise. This contrast to anxiety is important when treating conditions like depression."
+                },
+                {
+                    "original": "I don't have nothing against it, but I will send you another topic.",
+                    "corrected": "I don't have anything against it, but I will send you another topic.",
+                    "explanation": "'Nothing' should be replaced with 'anything' in negative constructions to maintain standard English.",
+                    "context": "When talking to Violetta, I encouraged her to use her own arguments in her essay. I don't have anything against it, but I will send you another topic. This way, she has options to work with."
+                },
+                {
+                    "original": "I write an essay when I was at school, like final essay in 11th grade.",
+                    "corrected": "I wrote an essay when I was in school, like the final essay in 11th grade.",
+                    "explanation": "The verb tense is incorrect; 'write' should be 'wrote' to match the past context.",
+                    "context": "Reflecting on my past experiences, I tried to convey what I learned about essay writing. I wrote an essay when I was in school, like the final essay in 11th grade. Those lessons still impact my writing today."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Quality of life",
+                    "definition": "The standard of health, comfort, and happiness experienced by an individual or group.",
+                    "context": {
+                        "Context 1": "The city’s new green spaces greatly improve the residents' quality of life.",
+                        "Context 2": "After moving to a quieter neighborhood, they noticed an increase in their quality of life.",
+                        "Context 3": "The school's quality of life initiatives focus on student well-being and learning environments."
+                    }
+                },
+                {
+                    "word": "Mental health",
+                    "definition": "A person's condition with regard to their psychological and emotional well-being.",
+                    "context": {
+                        "Context 1": "Regular exercise can significantly boost a person's mental health.",
+                        "Context 2": "She decided to seek help for her mental health after feeling overwhelmed.",
+                        "Context 3": "The restaurant is famous for serving food that is good for mental health, like salmon and walnuts."
+                    }
+                },
+                {
+                    "word": "Pollution",
+                    "definition": "The presence or introduction of harmful substances into the environment.",
+                    "context": {
+                        "Context 1": "Air pollution in the city has reached dangerous levels.",
+                        "Context 2": "The factory’s waste contributed to the pollution of the nearby river.",
+                        "Context 3": "He’s conducting research on how pollution affects plant growth."
+                    }
+                },
+                {
+                    "word": "Asthma",
+                    "definition": "A respiratory condition marked by spasms in the bronchi of the lungs, causing difficulty in breathing.",
+                    "context": {
+                        "Context 1": "She carries her inhaler everywhere because of her asthma.",
+                        "Context 2": "The doctor diagnosed him with asthma after he struggled to catch his breath.",
+                        "Context 3": "Asthma can often be triggered by allergic reactions to dust or pollen."
+                    }
+                },
+                {
+                    "word": "Urban",
+                    "definition": "In, relating to, or characteristic of a city or town.",
+                    "context": {
+                        "Context 1": "Urban areas often face issues such as traffic congestion and high pollution.",
+                        "Context 2": "The urban landscape is constantly evolving with new skyscrapers.",
+                        "Context 3": "Her research on urban development focuses on sustainable architecture."
+                    }
+                },
+                {
+                    "word": "Stress",
+                    "definition": "A state of mental or emotional strain or tension resulting from adverse or demanding circumstances.",
+                    "context": {
+                        "Context 1": "Too much stress can negatively impact one’s health.",
+                        "Context 2": "He practices yoga to relieve stress after long workdays.",
+                        "Context 3": "Her stress was relieved when she learned how to manage her time better."
+                    }
+                },
+                {
+                    "word": "Green spaces",
+                    "definition": "Areas of vegetation in urban settings that are used for recreational purposes.",
+                    "context": {
+                        "Context 1": "The new development includes several green spaces where families can enjoy picnics.",
+                        "Context 2": "Green spaces in the city help improve air quality and provide a habitat for wildlife.",
+                        "Context 3": "He often takes his dog to the green spaces near his apartment."
+                    }
+                },
+                {
+                    "word": "Nature",
+                    "definition": "The physical world collectively, including plants, animals, and landscape.",
+                    "context": {
+                        "Context 1": "Being in nature can greatly enhance one's mental well-being.",
+                        "Context 2": "They plan to spend their vacation camping in nature.",
+                        "Context 3": "Nature documentaries are a fantastic way to learn about wildlife."
+                    }
+                },
+                {
+                    "word": "Environment",
+                    "definition": "The surroundings or conditions in which a person, animal, or plant lives or operates.",
+                    "context": {
+                        "Context 1": "A clean environment is essential for a healthy life.",
+                        "Context 2": "The organization's initiatives aim to protect the environment for future generations.",
+                        "Context 3": "For her science project, she studied how different environments affect animal behavior."
+                    }
+                },
+                {
+                    "word": "Support",
+                    "definition": "To bear all or part of the weight; to hold up; to give aid or help.",
+                    "context": {
+                        "Context 1": "The community came together to support families affected by the disaster.",
+                        "Context 2": "He needs emotional support during difficult times.",
+                        "Context 3": "My friends decided to support my bakery by promoting it online."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Asthma",
+                    "fact": "In ancient times, asthma was called 'the punishing breath' because of how it made people feel!"
+                },
+                {
+                    "word": "Stress",
+                    "fact": "Did you know that a group of cats is called a 'clowder'? Imagine the stress of managing a clowder of cats!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the bicycle fall over?",
+                    "answer": "Because it was two-tired!"
+                },
+                {
+                    "question": "Why was the math book sad?",
+                    "answer": "Because it had too many problems!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Prescribe",
+                    "definition": "To authorize the use of a medicine or treatment for someone; also to recommend a course of action.",
+                    "context": {
+                        "Context 1": "Doctors often prescribe medication to help manage symptoms of anxiety.",
+                        "Context 2": "The teacher prescribes extra homework to those who need more practice.",
+                        "Context 3": "After the injury, the trainer prescribed some specific exercises to aid recovery."
+                    }
+                },
+                {
+                    "word": "Serenity",
+                    "definition": "The state of being calm, peaceful, and untroubled.",
+                    "context": {
+                        "Context 1": "Being surrounded by nature brings a sense of serenity to my busy life.",
+                        "Context 2": "The chaos of the city can make it hard to find serenity.",
+                        "Context 3": "She sought serenity on the beach, far from the noise of the city."
+                    }
+                },
+                {
+                    "word": "Anxiety",
+                    "definition": "A feeling of worry, nervousness, or unease about something with an uncertain outcome.",
+                    "context": {
+                        "Context 1": "Many people experience anxiety before public speaking.",
+                        "Context 2": "Her anxiety was relieved after talking to a friend.",
+                        "Context 3": "He found that exercising helped him manage his anxiety levels."
+                    }
+                },
+                {
+                    "word": "Mental Health",
+                    "definition": "A person's emotional, psychological, and social well-being.",
+                    "context": {
+                        "Context 1": "Taking breaks and practicing self-care are essential for good mental health.",
+                        "Context 2": "Mental health awareness has improved significantly in recent years.",
+                        "Context 3": "Eating a balanced diet contributes positively to mental health."
+                    }
+                },
+                {
+                    "word": "Depression",
+                    "definition": "A mood disorder characterized by persistent feelings of sadness, hopelessness, and lack of interest.",
+                    "context": {
+                        "Context 1": "It’s important to seek help if you’re experiencing symptoms of depression.",
+                        "Context 2": "Many famous artists have spoken publicly about their struggles with depression.",
+                        "Context 3": "The gloomy weather often worsens his depression."
+                    }
+                },
+                {
+                    "word": "Structure",
+                    "definition": "The arrangement of and relations between the parts or elements of something.",
+                    "context": {
+                        "Context 1": "A clear structure in an essay helps convey the writer's ideas more effectively.",
+                        "Context 2": "The house has a unique architectural structure that attracts many visitors.",
+                        "Context 3": "Learning the structure of a language can greatly enhance your communication skills."
+                    }
+                },
+                {
+                    "word": "Concrete",
+                    "definition": "Specific and tangible; not abstract.",
+                    "context": {
+                        "Context 1": "She offered concrete examples to support her argument in the essay.",
+                        "Context 2": "The sculpture was made of concrete, emphasizing its modern aesthetic.",
+                        "Context 3": "Without concrete evidence, the claims remain just theories."
+                    }
+                },
+                {
+                    "word": "Aim",
+                    "definition": "To direct a course toward a specified goal.",
+                    "context": {
+                        "Context 1": "Her aim is to improve her writing skills throughout this course.",
+                        "Context 2": "He took careful aim before throwing the dart.",
+                        "Context 3": "The charity aims to provide resources for educational opportunities."
+                    }
+                },
+                {
+                    "word": "Recover",
+                    "definition": "To return to a normal state of health, mind, or strength.",
+                    "context": {
+                        "Context 1": "It often takes time to recover fully from mental health challenges.",
+                        "Context 2": "He hopes to recover from his illness and get back to work soon.",
+                        "Context 3": "She needs time to recover after her strenuous marathon run."
+                    }
+                },
+                {
+                    "word": "Essence",
+                    "definition": "The intrinsic nature or indispensable quality of something, especially something abstract, which determines its character.",
+                    "context": {
+                        "Context 1": "Understanding the essence of an argument is vital for critical thinking.",
+                        "Context 2": "In cooking, the essence of a dish often comes from its spices.",
+                        "Context 3": "The essence of friendship is built on trust and support."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Anxiety",
+                    "fact": "Did you know that even professional comedians can suffer from anxiety before going on stage? Laughing really is the best medicine!"
+                },
+                {
+                    "word": "Serenity",
+                    "fact": "Some people find serenity by meditating, while others achieve it by binge-watching their favorite show!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What did the teacher do with the student who kept trying to cheat?",
+                    "answer": "Gave him a little 'detention' to reflect on his actions!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you noticed how being outside feels different depending on where you are?"
+                },
+                {
+                    "Person 2": "Oh, totally! I mean, when I'm in the park, I feel so much more relaxed compared to walking in the busy streets."
+                },
+                {
+                    "Person 1": "Exactly! I used to live near a big park, and I would go for walks every day. It really helped with my stress."
+                },
+                {
+                    "Person 2": "I can relate. I love going to the park, but here in the city there just aren’t enough green spaces."
+                },
+                {
+                    "Person 1": "Right? When I moved here, it was a big change. I miss having those quiet places to unwind."
+                },
+                {
+                    "Person 2": "Yeah, and I read somewhere that people in cities with more parks tend to be happier. Makes sense!"
+                },
+                {
+                    "Person 1": "Definitely! More trees, less noise. It’s like a breath of fresh air, literally."
+                },
+                {
+                    "Person 2": "For sure! The more I think about it, the more I realize how important those spaces are for our mental health."
+                },
+                {
+                    "Person 1": "Do you think we should start a petition for more parks?"
+                },
+                {
+                    "Person 2": "Why not? I mean, if we can get more people involved, it could really make a difference!"
+                },
+                {
+                    "Person 1": "Count me in! I’ll help with flyers and everything."
+                },
+                {
+                    "Person 2": "Awesome! Let’s do it! A little green can go a long way."
+                },
+                {
+                    "Person 1": "Agreed! Now, should we start brainstorming ideas over coffee?"
+                },
+                {
+                    "Person 2": "Coffee sounds perfect! Let’s make it happen!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's your day going?"
+                },
+                {
+                    "Person 2": "Hey there! It's going pretty well, thanks! Just finished some work. How about you?"
+                },
+                {
+                    "Person 1": "Not much, just trying to wrap my head around this essay I need to write."
+                },
+                {
+                    "Person 2": "Oh, the one for class? What’s the topic?"
+                },
+                {
+                    "Person 1": "It’s about the impact of nature on mental health. I’m not sure where to start."
+                },
+                {
+                    "Person 2": "That sounds interesting! Did you know that spending time in nature can really reduce anxiety?"
+                },
+                {
+                    "Person 1": "Yeah, I heard that before! It’s like being in nature brings a sense of peace."
+                },
+                {
+                    "Person 2": "Exactly! Some doctors actually recommend it for treating things like depression."
+                },
+                {
+                    "Person 1": "That makes sense. I feel so much better after a walk in the park."
+                },
+                {
+                    "Person 2": "Same here! But writing about it is the tough part, right?"
+                },
+                {
+                    "Person 1": "Definitely! I can think of all these ideas in my head, but then it takes forever to write them down."
+                },
+                {
+                    "Person 2": "I totally get that! Maybe you could try outlining your thoughts first?"
+                },
+                {
+                    "Person 1": "Good idea! I think outlining would help me organize everything better."
+                },
+                {
+                    "Person 2": "Yeah! And don’t forget to take breaks if you start to feel overwhelmed."
+                },
+                {
+                    "Person 1": "For sure! I’ll take a break and maybe go outside for a bit."
+                },
+                {
+                    "Person 2": "Sounds like a plan. Good luck with the essay! You'll do great!"
+                },
+                {
+                    "Person 1": "Thanks! I appreciate it! Catch you later?"
+                },
+                {
+                    "Person 2": "Absolutely! Talk soon!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
