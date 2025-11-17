@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 9,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I think every first day was drone alarm.",
+                    "corrected": "I think every first day there was a drone alarm.",
+                    "explanation": "The sentence lacks proper structure; 'there was' needs to be included to make it grammatical.",
+                    "context": "They were discussing improvements in their internet connection. I think every first day there was a drone alarm. It always seemed to interrupt things."
+                },
+                {
+                    "original": "I always have the shelf is always open.",
+                    "corrected": "The shelf is always open.",
+                    "explanation": "The phrase is incorrectly structured; it should not begin with 'I always have'.",
+                    "context": "In a casual conversation, someone brought up the state of a shelf. The shelf is always open. I often forget to close it."
+                },
+                {
+                    "original": "There are a lot of stuff there.",
+                    "corrected": "There is a lot of stuff there.",
+                    "explanation": "'Stuff' is an uncountable noun and requires a singular verb 'is'.",
+                    "context": "During a chat about an open shelf, the speaker observed its contents. There is a lot of stuff there. It's cluttered, but I like to keep it that way."
+                },
+                {
+                    "original": "I have a study.",
+                    "corrected": "I have a class.",
+                    "explanation": "'Study' is generally a verb; 'class' is the appropriate noun for a scheduled learning session.",
+                    "context": "When asked about plans for the day, the student mentioned their schedule. Today I have a class at 3:50 PM. I wish it were at a better time."
+                },
+                {
+                    "original": "Because I study on this starting form.",
+                    "corrected": "Because I study in this evening program.",
+                    "explanation": "The phrase 'on this starting form' is unclear and doesn't convey the intended meaning well.",
+                    "context": "In response to a question about their schedule, they explained their study format. Because I study in this evening program, my days get tricky."
+                },
+                {
+                    "original": "I create tasks just to wake up earlier.",
+                    "corrected": "I create tasks just to get up earlier.",
+                    "explanation": "'Wake up' implies a state; 'get up' indicates the action of rising from bed.",
+                    "context": "The student mentioned having free mornings but wanting to be more productive. I create tasks just to get up earlier and make the most of my day."
+                },
+                {
+                    "original": "Did you do anything tomorrow?",
+                    "corrected": "Did you do anything today?",
+                    "explanation": "Using 'tomorrow' inaccurately refers to future events, while 'today' pertains to the current day.",
+                    "context": "Inquiring about the student's activities during the day, the speaker mistakenly referenced the next day. Did you do anything today? I just relaxed, really."
+                },
+                {
+                    "original": "I did homework for my friends.",
+                    "corrected": "I did their homework for my friends.",
+                    "explanation": "The addition of 'their' clarifies that the homework belonged to the friends, improving clarity.",
+                    "context": "The student discussed assisting their friends with schoolwork. I did their homework for my friends for some extra cash. It's a win-win."
+                },
+                {
+                    "original": "I make drawings.",
+                    "corrected": "I make illustrations.",
+                    "explanation": "The word 'illustrations' is more appropriate in academic or professional contexts.",
+                    "context": "In the course of talking about their homework help, the speaker noted their skills. I make illustrations for my friends’ assignments. They always appreciate it."
+                },
+                {
+                    "original": "You can just ask for an absurdly high price for taking the IELTS test.",
+                    "corrected": "You can just ask for an absurdly high price to take the IELTS test.",
+                    "explanation": "The phrase is incorrectly structured; it should be 'to take' rather than 'for taking'.",
+                    "context": "In a conversation about helping others pass an exam, the speaker shared their thoughts on pricing. You can just ask for an absurdly high price to take the IELTS test. People would pay for easy solutions."
+                },
+                {
+                    "original": "We are all, we're like, we have, do you think the advantages outweigh the disadvantages?",
+                    "corrected": "Do you think the advantages outweigh the disadvantages?",
+                    "explanation": "The sentence is overly wordy and stuttering; it can be simplified for clarity.",
+                    "context": "The lesson concluded with a question about the topic being studied. Do you think the advantages outweigh the disadvantages? It's a crucial discussion point for our essay."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "And I noticed that all types are a little bit similar because I can take ideas from my old essay and put it into a new.",
+                    "corrected": "And I noticed that all types are a little bit similar because I can take ideas from my old essay and put them into a new one.",
+                    "explanation": "The pronoun 'it' should refer to the noun 'essay,' so 'a new one' is required for clarity.",
+                    "context": "I've been analyzing the different essay types for a while. I noticed that all types are a little bit similar because I can take ideas from my old essay and put them into a new one. This helps me save time when preparing for writing."
+                },
+                {
+                    "original": "Economic, anything related to both economy and economics.",
+                    "corrected": "Economic refers to anything related to both economy and economics.",
+                    "explanation": "'Economic' should be introduced properly with 'refers to' to clarify its role in the sentence.",
+                    "context": "When discussing the differences between related terms, it's important to be clear. Economic refers to anything related to both economy and economics. This distinction helps in understanding various concepts in the field."
+                },
+                {
+                    "original": "Like whenever you need an adjective, it's economic.",
+                    "corrected": "Like whenever you need an adjective, it should be economic.",
+                    "explanation": "The phrase implies a need for correction to clarify that 'economic' is the appropriate adjective.",
+                    "context": "In discussing vocabulary, I always clarify usage. Like whenever you need an adjective, it should be economic. Understanding which form to use is crucial for clear communication."
+                },
+                {
+                    "original": "And economic is the rarest, it's least common.",
+                    "corrected": "And 'economic' is the rarest; it's the least common.",
+                    "explanation": "The sentence lacks proper punctuation; a semicolon or a period is required instead of a comma.",
+                    "context": "In vocabulary studies, understanding usage frequency is key. And 'economic' is the rarest; it's the least common term compared to the others, emphasizing its uniqueness."
+                },
+                {
+                    "original": "And the person who knows how to spend money, you know, not to overspend, who has like financial financially.",
+                    "corrected": "And the person who knows how to spend money, you know, not to overspend, who is financially literate.",
+                    "explanation": "The phrase 'has like financial financially' is incorrect and vague. It needs rephrasing to convey meaning clearly.",
+                    "context": "In a conversation about financial habits, I emphasize the qualities of savvy spenders. And the person who knows how to spend money, you know, not to overspend, who is financially literate. This description captures what I mean."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "I don't know why, but I have days when I can speak English easier than in the hours.",
+                    "corrected": "I don't know why, but I have days when I can speak English easier than at other times.",
+                    "explanation": "The phrase 'than in the hours' is incorrect; 'at other times' is a more idiomatic way to express comparability in time.",
+                    "context": "I often find that my ability to speak English varies. I don't know why, but I have days when I can speak English easier than at other times. Factors like sleep and mood might affect this."
+                },
+                {
+                    "original": "Do you have a good mood or not?",
+                    "corrected": "Are you in a good mood or not?",
+                    "explanation": "'Do you have a good mood' is less natural; 'Are you in a good mood' is the correct idiomatic expression.",
+                    "context": "Sometimes, my ability to communicate changes based on my emotional state. Are you in a good mood or not? That can really affect how we express ourselves."
+                },
+                {
+                    "original": "Have you tracked all those things?",
+                    "corrected": "Have you kept track of all those things?",
+                    "explanation": "'Tracked' implies a more active verb form that doesn't align with how 'track' is used here; 'kept track of' is more appropriate.",
+                    "context": "When discussing factors that may impact our English speaking, it's helpful to consider different elements. Have you kept track of all those things? Monitoring them might give you insights."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "And after that you need to restore all those energy that you spent.",
+                    "corrected": "And after that you need to restore all that energy that you spent.",
+                    "explanation": "The word 'those' is incorrect in this context; 'that' should be used with uncountable nouns like 'energy.'",
+                    "context": "After your body expends energy in response to stress, it needs recovery time. You need to restore all that energy that you spent."
+                },
+                {
+                    "original": "You can just practice it and have fun with it.",
+                    "corrected": "You can just practice and have fun with it.",
+                    "explanation": "'Practice it' is awkward; 'practice' should stand alone without 'it' for clarity.",
+                    "context": "Learning a new language should be enjoyable. You can just practice and have fun with it."
+                },
+                {
+                    "original": "Learning all learning centers in our brain are connected to the relaxation system.",
+                    "corrected": "All learning centers in our brain are connected to the relaxation system.",
+                    "explanation": "The repetition of 'Learning' is unnecessary and creates redundancy; the second phrase can stand alone.",
+                    "context": "Understanding how our brain functions is crucial. All learning centers in our brain are connected to the relaxation system."
+                },
+                {
+                    "original": "We can only use them fully, we can only fully concentrate on something.",
+                    "corrected": "We can only use them fully; we can only fully concentrate on something.",
+                    "explanation": "The punctuation should be a semicolon instead of a comma to correctly separate the two independent clauses.",
+                    "context": "Focusing properly is essential for effective learning. We can only use them fully; we can only fully concentrate on something."
+                },
+                {
+                    "original": "Like your cognitive abilities, your memory, they are just turned off.",
+                    "corrected": "Like your cognitive abilities and your memory, they are just turned off.",
+                    "explanation": "Using 'and' eliminates the awkwardness in the list, making it clearer.",
+                    "context": "Stress can inhibit brain function significantly. Like your cognitive abilities and your memory, they are just turned off."
+                },
+                {
+                    "original": "So, what usually happens is the blood goes off your hands.",
+                    "corrected": "So, what usually happens is the blood goes from your hands.",
+                    "explanation": "'Goes off' is incorrect; 'goes from' should be used to indicate the movement away from the hands.",
+                    "context": "During stress, the body prioritizes survival. So, what usually happens is the blood goes from your hands."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "Your self-inflicting stress on your body.",
+                    "corrected": "You're inflicting stress on your body.",
+                    "explanation": "'Your self-inflicting' is awkward; 'You're inflicting' is a clearer expression of the action being done.",
+                    "context": "We often create unnecessary pressure for ourselves. You're inflicting stress on your body. This is especially true when we feel nervous or anxious."
+                },
+                {
+                    "original": "This problem only with speaking, because I can understand on the same level.",
+                    "corrected": "This problem is only with speaking because I can understand at the same level.",
+                    "explanation": "Missing 'is' makes the sentence incomplete; 'at' is the correct preposition to describe understanding.",
+                    "context": "I've noticed that my struggles are specific to speaking. This problem is only with speaking because I can understand at the same level as before."
+                },
+                {
+                    "original": "Whenever you're listening, nobody cares.",
+                    "corrected": "When you're listening, nobody cares.",
+                    "explanation": "'Whenever' suggests a repeated condition; 'When' is more appropriate for a specific moment.",
+                    "context": "When we communicate, it's essential to understand the context. When you're listening, nobody cares if you miss a detail."
+                },
+                {
+                    "original": "It's now. You can't really repeat it later.",
+                    "corrected": "It's happening now. You can't really repeat it later.",
+                    "explanation": "Use of 'now' is vague; 'happening now' provides clarity about the present action.",
+                    "context": "When you're speaking in a conversation, it's crucial to be present. It's happening now. You can't really repeat it later due to the spontaneity of speech."
+                },
+                {
+                    "original": "Like, you know, people are so obsessed about their little mistakes that they make.",
+                    "corrected": "People are so obsessed with the little mistakes they make.",
+                    "explanation": "'Obsessed about' is incorrect; 'obsessed with' is the correct phrase for this context.",
+                    "context": "It's common for learners to focus on minor errors. People are so obsessed with the little mistakes they make that it hinders their progress."
+                },
+                {
+                    "original": "They immediately, I can see the stress level rising.",
+                    "corrected": "I can immediately see their stress levels rising.",
+                    "explanation": "The subject of the sentence is unclear; reordering provides clarity and proper sentence structure.",
+                    "context": "In my observations, anxiety is prevalent among students. I can immediately see their stress levels rising when they have to speak."
+                },
+                {
+                    "original": "The reason is because of stress.",
+                    "corrected": "The reason is stress.",
+                    "explanation": "'Because of' is redundant; 'is stress' succinctly states the cause.",
+                    "context": "Many people question their abilities as speakers. The reason is stress, which creates barriers in communication."
+                },
+                {
+                    "original": "The mind just blocks?",
+                    "corrected": "The mind just blocks.",
+                    "explanation": "Using a question mark implies uncertainty; stating it as a fact is clearer.",
+                    "context": "When under pressure, our mental processes can falter. The mind just blocks, preventing clear thinking during stressful situations."
+                },
+                {
+                    "original": "What really happened, a major cornerstone was when we developed enough neurons, yeah, because the brain enlarges and the number of neurons grows as well.",
+                    "corrected": "What really happened was that a major cornerstone was when we developed enough neurons because the brain enlarges and the number of neurons grow as well.",
+                    "explanation": "Missing 'was' makes the sentence unclear; 'grow' should agree in number with 'neurons.'",
+                    "context": "Understanding brain development is crucial. What really happened was that a major cornerstone was when we developed enough neurons, which coincided with brain enlargement."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "Sometimes it's really strange, I'm just thinking about something and I can do anything like with hands.",
+                    "corrected": "Sometimes it's really strange; I'm just thinking about something, and I can do anything with my hands.",
+                    "explanation": "A semicolon or a conjunction is necessary to connect two independent clauses. 'Like' should be replaced with 'with my' for clarity.",
+                    "context": "When I get lost in thought, it often feels strange. Sometimes it's really strange; I'm just thinking about something, and I can do anything with my hands. It’s as if my body is acting on its own."
+                },
+                {
+                    "original": "You're sometimes pronouncing these words or make movements to pronounce the word.",
+                    "corrected": "You're sometimes pronouncing these words or making movements to pronounce them.",
+                    "explanation": "The verb 'make' should be changed to 'making' to maintain parallel structure in the sentence.",
+                    "context": "I often find that my mind wanders as I'm thinking. You're sometimes pronouncing these words or making movements to pronounce them. It's fascinating how our bodies react to our thoughts."
+                },
+                {
+                    "original": "All this language is not stored as an abstract thing in your head.",
+                    "corrected": "All language is not stored as an abstract thing in your head.",
+                    "explanation": "The phrase 'this language' is too specific; 'all language' is more general and appropriate here.",
+                    "context": "It’s interesting to think about how we process language. All language is not stored as an abstract thing in your head. Instead, it connects to physical actions and vocal movements."
+                },
+                {
+                    "original": "Where your tongue should be at the moment, where your lips should be at the moment.",
+                    "corrected": "Where your tongue should be and where your lips should be at that moment.",
+                    "explanation": "The sentence lacks conjunctions, making it fragmented; 'and' should connect the phrases.",
+                    "context": "When I think about pronunciation, I focus on the details of speech. Where your tongue should be and where your lips should be at that moment is crucial. These aspects create the sounds we produce."
+                },
+                {
+                    "original": "Sometimes I have R.",
+                    "corrected": "Sometimes I pronounce 'R.'",
+                    "explanation": "The phrase 'have R' is unclear; it's better to specify that it's about pronunciation.",
+                    "context": "R can be tricky for many speakers. Sometimes I pronounce 'R.' It's particularly challenging in Russian compared to English."
+                },
+                {
+                    "original": "The French is even more softer.",
+                    "corrected": "The French 'R' is even softer.",
+                    "explanation": "The phrase 'even more softer' is incorrect as 'softer' already indicates a comparative; it should be corrected to simply say 'even softer.'",
+                    "context": "Different languages have their own unique sounds. The French 'R' is even softer than English. When I hear it, it sounds very delicate compared to other languages."
+                },
+                {
+                    "original": "It's the same as you learn how to write or you learn how to do something with your hands.",
+                    "corrected": "It's the same as learning how to write or do something with your hands.",
+                    "explanation": "The phrase 'you learn how to' can be simplified to 'learning how to' for conciseness.",
+                    "context": "Learning pronunciation involves physical habits. It's the same as learning how to write or do something with your hands. We develop muscle memory in our speech organs."
+                },
+                {
+                    "original": "I like pronouncing it, putting it in the context.",
+                    "corrected": "I like to pronounce it and put it in context.",
+                    "explanation": "The verb structure should be consistent; it's better to say 'like to pronounce' and 'put' for balance.",
+                    "context": "To master a new word, I practice actively. I like to pronounce it and put it in context. This helps me remember it better."
+                }
+            ]
+        },
+        "mistakes_7": {
+            "mistakes_list": [
+                {
+                    "original": "I know that my brain will naturally fetch this word if I am exposed.",
+                    "corrected": "I know that my brain will naturally retrieve this word if I am exposed.",
+                    "explanation": "The verb 'fetch' is typically used for collecting physical items; 'retrieve' is more appropriate for recalling information.",
+                    "context": "When learning a language, I often forget words. I know that my brain will naturally retrieve this word if I am exposed. Exposure helps me remember better."
+                },
+                {
+                    "original": "Like to flirt, to raise a girl.",
+                    "corrected": "Like to flirt, to attract a girl.",
+                    "explanation": "'Raise a girl' is incorrect in this context; 'attract' conveys the intended meaning of drawing someone's interest.",
+                    "context": "In discussing the meaning of 'seductive', I explained that it involves the art of attraction. Like to flirt, to attract a girl can lead to a deeper connection."
+                },
+                {
+                    "original": "For some people that would really be offensive.",
+                    "corrected": "For some people, that could really be offensive.",
+                    "explanation": "The use of 'would' is incorrect here; 'could' is more appropriate when talking about potential reactions.",
+                    "context": "I mentioned how people might react to a joke. For some people, that could really be offensive, especially if they feel insecure."
+                },
+                {
+                    "original": "That really is my problem.",
+                    "corrected": "That really is my insecurity.",
+                    "explanation": "'Problem' is vague; 'insecurity' more accurately describes a personal feeling of doubt or inadequacy.",
+                    "context": "I share my own feelings about being short. That really is my insecurity, and I know others feel similarly about their language skills."
+                },
+                {
+                    "original": "I can't do nothing about that.",
+                    "corrected": "I can't do anything about that.",
+                    "explanation": "The phrase 'can't do nothing' creates a double negative, which is incorrect; 'can't do anything' is the proper form.",
+                    "context": "Expressing frustration over physical attributes, I mentioned my height. I can't do anything about that, which is a reality many face."
+                },
+                {
+                    "original": "A person who knows how word memorization works, like me, the person who knows how I memorize words.",
+                    "corrected": "A person who knows how word memorization works, like me, understands how I memorize words.",
+                    "explanation": "The original structure is awkward; 'understands' clarifies the sentence and improves flow.",
+                    "context": "Discussing learning strategies, I emphasize my insights. A person who knows how word memorization works, like me, understands how I memorize words, making the process less stressful."
+                }
+            ]
+        },
+        "mistakes_8": {
+            "mistakes_list": [
+                {
+                    "original": "If you was born into in a slavic country, all slavic languages will be easy for you.",
+                    "corrected": "If you were born in a Slavic country, all Slavic languages will be easy for you.",
+                    "explanation": "The correct form is 'were' for the second person. Additionally, 'into in' should be corrected to just 'in.'",
+                    "context": "Languages can vary significantly based on one's background. If you were born in a Slavic country, all Slavic languages will be easy for you. It's all about the linguistic environment you grow up in."
+                },
+                {
+                    "original": "When we say, I don't know, computer, printer or any English genes.",
+                    "corrected": "When we say, I don't know, computer, printer or any English words.",
+                    "explanation": "The term 'genes' is incorrect; 'words' is the appropriate term in this context.",
+                    "context": "Language borrowing is a fascinating topic. When we say, I don't know, computer, printer or any English words, we recognize the influence of English on various languages. This crossover enriches our vocabulary."
+                },
+                {
+                    "original": "Because this, these languages are in the European Russian, like a lot of words that mean a lot of things that have existed for a long time.",
+                    "corrected": "Because of this, these languages are European languages. Many words that mean similar things have existed for a long time.",
+                    "explanation": "The phrase 'this, these languages are in the European Russian' is awkward; 'because of this' clarifies the connection, and 'European languages' is more accurate.",
+                    "context": "The relationship among languages is often intertwined. Because of this, these languages are European languages. Many words that mean similar things have existed for a long time, reflecting their shared history."
+                }
+            ]
+        },
+        "mistakes_9": {
+            "mistakes_list": [
+                {
+                    "original": "There was no rule. No difference.",
+                    "corrected": "There was no rule and no difference.",
+                    "explanation": "Using two separate sentences makes the connection between them unclear; combining them improves coherence.",
+                    "context": "I explained that in the context of Russian literature, there was no rule and no difference in how certain words were used. This illustrates how language can evolve without strict guidelines."
+                },
+                {
+                    "original": "in Russian was a form of using to be verb in present simple.",
+                    "corrected": "In Russian, there is a form of the verb 'to be' in the present simple.",
+                    "explanation": "The phrase lacks proper structure and grammar; 'There is a form' clarifies the meaning and corrects the verb usage.",
+                    "context": "Discussing language structure is important. In Russian, there is a form of the verb 'to be' in the present simple, which differs significantly from English."
+                },
+                {
+                    "original": "this pattern of we don't necessarily need a subject in a sentence or a verb.",
+                    "corrected": "This pattern shows that we don't necessarily need a subject or a verb in a sentence.",
+                    "explanation": "The original sentence is awkward and lacks clarity. Starting with 'This pattern shows' improves readability.",
+                    "context": "In Russian, this pattern shows that we don't necessarily need a subject or a verb in a sentence. This reflects the flexibility of the language."
+                },
+                {
+                    "original": "All those words I want to see in the review.",
+                    "corrected": "I want to see all those words in the review.",
+                    "explanation": "The original sentence is awkwardly structured. Reordering it creates a clearer expression of intent.",
+                    "context": "For my writing assignment, I want to see all those words in the review. They effectively illustrate the themes I'm exploring."
+                },
+                {
+                    "original": "I feel the steerings of dread.",
+                    "corrected": "I feel the stirrings of dread.",
+                    "explanation": "The word 'steerings' is incorrect; 'stirrings' is the appropriate term to convey a sense of awakening or emergence.",
+                    "context": "As I write, I feel the stirrings of dread creeping in. This sense of foreboding influences my creative process."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "LAN cable",
+                    "definition": "A Local Area Network (LAN) cable is used to connect devices within a limited area, such as a home or office.",
+                    "context": {
+                        "Context 1": "Manika mentioned that her LAN cable makes the internet connection much better.",
+                        "Context 2": "The LAN cable was tangled and caused the whole network to fail.",
+                        "Context 3": "He used a LAN cable to connect his gaming console to the router for a stable online experience."
+                    }
+                },
+                {
+                    "word": "Stabler",
+                    "definition": "Adjective referring to something that is more stable; less likely to change or fluctuate.",
+                    "context": {
+                        "Context 1": "The internet is stabler with the new LAN cable.",
+                        "Context 2": "After moving the furniture, the display was stabler than before.",
+                        "Context 3": "The team felt stabler after solidifying their game plan."
+                    }
+                },
+                {
+                    "word": "Awfully",
+                    "definition": "Adverb used to emphasize a negative quality; very or extremely.",
+                    "context": {
+                        "Context 1": "Manika described her study time as awfully late.",
+                        "Context 2": "The weather was awfully nice for a winter day.",
+                        "Context 3": "He was awfully happy after receiving the unexpected gift."
+                    }
+                },
+                {
+                    "word": "Productive",
+                    "definition": "Adjective describing someone or something that produces a lot or accomplishes tasks efficiently.",
+                    "context": {
+                        "Context 1": "Yesterday, Manika felt productive when she did her homework.",
+                        "Context 2": "Her productive day included cleaning the house and cooking dinner.",
+                        "Context 3": "The productive meeting led to several new initiatives being planned."
+                    }
+                },
+                {
+                    "word": "Homework",
+                    "definition": "Assignments given to students to complete outside of school hours.",
+                    "context": {
+                        "Context 1": "Manika did homework for her friends and got paid for it.",
+                        "Context 2": "My teacher assigned two chapters of homework over the weekend.",
+                        "Context 3": "The child struggled with his homework but eventually finished it."
+                    }
+                },
+                {
+                    "word": "Absurdly",
+                    "definition": "Adverb meaning something that is exceptionally ridiculous or unreasonable.",
+                    "context": {
+                        "Context 1": "Manika speculated that she could charge an absurdly high price for taking the IELTS test.",
+                        "Context 2": "The movie’s plot was absurdly unrealistic but still entertaining.",
+                        "Context 3": "The proposal was absurdly complicated, making it hard to understand."
+                    }
+                },
+                {
+                    "word": "Certificate",
+                    "definition": "A document confirming a status, qualification, or achievement.",
+                    "context": {
+                        "Context 1": "Manika mentioned people wanting to pay for a certificate from the IELTS test.",
+                        "Context 2": "She displayed her certificate of completion proudly on the wall.",
+                        "Context 3": "To apply for the job, he needed to submit a certificate of his previous employment."
+                    }
+                },
+                {
+                    "word": "Exams",
+                    "definition": "Formal assessments used to evaluate a student's knowledge or skills in a particular subject.",
+                    "context": {
+                        "Context 1": "Manika talked about passing exams for her friends.",
+                        "Context 2": "Preparing for exams can be stressful for many students.",
+                        "Context 3": "The exams will take place over a two-week period."
+                    }
+                },
+                {
+                    "word": "Morning",
+                    "definition": "The early part of the day, typically from sunrise until noon.",
+                    "context": {
+                        "Context 1": "Manika mentioned that her mornings are mostly free.",
+                        "Context 2": "She loves to have a cup of coffee every morning.",
+                        "Context 3": "The conference begins in the morning at 9 AM."
+                    }
+                },
+                {
+                    "word": "Chilling out",
+                    "definition": "Slang for relaxing or taking a break from work or stress.",
+                    "context": {
+                        "Context 1": "Today, Manika was just chilling out in the morning.",
+                        "Context 2": "After a long week, I plan on chilling out by the pool this weekend.",
+                        "Context 3": "He enjoys chilling out with his friends at the park."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Homework",
+                    "fact": "Did you know that in some countries, students have homework that includes chores like cleaning their room? It’s two tasks for the price of one!"
+                },
+                {
+                    "word": "Certificate",
+                    "fact": "In Japan, there are certificates for almost everything, including 'most well-behaved pet' and even 'best sandwich maker'!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What did one piece of homework say to another?",
+                    "answer": "We’re due for a little break!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "From my perspective, opinion essays are the most straightforward to write.",
+                        "Context 2": "She changed her perspective on life after traveling the world.",
+                        "Context 3": "His perspective on the movie varied greatly from his friend's view."
+                    }
+                },
+                {
+                    "word": "Instruction",
+                    "definition": "Detailed information on how something should be done or operated.",
+                    "context": {
+                        "Context 1": "The instructions on how to write essays are clearly outlined in the textbook.",
+                        "Context 2": "I followed the instruction manual to assemble the furniture correctly.",
+                        "Context 3": "The coach provided instruction on how to improve our techniques during practice."
+                    }
+                },
+                {
+                    "word": "Economy",
+                    "definition": "The system of production, distribution, and consumption of goods and services in a society.",
+                    "context": {
+                        "Context 1": "The economy of the country has been growing steadily over the past years.",
+                        "Context 2": "He studied the economy of several developing nations for his research project.",
+                        "Context 3": "During the vacation, we learned about the economy of the ancient Greeks."
+                    }
+                },
+                {
+                    "word": "Economics",
+                    "definition": "The branch of knowledge concerned with the production, consumption, and transfer of wealth.",
+                    "context": {
+                        "Context 1": "Economics has always been my favorite subject in school.",
+                        "Context 2": "She decided to study economics at university because she was interested in financial systems.",
+                        "Context 3": "He wrote an interesting article about economics for the school newspaper."
+                    }
+                },
+                {
+                    "word": "Economic",
+                    "definition": "Relating to the economy or finances.",
+                    "context": {
+                        "Context 1": "We had an economic discussion about the benefits and drawbacks of trade tariffs.",
+                        "Context 2": "The economic growth of the region surprised many experts.",
+                        "Context 3": "She noticed the economic impact of tourism on the small island."
+                    }
+                },
+                {
+                    "word": "Literacy",
+                    "definition": "The ability to read and write; competence or knowledge in a specified area.",
+                    "context": {
+                        "Context 1": "Financial literacy is crucial for making informed economic decisions.",
+                        "Context 2": "He was proud of his literacy skills and enjoyed reading various genres.",
+                        "Context 3": "They organized a workshop to improve computer literacy in the community."
+                    }
+                },
+                {
+                    "word": "Discussion",
+                    "definition": "The action or process of talking about something in order to reach a decision or to exchange ideas.",
+                    "context": {
+                        "Context 1": "The class had a productive discussion about opinion essays today.",
+                        "Context 2": "Their discussion on climate change was insightful and engaging.",
+                        "Context 3": "She led a discussion on favorite hobbies during the game night."
+                    }
+                },
+                {
+                    "word": "Disadvantage",
+                    "definition": "An unfavorable circumstance or condition that reduces the chances of success.",
+                    "context": {
+                        "Context 1": "One disadvantage of writing opinion essays is the need for strong arguments.",
+                        "Context 2": "The disadvantage of living in a big city is the high cost of living.",
+                        "Context 3": "Lack of experience can be a disadvantage when applying for jobs."
+                    }
+                },
+                {
+                    "word": "Advantage",
+                    "definition": "A condition or circumstance that puts one in a favorable or superior position.",
+                    "context": {
+                        "Context 1": "One advantage of discussion essays is that they allow for multiple viewpoints.",
+                        "Context 2": "Speaking multiple languages can give you a significant advantage in the job market.",
+                        "Context 3": "The advantage of having a mentor is receiving guidance from someone experienced."
+                    }
+                },
+                {
+                    "word": "Economist",
+                    "definition": "An expert in economics; a person who studies or is professionally engaged in economics.",
+                    "context": {
+                        "Context 1": "The economist explained the effects of inflation in an informative lecture.",
+                        "Context 2": "Many economists predict changes in the market next year.",
+                        "Context 3": "She aspires to be an economist after finishing her studies."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Economics",
+                    "fact": "The term 'economics' comes from the Greek word 'oikonomikos,' which roughly translates to 'one who manages a household'."
+                },
+                {
+                    "word": "Perspective",
+                    "fact": "Did you know the phrase 'paradigm shift' refers to a fundamental change in perspective? It’s often used to describe breakthroughs in science."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why was the math book sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "What do you call a student who doesn’t study?",
+                    "answer": "A history maker!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Vocational school",
+                    "definition": "An educational institution that prepares students for specific trades or careers.",
+                    "context": {
+                        "Context 1": "In America, vocational schools offer practical training for various professions.",
+                        "Context 2": "After high school, he attended a vocational school to learn carpentry.",
+                        "Context 3": "Vocational schools often partner with local businesses for apprenticeships."
+                    }
+                },
+                {
+                    "word": "Flexible",
+                    "definition": "Capable of bending easily without breaking; adaptable.",
+                    "context": {
+                        "Context 1": "Americans tend to be more flexible with language than British people.",
+                        "Context 2": "Her flexible schedule allows her to take evening classes.",
+                        "Context 3": "He needs a flexible plan to accommodate unexpected changes."
+                    }
+                },
+                {
+                    "word": "Strict",
+                    "definition": "Demanding that rules or methods be adhered to; precise.",
+                    "context": {
+                        "Context 1": "British people are more strict with educational terminology compared to Americans.",
+                        "Context 2": "The teacher had a strict policy on late assignments.",
+                        "Context 3": "His strict diet helped him lose weight quickly."
+                    }
+                },
+                {
+                    "word": "Lecture",
+                    "definition": "An educational talk to an audience, especially in a college or university.",
+                    "context": {
+                        "Context 1": "In American universities, a lecture is often a large class format.",
+                        "Context 2": "She gave a fascinating lecture on the Renaissance art movement.",
+                        "Context 3": "After the lecture, there was a lively discussion among the students."
+                    }
+                },
+                {
+                    "word": "Seminar",
+                    "definition": "A class at a college or university in which a small group of students discusses a specific topic.",
+                    "context": {
+                        "Context 1": "We often have seminars that focus on group discussions.",
+                        "Context 2": "The seminar on climate change attracted many passionate participants.",
+                        "Context 3": "He learned more in the seminar than he did in the lecture."
+                    }
+                },
+                {
+                    "word": "Committee",
+                    "definition": "A group of people appointed for a specific function, typically consisting of members of a larger group.",
+                    "context": {
+                        "Context 1": "The Olympic Games Committee randomly chooses the host city.",
+                        "Context 2": "The school committee is responsible for budgeting and planning.",
+                        "Context 3": "There is a committee that reviews all research proposals before approval."
+                    }
+                },
+                {
+                    "word": "Corrupted",
+                    "definition": "Dishonest or fraudulent conduct by those in power, typically involving bribery.",
+                    "context": {
+                        "Context 1": "The committee was accused of being corrupted in their selection process.",
+                        "Context 2": "The corrupted politician was investigated for embezzlement.",
+                        "Context 3": "They worked hard to expose the corrupted practices in the organization."
+                    }
+                },
+                {
+                    "word": "Disadvantage",
+                    "definition": "An unfavorable circumstance or condition that reduces the chances of success or effectiveness.",
+                    "context": {
+                        "Context 1": "A disadvantage of the selection process is its potential for corruption.",
+                        "Context 2": "He noted that one disadvantage of living in a big city is the cost of living.",
+                        "Context 3": "The main disadvantage of remote work is the lack of social interaction."
+                    }
+                },
+                {
+                    "word": "Educational facility",
+                    "definition": "A place designed for teaching and learning.",
+                    "context": {
+                        "Context 1": "In America, all educational institutions can be referred to as schools or educational facilities.",
+                        "Context 2": "The new educational facility opened with state-of-the-art technology.",
+                        "Context 3": "Many educational facilities provide resources for students with disabilities."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Americans have a different perspective on education compared to Europeans.",
+                        "Context 2": "Her perspective on the situation changed after she heard their side.",
+                        "Context 3": "The book offers a unique perspective on world history."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Vocational school",
+                    "fact": "Did you know that in some countries, students learn to be professional dog groomers or Lego builders in vocational schools?"
+                },
+                {
+                    "word": "Flexible",
+                    "fact": "The word 'flexible' comes from the Latin word 'flexibilis,' which means 'capable of being bent.' No wonder yoga enthusiasts love it!"
+                },
+                {
+                    "word": "Corrupted",
+                    "fact": "The term 'corrupt' used to mean 'to break' or 'disrupt' and now it totally has a negative vibe!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "Why did the teacher go to the beach?",
+                    "answer": "Because she wanted to test the waters!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Stress",
+                    "definition": "A state of mental or emotional strain resulting from difficult circumstances.",
+                    "context": {
+                        "Context 1": "Stress can hinder your ability to learn effectively.",
+                        "Context 2": "She felt a lot of stress before her big presentation at work.",
+                        "Context 3": "After a long day, he needed to reduce his stress levels by relaxing."
+                    }
+                },
+                {
+                    "word": "Relaxation",
+                    "definition": "The state of being free from tension and anxiety.",
+                    "context": {
+                        "Context 1": "Relaxation is crucial for effective learning.",
+                        "Context 2": "She finds relaxation by meditating every morning.",
+                        "Context 3": "After completing his exams, he took a vacation for some much-needed relaxation."
+                    }
+                },
+                {
+                    "word": "Cognitive",
+                    "definition": "Relating to the mental processes of perception, memory, judgment, and reasoning.",
+                    "context": {
+                        "Context 1": "Your cognitive abilities are affected when stress is present.",
+                        "Context 2": "Cognitive development in children is fascinating to study.",
+                        "Context 3": "He read a book on cognitive psychology for his research project."
+                    }
+                },
+                {
+                    "word": "Evolutionary",
+                    "definition": "Relating to the gradual development of something.",
+                    "context": {
+                        "Context 1": "The body's stress response is evolutionary in nature.",
+                        "Context 2": "Evolutionary theories explain how species adapt to their environments.",
+                        "Context 3": "The evolutionary process can take thousands of years."
+                    }
+                },
+                {
+                    "word": "Mobilize",
+                    "definition": "To prepare and organize troops for active service or to make something capable of movement.",
+                    "context": {
+                        "Context 1": "When feeling threatened, the body mobilizes resources to respond.",
+                        "Context 2": "The community needed to mobilize volunteers for the charity event.",
+                        "Context 3": "The coach decided to mobilize the team for extra training before the championship."
+                    }
+                },
+                {
+                    "word": "Capacity",
+                    "definition": "The maximum amount that something can contain or accomplish.",
+                    "context": {
+                        "Context 1": "Memory capacity is reduced under stress.",
+                        "Context 2": "The theater was at full capacity during the opening night.",
+                        "Context 3": "He filled the jar to its capacity with candies."
+                    }
+                },
+                {
+                    "word": "Prioritize",
+                    "definition": "To arrange or deal with in order of importance.",
+                    "context": {
+                        "Context 1": "The brain prioritizes fast responses over memory in stressful situations.",
+                        "Context 2": "She learned to prioritize her tasks to manage her time better.",
+                        "Context 3": "Companies often prioritize customer satisfaction to maintain a good reputation."
+                    }
+                },
+                {
+                    "word": "Differentiates",
+                    "definition": "To recognize or ascertain what makes something different.",
+                    "context": {
+                        "Context 1": "The body doesn't differentiate between types of stress.",
+                        "Context 2": "He differentiates between various species of birds when birdwatching.",
+                        "Context 3": "The teacher helps students differentiate between facts and opinions."
+                    }
+                },
+                {
+                    "word": "Twitching",
+                    "definition": "Making small, quick movements, or spasms.",
+                    "context": {
+                        "Context 1": "Muscles may start twitching when under stress.",
+                        "Context 2": "He noticed his friend’s eyelid twitching during the exam.",
+                        "Context 3": "The cat was twitching its tail while watching the birds outside."
+                    }
+                },
+                {
+                    "word": "Resource",
+                    "definition": "A stock or supply of materials or assets that can be drawn on.",
+                    "context": {
+                        "Context 1": "The body mobilizes all its resources during stressful situations.",
+                        "Context 2": "The school provides various resources for students to succeed.",
+                        "Context 3": "Natural resources are essential for the country's economy."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Cognitive",
+                    "fact": "The term 'cognitive' comes from the Latin word 'cognoscere,' which means 'to know.' So, if you're forgetting things, you might just need a little Latin in your brain!"
+                },
+                {
+                    "word": "Evolutionary",
+                    "fact": "Did you know humans and bananas share about 60% of the same DNA? Talk about a fruit salad at the evolutionary picnic!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the scarecrow win an award?",
+                    "answer": "Because he was outstanding in his field!"
+                },
+                {
+                    "question": "Why did the math book look so sad?",
+                    "answer": "Because it had too many problems!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Self-inflicting",
+                    "definition": "Causing harm to oneself, often emotionally or mentally.",
+                    "context": {
+                        "Context 1": "The teacher explained that self-inflicting stress can be harmful to learning.",
+                        "Context 2": "Some people engage in self-inflicting habits to cope with pain.",
+                        "Context 3": "He realized his self-inflicting thoughts were holding him back from success."
+                    }
+                },
+                {
+                    "word": "Cognitive",
+                    "definition": "Related to mental processes such as awareness, perception, reasoning, and judgment.",
+                    "context": {
+                        "Context 1": "Cognitive centers in the brain are essential for processing information.",
+                        "Context 2": "After a long day, her cognitive abilities were not at their best.",
+                        "Context 3": "Playing chess is great for improving cognitive skills."
+                    }
+                },
+                {
+                    "word": "Neurons",
+                    "definition": "Nerve cells that transmit information throughout the body.",
+                    "context": {
+                        "Context 1": "Neurons fire in the brain to help us recall words during speech.",
+                        "Context 2": "The doctor explained how neurons are crucial for brain function.",
+                        "Context 3": "Some species can regenerate neurons, which is not true for humans."
+                    }
+                },
+                {
+                    "word": "Seamless",
+                    "definition": "Smooth and without interruptions or difficulties.",
+                    "context": {
+                        "Context 1": "Practicing can make your speech more seamless and natural.",
+                        "Context 2": "The new software update provided a more seamless user experience.",
+                        "Context 3": "The performance was seamless, with no hiccups between songs."
+                    }
+                },
+                {
+                    "word": "Psychology",
+                    "definition": "The scientific study of the mind and behavior.",
+                    "context": {
+                        "Context 1": "Psychology explains why stress affects our speech and memory.",
+                        "Context 2": "He decided to pursue a degree in psychology to understand human behavior.",
+                        "Context 3": "Her interest in psychology grew after reading a book about famous psychologists."
+                    }
+                },
+                {
+                    "word": "Anxiety",
+                    "definition": "A feeling of worry, nervousness, or unease about something with an uncertain outcome.",
+                    "context": {
+                        "Context 1": "Many students experience anxiety when speaking in public.",
+                        "Context 2": "His anxiety spiked when he saw the exam paper.",
+                        "Context 3": "Anxiety can be managed through mindfulness and relaxation techniques."
+                    }
+                },
+                {
+                    "word": "Performance",
+                    "definition": "The act of carrying out or accomplishing a task.",
+                    "context": {
+                        "Context 1": "Speaking performance can be hindered by stress.",
+                        "Context 2": "The athlete's performance improved after training with a coach.",
+                        "Context 3": "She was nervous about her performance in the school play."
+                    }
+                },
+                {
+                    "word": "Express",
+                    "definition": "To convey a thought, feeling, or idea through words or actions.",
+                    "context": {
+                        "Context 1": "It's important to express your thoughts clearly when speaking.",
+                        "Context 2": "He found it easier to express his emotions through art.",
+                        "Context 3": "The poem was her way to express her love for nature."
+                    }
+                },
+                {
+                    "word": "Primitive",
+                    "definition": "Relating to an early stage in the evolutionary development of something.",
+                    "context": {
+                        "Context 1": "Humans had primitive cognitive functions before developing advanced thinking.",
+                        "Context 2": "The museum showcased tools used by primitive societies.",
+                        "Context 3": "His primitive instincts helped him survive in the wild."
+                    }
+                },
+                {
+                    "word": "Judgment",
+                    "definition": "The ability to make considered decisions or come to sensible conclusions.",
+                    "context": {
+                        "Context 1": "People often worry about judgment when speaking to others.",
+                        "Context 2": "Her judgment was clouded by emotions during the interview.",
+                        "Context 3": "Making sound judgment is crucial when investing money."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Neurons",
+                    "fact": "A single human brain has approximately 86 billion neurons! That’s enough to have a few billion discussions!"
+                },
+                {
+                    "word": "Primitive",
+                    "fact": "The word 'primitive' comes from the Latin 'primus' meaning 'first'—meaning primitive people were literally the ‘first’ in line at the buffet!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the scarecrow win an award?",
+                    "answer": "Because he was outstanding in his field!"
+                },
+                {
+                    "question": "What do you call an educated tube?",
+                    "answer": "A graduated cylinder!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Pronunciation",
+                    "definition": "The way in which a word or a language is spoken.",
+                    "context": {
+                        "Context 1": "My pronunciation of the word 'schedule' improved after practicing it multiple times.",
+                        "Context 2": "He has a unique pronunciation of vowels that makes his accent stand out.",
+                        "Context 3": "The pronunciation of foreign names can often be challenging for English speakers."
+                    }
+                },
+                {
+                    "word": "Coincidence",
+                    "definition": "A remarkable concurrence of events or circumstances without apparent causal connection.",
+                    "context": {
+                        "Context 1": "It's not a coincidence that she often thinks of her friend when she hears their favorite song.",
+                        "Context 2": "She showed up just when I was thinking about her, but it was just a coincidence.",
+                        "Context 3": "In history, many coincidences have led to significant discoveries by pure chance."
+                    }
+                },
+                {
+                    "word": "Vocal cords",
+                    "definition": "Folds of tissue in the throat that are key to producing sound when speaking or singing.",
+                    "context": {
+                        "Context 1": "The teacher explained how vocal cords work, allowing us to produce different sounds.",
+                        "Context 2": "After singing for hours, I could feel my vocal cords were tired.",
+                        "Context 3": "Animals also have vocal cords, which they use to make different sounds to communicate."
+                    }
+                },
+                {
+                    "word": "Airflow",
+                    "definition": "Movement of air, particularly as it relates to speech production and voice.",
+                    "context": {
+                        "Context 1": "Proper airflow is essential for clear pronunciation and speaking.",
+                        "Context 2": "The airflow through the open window made the room feel much cooler.",
+                        "Context 3": "Airflow in the city's atmosphere can affect pollution levels and air quality."
+                    }
+                },
+                {
+                    "word": "Rotecism",
+                    "definition": "A speech defect in which the speaker has difficulty pronouncing the letter 'R.'",
+                    "context": {
+                        "Context 1": "She was diagnosed with rotecism, but she worked hard to improve her pronunciation.",
+                        "Context 2": "I used to have rotecism when I was a child, but my speech therapist helped me overcome it.",
+                        "Context 3": "Some cartoons feature characters who have rotecism as part of their funny personality traits."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or setting surrounding an event, statement, or idea, which help explain it.",
+                    "context": {
+                        "Context 1": "Understanding the context of a conversation can clarify its meaning.",
+                        "Context 2": "In literature, the context helps readers interpret the theme of the story.",
+                        "Context 3": "The context of the movie made its ending more impactful for the audience."
+                    }
+                },
+                {
+                    "word": "Patterns",
+                    "definition": "Repeated decorative designs or sequences that can be recognized.",
+                    "context": {
+                        "Context 1": "The patterns in her speech mirrored her emotions at the time.",
+                        "Context 2": "The patterns in nature, such as spirals and symmetry, are often captivating.",
+                        "Context 3": "He noticed various patterns in the stock market that helped him make investment decisions."
+                    }
+                },
+                {
+                    "word": "Memory",
+                    "definition": "The faculty by which the mind stores and remembers information.",
+                    "context": {
+                        "Context 1": "To improve her memory, she frequently practiced recalling new vocabulary words.",
+                        "Context 2": "His memory of the event was so vivid that he could still describe it in detail years later.",
+                        "Context 3": "They decided to create a memory book to capture all their family moments."
+                    }
+                },
+                {
+                    "word": "Learn",
+                    "definition": "To acquire knowledge or skill through experience, study, or teaching.",
+                    "context": {
+                        "Context 1": "To learn a new language effectively, it's important to practice regularly.",
+                        "Context 2": "Children learn to walk by observing and mimicking their parents.",
+                        "Context 3": "I love to learn about different cultures when I travel."
+                    }
+                },
+                {
+                    "word": "Specific",
+                    "definition": "Clearly defined or identified; particular.",
+                    "context": {
+                        "Context 1": "The teacher gave specific instructions on how to complete the project.",
+                        "Context 2": "He was searching for a specific book that he had found in the library.",
+                        "Context 3": "Specific colors can evoke different emotions in artworks."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Pronunciation",
+                    "fact": "The word 'pronunciation' is often mispronounced as 'pronounciation'—ironic, isn’t it?"
+                },
+                {
+                    "word": "Airflow",
+                    "fact": "Did you know that the average person breathes in about 11,000 liters of air each day? Talk about airflow!"
+                },
+                {
+                    "word": "Rotecism",
+                    "fact": "In some cultures, cute speech impediments like rotecism are considered adorable—and definitely not a flaw!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the linguist break up with the grammar teacher?",
+                    "answer": "Because they had too many arguments about their conjunctions!"
+                },
+                {
+                    "question": "What did the phoneme say to the vowel?",
+                    "answer": "You're just too open with your sounds!"
+                }
+            ]
+        },
+        "vocabulary_7": {
+            "vocabulary_list": [
+                {
+                    "word": "Seductive",
+                    "definition": "Tending to entice into a desired action; alluring.",
+                    "context": {
+                        "Context 1": "His charming smile was quite seductive, making her feel drawn to him.",
+                        "Context 2": "The advertisement used a seductive tone to attract customers to the new perfume.",
+                        "Context 3": "The seductive beauty of the sunset left everyone mesmerized."
+                    }
+                },
+                {
+                    "word": "Flirt",
+                    "definition": "To behave toward someone in a way that shows a sexual interest but is often playful and not serious.",
+                    "context": {
+                        "Context 1": "He tried to flirt with her, but she didn't seem interested.",
+                        "Context 2": "At the party, they spent the evening simply flirting and having fun.",
+                        "Context 3": "The cat would flirt with the ball of yarn, pouncing on it playfully."
+                    }
+                },
+                {
+                    "word": "Insecurity",
+                    "definition": "A feeling of uncertainty or anxiety about oneself; lack of confidence.",
+                    "context": {
+                        "Context 1": "His insecurity about his knowledge made him hesitant to speak up in class.",
+                        "Context 2": "Many artists struggle with insecurity, doubting the quality of their work.",
+                        "Context 3": "She overcame her insecurity as a dancer through years of practice and performance."
+                    }
+                },
+                {
+                    "word": "Archaic",
+                    "definition": "Very old or old-fashioned; no longer in everyday use.",
+                    "context": {
+                        "Context 1": "The word 'thou' is considered archaic in modern English.",
+                        "Context 2": "He enjoys reading archaic literature to experience the language of the past.",
+                        "Context 3": "The archaic machines in the museum intrigued the visitors with their history."
+                    }
+                },
+                {
+                    "word": "Memorization",
+                    "definition": "The process of committing something to memory.",
+                    "context": {
+                        "Context 1": "Repeated practice aids in the memorization of vocabulary words.",
+                        "Context 2": "His memorization technique involved using mnemonic devices to remember numbers.",
+                        "Context 3": "Memorization can be less effective than understanding when learning complex concepts."
+                    }
+                },
+                {
+                    "word": "Expose",
+                    "definition": "To make something visible by uncovering it.",
+                    "context": {
+                        "Context 1": "Reading various books can expose you to new vocabulary.",
+                        "Context 2": "He wanted to expose the lies in the politician's speech.",
+                        "Context 3": "Walking in nature exposes you to beautiful landscapes and fresh air."
+                    }
+                },
+                {
+                    "word": "Fetch",
+                    "definition": "To go for and bring back; to retrieve.",
+                    "context": {
+                        "Context 1": "My dog loves to fetch the frisbee I throw.",
+                        "Context 2": "He needed to fetch his coat from the back of the car.",
+                        "Context 3": "The computer program will fetch the latest updates automatically."
+                    }
+                },
+                {
+                    "word": "Test",
+                    "definition": "To carefully examine the quality or performance of something.",
+                    "context": {
+                        "Context 1": "She wanted to test her knowledge on English vocabulary through quizzes.",
+                        "Context 2": "The scientist plans to test the new drug on volunteers.",
+                        "Context 3": "They had to test their recipe on friends before opening their restaurant."
+                    }
+                },
+                {
+                    "word": "Overcome",
+                    "definition": "To succeed in dealing with a problem or difficulty.",
+                    "context": {
+                        "Context 1": "She worked hard to overcome her fear of public speaking.",
+                        "Context 2": "They overcame the challenges of the project by working together.",
+                        "Context 3": "He learned to overcome his dislike for vegetables as he grew older."
+                    }
+                },
+                {
+                    "word": "Enchanting",
+                    "definition": "Delightfully charming or attractive.",
+                    "context": {
+                        "Context 1": "The enchanting melody captivated everyone at the concert.",
+                        "Context 2": "They visited an enchanting village that seemed straight out of a fairy tale.",
+                        "Context 3": "The painting was so enchanting that viewers lingered in front of it for hours."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Seductive",
+                    "fact": "Did you know that the word 'seduce' comes from Latin and originally meant 'to lead away'?"
+                },
+                {
+                    "word": "Insecurity",
+                    "fact": "Insecurity can be found in animals too—some pet cats grow more insecure and shy when there are loud noises around them!"
+                },
+                {
+                    "word": "Flirt",
+                    "fact": "The term 'flirt' likely comes from the old word 'flutter', describing the quick movements and excitement involved!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the teacher wear sunglasses in class?",
+                    "answer": "Because her students were so bright!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because he wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_8": {
+            "vocabulary_list": [
+                {
+                    "word": "Synonym",
+                    "definition": "A word that has the same or nearly the same meaning as another word.",
+                    "context": {
+                        "Context 1": "In English, there are many synonyms for the word 'beautiful,' such as 'lovely' and 'gorgeous.'",
+                        "Context 2": "The teacher asked the students to find a synonym for 'happy' in their reading assignments.",
+                        "Context 3": "The singer's lyrics are filled with synonyms that express deep emotions in different ways."
+                    }
+                },
+                {
+                    "word": "Memorization",
+                    "definition": "The process of committing something to memory; learning something by heart.",
+                    "context": {
+                        "Context 1": "I use a memorization technique to remember vocabulary words for my English class.",
+                        "Context 2": "The memorization of historical dates can be quite challenging for students.",
+                        "Context 3": "Memorization isn’t just for academics; musicians memorize their pieces to perform."
+                    }
+                },
+                {
+                    "word": "Vocabulary",
+                    "definition": "The body of words used in a particular language or by a particular group of people.",
+                    "context": {
+                        "Context 1": "Expanding your vocabulary is an important part of learning any new language.",
+                        "Context 2": "His vocabulary is impressive, filled with complex words from literature.",
+                        "Context 3": "Children develop vocabulary through reading and conversation with others."
+                    }
+                },
+                {
+                    "word": "Palkritute",
+                    "definition": "A Russian word meaning physical beauty.",
+                    "context": {
+                        "Context 1": "In the lesson, the student mispronounced 'palkritute' as 'punch.'",
+                        "Context 2": "The painting is a perfect example of 'palkritute' from the Renaissance period.",
+                        "Context 3": "During the beauty contest, contestants were judged on their 'palkritute' and grace."
+                    }
+                },
+                {
+                    "word": "Butrid",
+                    "definition": "Referring to something that has a bad smell; rotten.",
+                    "context": {
+                        "Context 1": "The lesson explained that 'butrid' means something like a foul smell.",
+                        "Context 2": "The forgotten leftovers in the fridge developed a butrid odor.",
+                        "Context 3": "My friend's gym bag had a butrid scent after he forgot to take it home."
+                    }
+                },
+                {
+                    "word": "Indistinguishable",
+                    "definition": "Not able to be identified as distinct or different; very similar.",
+                    "context": {
+                        "Context 1": "The lesson discussed how languages can become indistinguishable over time.",
+                        "Context 2": "The two paintings were so well-done that they were indistinguishable from one another.",
+                        "Context 3": "With practice, my handwriting became indistinguishable from that of my favorite author."
+                    }
+                },
+                {
+                    "word": "Formal",
+                    "definition": "Following established conventions or rules, often used in official or serious situations.",
+                    "context": {
+                        "Context 1": "The term 'academic literature' is considered formal language.",
+                        "Context 2": "The wedding invitation was very formal, with intricate designs and calligraphy.",
+                        "Context 3": "In a formal meeting, it's important to dress appropriately to convey professionalism."
+                    }
+                },
+                {
+                    "word": "Overlap",
+                    "definition": "To have something in common; to share a portion of something.",
+                    "context": {
+                        "Context 1": "The speaker mentioned that English and Russian have some vocabulary overlap.",
+                        "Context 2": "The overlap in schedules made it difficult to schedule the meeting.",
+                        "Context 3": "Some animals exhibit behavior that shows an overlap in instincts between species."
+                    }
+                },
+                {
+                    "word": "Proto-Indo-European",
+                    "definition": "The hypothetical reconstruction of the language that is the common ancestor of the Indo-European languages.",
+                    "context": {
+                        "Context 1": "In the lesson, the teacher explained the origins of many languages tracing back to Proto-Indo-European.",
+                        "Context 2": "Linguists study Proto-Indo-European to better understand ancient cultures.",
+                        "Context 3": "The concept of Proto-Indo-European is fascinating for anyone interested in language evolution."
+                    }
+                },
+                {
+                    "word": "Evolve",
+                    "definition": "To develop gradually over time; to change or adapt.",
+                    "context": {
+                        "Context 1": "Languages continue to evolve as cultures change over the years.",
+                        "Context 2": "The species have had to evolve to adapt to their changing environments.",
+                        "Context 3": "Technology has evolved rapidly, causing significant shifts in how we communicate."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Synonym",
+                    "fact": "Did you know that there are over 250,000 synonyms in the English language? That's a lot of options when you're running from 'beautiful'!"
+                },
+                {
+                    "word": "Memorization",
+                    "fact": "Researchers say that the average person can only remember about 7 items at once—so good luck memorizing your grocery list!"
+                },
+                {
+                    "word": "Indistinguishable",
+                    "fact": "The word 'indistinguishable' has more letters than some people's New Year’s resolutions!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they heard the teacher talking about high school!"
+                },
+                {
+                    "question": "Why don’t English teachers play hide and seek?",
+                    "answer": "Because good luck hiding when they can find the misplaced commas!"
+                }
+            ]
+        },
+        "vocabulary_9": {
+            "vocabulary_list": [
+                {
+                    "word": "Interchangeably",
+                    "definition": "In a manner that allows two or more things to be used in place of each other.",
+                    "context": {
+                        "Context 1": "Pushkin often used certain words interchangeably, without concern for strict rules.",
+                        "Context 2": "In cooking, salt and sugar should not be used interchangeably, as they affect the dish's flavor.",
+                        "Context 3": "Many people think that cats and dogs can be used interchangeably as pets, but they have very different needs."
+                    }
+                },
+                {
+                    "word": "Foreboding",
+                    "definition": "A feeling that something bad will happen; a sense of impending doom.",
+                    "context": {
+                        "Context 1": "An ominous foreboding settled over me as the storm clouds gathered.",
+                        "Context 2": "She had a foreboding feeling before the big test, worried she might not pass.",
+                        "Context 3": "The movie's foreboding music signaled that something scary was about to happen."
+                    }
+                },
+                {
+                    "word": "Radiant",
+                    "definition": "Sending out light; shining or glowing brightly.",
+                    "context": {
+                        "Context 1": "She had a radiant smile that lit up the room.",
+                        "Context 2": "The sun was radiant on the beach, making the water sparkle.",
+                        "Context 3": "He wore a radiant red jacket that attracted everyone's attention at the party."
+                    }
+                },
+                {
+                    "word": "Dread",
+                    "definition": "To anticipate with great apprehension or fear.",
+                    "context": {
+                        "Context 1": "I was seized with dread before the final exam.",
+                        "Context 2": "He felt dread wash over him when he saw the bill for repairs on his car.",
+                        "Context 3": "She had a dread of public speaking that made her avoid presentations."
+                    }
+                },
+                {
+                    "word": "Captivating",
+                    "definition": "Attracting and holding the interest of someone; enchanting.",
+                    "context": {
+                        "Context 1": "The captivating story kept the audience's attention until the last page.",
+                        "Context 2": "He found her captivating and couldn’t stop watching her dance.",
+                        "Context 3": "The captivating landscape made them want to paint the beautiful scene."
+                    }
+                },
+                {
+                    "word": "Ominous",
+                    "definition": "Giving the impression that something bad or unpleasant is going to happen.",
+                    "context": {
+                        "Context 1": "The dark clouds overhead created an ominous atmosphere before the storm.",
+                        "Context 2": "Her ominous warning made everyone rethink their plans for the weekend.",
+                        "Context 3": "The ominous noise coming from the basement made him hesitate to investigate."
+                    }
+                },
+                {
+                    "word": "Unease",
+                    "definition": "A feeling of anxiety or discomfort; a state of being worried or troubled.",
+                    "context": {
+                        "Context 1": "An unease settled in my chest as I entered the abandoned house.",
+                        "Context 2": "His sarcastic comments created a sense of unease at the dinner table.",
+                        "Context 3": "The unease in the crowd was palpable as the news announced a significant change."
+                    }
+                },
+                {
+                    "word": "Seized",
+                    "definition": "To take hold of suddenly and forcibly; to grasp.",
+                    "context": {
+                        "Context 1": "I was seized with fear when the lights went out.",
+                        "Context 2": "They seized the opportunity to travel when they had a chance.",
+                        "Context 3": "The thief was seized by the police before he could escape."
+                    }
+                },
+                {
+                    "word": "Tremble",
+                    "definition": "To shake involuntarily, typically as a result of anxiety or excitement.",
+                    "context": {
+                        "Context 1": "My heart trembled with fear as I approached the haunted house.",
+                        "Context 2": "She felt her hands tremble when she received the good news.",
+                        "Context 3": "The cold wind made the leaves tremble on the trees."
+                    }
+                },
+                {
+                    "word": "Quail",
+                    "definition": "To feel or show fear or apprehension.",
+                    "context": {
+                        "Context 1": "My spirit quails at the thought of speaking in front of an audience.",
+                        "Context 2": "She didn't quail at the challenge, but instead faced it head-on.",
+                        "Context 3": "During the horror movie, I could see the audience quail at the scary scenes."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Radiant",
+                    "fact": "Did you know that radiance isn't just for stars? It can refer to a person's glowing personality too!"
+                },
+                {
+                    "word": "Quail",
+                    "fact": "Interestingly, quail is not just a verb for fear; it's also a type of bird! They might quail at gloomy weather too!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why don't scientists trust atoms?",
+                    "answer": "Because they make up everything!"
+                },
+                {
+                    "question": "What do you call an educated tube?",
+                    "answer": "A graduated cylinder!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you notice any difference with your new internet setup?"
+                },
+                {
+                    "Person 2": "Oh, definitely! The connection is so much better now. It’s almost like I can actually stream things without buffering!"
+                },
+                {
+                    "Person 1": "Right? I could never figure out if it was the old cable or just a bad day for the internet."
+                },
+                {
+                    "Person 2": "I think it’s a mix. I mean, new equipment does make a difference, but sometimes the day just isn’t good for the internet."
+                },
+                {
+                    "Person 1": "True that! Speaking of upgrades, did you finally get that new laptop you were talking about?"
+                },
+                {
+                    "Person 2": "Yep! I got it last week. It’s like night and day compared to my old one."
+                },
+                {
+                    "Person 1": "That’s awesome! I need to upgrade mine too, but I keep putting it off."
+                },
+                {
+                    "Person 2": "You totally should! Your old one has been struggling for a while now. What’s holding you back?"
+                },
+                {
+                    "Person 1": "Honestly, I just keep spending my money on other stuff. Like going out with friends and stuff."
+                },
+                {
+                    "Person 2": "I get that! But sometimes it’s worth it to invest in tech that makes life easier."
+                },
+                {
+                    "Person 1": "You’re right. Speaking of tech, did you do anything productive today?"
+                },
+                {
+                    "Person 2": "Not really, just took it easy. How about you?"
+                },
+                {
+                    "Person 1": "I finished up some tasks and went for a walk. It’s been nice out."
+                },
+                {
+                    "Person 2": "That sounds relaxing! I should probably get out and do that too."
+                },
+                {
+                    "Person 1": "Yeah, fresh air always helps. Want to join me next time?"
+                },
+                {
+                    "Person 2": "For sure! Let’s make it a plan."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, have you ever thought about how we learn new things? Like, isn't it wild how we can struggle with something one day and then get it the next?"
+                },
+                {
+                    "Person 2": "Totally! I remember trying to wrap my head around economics once, and it felt impossible. But then, after a few sessions, it clicked."
+                },
+                {
+                    "Person 1": "Right? Learning can be so unpredictable. One moment you feel lost, and the next, it’s like the light bulb goes on."
+                },
+                {
+                    "Person 2": "Exactly! And I think the structure of how we learn really matters too. Like, I prefer clear explanations rather than just diving into complex stuff."
+                },
+                {
+                    "Person 1": "Yeah, for sure. I think that makes a big difference. Like with writing essays—if I know the structure, it feels way easier to express my thoughts."
+                },
+                {
+                    "Person 2": "Same here! Opinion essays are straightforward, right? You just share your thoughts and back them up with reasons."
+                },
+                {
+                    "Person 1": "Yes! It’s like sharing a conversation on paper. I feel like I can express my opinions much easier than when I have to analyze something deep."
+                },
+                {
+                    "Person 2": "Totally! And don’t even get me started on discussion essays. They can be a bit tricky with balancing both sides."
+                },
+                {
+                    "Person 1": "Yeah! But I guess once you get the hang of it, you can pull ideas from one essay and use them in another."
+                },
+                {
+                    "Person 2": "Exactly! It’s all about finding connections between what you know and what you're writing about."
+                },
+                {
+                    "Person 1": "For sure! So, are you working on any essays right now?"
+                },
+                {
+                    "Person 2": "I am! Just trying to figure out how to make my arguments a bit stronger. Maybe I need to read a few examples for inspiration."
+                },
+                {
+                    "Person 1": "That's a good idea! I find that reading helps a lot. Plus, it exposes you to different writing styles."
+                },
+                {
+                    "Person 2": "Absolutely! And every time I read a new essay, I get ideas on how to improve my own writing."
+                },
+                {
+                    "Person 1": "Well, good luck with yours! I’m sure you’ll nail it!"
+                },
+                {
+                    "Person 2": "Thanks! Let’s keep each other motivated. We got this!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you ever think about how confusing college and university can be in the U.S.?"
+                },
+                {
+                    "Person 2": "Totally! I remember thinking college was just for after high school, like a vocational thing."
+                },
+                {
+                    "Person 1": "Right? And then I found out college is basically the same as university here."
+                },
+                {
+                    "Person 2": "Exactly! In the UK, it’s totally different. They stick to using 'university' for the bigger schools."
+                },
+                {
+                    "Person 1": "Yeah, and don’t you find it funny that in the U.S. we say we have 'school' even at university?"
+                },
+                {
+                    "Person 2": "Oh, for sure! Like, I’ll tell my friends, 'I have school in two hours,' and they just laugh."
+                },
+                {
+                    "Person 1": "And I feel like in other countries, they’re way stricter about these terms."
+                },
+                {
+                    "Person 2": "Yeah! You rarely hear someone in the UK refer to their university day as 'school.'"
+                },
+                {
+                    "Person 1": "It’s like we mix everything up, and it’s celebrated in a way."
+                },
+                {
+                    "Person 2": "Haha, it’s true! And then some universities in the U.S. like to call themselves colleges."
+                },
+                {
+                    "Person 1": "Such a mix-up! But it makes sense if you think about the variety of educational paths we have."
+                },
+                {
+                    "Person 2": "Absolutely! And we also have seminars and lectures, but sometimes I just call it a lesson."
+                },
+                {
+                    "Person 1": "Same here! It’s all about what makes sense in the moment, right?"
+                },
+                {
+                    "Person 2": "Exactly! It’s kind of refreshing how flexible we can be with language."
+                },
+                {
+                    "Person 1": "For sure! So, are you ready for our next class?"
+                },
+                {
+                    "Person 2": "Ready as I’ll ever be! Let’s see how my English holds up today."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "You ever feel stressed when you're trying to learn something new?"
+                },
+                {
+                    "Person 2": "Definitely! It's like my brain just shuts down when I'm anxious."
+                },
+                {
+                    "Person 1": "Right? It’s hard to focus at all. I read somewhere that stress can really mess with your ability to remember things."
+                },
+                {
+                    "Person 2": "Yeah, I think when you're stressed, your body just goes into survival mode or something."
+                },
+                {
+                    "Person 1": "Exactly! Like, the blood gets redirected to your organs, and your brain is thinking, 'I need to run away!' instead of paying attention."
+                },
+                {
+                    "Person 2": "So true! And then when you're trying to recall stuff, it’s like your brain is just blank."
+                },
+                {
+                    "Person 1": "It's so frustrating! I hate when the teacher gets upset and I make a mistake in front of everyone."
+                },
+                {
+                    "Person 2": "Same! It makes everything feel even worse. I start second-guessing myself."
+                },
+                {
+                    "Person 1": "I know it’s important to relax, but easier said than done, huh?"
+                },
+                {
+                    "Person 2": "For sure! Maybe we should just practice more in a chill way, so we don’t feel so pressured."
+                },
+                {
+                    "Person 1": "That sounds like a plan! Just have fun with it, right?"
+                },
+                {
+                    "Person 2": "Definitely! Learning should be enjoyable, not a stress-fest."
+                },
+                {
+                    "Person 1": "Absolutely! Let’s try to remind each other to take it easy next time."
+                },
+                {
+                    "Person 2": "Sounds good to me! We got this!"
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, how's it going? You look a little tense today."
+                },
+                {
+                    "Person 2": "Ugh, I'm just stressed out about this presentation I have to give next week."
+                },
+                {
+                    "Person 1": "I get that. Public speaking can be really nerve-wracking. What’s making it tough for you?"
+                },
+                {
+                    "Person 2": "I just keep thinking about all the words I might forget while I’m up there. It’s like my brain shuts down."
+                },
+                {
+                    "Person 1": "Yeah, it’s wild how that happens. You know, it's normal to feel that way. Most people are just focused on whether you can communicate your message."
+                },
+                {
+                    "Person 2": "That’s true. But sometimes I feel like everyone is judging me on every little mistake I make."
+                },
+                {
+                    "Person 1": "I think we all worry too much about that. If you can get your point across, that’s what counts!"
+                },
+                {
+                    "Person 2": "Right? But I still feel like I have to be perfect."
+                },
+                {
+                    "Person 1": "Perfection isn’t the goal. I mean, even the best speakers have off days. It happens to everyone."
+                },
+                {
+                    "Person 2": "You’re probably right. Maybe I just need to relax and take a breath before I go up."
+                },
+                {
+                    "Person 1": "Exactly! Just remember, it’s all about connection. If they can see you’re trying to communicate, they won’t mind a little slip-up."
+                },
+                {
+                    "Person 2": "Thanks for the pep talk! Maybe I’ll try a few relaxation techniques before my speech."
+                },
+                {
+                    "Person 1": "Sounds like a plan! And, if all else fails, just picture the audience in their pajamas."
+                },
+                {
+                    "Person 2": "Haha! That might actually help! I'll give that a shot. Thanks for being such a good friend."
+                },
+                {
+                    "Person 1": "Anytime! You've got this. Let's grab some coffee later to celebrate once it’s over!"
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, have you ever noticed how when you’re thinking about something, you might start moving your lips as if you’re about to speak?"
+                },
+                {
+                    "Person 2": "Oh totally! I catch myself doing that all the time, even when no one else is around."
+                },
+                {
+                    "Person 1": "Right? It’s like our brains are so wired to language that we can’t help but try to pronounce words in our heads."
+                },
+                {
+                    "Person 2": "Exactly! I think it’s fascinating how language is tied to our mouth and vocal cords, not just stored in our brains."
+                },
+                {
+                    "Person 1": "Exactly! When I learn a new word, I find myself focusing on how to physically say it."
+                },
+                {
+                    "Person 2": "Same here. It’s almost like our mouths remember the movements we need to make."
+                },
+                {
+                    "Person 1": "And it’s interesting how different languages have different sounds. Like, the French ‘R’ is so soft compared to English."
+                },
+                {
+                    "Person 2": "Oh, for sure! My friend who speaks both languages says the English ‘R’ is much more firm."
+                },
+                {
+                    "Person 1": "I think that’s why some people have trouble switching between the two. They have to re-learn those mouth movements."
+                },
+                {
+                    "Person 2": "Absolutely! It’s like learning to play an instrument, where you have to build those muscle memories."
+                },
+                {
+                    "Person 1": "Right? And sometimes when I hear a new word, I have to keep repeating it out loud to remember it."
+                },
+                {
+                    "Person 2": "Same! It's all about practice. The more you say it, the easier it gets to pull it from memory."
+                },
+                {
+                    "Person 1": "Totally. It’s all about getting comfortable with the sounds we produce."
+                },
+                {
+                    "Person 2": "For sure! It’s all so connected—our brains, our mouths, and the sounds we make."
+                },
+                {
+                    "Person 1": "Yeah, learning a language really is a whole-body experience! Who knew it could be so physical?"
+                },
+                {
+                    "Person 2": "I know, right? Let’s practice some new words together next time!"
+                }
+            ]
+        },
+        "dialogue_7": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! You won't believe the word I just learned."
+                },
+                {
+                    "Person 2": "Oh really? What is it?"
+                },
+                {
+                    "Person 1": "It's 'seductive'. I had to look it up because I heard it on a podcast."
+                },
+                {
+                    "Person 2": "Oh, I know that one! It’s all about flirting, right?"
+                },
+                {
+                    "Person 1": "Exactly! It’s like when you’re trying to charm someone."
+                },
+                {
+                    "Person 2": "Right! But you can flirt without being seductive. You have to actually make a connection."
+                },
+                {
+                    "Person 1": "Yeah! I thought it was interesting how the meanings can change based on context."
+                },
+                {
+                    "Person 2": "For sure! Words can have so many layers. I was talking to a friend who loves wordplay."
+                },
+                {
+                    "Person 1": "That sounds fun! I wish I was better at that."
+                },
+                {
+                    "Person 2": "Don’t worry, we all have our strengths. Plus, learning new words is such a cool challenge."
+                },
+                {
+                    "Person 1": "Totally! Speaking of which, do you think there are words that just make no sense?"
+                },
+                {
+                    "Person 2": "Oh definitely! There are some words that just sound funny or awkward."
+                },
+                {
+                    "Person 1": "Like, why do we use 'quirky' to mean something odd? It’s so random!"
+                },
+                {
+                    "Person 2": "Haha! I know! Language is such a mix of logic and randomness."
+                },
+                {
+                    "Person 1": "It's like a puzzle sometimes. I love figuring it out."
+                },
+                {
+                    "Person 2": "For sure! And the best part is, the more we learn, the more we can share with others."
+                }
+            ]
+        },
+        "dialogue_8": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever thought about how many words we actually know in English?"
+                },
+                {
+                    "Person 2": "Definitely! It’s cool to know there are so many synonyms for the same word. Like, one word can have a ton of different meanings."
+                },
+                {
+                    "Person 1": "Right? I sometimes catch myself using the same words over and over. It’s like my brain just goes blank."
+                },
+                {
+                    "Person 2": "I know the feeling! Even in my own language, there are times when I realize I don’t even know the meaning of certain words."
+                },
+                {
+                    "Person 1": "Exactly! I might recognize a word from reading, but then I’m like, what does that even mean?"
+                },
+                {
+                    "Person 2": "Totally! And then you find out it’s a word you’ve only ever seen in books or something."
+                },
+                {
+                    "Person 1": "Yeah, like some of those really formal or academic terms. They’re just... there! I mean who uses them in everyday conversation?"
+                },
+                {
+                    "Person 2": "Right! And honestly, I don’t think English is an easy language. Some people say that, but I think they just don’t know what they’re talking about."
+                },
+                {
+                    "Person 1": "Exactly! Each language has its own challenges. I feel like it really depends on where you grew up."
+                },
+                {
+                    "Person 2": "Definitely. Like, if you're from a Slavic country, you might pick up Slavic languages faster."
+                },
+                {
+                    "Person 1": "Or if you're born in Japan, learning Chinese might be a piece of cake compared to English."
+                },
+                {
+                    "Person 2": "For sure! And it’s interesting how many words we borrow from each other across languages."
+                },
+                {
+                    "Person 1": "Yeah! Like computer and printer. Those are all borrowed words that connect different languages together."
+                },
+                {
+                    "Person 2": "And the roots of words are so fascinating! It’s like we’re all connected through language."
+                },
+                {
+                    "Person 1": "I agree! Talking about Proto-Indo-European and how languages evolved is mind-blowing."
+                },
+                {
+                    "Person 2": "Totally! It makes you appreciate our languages so much more, right?"
+                }
+            ]
+        },
+        "dialogue_9": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you read any good books lately?"
+                },
+                {
+                    "Person 2": "Not really, I'm more into podcasts these days. They're so easy to listen to while doing other things."
+                },
+                {
+                    "Person 1": "That's true! I used to love sitting down with a good book, but I find myself scrolling on my phone instead."
+                },
+                {
+                    "Person 2": "Same here! It's like I can't focus for long enough to get into a story anymore."
+                },
+                {
+                    "Person 1": "Right? I tried reading last night, but after just a few pages, I picked up my phone."
+                },
+                {
+                    "Person 2": "Oh man, I do that all the time! Short videos just pull me in."
+                },
+                {
+                    "Person 1": "Exactly! And then I realize I've wasted an hour on silly clips."
+                },
+                {
+                    "Person 2": "Yeah, it’s so easy to lose track of time! Maybe we should set some limits or something."
+                },
+                {
+                    "Person 1": "Like no phone an hour before bed? That could help!"
+                },
+                {
+                    "Person 2": "For sure! Or maybe just pick a day to unplug completely."
+                },
+                {
+                    "Person 1": "That sounds kind of hard, but I’m down to try it!"
+                },
+                {
+                    "Person 2": "Let’s start with baby steps first, like the bedtime rule."
+                },
+                {
+                    "Person 1": "Agreed! Tomorrow night, no phone before bed."
+                },
+                {
+                    "Person 2": "Deal! And if we forget, we can remind each other."
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
