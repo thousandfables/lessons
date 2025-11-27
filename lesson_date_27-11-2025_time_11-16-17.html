@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Like Moscow dormitories, even in GIMO, they claim that all the best universities, they're our best universities in the whole country.",
+                    "corrected": "Like Moscow dormitories, even in GIMO, they claim that all the best universities are the best universities in the whole country.",
+                    "explanation": "The phrase 'they're our best universities' is incorrect; 'they are' should be used for clarification here.",
+                    "context": "I've noticed that there is a big difference in dormitory conditions among universities. Like Moscow dormitories, even in GIMO, they claim that all the best universities are the best universities in the whole country. However, the reality is quite different."
+                },
+                {
+                    "original": "Like, yeah, it's just in the right side of main building.",
+                    "corrected": "Like, yeah, it's just on the right side of the main building.",
+                    "explanation": "'In the right side' is incorrect; 'on the right side' is the correct prepositional phrase to indicate location.",
+                    "context": "The new building has some positives, yet it lacks excitement. Like, yeah, it's just on the right side of the main building. It could have been better considering it's one of the top universities."
+                },
+                {
+                    "original": "the faster you can do it at a leisurely pace, the more you can start... limiting your time.",
+                    "corrected": "the faster you can do it, the more you can start limiting your time.",
+                    "explanation": "The phrase 'at a leisurely pace' is unnecessary here; it makes the comparison awkward.",
+                    "context": "When practicing writing, it's important to balance speed and thoughtfulness. The faster you can do it, the more you can start limiting your time. This will help you become more efficient over time."
+                },
+                {
+                    "original": "If you're struggling with an example, if it doesn't feel very convincing, then you better change your idea or think about a better example.",
+                    "corrected": "If you're struggling with an example and it doesn't feel very convincing, then you should change your idea or think about a better example.",
+                    "explanation": "'You better change' is informal; 'you should change' is a more appropriate suggestion.",
+                    "context": "It's crucial to support your ideas effectively. If you're struggling with an example and it doesn't feel very convincing, then you should change your idea or think about a better example. This way, your argument will be stronger."
+                },
+                {
+                    "original": "I don't see the connection between their success and four-day work week.",
+                    "corrected": "I don't see the connection between their success and the four-day work week.",
+                    "explanation": "Missing definite article 'the' makes the phrase incomplete; it's necessary for clarity.",
+                    "context": "When discussing examples of productivity, it's essential to understand their context. I don't see the connection between their success and the four-day work week. This leaves room for doubt in the argument."
+                },
+                {
+                    "original": "Truly, I don't know any examples, I thought about it, but I don't know any other examples, which can fit, like, I don't know any companies which have four-day work.",
+                    "corrected": "Honestly, I don't know any examples; I thought about it, but I don't know any other examples that can fit. I don't know any companies that have a four-day work week.",
+                    "explanation": "The phrasing is redundant and informal; 'which can fit' should be 'that can fit' and the sentence should be structured more clearly.",
+                    "context": "Finding compelling examples can be challenging. Honestly, I don't know any examples; I thought about it, but I don't know any other examples that can fit. It's hard to identify companies that have a four-day work week."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "they have less time to recharge, they are more productive, maybe they're less productive, because that's like, that's counterintuitive",
+                    "corrected": "they have less time to recharge, maybe they're less productive, because that's counterintuitive.",
+                    "explanation": "The original sentence contains redundancy and a fragmented structure; 'that's like, that's counterintuitive' should be simplified.",
+                    "context": "In discussing productivity, I pointed out that having less time to recharge could contradict our expectations. They have less time to recharge; maybe they're less productive, because that's counterintuitive."
+                },
+                {
+                    "original": "it will change it to the better way.",
+                    "corrected": "it will change for the better.",
+                    "explanation": "'Change it to the better way' is awkward; the correct phrase is 'change for the better.'",
+                    "context": "I believe that allowing people a day off will improve their energy levels. It will change for the better, enhancing how they perform at work."
+                },
+                {
+                    "original": "they work very well, they do a lot of frontline.",
+                    "corrected": "they work very well, they do a lot of frontline work.",
+                    "explanation": "The sentence is missing the noun 'work' after 'frontline' to clarify the meaning.",
+                    "context": "To illustrate my point, I said that if productivity improves, we would notice that employees work very well; they do a lot of frontline work."
+                },
+                {
+                    "original": "that's why we should do it They are not convinced What happened in spare objectively.",
+                    "corrected": "that's why we should do it. They are not convinced. What happened in spare objectively?",
+                    "explanation": "The lack of punctuation leads to run-on sentences; each thought should be separated properly.",
+                    "context": "While explaining the rationale for a four-day work week, I stated that that's why we should do it. They are not convinced. What happened in spare objectively?"
+                },
+                {
+                    "original": "the most successful corporation. That is why we need to trust that.",
+                    "corrected": "the most successful corporation; that’s why we need to trust them.",
+                    "explanation": "'That is why we need to trust that' is vague; 'trust them' is more direct and clear.",
+                    "context": "In defending the idea, I mentioned the most successful corporation; that’s why we need to trust them as an example for adopting this change."
+                },
+                {
+                    "original": "But this sentence is kind of off It doesn't really explain anything.",
+                    "corrected": "But this sentence is kind of off; it doesn't really explain anything.",
+                    "explanation": "The original lacks proper punctuation, resulting in a run-on sentence.",
+                    "context": "As I reviewed the proposal, I pointed out that while it was strong overall, I felt that this sentence was kind of off; it doesn't really explain anything."
+                },
+                {
+                    "original": "People work for Only for a day a week.",
+                    "corrected": "People work for only one day a week.",
+                    "explanation": "The phrase 'Only for a day' is incorrectly capitalized and should be 'only one day' for clarity.",
+                    "context": "I suggested a different model where people work for only one day a week, exploring how this could maintain productivity."
+                },
+                {
+                    "original": "there is I'm not asking you to change everything.",
+                    "corrected": "I'm not asking you to change everything.",
+                    "explanation": "The original sentence is awkwardly phrased with 'there is' preceding it, which does not fit logically.",
+                    "context": "In my instruction, I wanted to clarify that I'm not asking you to change everything; rather, let's focus on specific areas to improve."
+                },
+                {
+                    "original": "what kind of things could they have Invented I Mean the payment system let you look.",
+                    "corrected": "what kind of things could they have invented? I mean, the payment system lets you look.",
+                    "explanation": "The original sentence lacks punctuation, leading to confusion, and 'let' should be 'lets' for correct verb form.",
+                    "context": "While brainstorming innovations, I considered what kind of things could they have invented? I mean, the payment system lets you look at new possibilities."
+                },
+                {
+                    "original": "just the first thing which came to my mind Like There is.",
+                    "corrected": "just the first thing that came to my mind.",
+                    "explanation": "'Which' should be 'that' for defining relative clauses, and 'Like There is' is unnecessary and awkward.",
+                    "context": "In explaining my thought process, I mentioned this was just the first thing that came to my mind as a potential example."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "students have a universal four-day work week?",
+                    "corrected": "students have a universal four-day workweek?",
+                    "explanation": "The term 'work week' should be written as 'workweek' when used together as a single concept.",
+                    "context": "I said that the concept of a universal four-day workweek is interesting. But students have a universal four-day workweek, which makes me wonder what that means."
+                },
+                {
+                    "original": "First of all, what do you mean students have a universal four-day work week?",
+                    "corrected": "First of all, what do you mean by students having a universal four-day workweek?",
+                    "explanation": "The phrase is missing 'by,' which is necessary to clarify the meaning of the students' situation regarding the workweek.",
+                    "context": "I was questioning a point about students having a four-day workweek. First of all, what do you mean by students having a universal four-day workweek? It seems vague."
+                },
+                {
+                    "original": "students who are studying students who have universal four-week",
+                    "corrected": "students who are studying and students who have a universal four-day workweek",
+                    "explanation": "The sentence needed clearer conjunctions for structure and correctness, and 'four-week' should be 'four-day workweek.'",
+                    "context": "I was trying to clarify the subject. I was thinking about students who are studying and students who have a universal four-day workweek. There’s a difference in understanding here."
+                },
+                {
+                    "original": "they had four days a week so they had some time to launch their businesses",
+                    "corrected": "they had four days a week, so they had some time to launch their businesses.",
+                    "explanation": "The sentence is missing a comma before 'so' to properly separate the clauses.",
+                    "context": "I was explaining a scenario concerning students. They had four days a week, so they had some time to launch their businesses and gain experience."
+                },
+                {
+                    "original": "and as a consequence gain something from that Money",
+                    "corrected": "and as a consequence gain something from that: money.",
+                    "explanation": "Capitalizing 'Money' is incorrect; it should be lowercase. Additionally, a colon is needed before 'money' to clarify it as an example.",
+                    "context": "I was discussing the benefits of working less. And as a consequence gain something from that: money, which could be a significant factor."
+                },
+                {
+                    "original": "the time which can Sacrifice to his work will be much less",
+                    "corrected": "the time which he can sacrifice to his work will be much less.",
+                    "explanation": "The phrase 'which can Sacrifice' is incorrect; it should be 'which he can sacrifice.' Also, 'sacrifice' does not need to be capitalized.",
+                    "context": "I was talking about how work commitments affect personal opportunities. The time which he can sacrifice to his work will be much less if he works more days."
+                },
+                {
+                    "original": "What is the most important part?",
+                    "corrected": "What is the most important part?",
+                    "explanation": "Repetition of the phrase 'What is the most important part?' does not need correction but shows the need for structure. The earlier context should have linked back to this question.",
+                    "context": "I wanted to focus on a central idea. So, what is the most important part of our discussion? We need clarity on this."
+                },
+                {
+                    "original": "Like what Like money Money, yeah",
+                    "corrected": "Like what? Like money?",
+                    "explanation": "The sentence lacks proper punctuation to convey questions clearly. It also has an unnecessary repetition of 'Money.'",
+                    "context": "I was trying to explore the outcomes of different work scenarios. Like what? Like money? That’s part of the discussion."
+                },
+                {
+                    "original": "because during the starting years they Tried to Try to do their own business",
+                    "corrected": "because during the starting years they tried to do their own business.",
+                    "explanation": "The word 'Tried' should be in lowercase, and 'Try to' is a repetition that should be removed.",
+                    "context": "I reflected on how students approach entrepreneurship. Because during the starting years, they tried to do their own business, facing many challenges."
+                },
+                {
+                    "original": "hobbies might not necessarily Uh earn money.",
+                    "corrected": "hobbies might not necessarily earn money.",
+                    "explanation": "The 'Uh' is an unnecessary filler that disrupts the flow of the sentence.",
+                    "context": "I was debating the impact of hobbies. Hobbies might not necessarily earn money, but they could enhance quality of life."
+                },
+                {
+                    "original": "much more much better than Than people who work in other companies",
+                    "corrected": "much better than people who work in other companies.",
+                    "explanation": "The phrase contains redundancy with 'much more' and 'much better' and the second 'Than' should be lowercase.",
+                    "context": "I made a comparison about company cultures. Netflix employees are much better than people who work in other companies in terms of job satisfaction."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "But not here here.",
+                    "corrected": "But not here.",
+                    "explanation": "The repetition of 'here' is unnecessary and creates redundancy.",
+                    "context": "We are discussing various examples related to happiness. But not here. We need to focus on ideas that are relevant to the topic."
+                },
+                {
+                    "original": "Where was introduced in some For the work week in sweden or in germany.",
+                    "corrected": "Where it was introduced for the work week in Sweden or Germany.",
+                    "explanation": "The phrase is missing the subject 'it' and has improper capitalization and word order.",
+                    "context": "I’m trying to recall where the four-day work week was implemented. Where it was introduced for the work week in Sweden or Germany, I don't remember exactly."
+                },
+                {
+                    "original": "Honestly, I really don't like examples like that Because they are very generic they can be.",
+                    "corrected": "Honestly, I really don't like examples like that because they are very generic.",
+                    "explanation": "The sentence is awkwardly structured and needs punctuation adjustments for clarity.",
+                    "context": "While discussing the examples provided, I emphasize my dislike for generic examples. Honestly, I really don't like examples like that because they are very generic."
+                },
+                {
+                    "original": "Uh very experimental because like you will not receive something like that on the real test.",
+                    "corrected": "It's very experimental because you will not receive something like that on the real test.",
+                    "explanation": "The sentence lacks a subject and the use of 'like' is informal. A clearer structure would improve it.",
+                    "context": "When talking about the nature of the topic, I stress its experimental aspect. It's very experimental because you will not receive something like that on the real test."
+                },
+                {
+                    "original": "I want you at home To write a full essay based on this plan.",
+                    "corrected": "I want you to write a full essay at home based on this plan.",
+                    "explanation": "The placement of 'at home' is awkward, and 'To' should not be capitalized.",
+                    "context": "I am assigning a task for the students. I want you to write a full essay at home based on this plan."
+                },
+                {
+                    "original": "Yeah, there are there are some things to Improve definitely.",
+                    "corrected": "Yeah, there are definitely some things to improve.",
+                    "explanation": "The phrase 'there are there are' is repetitive and 'Improve' should be lowercase.",
+                    "context": "After reviewing the essays, I provide feedback. Yeah, there are definitely some things to improve."
+                },
+                {
+                    "original": "Uh do it again Uh by the next lesson and or in the next lesson we will again review it.",
+                    "corrected": "Do it again by the next lesson, and in the next lesson, we will review it again.",
+                    "explanation": "The sentence structure is awkward and lacks clarity with excessive filler words.",
+                    "context": "I'm asking the students to make necessary revisions. Do it again by the next lesson, and in the next lesson, we will review it again."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude or way of considering something.",
+                    "context": {
+                        "Context 1": "After studying at GIMO for a while, her perspective on the university changed significantly.",
+                        "Context 2": "From my perspective, pizza is the best food in the world.",
+                        "Context 3": "The artist's unique perspective influenced the way he painted landscapes."
+                    }
+                },
+                {
+                    "word": "Appealing",
+                    "definition": "Attractive or interesting.",
+                    "context": {
+                        "Context 1": "The new dormitories in Novosibirsk are appealing to many students.",
+                        "Context 2": "The vacation package looked appealing, with all-inclusive meals and activities.",
+                        "Context 3": "His sense of humor is appealing to everyone at the office."
+                    }
+                },
+                {
+                    "word": "Insight",
+                    "definition": "The capacity to gain an accurate understanding of someone or something.",
+                    "context": {
+                        "Context 1": "Her insight into the university's issues helped her friends make better choices.",
+                        "Context 2": "Gaining insight into market trends can help businesses thrive.",
+                        "Context 3": "The psychologist offered valuable insight into the child's behavior."
+                    }
+                },
+                {
+                    "word": "Renovated",
+                    "definition": "Restored to a good state of repair.",
+                    "context": {
+                        "Context 1": "The new building at GIMO was recently renovated and looks fantastic.",
+                        "Context 2": "The renovated park has attracted many visitors this summer.",
+                        "Context 3": "She plans to move into a renovated apartment downtown."
+                    }
+                },
+                {
+                    "word": "Credential",
+                    "definition": "A qualification or achievement used to indicate suitability for something.",
+                    "context": {
+                        "Context 1": "Her excellent academic credentials helped her get into a top university.",
+                        "Context 2": "He was proud of his military credentials after serving two tours.",
+                        "Context 3": "In the baking competition, both chefs showed off their impressive credentials."
+                    }
+                },
+                {
+                    "word": "Struggling",
+                    "definition": "Having difficulty to achieve something.",
+                    "context": {
+                        "Context 1": "Students might be struggling to adapt to the challenging new curriculum.",
+                        "Context 2": "The team is struggling to find a common strategy for the game.",
+                        "Context 3": "Despite struggling academically, she never gave up on her dreams."
+                    }
+                },
+                {
+                    "word": "Authority",
+                    "definition": "The power or right to give orders, make decisions, and enforce obedience.",
+                    "context": {
+                        "Context 1": "In the lesson, the teacher mentioned using authoritative sources to support arguments.",
+                        "Context 2": "The doctor is considered an authority on nutrition.",
+                        "Context 3": "As an authority on fashion, she was invited to speak at the conference."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern used to illustrate a concept.",
+                    "context": {
+                        "Context 1": "When writing essays, providing a clear example is crucial for the argument.",
+                        "Context 2": "He used an example from his childhood to explain his point.",
+                        "Context 3": "A good example of teamwork can be seen in how the relay team trains together."
+                    }
+                },
+                {
+                    "word": "Convincing",
+                    "definition": "Capable of causing someone to believe that something is true.",
+                    "context": {
+                        "Context 1": "The student needed a more convincing example to support their claim about productivity.",
+                        "Context 2": "His argument was so convincing that everyone agreed with him.",
+                        "Context 3": "The magician's convincing tricks made the audience applaud in amazement."
+                    }
+                },
+                {
+                    "word": "Underwhelming",
+                    "definition": "Failing to impress or make a strong impact.",
+                    "context": {
+                        "Context 1": "Despite the hype, the new campus building was somewhat underwhelming.",
+                        "Context 2": "The film received underwhelming reviews from critics.",
+                        "Context 3": "Her performance was good, but the judges found it underwhelming compared to others."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Perspective",
+                    "fact": "The view of things can change dramatically; ask anyone who thought an all-you-can-eat buffet was a good idea until they were full!"
+                },
+                {
+                    "word": "Appealing",
+                    "fact": "Did you know that the word 'love' is more appealing when accompanied by pizza?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why was the math book sad?",
+                    "answer": "It had too many problems!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Productivity",
+                    "definition": "The state or quality of producing something, especially in relation to efficiency.",
+                    "context": {
+                        "Context 1": "The new policies aimed at increasing productivity in the workplace.",
+                        "Context 2": "A factory's productivity can be measured by the number of items produced in an hour.",
+                        "Context 3": "Gardening can improve productivity by providing a relaxing and rewarding hobby."
+                    }
+                },
+                {
+                    "word": "Recharge",
+                    "definition": "To restore energy or vitality, especially through rest or relaxation.",
+                    "context": {
+                        "Context 1": "Taking a vacation helps employees to recharge and return to work with renewed focus.",
+                        "Context 2": "He decided to recharge by taking a long weekend at the beach.",
+                        "Context 3": "Cats often recharge their energy by sleeping up to 16 hours a day!"
+                    }
+                },
+                {
+                    "word": "Counterintuitive",
+                    "definition": "Contrary to what one would intuitively expect; surprising.",
+                    "context": {
+                        "Context 1": "It may seem counterintuitive, but working fewer days can actually boost productivity.",
+                        "Context 2": "For some, the counterintuitive response to stress is to laugh it off.",
+                        "Context 3": "Eating dessert before dinner can feel counterintuitive, yet some chefs recommend it!"
+                    }
+                },
+                {
+                    "word": "Pitching (an idea)",
+                    "definition": "Presenting an idea to others, typically in a persuasive manner.",
+                    "context": {
+                        "Context 1": "He practiced his pitching skills to convince the board about the new work schedule.",
+                        "Context 2": "She found pitching her book idea to publishers exhilarating.",
+                        "Context 3": "Before the talent show, the student was pitching their dance routine to friends."
+                    }
+                },
+                {
+                    "word": "Innovation",
+                    "definition": "The introduction of new ideas, products, or methods.",
+                    "context": {
+                        "Context 1": "The bank focused on innovation to attract new customers.",
+                        "Context 2": "Innovation in technology is necessary for staying ahead in the market.",
+                        "Context 3": "His innovation with a new recipe for tacos won the cooking contest."
+                    }
+                },
+                {
+                    "word": "Objective",
+                    "definition": "Based on facts rather than feelings or opinions; unbiased.",
+                    "context": {
+                        "Context 1": "To assess productivity, we need to use objective measurements.",
+                        "Context 2": "The research team sought to maintain an objective stance during their study.",
+                        "Context 3": "In a video game, the objective is to save the princess from the dragon."
+                    }
+                },
+                {
+                    "word": "Convincing",
+                    "definition": "Capable of causing someone to believe that something is true.",
+                    "context": {
+                        "Context 1": "She found his arguments very convincing regarding the new work schedule.",
+                        "Context 2": "The movie's plot twist was so convincing that some viewers were left speechless.",
+                        "Context 3": "His convincing performance in the school play earned him the lead role next year."
+                    }
+                },
+                {
+                    "word": "Measure",
+                    "definition": "To ascertain the size, amount, or degree of something using a standard unit.",
+                    "context": {
+                        "Context 1": "We need to measure productivity using clear criteria.",
+                        "Context 2": "She used a ruler to measure the fabric for her dress.",
+                        "Context 3": "In a science experiment, students must measure the temperature accurately."
+                    }
+                },
+                {
+                    "word": "Engage",
+                    "definition": "To participate or become involved in an activity.",
+                    "context": {
+                        "Context 1": "When employees engage in their work, they tend to be more productive.",
+                        "Context 2": "The teacher encouraged students to engage with the material through discussions.",
+                        "Context 3": "The dog loves to engage with anyone who visits the park."
+                    }
+                },
+                {
+                    "word": "Enhance",
+                    "definition": "To improve the quality or value of something.",
+                    "context": {
+                        "Context 1": "The new schedule is designed to enhance employee productivity.",
+                        "Context 2": "Special effects can really enhance a movie's impact on viewers.",
+                        "Context 3": "She took a course to enhance her skills in graphic design."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Productivity",
+                    "fact": "Studies show that taking short breaks can actually DOUBLE your productivity! So, go grab a snack!"
+                },
+                {
+                    "word": "Recharge",
+                    "fact": "It’s suggested that naps can recharge your brain—much like plugging in your phone at the end of the day!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the employee bring a ladder to work?",
+                    "answer": "Because they heard the job had good perks!"
+                },
+                {
+                    "question": "Why don’t programmers like nature?",
+                    "answer": "Because it has too many bugs!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Vague",
+                    "definition": "Not clear in meaning; lacking specificity.",
+                    "context": {
+                        "Context 1": "The student's essay was too vague and didn’t cover the topic in detail.",
+                        "Context 2": "My friend's explanation of the movie was vague, leaving me confused about the plot.",
+                        "Context 3": "The vague instructions led to misunderstandings during the project."
+                    }
+                },
+                {
+                    "word": "Productivity",
+                    "definition": "The effectiveness of productive effort, especially in industry, as measured in terms of the rate of output per unit of input.",
+                    "context": {
+                        "Context 1": "Implementing a four-day work week can boost productivity among employees.",
+                        "Context 2": "At the bakery, productivity increased after they bought a new oven.",
+                        "Context 3": "In the classroom, productivity can be measured by how much students learn in a given time."
+                    }
+                },
+                {
+                    "word": "Specificity",
+                    "definition": "The quality of being specific or having a precise meaning.",
+                    "context": {
+                        "Context 1": "Using topic-specific vocabulary adds specificity to your writing.",
+                        "Context 2": "The specificity of her recipe helped me bake the cake perfectly.",
+                        "Context 3": "In scientific research, specificity helps to accurately convey findings."
+                    }
+                },
+                {
+                    "word": "Opportunity",
+                    "definition": "A set of circumstances that makes it possible to do something.",
+                    "context": {
+                        "Context 1": "A four-day work week provides employees the opportunity to pursue hobbies.",
+                        "Context 2": "My mentor offered me the opportunity to work on an exciting project.",
+                        "Context 3": "Finding a good opportunity can sometimes feel like winning the lottery."
+                    }
+                },
+                {
+                    "word": "Self-development",
+                    "definition": "The process of improving oneself through such activities as enhancing employment skills, increasing awareness, or building wealth.",
+                    "context": {
+                        "Context 1": "Working less can give people more time for self-development and personal growth.",
+                        "Context 2": "She invests in books and courses for her self-development journey.",
+                        "Context 3": "His self-development plan included learning a new language."
+                    }
+                },
+                {
+                    "word": "Hobbies",
+                    "definition": "Activities done for pleasure or relaxation during free time.",
+                    "context": {
+                        "Context 1": "People who dedicate time to their hobbies often report higher happiness levels.",
+                        "Context 2": "His hobbies include pottery and hiking in the mountains.",
+                        "Context 3": "Many famous scientists had unique hobbies outside of their work."
+                    }
+                },
+                {
+                    "word": "Essence",
+                    "definition": "The intrinsic nature or indispensable quality of something, especially something abstract, that determines its character.",
+                    "context": {
+                        "Context 1": "Understanding the essence of an argument is crucial for effective writing.",
+                        "Context 2": "The essence of summer is captured in long, sunny days and warm nights.",
+                        "Context 3": "In cooking, capturing the essence of the ingredients can make a dish exceptional."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern used for illustration or explanation.",
+                    "context": {
+                        "Context 1": "The teacher asked for a better example to illustrate his point in the essay.",
+                        "Context 2": "As an example of generosity, she volunteered her time at the local shelter.",
+                        "Context 3": "In math class, the teacher solved a complex problem as an example for students."
+                    }
+                },
+                {
+                    "word": "Graduate",
+                    "definition": "A person who has successfully completed a course of study or training.",
+                    "context": {
+                        "Context 1": "Many graduates leave university with valuable skills for the job market.",
+                        "Context 2": "As a graduate of the program, he felt prepared to face the challenges ahead.",
+                        "Context 3": "She was excited to attend her friend’s graduation ceremony."
+                    }
+                },
+                {
+                    "word": "Limitless",
+                    "definition": "Without limits; unrestricted or infinite.",
+                    "context": {
+                        "Context 1": "The idea of a limitless vacation policy inspired many employees to work harder.",
+                        "Context 2": "The limitless sky above made them feel free and adventurous.",
+                        "Context 3": "He believed that their potential was limitless and achievable."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Hobbies",
+                    "fact": "Did you know that people around the world have unique hobbies like extreme ironing or snail racing?"
+                },
+                {
+                    "word": "Graduate",
+                    "fact": "College graduates are sometimes jokingly referred to as 'broke for life'—even with their degrees!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the teacher wear sunglasses to class?",
+                    "answer": "Because her students were so bright!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "example",
+                    "definition": "A specific case or instance used to explain or support a point.",
+                    "context": {
+                        "Context 1": "That Netflix example would be useful, but here we should choose an example that directly relates to happiness.",
+                        "Context 2": "The teacher used a math example to show how to solve quadratic equations.",
+                        "Context 3": "For example, if we take the bus instead of the car, we will save money."
+                    }
+                },
+                {
+                    "word": "reference",
+                    "definition": "To mention or allude to something as a source, support, or point of comparison.",
+                    "context": {
+                        "Context 1": "I would reference mental health first, then present the example and leave the detailed explanation for later.",
+                        "Context 2": "Please include a reference list at the end of your report showing your sources.",
+                        "Context 3": "He casually referenced a movie during the conversation to make his point."
+                    }
+                },
+                {
+                    "word": "happiness",
+                    "definition": "A state of well-being and contentment; feeling pleasure or satisfaction.",
+                    "context": {
+                        "Context 1": "In this lesson we are trying to talk about happiness and how different work arrangements affect it.",
+                        "Context 2": "Spending time with friends brought her great happiness after a stressful week.",
+                        "Context 3": "Countries sometimes measure happiness to compare citizens' quality of life."
+                    }
+                },
+                {
+                    "word": "mental health",
+                    "definition": "The state of a person's psychological and emotional well-being, including how they think, feel, and cope with life.",
+                    "context": {
+                        "Context 1": "I would reference mental health when discussing how work schedules impact people's well-being.",
+                        "Context 2": "After the accident, he prioritized his mental health and started seeing a counselor.",
+                        "Context 3": "Companies are adding resources to support employees' mental health."
+                    }
+                },
+                {
+                    "word": "productivity",
+                    "definition": "The rate at which work is completed or outputs are produced; efficiency in producing desired results.",
+                    "context": {
+                        "Context 1": "Some companies found that offering unlimited vacation actually improved productivity by reducing burnout.",
+                        "Context 2": "Upgrading the factory equipment raised productivity by 15% last quarter.",
+                        "Context 3": "A good night's sleep can boost your personal productivity the next day."
+                    }
+                },
+                {
+                    "word": "quality of life",
+                    "definition": "The general well-being of individuals or groups, including health, comfort, and happiness.",
+                    "context": {
+                        "Context 1": "A shorter work week can improve quality of life and, in some trials, has also increased productivity.",
+                        "Context 2": "Access to parks and public transport can significantly raise a city's quality of life.",
+                        "Context 3": "Retirees often focus on activities that maintain their quality of life."
+                    }
+                },
+                {
+                    "word": "four-day work week",
+                    "definition": "A work schedule where employees work four days instead of the traditional five, often with the same pay or adjusted hours.",
+                    "context": {
+                        "Context 1": "They introduced a four-day work week in some places in Europe as an experimental trial to study its effects.",
+                        "Context 2": "Several tech startups piloted a four-day work week to attract talent and reduce burnout.",
+                        "Context 3": "A four-day work week may be harder to implement in emergency services that require 24/7 coverage."
+                    }
+                },
+                {
+                    "word": "experimental",
+                    "definition": "Relating to tests or trials; not yet proven or established; exploratory.",
+                    "context": {
+                        "Context 1": "The four-day work week trial was experimental, so researchers carefully measured results before drawing conclusions.",
+                        "Context 2": "The chef tried an experimental dessert that mixed chocolate with chili and basil.",
+                        "Context 3": "Scientists designed an experimental treatment to test its safety before wide use."
+                    }
+                },
+                {
+                    "word": "generic",
+                    "definition": "General and not specific; lacking distinctive or unique features.",
+                    "context": {
+                        "Context 1": "I don't like that example because it's too generic — it could apply to almost any situation.",
+                        "Context 2": "The store's generic cereal had a simple box but tasted almost the same as the brand name.",
+                        "Context 3": "His apology sounded generic, so she wasn't sure he was sincere."
+                    }
+                },
+                {
+                    "word": "survey",
+                    "definition": "A method of collecting information by asking people questions, often used to gather opinions, facts, or data from a group.",
+                    "context": {
+                        "Context 1": "A survey revealed that the four-day work week improved happiness for many participants in the trial.",
+                        "Context 2": "The city sent out a survey to ask residents about public transportation improvements.",
+                        "Context 3": "Customer surveys help companies learn which products people like most."
+                    }
+                },
+                {
+                    "word": "AI",
+                    "definition": "Artificial Intelligence — computer systems or programs that can perform tasks that typically require human intelligence, such as learning, reasoning, and pattern recognition.",
+                    "context": {
+                        "Context 1": "Unlike the relatively niche topic of a four-day work week, AI is everywhere now and is a common exam topic.",
+                        "Context 2": "AI recommends movies and shows on streaming platforms based on what you watch.",
+                        "Context 3": "Doctors use AI to help read medical scans and spot unusual patterns."
+                    }
+                },
+                {
+                    "word": "essay",
+                    "definition": "A short piece of writing on a particular subject that usually presents the author's argument or viewpoint; typically structured with an introduction, body paragraphs, and a conclusion.",
+                    "context": {
+                        "Context 1": "Write a full essay at home using an introduction, clear body paragraphs, and a conclusion based on the plan discussed in class.",
+                        "Context 2": "She wrote an essay about the importance of protecting the environment for her English class.",
+                        "Context 3": "A persuasive essay must include reasons and evidence to convince the reader."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "AI",
+                    "fact": "The term 'artificial intelligence' was coined in 1956 at the Dartmouth conference. Early AI work included programs that played checkers — cute compared to today's giant neural nets!"
+                },
+                {
+                    "word": "essay",
+                    "fact": "The word 'essay' comes from the French verb 'essayer,' which means 'to try.' Michel de Montaigne in the 16th century popularized the form by writing personal 'tries' on many topics."
+                },
+                {
+                    "word": "survey",
+                    "fact": "Surveys are very sensitive to wording: a single leading question can flip results. This is why pollsters spend ages testing question versions before asking people anything important."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring Netflix to the essay class?",
+                    "answer": "They wanted a streaming introduction and hoped the conclusion would be a cliffhanger."
+                },
+                {
+                    "question": "Why don't essays work a four-day week?",
+                    "answer": "Because they always need time to develop — introductions, bodies, conclusions... they'd still be writing on Friday!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going? Have you decided on your plans for the weekend?"
+                },
+                {
+                    "Person 2": "Hey! Not much, just relaxing. I’m thinking about going hiking if the weather is nice. How about you?"
+                },
+                {
+                    "Person 1": "That sounds great! I might just binge-watch a new series. I really need to catch up on some shows."
+                },
+                {
+                    "Person 2": "Which series? I need some recommendations for my next binge."
+                },
+                {
+                    "Person 1": "I just started this one called 'The Last of Us.' It's really intense but so good!"
+                },
+                {
+                    "Person 2": "I've heard good things about that one! Plus, I love a good post-apocalyptic story."
+                },
+                {
+                    "Person 1": "Yeah, the characters are well-developed, and the storyline keeps you on the edge of your seat."
+                },
+                {
+                    "Person 2": "Sounds like I need to add it to my watchlist. What’s one episode like?"
+                },
+                {
+                    "Person 1": "Each episode is like a mini-movie! You really get invested in the characters."
+                },
+                {
+                    "Person 2": "Nice! I think I’ll start it tonight. Got any snacks ready for your binge?"
+                },
+                {
+                    "Person 1": "Definitely! I’ve got popcorn and some nachos. Can’t watch without snacks, right?"
+                },
+                {
+                    "Person 2": "Exactly! Snack game on point. Let me know how far you get by Sunday!"
+                },
+                {
+                    "Person 1": "Will do! And if you end up watching 'The Last of Us,' let’s discuss it afterward!"
+                },
+                {
+                    "Person 2": "For sure! Enjoy your weekend, whatever you choose to do!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you thought about how a four-day workweek might change things up at work?"
+                },
+                {
+                    "Person 2": "Yeah, I heard some companies are trying it out. It sounds interesting! Less work could mean more efficiency."
+                },
+                {
+                    "Person 1": "Right? Imagine how much more relaxed people would be if they had an extra day off. They’d probably be more focused when they are at work."
+                },
+                {
+                    "Person 2": "Exactly! Less burnout can lead to more creativity. Do you think it would really work?"
+                },
+                {
+                    "Person 1": "I think so! If people aren’t exhausted, they can actually get more done in their time at the office."
+                },
+                {
+                    "Person 2": "How would you measure that, though? I mean, it’s not just about time but also the quality of work, right?"
+                },
+                {
+                    "Person 1": "Good point! Maybe companies could track how much gets completed in a week. If the output stays the same or improves, that’s a win."
+                },
+                {
+                    "Person 2": "That makes sense! Plus, happier employees could mean better teamwork. Imagine how good the atmosphere would be!"
+                },
+                {
+                    "Person 1": "Totally! People would probably look forward to going to work instead of dreading it."
+                },
+                {
+                    "Person 2": "And if a big company like Google can try it, why not others? They often set trends!"
+                },
+                {
+                    "Person 1": "For sure! We should pitch this to our boss. Imagine having Fridays off!"
+                },
+                {
+                    "Person 2": "Haha, I’m all in! But let’s gather some solid research first to prove our point."
+                },
+                {
+                    "Person 1": "Good idea! We can show how other companies benefitted. It's about time we get with the times!"
+                },
+                {
+                    "Person 2": "Absolutely! Who wouldn’t want a three-day weekend? Let’s do some digging!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about the new coffee shop that opened up downtown?"
+                },
+                {
+                    "Person 2": "Yeah! I passed by it the other day. Have you tried it yet?"
+                },
+                {
+                    "Person 1": "I went there yesterday. Their espresso is amazing!"
+                },
+                {
+                    "Person 2": "Nice! What's the vibe like? Is it a good place to hang out?"
+                },
+                {
+                    "Person 1": "Definitely! It’s cozy with comfy chairs. I think I might go there every weekend."
+                },
+                {
+                    "Person 2": "Awesome! Do they have any special drinks or just the usual stuff?"
+                },
+                {
+                    "Person 1": "They have some unique flavors, like lavender latte and spicy mocha. I had the lavender one—it was surprisingly good!"
+                },
+                {
+                    "Person 2": "Wow, that sounds interesting! I would have never thought to mix lavender with coffee."
+                },
+                {
+                    "Person 1": "Right? I was skeptical at first too, but I loved it. You should definitely give it a shot!"
+                },
+                {
+                    "Person 2": "I’m sold! Maybe we can check it out together this weekend?"
+                },
+                {
+                    "Person 1": "Yes! Let’s make a plan. I can’t wait to go back."
+                },
+                {
+                    "Person 2": "Perfect! It’ll be fun to catch up over some fancy coffee."
+                },
+                {
+                    "Person 1": "For sure! I’m looking forward to it."
+                },
+                {
+                    "Person 2": "Same here! It’s always nice to discover new places together."
+                },
+                {
+                    "Person 1": "Absolutely! And who knows, maybe we'll find a favorite new drink."
+                },
+                {
+                    "Person 2": "That’s the spirit! See you this weekend!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that new series on Netflix?"
+                },
+                {
+                    "Person 2": "Oh, you mean the one with the crazy plot twists? Yeah, I started it last night!"
+                },
+                {
+                    "Person 1": "Right? I was hooked by the first episode. It's like they really know how to keep us interested."
+                },
+                {
+                    "Person 2": "Totally! I read somewhere that they actually analyze viewer habits to make sure they keep us binge-watching."
+                },
+                {
+                    "Person 1": "That makes sense. Sometimes I feel like I'm glued to the couch because of it."
+                },
+                {
+                    "Person 2": "Same here! But you know, I've been trying to balance my screen time better."
+                },
+                {
+                    "Person 1": "Oh, that's smart! How are you doing that?"
+                },
+                {
+                    "Person 2": "Well, I started setting limits for myself—like no TV before bed. It really helps with my sleep."
+                },
+                {
+                    "Person 1": "That’s a good idea. I should probably do that too… though I always end up watching 'just one more episode.'"
+                },
+                {
+                    "Person 2": "I get that! It's like a trap. What about reading more instead?"
+                },
+                {
+                    "Person 1": "Yeah, I used to love reading! I think I will try to pick up a book again."
+                },
+                {
+                    "Person 2": "Nice! I have a few recommendations if you want. Let me know!"
+                },
+                {
+                    "Person 1": "Definitely! Thanks! And let’s see how long we can keep this no-screen-before-bed thing going."
+                },
+                {
+                    "Person 2": "For sure! We can check in on each other next week."
+                },
+                {
+                    "Person 1": "Sounds like a plan! Have a good day!"
+                },
+                {
+                    "Person 2": "You too! Talk later!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
