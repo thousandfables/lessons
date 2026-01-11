@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 7,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Isn't there like, you know, haven't you already seen all the museums Irkutsk has to offer?",
+                    "corrected": "Haven't you already seen all the museums that Irkutsk has to offer?",
+                    "explanation": "The phrase 'Isn't there like' is redundant here; the focus should be directly on the question about the museums.",
+                    "context": "I was curious about whether my friend had explored all the museums in Irkutsk. Haven't you already seen all the museums that Irkutsk has to offer? I think you’ve visited them all."
+                },
+                {
+                    "original": "So we will go.",
+                    "corrected": "So we are going.",
+                    "explanation": "The phrase 'will go' is future tense, while 'are going' suggests an immediate plan.",
+                    "context": "I am really excited about the plans for today. So we are going to the museum shortly. I can't wait to see the exhibition."
+                },
+                {
+                    "original": "but the minute we went for a walk, like very spontaneously and just stumbled upon a very like interesting cathedral.",
+                    "corrected": "but the minute we went for a walk very spontaneously and just stumbled upon a very interesting cathedral.",
+                    "explanation": "The phrase 'like' is unnecessary and informal here; it detracts from the clarity of the statement.",
+                    "context": "I remember that trip vividly. We had no real plans, but the minute we went for a walk very spontaneously, we stumbled upon a very interesting cathedral. It was quite unexpected."
+                },
+                {
+                    "original": "But sometimes it's not bad to plan something just because like I think I told you that I went, I go to St. I go to St. Peter's every year.",
+                    "corrected": "But sometimes it's not bad to plan something. I think I told you that I go to St. Petersburg every year.",
+                    "explanation": "The phrase 'just because like' is not needed and makes the sentence convoluted; the name 'St. Peter's' isn’t used correctly when referring to the city.",
+                    "context": "I believe planning has its benefits. Sometimes it's not bad to plan something. I think I told you that I go to St. Petersburg every year."
+                },
+                {
+                    "original": "And it was like we I can say that I was I got this I got enough like this cultural experience.",
+                    "corrected": "I can say that I got enough of this cultural experience.",
+                    "explanation": "'Like' is informal and not appropriate in this context; the phrase 'I was I got' is also awkward and unclear.",
+                    "context": "When I reflect on past trips, I can say that I got enough of this cultural experience. I learned a lot about the local culture."
+                },
+                {
+                    "original": "and yeah, so now I think that if you go on a trip, it's better to have a plan.",
+                    "corrected": "So now I think that if you go on a trip, it's better to have a plan.",
+                    "explanation": "The use of 'and yeah' is informal and can be replaced with 'so' to connect ideas more clearly.",
+                    "context": "After all my experiences, I have learned a lot. So now I think that if you go on a trip, it's better to have a plan."
+                },
+                {
+                    "original": "But it was it was weird the person who had to tell us about the city.",
+                    "corrected": "But it was weird; the person who was supposed to tell us about the city.",
+                    "explanation": "The sentence is awkward; a semicolon is needed to separate the two independent clauses for clarity.",
+                    "context": "During my last trip, there were a few challenges. But it was weird; the person who was supposed to tell us about the city didn't provide helpful information."
+                },
+                {
+                    "original": "It is OK for everyday speech, but it's a it's a very bad Russian for the tour guide.",
+                    "corrected": "It's okay for everyday speech, but it's very bad Russian for a tour guide.",
+                    "explanation": "The phrase 'it's a' before 'very bad' is unnecessary and makes the sentence awkward.",
+                    "context": "I had some issues during the tour. It's okay for everyday speech, but it's very bad Russian for a tour guide."
+                },
+                {
+                    "original": "I don't know almost anything about it.",
+                    "corrected": "I don't know much about it.",
+                    "explanation": "'Almost anything' is too vague; 'much' conveys the idea more clearly.",
+                    "context": "I found the situation challenging. I don't know much about it, even though I was in Beijing."
+                },
+                {
+                    "original": "I was I looked at people a lot and tried to see the like details of their life, usual life like this.",
+                    "corrected": "I looked at people a lot and tried to see the details of their usual life.",
+                    "explanation": "Repetition and filler words like 'I was' and 'like this' make the sentence unclear.",
+                    "context": "During my time exploring, I was observant. I looked at people a lot and tried to see the details of their usual life."
+                },
+                {
+                    "original": "to learn more about like the modern life, the way people live now or the way people lived like in the past?",
+                    "corrected": "to learn more about modern life, the way people live now, or the way people lived in the past?",
+                    "explanation": "The phrase 'like' is unnecessary and informal; it disrupts the flow of the question.",
+                    "context": "While discussing culture, I considered what aspects matter most. I asked a question about learning more about modern life, the way people live now, or the way people lived in the past."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "When something dates back 100 years ago, when something is like 1000 years old, people are impressed.",
+                    "corrected": "When something dates back 100 years, when something is like 1000 years old, people are impressed.",
+                    "explanation": "The phrase '100 years ago' is incorrect here; it should simply state '100 years' to mean the age of the item.",
+                    "context": "I feel that when something is very old, it impresses people. When something dates back 100 years, when something is like 1000 years old, people are impressed. People get excited by the age of historical artifacts."
+                },
+                {
+                    "original": "we visited lots of very old places and like castles, also this cathedrals.",
+                    "corrected": "we visited lots of very old places, like castles and cathedrals.",
+                    "explanation": "The phrase 'this cathedrals' is incorrect; it should not have 'this' and 'cathedrals' should be plural without 'this.'",
+                    "context": "We explored many historical sites during our trip. We visited lots of very old places, like castles and cathedrals. My dad especially enjoyed these experiences."
+                },
+                {
+                    "original": "But in the art museums, she can spend also for six hours, I don't know.",
+                    "corrected": "But in the art museums, she can also spend six hours, I don't know.",
+                    "explanation": "The correct word order is 'she can also spend' instead of 'she can spend also,' which sounds awkward.",
+                    "context": "While my dad loves history, my mom is passionate about art. In the art museums, she can also spend six hours, I don't know, but she finds it fulfilling."
+                },
+                {
+                    "original": "I can't spend very long time in the museum.",
+                    "corrected": "I can't spend a very long time in the museum.",
+                    "explanation": "The article 'a' is necessary before 'very long time' to make the sentence grammatically correct.",
+                    "context": "I'm still exploring my interests. I think I like both art and history. However, I can't spend a very long time in the museum because I get bored easily."
+                },
+                {
+                    "original": "If I had to choose, walking or seeing museum, I preferred first one.",
+                    "corrected": "If I had to choose between walking or seeing a museum, I would prefer the first one.",
+                    "explanation": "'Preferred first one' should be 'would prefer the first one,' and 'seeing museum' needs 'a' for correct noun usage. Also, 'between' clarifies the options.",
+                    "context": "I enjoy both activities, but if I had to choose between walking or seeing a museum, I would prefer the first one. Walking feels more enjoyable to me."
+                },
+                {
+                    "original": "people feel that like being cultured is a cool thing and visiting museums, visiting exhibitions is part of that thing.",
+                    "corrected": "people feel that being cultured is a cool thing and that visiting museums and exhibitions is part of that.",
+                    "explanation": "The sentence structure is awkward; 'that' after 'feel' helps clarify the connection, and 'visiting museums, visiting exhibitions' should be more concise.",
+                    "context": "I've noticed that many people associate culture with museum visits. People feel that being cultured is a cool thing and that visiting museums and exhibitions is part of that."
+                },
+                {
+                    "original": "I might enjoy a museum.",
+                    "corrected": "I might enjoy museums.",
+                    "explanation": "Using the plural 'museums' is necessary here, as it refers to the general concept rather than a specific one.",
+                    "context": "Though I don't like museums very much, I might enjoy museums under specific circumstances. However, my preferences tend to lean elsewhere."
+                },
+                {
+                    "original": "it can influence, affect on your, how you see the world, how this we can call it in English.",
+                    "corrected": "it can influence how you see the world, or as we can call it in English, your mindset.",
+                    "explanation": "The phrase 'affect on your' is incorrect; 'affect' should not have 'on,' and the structure is unclear.",
+                    "context": "Sometimes, I believe museums can have an impact on one's perspective. They can influence how you see the world or, as we can call it in English, your mindset."
+                },
+                {
+                    "original": "when you not suggest.",
+                    "corrected": "when you don't suggest.",
+                    "explanation": "The contraction 'don't' is needed to create the correct negative form of 'you do not.'",
+                    "context": "I wanted to express my thoughts clearly, but sometimes I find it difficult to find the right words. There are times when you don't suggest things."
+                },
+                {
+                    "original": "all the trips, they are divided into two parts.",
+                    "corrected": "I divide all my trips into two parts.",
+                    "explanation": "The structure is confusing; 'I divide' clarifies who is dividing the trips.",
+                    "context": "When planning my travels, I think about how to enjoy them best. I divide all my trips into two parts: relaxing and exploring."
+                },
+                {
+                    "original": "like this. Yes.",
+                    "corrected": "like this.",
+                    "explanation": "The extra 'Yes' is unnecessary and disrupts the flow of the thought.",
+                    "context": "I always have a certain way of approaching my travels. I prefer to travel like this."
+                },
+                {
+                    "original": "the program was so tense.",
+                    "corrected": "the itinerary was so hectic.",
+                    "explanation": "'Tense' is not the right word here; 'hectic' better describes a crowded and busy schedule.",
+                    "context": "Some travel experiences can be overwhelming. The itinerary was so hectic that I couldn't fully enjoy the sights."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "I try to post more pictures in Instagram.",
+                    "corrected": "I try to post more pictures on Instagram.",
+                    "explanation": "The correct preposition is 'on' when referring to online platforms.",
+                    "context": "I like taking pictures from my trip to Thailand. I try to post more pictures on Instagram. I got many new pictures."
+                },
+                {
+                    "original": "I think I’ll finish the first season.",
+                    "corrected": "I think I'll finish the first season.",
+                    "explanation": "The contraction 'I'll' is a more natural spoken form than 'I will' in this context.",
+                    "context": "I've watched only 6 episodes of Stranger Things. I think I'll finish the first season. But I've watched it in Russian."
+                },
+                {
+                    "original": "I thought that it would be not interesting for me.",
+                    "corrected": "I thought that it would not be interesting for me.",
+                    "explanation": "The correct order is 'would not' rather than 'would be not.'",
+                    "context": "I thought that it would not be interesting for me. I watched the first season many times. But I enjoyed it."
+                },
+                {
+                    "original": "Because I watched it in English.",
+                    "corrected": "Since I watched it in English.",
+                    "explanation": "'Since' is more appropriate here to indicate cause in a formal context.",
+                    "context": "Because I watched it in English, I remember new words, new phrases. I don’t know what will happen if I skip one part."
+                },
+                {
+                    "original": "Did you watch it?",
+                    "corrected": "Have you watched it?",
+                    "explanation": "Using the present perfect 'have you watched' is better suited for discussing past experiences relevant to the present.",
+                    "context": "I said I can almost understand everything without subtitles. Have you watched it? I've seen the first season, yeah."
+                },
+                {
+                    "original": "The sheriff... Chief? Chief?",
+                    "corrected": "The sheriff... Chief? Chief!",
+                    "explanation": "Using an exclamation mark instead of a question mark conveys the speaker's assertion or declaration rather than inquiry.",
+                    "context": "I don’t understand when the sheriff speaks. The sheriff! I don’t understand his language. It sounds very different."
+                },
+                {
+                    "original": "That's why I like when actors change their original accent.",
+                    "corrected": "That's why I like it when actors change their original accent.",
+                    "explanation": "The phrase needs 'it' for clarity in this context.",
+                    "context": "That's why I like it when actors change their original accent. Milly Bobby Brown changed her accent in Stranger Things. I didn't notice it at first."
+                },
+                {
+                    "original": "I'm not sure. For Americans, British...",
+                    "corrected": "I'm not sure. For Americans, when they watch British...",
+                    "explanation": "Adding 'when they watch' clarifies the context of the statement.",
+                    "context": "I'm not sure. For Americans, when they watch British shows, they often turn on subtitles. It's hard to understand sometimes."
+                },
+                {
+                    "original": "I want receipt pronunciation.",
+                    "corrected": "I want Received Pronunciation.",
+                    "explanation": "'Receipt pronunciation' is incorrect; it should be 'Received Pronunciation' which is a standard British English accent.",
+                    "context": "People for whom English is a second language are struggling. I want Received Pronunciation. It's a part of their learning."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "But I watched it like recently.",
+                    "corrected": "But I watched it recently.",
+                    "explanation": "The word 'like' is unnecessary and informal in this context; it should be omitted.",
+                    "context": "I tried to watch the series a long time ago, but I found it challenging. But I watched it recently, and I felt the same way; I couldn't understand a lot."
+                },
+                {
+                    "original": "I just can't understand Italian accent.",
+                    "corrected": "I just can't understand the Italian accent.",
+                    "explanation": "The article 'the' is needed before 'Italian accent' to specify which accent is being referred to.",
+                    "context": "While discussing various accents, I shared my struggle. I just can't understand the Italian accent; it's really difficult for me."
+                },
+                {
+                    "original": "I really ask like her.",
+                    "corrected": "I really ask her.",
+                    "explanation": "'Like' is unnecessary and colloquial; it should be removed to maintain clarity.",
+                    "context": "I sometimes struggle to understand her when she asks me something. I really ask her what she means."
+                },
+                {
+                    "original": "So there are a lot of Australians there.",
+                    "corrected": "So there are many Australians there.",
+                    "explanation": "'A lot of' is informal; 'many' is more precise and appropriate in this context.",
+                    "context": "When discussing visitors to Bali, I mentioned the demographics. So there are many Australians there, which creates a strong community."
+                },
+                {
+                    "original": "Like some people are struggling with Australian accent.",
+                    "corrected": "Some people are struggling with the Australian accent.",
+                    "explanation": "The word 'like' is unnecessary and makes the sentence less formal; 'the' is needed before 'Australian accent.'",
+                    "context": "In our conversation about accents, I pointed out a common issue. Some people are struggling with the Australian accent, and it can be quite challenging."
+                },
+                {
+                    "original": "I told him, what do you mean you can't understand?",
+                    "corrected": "I told him, 'What do you mean you can't understand?'",
+                    "explanation": "Direct speech should be enclosed in quotation marks to indicate the exact words spoken.",
+                    "context": "In a conversation with a friend, I asked them for clarification. I told him, 'What do you mean you can't understand?' his response surprised me."
+                },
+                {
+                    "original": "Because knowing the language means knowing, being able to navigate all those variations.",
+                    "corrected": "Because knowing the language means being able to navigate all those variations.",
+                    "explanation": "The phrase 'knowing,' is unnecessary and makes the sentence awkward; it should be simplified.",
+                    "context": "To explain the difficulty of accents, I made an observation. Because knowing the language means being able to navigate all those variations, which is essential."
+                },
+                {
+                    "original": "But like, you know, it would be it would sound weird if a person who is learning Russian told me...",
+                    "corrected": "But, you know, it would sound weird if a person who is learning Russian told me...",
+                    "explanation": "'Like' is informal and distracting; it should be removed to enhance the sentence's flow.",
+                    "context": "In discussing language comprehension, I shared a hypothetical. But, you know, it would sound weird if a person who is learning Russian told me they couldn’t understand an accent."
+                },
+                {
+                    "original": "I don't remember, actually, the translation version.",
+                    "corrected": "I don't actually remember the translated version.",
+                    "explanation": "The phrase 'the translation version' is awkward; 'the translated version' is more conventional.",
+                    "context": "When asked about my preference between the original and the translated version, I admitted some confusion. I don't actually remember the translated version."
+                },
+                {
+                    "original": "Because it's always.",
+                    "corrected": "Because it's always better.",
+                    "explanation": "The sentence is incomplete; 'better' should be added to clarify the meaning.",
+                    "context": "Speaking of the value of the original voice in media, I expressed my preference. Because it's always better to hear the original."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "The joke involves like the joke, the joke is using the language is on the like on different words, variations of words.",
+                    "corrected": "The joke involves wordplay, using different variations of words.",
+                    "explanation": "Repetition and awkward phrasing make this sentence unclear. It should be concise and to the point.",
+                    "context": "Sometimes it is very hard to translate a joke, especially when it involves wordplay. The joke involves wordplay, using different variations of words. This makes translation challenging."
+                },
+                {
+                    "original": "And I just that just made me so angry.",
+                    "corrected": "And that just made me so angry.",
+                    "explanation": "The phrase 'I just' is unnecessary; the sentence works better without it.",
+                    "context": "We had to play the game in Russian, and that just made me so angry. The translation issues really frustrated me. It felt like a betrayal of the original content."
+                },
+                {
+                    "original": "And she says, Oh, some hunter you are. Yeah.",
+                    "corrected": "And she says, 'Oh, some hunter you are.'",
+                    "explanation": "Direct quotes should be enclosed in quotation marks for clarity.",
+                    "context": "The original dialogue in English was better than the translation. She says, 'Oh, some hunter you are.' This line is so ironic and conveys a lot of depth."
+                },
+                {
+                    "original": "And there is a lot of miscommunication between those stages.",
+                    "corrected": "And there is a lot of miscommunication at those stages.",
+                    "explanation": "The preposition 'at' is more appropriate than 'between' when referring to stages in a process.",
+                    "context": "There are many stages in the translation process. And there is a lot of miscommunication at those stages. This leads to poor translations."
+                },
+                {
+                    "original": "I bet multiple translators even.",
+                    "corrected": "I bet there are multiple translators.",
+                    "explanation": "The original lacks a verb, creating an incomplete thought. Adding 'there are' makes it a complete statement.",
+                    "context": "For any project, multiple translators are probably involved. I bet there are multiple translators. Yet, they sometimes lack the necessary context."
+                },
+                {
+                    "original": "Because at first the material goes to the translator. I bet multiple translators even.",
+                    "corrected": "Because at first the material goes to the translator, I bet there are multiple translators involved.",
+                    "explanation": "The original sentences lack proper connection. Using a comma link clarifies the relationship between the ideas.",
+                    "context": "Understanding how translation works is complex. Because at first the material goes to the translator, I bet there are multiple translators involved. They each play a role in the process."
+                },
+                {
+                    "original": "When something in English sounds very short and the Russian translation is very long, you can't afford it.",
+                    "corrected": "When something in English sounds very short, and the Russian translation is very long, you can't afford to use it.",
+                    "explanation": "The phrasing was awkward; 'afford it' needed 'to use it' for clarity on what 'it' refers to.",
+                    "context": "Translating dialogue can be tricky. When something in English sounds very short, and the Russian translation is very long, you can't afford to use it. This affects pacing in the final product."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "I heard that maybe I agree at some point that, for example, sometimes this voice actor's speech is better than the original.",
+                    "corrected": "I heard that maybe I agree at some point that, for example, sometimes this voice actor's speech can be better than the original.",
+                    "explanation": "The modal verb 'can' is more appropriate here to indicate possibility than 'is.'",
+                    "context": "I was discussing how voice acting can vary in quality. I heard that sometimes this voice actor's speech can be better than the original. It’s a subjective opinion, but it makes sense for some viewers."
+                },
+                {
+                    "original": "He very rarely watches any movies.",
+                    "corrected": "He rarely watches any movies.",
+                    "explanation": "'Very rarely' suggests that he watches movies almost never; 'rarely' is sufficient to convey infrequency.",
+                    "context": "My mom loves Leonardo DiCaprio, but my brother is not as passionate about movies. He rarely watches any movies. However, if there's a DiCaprio film, he might give it a chance."
+                },
+                {
+                    "original": "I'm not sure about Titanic, but she is a fan of all the movies, mostly the next.",
+                    "corrected": "I'm not sure about Titanic, but she is a fan of all his movies, mostly the next one.",
+                    "explanation": "'All the movies' should specify 'all his movies' to clarify that it refers to DiCaprio’s films.",
+                    "context": "My mom adores many films, especially those starring Leonardo DiCaprio. I'm not sure about Titanic, but she is a fan of all his movies, mostly the next one that comes out."
+                },
+                {
+                    "original": "Engligh will eventually improve.",
+                    "corrected": "English will eventually improve.",
+                    "explanation": "Spelling mistake; 'Engligh' should be corrected to 'English.'",
+                    "context": "I've realized the importance of watching films in English. Understanding the language is challenging, but English will eventually improve if you keep practicing it."
+                },
+                {
+                    "original": "Like the character is completely missed.",
+                    "corrected": "Like the character is completely misrepresented.",
+                    "explanation": "'Completely missed' is incorrect in this context; 'misrepresented' clarifies that the portrayal is inaccurate.",
+                    "context": "I was discussing how translations affect character portrayals. Like the character is completely misrepresented in the dubbing. This leads to a loss in depth and personality."
+                },
+                {
+                    "original": "He did a good job. I admit it.",
+                    "corrected": "He did a good job, I admit that.",
+                    "explanation": "A connecting word or phrase is needed; 'that' helps to complete the thought.",
+                    "context": "While I thought the voice acting could be improved, I also acknowledge the efforts done. He did a good job, I admit that, but it's still different from the original."
+                },
+                {
+                    "original": "But objectively, it is not very rich.",
+                    "corrected": "But objectively, it is not very rich in history.",
+                    "explanation": "The phrase lacks clarity; adding 'in history' makes the statement specific.",
+                    "context": "While discussing cultural pride, I mentioned Kazakhstan. But objectively, it is not very rich in history. Its nomadic past is fascinating but not extensive."
+                }
+            ]
+        },
+        "mistakes_7": {
+            "mistakes_list": [
+                {
+                    "original": "I wish this exhibition is interesting.",
+                    "corrected": "I wish this exhibition were interesting.",
+                    "explanation": "The subjunctive mood is needed for wishes about situations contrary to reality; 'were' is the correct form here.",
+                    "context": "I hope that Sasha enjoys the museum. I wish this exhibition were interesting. If not, she can always switch to watching Stranger Things."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Exhibition",
+                    "definition": "A public display of works of art or items of interest.",
+                    "context": {
+                        "Context 1": "I am preparing to go to the museum for a new exhibition.",
+                        "Context 2": "The art exhibition took place in a historic building downtown.",
+                        "Context 3": "She organized an exhibition of her photography at the local coffee shop."
+                    }
+                },
+                {
+                    "word": "Surprise",
+                    "definition": "An unexpected event or fact that causes astonishment.",
+                    "context": {
+                        "Context 1": "I decided that it will be a surprise for me when I visit the exhibition.",
+                        "Context 2": "The surprise party for her birthday was a huge success.",
+                        "Context 3": "He opened the box to find a surprise inside."
+                    }
+                },
+                {
+                    "word": "Sightseeing",
+                    "definition": "The activity of visiting places of interest in a particular location.",
+                    "context": {
+                        "Context 1": "I think the best emotions come from spontaneous sightseeing.",
+                        "Context 2": "On our sightseeing tour, we visited the Grand Canyon.",
+                        "Context 3": "She spent the day sightseeing in Paris, visiting the Eiffel Tower."
+                    }
+                },
+                {
+                    "word": "Accidentally",
+                    "definition": "By chance; unintentionally.",
+                    "context": {
+                        "Context 1": "We stumbled upon a very interesting cathedral accidentally.",
+                        "Context 2": "He accidentally spilled coffee on his shirt before the meeting.",
+                        "Context 3": "She accidentally booked a flight to the wrong city."
+                    }
+                },
+                {
+                    "word": "Cultural experience",
+                    "definition": "An experience that allows one to encounter and learn about different cultures.",
+                    "context": {
+                        "Context 1": "I think I got a lot from my cultural experience in St. Petersburg.",
+                        "Context 2": "Traveling to Thailand provided a unique cultural experience.",
+                        "Context 3": "Attending the festival was a great cultural experience for the tourists."
+                    }
+                },
+                {
+                    "word": "Plan",
+                    "definition": "A detailed proposal for doing or achieving something.",
+                    "context": {
+                        "Context 1": "If you go on a trip, it's better to have a plan.",
+                        "Context 2": "They made a plan to meet every weekend for lunch.",
+                        "Context 3": "The team crafted a plan to improve sales by 20%."
+                    }
+                },
+                {
+                    "word": "Excursion",
+                    "definition": "A short journey or trip, especially one engaged in as a leisure activity.",
+                    "context": {
+                        "Context 1": "We were supposed to have an excursion every day during our trip.",
+                        "Context 2": "The school arranged an excursion to the science museum.",
+                        "Context 3": "They took a weekend excursion to the mountains for hiking."
+                    }
+                },
+                {
+                    "word": "Tour guide",
+                    "definition": "A person who shows visitors around a place and explains the features.",
+                    "context": {
+                        "Context 1": "The tour guide didn't know much about the city, which was disappointing.",
+                        "Context 2": "Our tour guide shared fascinating stories about the ruins.",
+                        "Context 3": "She worked as a tour guide in Italy during the summer."
+                    }
+                },
+                {
+                    "word": "Inspired",
+                    "definition": "To fill someone with the urge or ability to do something creative.",
+                    "context": {
+                        "Context 1": "I felt inspired after seeing all the art at the exhibition.",
+                        "Context 2": "The book inspired him to pursue a career in writing.",
+                        "Context 3": "Her speech inspired many to take action for climate change."
+                    }
+                },
+                {
+                    "word": "Visual",
+                    "definition": "Relating to seeing or sight.",
+                    "context": {
+                        "Context 1": "I just got this visual inspiration from the city's life.",
+                        "Context 2": "The presentation was filled with visual aids to help explain the concepts.",
+                        "Context 3": "He has a keen visual memory and can remember faces easily."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Exhibition",
+                    "fact": "The longest exhibition in the world was held in 2008 in Japan, showcasing a single piece of art for a whole year!"
+                },
+                {
+                    "word": "Accidentally",
+                    "fact": "In an accidental experiment in 1928, Alexander Fleming discovered penicillin when he noticed that some bacteria couldn't grow in a contaminated Petri dish!"
+                },
+                {
+                    "word": "Sightseeing",
+                    "fact": "Did you know that the Eiffel Tower can be 15 cm taller during the summer due to thermal expansion? Imagine sightseeing that!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the tourist bring a ladder to the museum?",
+                    "answer": "Because they heard the exhibits were on another level!"
+                },
+                {
+                    "question": "Why don't we ever tell secrets on a farm?",
+                    "answer": "Because the potatoes have eyes and the corn has ears!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Impressed",
+                    "definition": "Having a strong effect on someone's mind or feelings.",
+                    "context": {
+                        "Context 1": "The students were impressed by the ancient artifacts in the museum.",
+                        "Context 2": "She was impressed with the cake he baked for her birthday.",
+                        "Context 3": "The teacher was impressed by how quickly the students learned the new vocabulary."
+                    }
+                },
+                {
+                    "word": "Excited",
+                    "definition": "Feeling or showing happiness or enthusiasm.",
+                    "context": {
+                        "Context 1": "He was excited to visit the historical sites in Greece.",
+                        "Context 2": "The children were excited to see the new superhero movie.",
+                        "Context 3": "She was excited to learn about different cultures during her travels."
+                    }
+                },
+                {
+                    "word": "Culture",
+                    "definition": "The ideas, customs, and social behavior of a particular people or society.",
+                    "context": {
+                        "Context 1": "Visiting museums helps people learn more about different cultures.",
+                        "Context 2": "He enjoys learning about Japanese culture through its cuisine.",
+                        "Context 3": "The dance performance showcased the culture of indigenous peoples."
+                    }
+                },
+                {
+                    "word": "Edu-tainment",
+                    "definition": "Educational content that is also entertaining.",
+                    "context": {
+                        "Context 1": "The museum created an edu-tainment program for kids to learn while having fun.",
+                        "Context 2": "Many documentaries use edu-tainment to engage viewers.",
+                        "Context 3": "She believes that gaming can also be a form of edu-tainment if it teaches skills."
+                    }
+                },
+                {
+                    "word": "Bored",
+                    "definition": "Feeling weary and impatient because one is unoccupied or lacks interest in one's current activity.",
+                    "context": {
+                        "Context 1": "He felt bored in the museum because he didn't find the exhibits interesting.",
+                        "Context 2": "She was bored during the lecture because it didn’t hold her attention.",
+                        "Context 3": "The boy got bored waiting for his friend to arrive at the park."
+                    }
+                },
+                {
+                    "word": "Mindset",
+                    "definition": "The established set of attitudes held by someone.",
+                    "context": {
+                        "Context 1": "Her positive mindset helped her overcome the challenges of visiting museums.",
+                        "Context 2": "He adopted a growth mindset after reading about successful people.",
+                        "Context 3": "A negative mindset can limit your ability to see opportunities."
+                    }
+                },
+                {
+                    "word": "Excursion",
+                    "definition": "A short journey or trip, especially one engaged in as a leisure activity.",
+                    "context": {
+                        "Context 1": "The school organized an excursion to the local history museum.",
+                        "Context 2": "They took an excursion to the mountains for a weekend getaway.",
+                        "Context 3": "His excursion into the world of painting opened new creative avenues."
+                    }
+                },
+                {
+                    "word": "Vibe",
+                    "definition": "A person's emotional state or the atmosphere of a place as communicated to and felt by others.",
+                    "context": {
+                        "Context 1": "He loved the vibe of the art museum; it made him feel inspired.",
+                        "Context 2": "The café had a cozy vibe that made it a perfect spot to read.",
+                        "Context 3": "Her positive vibe always lifted the spirits of those around her."
+                    }
+                },
+                {
+                    "word": "Connected",
+                    "definition": "Having a relationship with someone or something.",
+                    "context": {
+                        "Context 1": "When visiting historical sites, many people feel connected to the past.",
+                        "Context 2": "She felt connected to her roots after learning about her family's history.",
+                        "Context 3": "He wanted to be more connected with nature during his travels."
+                    }
+                },
+                {
+                    "word": "Program",
+                    "definition": "A planned series of events or activities.",
+                    "context": {
+                        "Context 1": "The museum had an educational program for children to learn about history.",
+                        "Context 2": "She followed a fitness program to improve her health.",
+                        "Context 3": "The city's summer music program features local bands and artists."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Excursion",
+                    "fact": "In Scotland, there are excursions where people dress up as historical figures – imagine going hiking with a man in a kilt from the 1700s!"
+                },
+                {
+                    "word": "Vibe",
+                    "fact": "Did you know that dogs have a strong vibe detection system? They can sense if you're happy, sad, or even when you're about to leave the house!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the art lover visit the museum during the night?",
+                    "answer": "Because he wanted to see the exhibits in a different light!"
+                },
+                {
+                    "question": "What did one museum say to the other museum?",
+                    "answer": "Stop looking at me like I'm a relic!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Aesthetic",
+                    "definition": "Concerned with beauty or the appreciation of beauty.",
+                    "context": {
+                        "Context 1": "The art exhibit was praised for its aesthetic appeal.",
+                        "Context 2": "He doesn't care about aesthetics; he just wants functionality from his furniture.",
+                        "Context 3": "Her aesthetic is very minimalist, often filled with only white and black colors."
+                    }
+                },
+                {
+                    "word": "Enunciate",
+                    "definition": "To pronounce words clearly and distinctly.",
+                    "context": {
+                        "Context 1": "The teacher encouraged her students to enunciate their words during presentations.",
+                        "Context 2": "He forgot to enunciate during the speech and left the audience confused.",
+                        "Context 3": "In singing, enunciating the lyrics is crucial for the audience to understand the song."
+                    }
+                },
+                {
+                    "word": "Regularly",
+                    "definition": "In a regular manner; consistently or habitually.",
+                    "context": {
+                        "Context 1": "She posts on Instagram regularly to keep her followers engaged.",
+                        "Context 2": "He only exercises regularly when training for competitions.",
+                        "Context 3": "They meet for coffee regularly, but even loves it when they miss a week."
+                    }
+                },
+                {
+                    "word": "Accent",
+                    "definition": "A distinct mode of pronunciation of a language, often associated with a particular region or social group.",
+                    "context": {
+                        "Context 1": "Her British accent was hard for him to understand at first.",
+                        "Context 2": "He used a fake accent while performing in the play.",
+                        "Context 3": "Accents can sometimes reveal where a person is from before they even speak."
+                    }
+                },
+                {
+                    "word": "Cast",
+                    "definition": "The group of actors in a play, film, or television show.",
+                    "context": {
+                        "Context 1": "The cast of Stranger Things includes many talented young actors.",
+                        "Context 2": "He was excited to see his favorite actor in the cast of the new movie.",
+                        "Context 3": "The cast of the play rehearsed diligently every evening for three months."
+                    }
+                },
+                {
+                    "word": "Inspiration",
+                    "definition": "The process of being mentally stimulated to do or feel something, especially to do something creative.",
+                    "context": {
+                        "Context 1": "She found inspiration in the beautiful landscapes during her travels.",
+                        "Context 2": "The best novels often draw inspiration from real-life events.",
+                        "Context 3": "He turned to art for inspiration while going through a tough time."
+                    }
+                },
+                {
+                    "word": "Struggle",
+                    "definition": "To make strenuous or violent efforts in the face of difficulties.",
+                    "context": {
+                        "Context 1": "Many learners struggle with pronunciation when learning a new language.",
+                        "Context 2": "She had to struggle to finish the marathon due to her leg injury.",
+                        "Context 3": "Families often struggle to stay together during tough economic times."
+                    }
+                },
+                {
+                    "word": "Chaotic",
+                    "definition": "In a state of complete confusion and disorder.",
+                    "context": {
+                        "Context 1": "His presentation was chaotic, jumping from topic to topic without coherence.",
+                        "Context 2": "The street was chaotic during the parade, with people everywhere.",
+                        "Context 3": "Her chaotic schedule left her feeling overwhelmed and stressed."
+                    }
+                },
+                {
+                    "word": "Adjust",
+                    "definition": "To change or modify something to suit a new condition.",
+                    "context": {
+                        "Context 1": "She had to adjust her speaking pace to match her students' understanding.",
+                        "Context 2": "It's important to adjust the settings on your camera for the best photo quality.",
+                        "Context 3": "He learned to adjust to the new culture when he moved abroad."
+                    }
+                },
+                {
+                    "word": "Subtitles",
+                    "definition": "Text displayed at the bottom of a screen that translates or transcribes the dialogue of a film or television show.",
+                    "context": {
+                        "Context 1": "Many people prefer to watch foreign films with subtitles for better understanding.",
+                        "Context 2": "He forgot to turn on the subtitles, so he missed some important plot points.",
+                        "Context 3": "Subtitles can help viewers who are hard of hearing enjoy the film."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Accent",
+                    "fact": "Did you know that a person’s accent can change depending on who they are speaking with?"
+                },
+                {
+                    "word": "Regularly",
+                    "fact": "In an odd timing quirk, the word 'regular' is the only time you should have irregular habits!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes of emotional data!"
+                },
+                {
+                    "question": "What do you call a fake noodle?",
+                    "answer": "An impasta!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Realism",
+                    "definition": "The quality of representing a person, thing, or situation accurately or in a way that is true to life.",
+                    "context": {
+                        "Context 1": "The Sopranos is praised for its realism in portraying the Italian mafia.",
+                        "Context 2": "The artist's realism in her paintings made them look almost lifelike.",
+                        "Context 3": "His novel features characters that embody the realism of everyday struggles."
+                    }
+                },
+                {
+                    "word": "Accent",
+                    "definition": "A distinctive way of pronouncing a language, often associated with a particular region or group.",
+                    "context": {
+                        "Context 1": "The characters in the show have strong Italian accents that can be difficult to understand.",
+                        "Context 2": "She has a charming French accent that makes her stand out among her peers.",
+                        "Context 3": "After living in New York for a year, he developed a slight Brooklyn accent."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or setting surrounding an event or idea that help give it meaning.",
+                    "context": {
+                        "Context 1": "You need to consider the context in which the characters are speaking to understand their dialogue.",
+                        "Context 2": "Understanding the historical context can enhance your appreciation of the artwork.",
+                        "Context 3": "In a conversation about science, the context could be how humans interact with technology."
+                    }
+                },
+                {
+                    "word": "Temporally",
+                    "definition": "Relating to time; in a time-related manner.",
+                    "context": {
+                        "Context 1": "The tempo at which the characters speak can change depending on the context of the scene.",
+                        "Context 2": "Temporally, the story unfolds over several decades, showing the evolution of the characters.",
+                        "Context 3": "The temporally complex film requires viewers to pay attention to timelines and sequences."
+                    }
+                },
+                {
+                    "word": "Dialect",
+                    "definition": "A particular form of a language that is peculiar to a specific region or social group.",
+                    "context": {
+                        "Context 1": "The show illustrates various dialects within the Italian language.",
+                        "Context 2": "The actor mastered the local dialect to make his character more believable.",
+                        "Context 3": "In some regions, dialects can be so thick that outsiders have trouble understanding them."
+                    }
+                },
+                {
+                    "word": "Community",
+                    "definition": "A group of people living in the same place or having a particular characteristic in common.",
+                    "context": {
+                        "Context 1": "The Australian community in Bali is quite large due to its proximity.",
+                        "Context 2": "In college, I became part of a vibrant art community that inspired me creatively.",
+                        "Context 3": "The online gaming community often creates events to engage members."
+                    }
+                },
+                {
+                    "word": "Vary",
+                    "definition": "To change or alter in form, amount, or nature.",
+                    "context": {
+                        "Context 1": "The way characters speak can vary significantly based on their backgrounds.",
+                        "Context 2": "The temperatures in the region can vary greatly between summer and winter.",
+                        "Context 3": "Her mood can vary from cheerful to contemplative depending on the day."
+                    }
+                },
+                {
+                    "word": "Struggle",
+                    "definition": "To experience difficulty and make a very great effort in order to do something.",
+                    "context": {
+                        "Context 1": "Many people struggle to understand different accents, even if they know the language.",
+                        "Context 2": "He had to struggle through college while juggling two jobs.",
+                        "Context 3": "The athlete's struggle with injury was well-documented in the press."
+                    }
+                },
+                {
+                    "word": "Navigate",
+                    "definition": "To find one's way through a complex system or to steer through challenges.",
+                    "context": {
+                        "Context 1": "Knowing the language means being able to navigate various accents and dialects.",
+                        "Context 2": "He learned to navigate through the city using only a map, no GPS.",
+                        "Context 3": "Navigating the corporate world can be challenging for recent graduates."
+                    }
+                },
+                {
+                    "word": "Subtitles",
+                    "definition": "Text displayed at the bottom of a movie or television screen, typically translating or transcribing the dialogue.",
+                    "context": {
+                        "Context 1": "Watching shows with subtitles can help improve understanding of different accents.",
+                        "Context 2": "Foreign films often come with subtitles so that audiences can follow along.",
+                        "Context 3": "He prefers watching documentaries with subtitles to catch every detail of the narration."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Accent",
+                    "fact": "Did you know that there are over 7,000 distinct languages spoken worldwide, and each can have multiple accents?"
+                },
+                {
+                    "word": "Subtitles",
+                    "fact": "In some situations, subtitles can go hilariously wrong, leading to laugh-out-loud mistranslations!"
+                },
+                {
+                    "word": "Community",
+                    "fact": "In nerd culture, there are communities dedicated to literally everything, from knitting to extreme ironing!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why don't we ever tell secrets on a farm?",
+                    "answer": "Because the potatoes have eyes and the corn has ears!"
+                },
+                {
+                    "question": "Why was the computer cold?",
+                    "answer": "Because it left its Windows open!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Translation",
+                    "definition": "The process of rendering text or speech from one language to another.",
+                    "context": {
+                        "Context 1": "The translation of the film was poorly done, resulting in a loss of the original humor.",
+                        "Context 2": "After finishing her foreign language course, she decided to work as a translation specialist.",
+                        "Context 3": "I found a translation of the ancient text that was surprisingly accurate."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "Circumstances or facts surrounding an event or situation.",
+                    "context": {
+                        "Context 1": "Without the proper context, jokes can often be misunderstood.",
+                        "Context 2": "He provided the necessary context for the argument, making it easier to understand.",
+                        "Context 3": "The painting's historical context adds depth to its interpretation."
+                    }
+                },
+                {
+                    "word": "Subtlety",
+                    "definition": "The quality of being subtle; understated or delicate.",
+                    "context": {
+                        "Context 1": "The subtlety of her expression conveyed a deep meaning that words could not.",
+                        "Context 2": "He admired the subtlety of the artist's brushwork in the portrait.",
+                        "Context 3": "In a debate, the subtlety of his arguments was lost on the audience."
+                    }
+                },
+                {
+                    "word": "Irony",
+                    "definition": "A situation that contrasts with what is expected; often has a humorous twist.",
+                    "context": {
+                        "Context 1": "The irony of the character's situation made the story much more engaging.",
+                        "Context 2": "It’s pure irony that the fire station burned down.",
+                        "Context 3": "She found the irony in missing the bus after her lecture on punctuality."
+                    }
+                },
+                {
+                    "word": "Dynamics",
+                    "definition": "The forces or properties that stimulate change or progress within a system.",
+                    "context": {
+                        "Context 1": "The dynamics between the characters created tension and excitement in the story.",
+                        "Context 2": "The dynamics of the market changed drastically after the new policy was implemented.",
+                        "Context 3": "Their friendly dynamics made the workplace enjoyable."
+                    }
+                },
+                {
+                    "word": "Overwhelming",
+                    "definition": "Very intense or powerful; difficult to handle due to quantity or complexity.",
+                    "context": {
+                        "Context 1": "The amount of content to translate can be overwhelming for a single translator.",
+                        "Context 2": "She felt an overwhelming sense of joy when she saw her family.",
+                        "Context 3": "The overwhelming noise from the crowd made it hard to concentrate."
+                    }
+                },
+                {
+                    "word": "Distort",
+                    "definition": "To twist out of a natural, normal, or original shape or meaning.",
+                    "context": {
+                        "Context 1": "The translation can distort the original meaning of the dialogue.",
+                        "Context 2": "The funhouse mirrors distort my reflection in bizarre ways.",
+                        "Context 3": "Misleading statistics can distort public perception of an issue."
+                    }
+                },
+                {
+                    "word": "Scenario",
+                    "definition": "A hypothetical situation or sequence of events.",
+                    "context": {
+                        "Context 1": "There are many possible scenarios for how the story could end based on player choices.",
+                        "Context 2": "In a worst-case scenario, the project feels at risk of failure.",
+                        "Context 3": "She enjoys writing different scenarios for her novel's characters."
+                    }
+                },
+                {
+                    "word": "Mimic",
+                    "definition": "To imitate or copy someone or something's actions or sounds.",
+                    "context": {
+                        "Context 1": "The voice actors had to mimic the original tones without knowing the language.",
+                        "Context 2": "He could mimic different animal sounds perfectly.",
+                        "Context 3": "The comedian's ability to mimic celebrities made him very popular."
+                    }
+                },
+                {
+                    "word": "Production",
+                    "definition": "The process of creating goods or services, including all steps from conception to delivery.",
+                    "context": {
+                        "Context 1": "The production of the film was affected by the poor translation decisions.",
+                        "Context 2": "She works in production, overseeing all the stages of creating new products.",
+                        "Context 3": "The theater's production of the play received rave reviews from critics."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Translation",
+                    "fact": "Did you know that some languages, like Inuit, have multiple words for snow, reflecting their environment?"
+                },
+                {
+                    "word": "Irony",
+                    "fact": "Irony is so popular in literature that there’s even a known author, O. Henry, who made a career out of unexpected twists!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the translator break up with their partner?",
+                    "answer": "Because they couldn’t find common ground in their conversations!"
+                },
+                {
+                    "question": "Why do translators never play hide and seek?",
+                    "answer": "Because good luck hiding when they keep losing their context!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Original",
+                    "definition": "The first or earliest version of something.",
+                    "context": {
+                        "Context 1": "In my mind, the original version is always better than the translated one.",
+                        "Context 2": "The chef decided to stick to the original recipe for the best flavor.",
+                        "Context 3": "Many fans believe the original comic book series is superior to the movie adaptation."
+                    }
+                },
+                {
+                    "word": "Dubbed",
+                    "definition": "To replace the original voice in a film or broadcast with a different voice.",
+                    "context": {
+                        "Context 1": "The movie was dubbed in several languages for international audiences.",
+                        "Context 2": "He prefers watching dubbed anime rather than the original Japanese version.",
+                        "Context 3": "The dubbed version of the documentary was released a week later than the original."
+                    }
+                },
+                {
+                    "word": "Intonation",
+                    "definition": "The rise and fall of the voice in speaking, conveying meaning or emotion.",
+                    "context": {
+                        "Context 1": "The intonation of the voice actor added emotional depth to the character.",
+                        "Context 2": "Good intonation can make a big difference in how well a speech is received.",
+                        "Context 3": "The singer's intonation was so perfect that it impressed the judges."
+                    }
+                },
+                {
+                    "word": "Misaligned",
+                    "definition": "Not in proper alignment; out of order or agreement.",
+                    "context": {
+                        "Context 1": "The translated movie had several misaligned phrases that confused viewers.",
+                        "Context 2": "In designing the new building, the architect ensured all elements were aligned and not misaligned.",
+                        "Context 3": "The misaligned gears in the clock caused it to malfunction."
+                    }
+                },
+                {
+                    "word": "Nuance",
+                    "definition": "A subtle difference or distinction in meaning, expression, or response.",
+                    "context": {
+                        "Context 1": "The nuances of the original dialogue were lost in translation.",
+                        "Context 2": "To appreciate the painting, one must understand the nuances of color and texture.",
+                        "Context 3": "He explained the nuances of etiquette in different cultures during his speech."
+                    }
+                },
+                {
+                    "word": "Justify",
+                    "definition": "To provide reasons or explanations to support or defend something.",
+                    "context": {
+                        "Context 1": "People tend to justify their preferences for the translated version over the original.",
+                        "Context 2": "She tried to justify her decision to move to a new city by highlighting the job opportunities.",
+                        "Context 3": "You don't need to justify your personal choices to anyone."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or background that lead to understanding a situation or concept.",
+                    "context": {
+                        "Context 1": "Understanding the context of the film is crucial for grasping its themes.",
+                        "Context 2": "Without proper context, the joke doesn’t make much sense.",
+                        "Context 3": "Every culture has its own unique context that influences its traditions."
+                    }
+                },
+                {
+                    "word": "Proficient",
+                    "definition": "Having a high degree of skill or competence in a particular area.",
+                    "context": {
+                        "Context 1": "People in the Netherlands are proficient in English due to their media consumption habits.",
+                        "Context 2": "She is proficient in several languages, making her a great asset for the international team.",
+                        "Context 3": "After years of practice, he became proficient at playing the guitar."
+                    }
+                },
+                {
+                    "word": "Translation",
+                    "definition": "The process of converting text or speech from one language to another.",
+                    "context": {
+                        "Context 1": "The translation of the script was criticized for missing key phrases.",
+                        "Context 2": "Professional translation services can help localize marketing materials effectively.",
+                        "Context 3": "He enjoyed translating poetry, as it allowed him to play with words."
+                    }
+                },
+                {
+                    "word": "Actor",
+                    "definition": "A person who performs in plays, movies, or television shows.",
+                    "context": {
+                        "Context 1": "Leonardo DiCaprio is a renowned actor known for his diverse roles.",
+                        "Context 2": "The actor received several awards for his performance in the lead role.",
+                        "Context 3": "During the workshop, budding actors practiced their lines together."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Nuance",
+                    "fact": "Did you know that in the world of chocolate, there are over 20 different nuances of flavor depending on the bean's origin?"
+                },
+                {
+                    "word": "Dubbed",
+                    "fact": "The term 'dubbed' comes from the old practice of 'dubbing' over a film, which means to 'cover up' or 'replace' the original sounds!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the movie go to therapy?",
+                    "answer": "Because it had too many plot twists!"
+                },
+                {
+                    "question": "What did the film say to the voice actor?",
+                    "answer": "You complete me—especially when you dub me!"
+                }
+            ]
+        },
+        "vocabulary_7": {
+            "vocabulary_list": [
+                {
+                    "word": "Exhibition",
+                    "definition": "A public display of works of art or items of interest.",
+                    "context": {
+                        "Context 1": "I hope the exhibition at the museum features some modern art.",
+                        "Context 2": "He was too busy to attend the exhibition of pet rocks in the park.",
+                        "Context 3": "The annual science fair is an exhibition of student projects and inventions."
+                    }
+                },
+                {
+                    "word": "Museum",
+                    "definition": "A building where artifacts or exhibits of historical, cultural, or scientific interest are displayed.",
+                    "context": {
+                        "Context 1": "She plans to visit the museum to learn more about ancient civilizations.",
+                        "Context 2": "He mistakenly thought the museum was a fancy restaurant serving food from all over the world.",
+                        "Context 3": "The museum of weird inventions had an exhibit on the world's largest rubber band ball."
+                    }
+                },
+                {
+                    "word": "Interesting",
+                    "definition": "Arousing curiosity or interest; holding or catching the attention.",
+                    "context": {
+                        "Context 1": "The new exhibition was very interesting and kept me engaged the whole time.",
+                        "Context 2": "Finding a new way to fold a napkin is not usually considered interesting.",
+                        "Context 3": "The lecture on quantum physics was surprisingly interesting, even for a history major."
+                    }
+                },
+                {
+                    "word": "Switch back",
+                    "definition": "To return to a previous state or activity.",
+                    "context": {
+                        "Context 1": "If the exhibition turns out to be boring, I can always switch back to watching my favorite show.",
+                        "Context 2": "He had to switch back to his old phone after the new one broke.",
+                        "Context 3": "After trying the restaurant's new menu, she decided to switch back to her regular order."
+                    }
+                },
+                {
+                    "word": "Enjoy",
+                    "definition": "To take delight or pleasure in an activity or situation.",
+                    "context": {
+                        "Context 1": "I hope you enjoy the museum experience as much as the exhibition.",
+                        "Context 2": "She didn’t enjoy the surprise trip to the dentist for a check-up.",
+                        "Context 3": "He enjoys collecting stamps from all over the world as a hobby."
+                    }
+                },
+                {
+                    "word": "Lesson",
+                    "definition": "A unit of instruction or a period of learning.",
+                    "context": {
+                        "Context 1": "We learned a lot in today’s lesson about art history.",
+                        "Context 2": "The cat taught me a lesson about not leaving food unattended.",
+                        "Context 3": "In gym class, the lesson was all about teamwork through relay races."
+                    }
+                },
+                {
+                    "word": "Bye bye",
+                    "definition": "An informal way of saying goodbye.",
+                    "context": {
+                        "Context 1": "As she left the class, she waved and said ‘bye bye’ to her friends.",
+                        "Context 2": "He said ‘bye bye’ to the sandwich he dropped on the floor.",
+                        "Context 3": "The toddler waved ‘bye bye’ to the balloon that escaped into the sky."
+                    }
+                },
+                {
+                    "word": "Fun",
+                    "definition": "Enjoyment, amusement, or lighthearted pleasure.",
+                    "context": {
+                        "Context 1": "I wish you to have fun at the museum while exploring the exhibits.",
+                        "Context 2": "The math exam was definitely not considered fun by anyone.",
+                        "Context 3": "They had a fun time trying out new rides at the amusement park."
+                    }
+                },
+                {
+                    "word": "Day",
+                    "definition": "A period of 24 hours as a unit of time.",
+                    "context": {
+                        "Context 1": "After a long day at the museum, he was ready to relax.",
+                        "Context 2": "She thought it was a great day for cloud watching in the middle of winter.",
+                        "Context 3": "His day was ruined when he discovered he had lost his wallet."
+                    }
+                },
+                {
+                    "word": "See you",
+                    "definition": "A casual way of saying goodbye, indicating you will meet again.",
+                    "context": {
+                        "Context 1": "I’ll see you on Thursday for our next lesson.",
+                        "Context 2": "After the circus performance, the clown shouted ‘see you’ to the audience.",
+                        "Context 3": "The penguins waved their flippers saying ‘see you’ to the visitors."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Museum",
+                    "fact": "The Louvre Museum in Paris is so big that it would take you over 100 days to see all the artworks if you spent just 30 seconds on each!"
+                },
+                {
+                    "word": "Exhibition",
+                    "fact": "In 2013, a museum in Sweden exhibited a piece of blank canvas titled 'Take the Money and Run' as a commentary on art commercialization!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the museum curator break up with their partner?",
+                    "answer": "They felt like they were in a 'display' relationship!"
+                },
+                {
+                    "question": "What do you call an exhibition of jokes?",
+                    "answer": "A pun-derful show!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! What are you up to today?"
+                },
+                {
+                    "Person 2": "Not much, just getting ready to head to the museum with some friends."
+                },
+                {
+                    "Person 1": "Oh, nice! Haven't you seen all the museums around here already?"
+                },
+                {
+                    "Person 2": "Kind of, but there's a new exhibition on. I’m not sure what it’s exactly about, though."
+                },
+                {
+                    "Person 1": "Surprise exhibitions can be fun! Do you know if it's modern art or something classic?"
+                },
+                {
+                    "Person 2": "No idea! My friend just told me to come along and said it would be interesting."
+                },
+                {
+                    "Person 1": "Sounds like a perfect adventure! I like that you’re keeping it spontaneous."
+                },
+                {
+                    "Person 2": "Yeah, I think the best moments during a trip are the ones you don’t plan for."
+                },
+                {
+                    "Person 1": "Totally! I remember going to Italy, and we just wandered into this amazing little café instead of following our itinerary."
+                },
+                {
+                    "Person 2": "Exactly! Those unexpected finds make the experience so much richer."
+                },
+                {
+                    "Person 1": "So, do you think it’s better to have a loose plan or just go with the flow?"
+                },
+                {
+                    "Person 2": "Honestly, a mix of both. It helps to have some ideas but also leave room for surprises."
+                },
+                {
+                    "Person 1": "That’s a great approach! Maybe make a list of places and then just see where the day takes you."
+                },
+                {
+                    "Person 2": "Right! And at the end of the day, you can check off what you saw spontaneously."
+                },
+                {
+                    "Person 1": "I like that idea! Speaking of trips, how was your visit to China last year?"
+                },
+                {
+                    "Person 2": "It was an adventure! We had a plan, but it lacked depth. Our tour guide was pretty clueless."
+                },
+                {
+                    "Person 1": "That sounds frustrating! Did you still enjoy exploring?"
+                },
+                {
+                    "Person 2": "Definitely! We walked a lot and just soaked in the atmosphere, which was nice."
+                },
+                {
+                    "Person 1": "That’s what's important! Did you learn more about the culture or history?"
+                },
+                {
+                    "Person 2": "Both! But I prefer to see how people live now rather than just focusing on the past."
+                },
+                {
+                    "Person 1": "Same here! Museums are cool, but I can only take that for a couple of hours."
+                },
+                {
+                    "Person 2": "Exactly! I like to mix a bit of history with trying local food and just hanging out."
+                },
+                {
+                    "Person 1": "That sounds like a perfect day. Enjoy the museum and the surprises it brings!"
+                },
+                {
+                    "Person 2": "Thanks! I hope you have a great day too!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you ever notice how excited people get about old stuff?"
+                },
+                {
+                    "Person 2": "Yeah, like when you're at a museum and see something that's a thousand years old?"
+                },
+                {
+                    "Person 1": "Exactly! It's wild how something that ancient can make your heart race."
+                },
+                {
+                    "Person 2": "Right? My dad loves history, so when we were in Europe, we visited a ton of old castles and cathedrals."
+                },
+                {
+                    "Person 1": "That sounds awesome! Did he drag you along?"
+                },
+                {
+                    "Person 2": "Pretty much! But my mom loves art, so she could spend hours in a gallery, while my dad was always ready to leave."
+                },
+                {
+                    "Person 1": "Ha! I get that. I'm more like your dad. I enjoy museums, but I can't handle being there for too long."
+                },
+                {
+                    "Person 2": "Same here! I think I might prefer just walking around instead of browsing through endless exhibits."
+                },
+                {
+                    "Person 1": "Walking is the best! Sometimes I feel like I have to be cultured just because everyone else is."
+                },
+                {
+                    "Person 2": "Totally! I never understood why people feel that pressure, though."
+                },
+                {
+                    "Person 1": "Yeah, I don’t find much benefit in it either. It’s not like I get smarter from staring at old paintings."
+                },
+                {
+                    "Person 2": "Exactly! Sometimes I wonder if the key to enjoying history is finding a connection to the present."
+                },
+                {
+                    "Person 1": "That makes sense. Like when you go to a museum to answer a question you have about now?"
+                },
+                {
+                    "Person 2": "Exactly! But if I'm tired, I'm not going to enjoy it anyway."
+                },
+                {
+                    "Person 1": "Right? I'd rather take a nap than force myself to look at stuff I'm not into."
+                },
+                {
+                    "Person 2": "Preach! It’s better to visit one place you really like than to rush through a bunch of spots."
+                },
+                {
+                    "Person 1": "Yes! Feeling the vibe of a good spot is way more fulfilling."
+                },
+                {
+                    "Person 2": "And less stressful! Who wants to feel exhausted from a museum marathon?"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you taken any cool photos from your recent trip?"
+                },
+                {
+                    "Person 2": "Yeah, I tried to snap a bunch while I was out. I even added a few to my Instagram!"
+                },
+                {
+                    "Person 1": "Nice! But how do you feel about posting them? Do you do it regularly?"
+                },
+                {
+                    "Person 2": "Honestly, I used to post all the time, but now it feels like a chore. I only want to share my best shots."
+                },
+                {
+                    "Person 1": "I get that. Sometimes it’s just too much to keep up with."
+                },
+                {
+                    "Person 2": "Exactly! Speaking of which, have you started watching Stranger Things yet?"
+                },
+                {
+                    "Person 1": "Oh yeah! I’ve watched the first season. I loved the vibe and the soundtrack!"
+                },
+                {
+                    "Person 2": "Right? The music is really amazing. It totally sets the mood."
+                },
+                {
+                    "Person 1": "And the characters are great too! Do you have a favorite?"
+                },
+                {
+                    "Person 2": "I really like Eleven. Millie Bobby Brown does such an awesome job!"
+                },
+                {
+                    "Person 1": "For sure! I heard she has a British accent in real life, but she sounds so American in the show."
+                },
+                {
+                    "Person 2": "Yeah! It’s impressive how actors can switch accents like that."
+                },
+                {
+                    "Person 1": "Do you think it’s hard for them? Like, how do they even do that?"
+                },
+                {
+                    "Person 2": "I guess they have coaches or they practice a lot. But even I struggle with different accents!"
+                },
+                {
+                    "Person 1": "Same! I feel like I need subtitles when I watch British shows. Sometimes it’s hard to catch what they’re saying."
+                },
+                {
+                    "Person 2": "Totally! I look up so many words when watching British shows. It’s like a language on its own!"
+                },
+                {
+                    "Person 1": "Exactly! Anyway, what’s next on your watch list?"
+                },
+                {
+                    "Person 2": "I think I’ll binge the next season of Stranger Things. You?"
+                },
+                {
+                    "Person 1": "I might join you! Let’s have a watch party this weekend!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, have you ever watched 'The Sopranos'?"
+                },
+                {
+                    "Person 2": "I tried a while back, but it was really tough to follow. I couldn't get much of what they were saying."
+                },
+                {
+                    "Person 1": "I know what you mean! The accents can be hard to catch, especially with all the Italian slang."
+                },
+                {
+                    "Person 2": "Right? I thought maybe it was just me not knowing English well back then. But even recently, I had the same issue."
+                },
+                {
+                    "Person 1": "Yeah, accents can really change everything. I once had a tough time understanding a Nigerian friend of mine."
+                },
+                {
+                    "Person 2": "Nigerian accents are tricky! I feel like I catch a word here and there, but not much else."
+                },
+                {
+                    "Person 1": "Exactly! And I've heard some people struggle with Australian accents too."
+                },
+                {
+                    "Person 2": "Totally! I have a friend in Bali who says he can’t really talk to Australians because he doesn’t understand their accent."
+                },
+                {
+                    "Person 1": "That’s surprising! I mean, it's still English, right?"
+                },
+                {
+                    "Person 2": "Sure, but sometimes the way they talk is so different. It’s like a whole new language."
+                },
+                {
+                    "Person 1": "True! But I think we can learn to get used to it over time. Just need to listen more."
+                },
+                {
+                    "Person 2": "Yeah, I've been watching some Australian YouTubers to help with that. It’s not too hard once you get into it."
+                },
+                {
+                    "Person 1": "Nice! I should do that too. Kids' speech is usually easier to catch, don't you think?"
+                },
+                {
+                    "Person 2": "Definitely! I think kids speak more slowly and clearly."
+                },
+                {
+                    "Person 1": "Do you think it's worth it to watch shows in the original version instead of dubbed?"
+                },
+                {
+                    "Person 2": "Absolutely! The original voices bring so much more emotion. Dubbed versions often lose that feeling."
+                },
+                {
+                    "Person 1": "And sometimes the translations can change the meaning completely!"
+                },
+                {
+                    "Person 2": "Exactly! Plus, the original might use 'bad words' that get toned down in translations."
+                },
+                {
+                    "Person 1": "So true! Thanks for chatting about this. It’s always fun to hear your thoughts."
+                },
+                {
+                    "Person 2": "Anytime! Let’s catch up again soon, maybe with some movie recommendations!"
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you catch that new movie everyone’s talking about?"
+                },
+                {
+                    "Person 2": "Not yet! I was planning to watch it this weekend. What did you think of it?"
+                },
+                {
+                    "Person 1": "I loved it! But I have to say, I watched the dubbed version and it kind of ruined some of the jokes."
+                },
+                {
+                    "Person 2": "Oh no! Was it that bad? I heard the original had some really clever wordplay."
+                },
+                {
+                    "Person 1": "Yeah, exactly! They changed some phrases so much that it lost all the humor."
+                },
+                {
+                    "Person 2": "That’s frustrating. Like when they translate something literally and it just doesn’t fit."
+                },
+                {
+                    "Person 1": "Totally! There was this scene where the character is being sarcastic, and in the dub, it sounded serious!"
+                },
+                {
+                    "Person 2": "No way! That would definitely change the whole vibe of the character."
+                },
+                {
+                    "Person 1": "Right? I ended up watching the original clips online just to see what I missed."
+                },
+                {
+                    "Person 2": "Smart move! I usually prefer watching with subtitles too; it keeps the original feel."
+                },
+                {
+                    "Person 1": "Exactly! Subtitles are the way to go. But I have a friend who insists on dubbed versions."
+                },
+                {
+                    "Person 2": "Yeah, I get that some people prefer it, but you miss out on so much nuance."
+                },
+                {
+                    "Person 1": "For sure! And the voice acting can totally change how you perceive a character."
+                },
+                {
+                    "Person 2": "Absolutely! I’ve been meaning to check out some animated shows in their original form too."
+                },
+                {
+                    "Person 1": "You should! They often have so much more depth. It's worth it!"
+                },
+                {
+                    "Person 2": "Definitely! I’ll take your recommendation and watch the originals next time."
+                },
+                {
+                    "Person 1": "You won’t regret it! Let me know what you think after."
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that new movie with Leonardo DiCaprio?"
+                },
+                {
+                    "Person 2": "Oh, totally! He's such a talented actor. I don't know what it is, but he just brings characters to life."
+                },
+                {
+                    "Person 1": "Right? I heard some people say that his voiceovers can even be better than the original sometimes. Can you believe that?"
+                },
+                {
+                    "Person 2": "Really? That's an interesting take. I wouldn't go that far, but I guess some people might feel more connected to his work."
+                },
+                {
+                    "Person 1": "Yeah, like my mom is obsessed with him! If he’s in a movie, she’s watching it, no questions asked."
+                },
+                {
+                    "Person 2": "Haha, moms have a special love for him! What’s her favorite? Titanic?"
+                },
+                {
+                    "Person 1": "Not really Titanic, but she loves 'The Wolf of Wall Street.' She thinks it’s hilarious!"
+                },
+                {
+                    "Person 2": "That’s a good one! His acting in that film is top-notch. I really admire his range."
+                },
+                {
+                    "Person 1": "Speaking of great performances, I just played a game called 'Detroit: Become Human'."
+                },
+                {
+                    "Person 2": "Oh, I’ve heard of that! Was it good?"
+                },
+                {
+                    "Person 1": "Yeah, it was amazing! I played it in English, and the original voice acting was fantastic."
+                },
+                {
+                    "Person 2": "That’s awesome! I feel like the original voices always capture the essence of the characters better."
+                },
+                {
+                    "Person 1": "Exactly! I also watched this YouTube video about translation issues in voice acting. It was eye-opening."
+                },
+                {
+                    "Person 2": "Oh? What did it say?"
+                },
+                {
+                    "Person 1": "The guy highlighted how sometimes, the translated voices just don’t fit the characters at all."
+                },
+                {
+                    "Person 2": "That’s so true! Like a young character being voiced by someone who sounds much older—it’s jarring."
+                },
+                {
+                    "Person 1": "So many comments said the translations were amazing, but I just couldn’t agree."
+                },
+                {
+                    "Person 2": "I think people just tend to appreciate what they can understand. It’s all about relatability."
+                },
+                {
+                    "Person 1": "Yeah, definitely. It’s better to experience the original, even if you don’t catch every word."
+                },
+                {
+                    "Person 2": "Totally! Once you get over that fear of not understanding everything, it just gets easier."
+                },
+                {
+                    "Person 1": "Exactly! I told myself to keep watching in English, and now my English has improved a lot."
+                },
+                {
+                    "Person 2": "That’s a great approach! It’s true—people in places like the Netherlands speak English so well because they don’t dub their movies."
+                },
+                {
+                    "Person 1": "Right! The more immersion, the better. It’s all about getting that real experience."
+                }
+            ]
+        },
+        "dialogue_7": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, have fun at the museum today!"
+                },
+                {
+                    "Person 2": "Thanks! I hope the exhibition is good. If it’s boring, I might just go back to watching Stranger Things."
+                },
+                {
+                    "Person 1": "Totally! It's a solid backup plan. So, what are you hoping to see there?"
+                },
+                {
+                    "Person 2": "I heard there's a cool interactive section. I'm really looking forward to that. How about you? Any plans for the day?"
+                },
+                {
+                    "Person 1": "Not much, just finishing up a series I've been watching. It's getting pretty intense!"
+                },
+                {
+                    "Person 2": "Nice! What show is it?"
+                },
+                {
+                    "Person 1": "It's 'The Crown.' I’m kind of obsessed with it right now."
+                },
+                {
+                    "Person 2": "Oh, I’ve heard great things about that! You’re going to binge-watch it all, aren’t you?"
+                },
+                {
+                    "Person 1": "Definitely! I can’t wait to see what happens next. Anyway, I'll catch up with you on Thursday?"
+                },
+                {
+                    "Person 2": "For sure! Let’s swap notes about the museum and the series then."
+                },
+                {
+                    "Person 1": "Sounds like a plan! Have an awesome time today!"
+                },
+                {
+                    "Person 2": "Thanks! You too! Talk to you later!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
