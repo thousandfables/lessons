@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 6,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I know I'll get late on the first lesson.",
+                    "corrected": "I know I'll be late to the first lesson.",
+                    "explanation": "The phrase 'get late' is incorrect; the correct form is 'be late' and 'to' should be used with 'lesson.'",
+                    "context": "I have to go to school, so it's a bit hectic. I know I'll be late to the first lesson, but it's not a big deal."
+                },
+                {
+                    "original": "we have lessons on Sunday but the internet connection on Sundays I don't know what happened with that.",
+                    "corrected": "we have lessons on Sunday, but I don't know what happened with the internet connection.",
+                    "explanation": "The structure is awkward, and 'with that' is unnecessary; use 'I don't know what happened to the internet connection.'",
+                    "context": "We usually have lessons on Sunday, but I don't know what happened with the internet connection. It just seems random sometimes."
+                },
+                {
+                    "original": "how did you know on Saturday that on Sunday you weren't gonna have internet.",
+                    "corrected": "How did you know on Saturday that you weren't going to have internet on Sunday?",
+                    "explanation": "The phrase 'gonna' is informal; 'going to' is the correct form, and the sentence structure needs adjustment.",
+                    "context": "I was curious about their internet issues. How did you know on Saturday that you weren't going to have internet on Sunday?"
+                },
+                {
+                    "original": "you know fun about it or any maybe interesting activities planned in school.",
+                    "corrected": "any fun or interesting activities planned at school?",
+                    "explanation": "The word order is awkward and the preposition 'in' should be 'at' when referring to school.",
+                    "context": "I asked if there were any interesting activities planned for the day. Are there any fun or interesting activities planned at school?"
+                },
+                {
+                    "original": "because it is I said covered by ice by snow everything and it's just challenging to I know go to school.",
+                    "corrected": "because it is covered in ice and snow, and it's just challenging to go to school.",
+                    "explanation": "The phrasing is clunky; 'covered by' should be 'covered in,' and 'to I know' is unnecessary.",
+                    "context": "I'm feeling frustrated about going to school. Because it is covered in ice and snow, it's just challenging to go to school."
+                },
+                {
+                    "original": "so maybe after the concert I would go to his apartment you know overslept cylinder overslept overslept there and slept over.",
+                    "corrected": "so maybe after the concert I will go to his apartment and sleep over there.",
+                    "explanation": "The phrase 'overslept cylinder overslept overslept' is incorrect and unclear, and 'would' is informal for a future plan.",
+                    "context": "I'm planning to see my friend after the concert. So maybe after the concert I will go to his apartment and sleep over there."
+                },
+                {
+                    "original": "because statistically you know statistically most people are born in summer and in spring autumn is third and winter is fourth.",
+                    "corrected": "because statistically, most people are born in summer, followed by spring, autumn, and then winter.",
+                    "explanation": "The repetition of 'statistically' is unnecessary, and the phrasing could be clearer, as well as incorrect order.",
+                    "context": "I was discussing the distribution of birthdays. Because statistically, most people are born in summer, followed by spring, autumn, and then winter."
+                },
+                {
+                    "original": "it's a place device all laws yeah animal anomaly stalker anomalies.",
+                    "corrected": "it's a place with all sorts of laws and anomalies.",
+                    "explanation": "The phrase 'device all laws' is confusing; 'with all sorts of laws' sounds more natural.",
+                    "context": "We were talking about strange places. It's a place with all sorts of laws and anomalies."
+                },
+                {
+                    "original": "I know it's just because maybe my system works on English language.",
+                    "corrected": "I know it's just because my system is set to the English language.",
+                    "explanation": "The phrase 'works on' is incorrect; 'is set to' is the proper expression, and 'English language' needs an article.",
+                    "context": "When discussing the weather display, I mentioned my device settings. I know it's just because my system is set to the English language."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "there were a lot of case when people spend too much time there",
+                    "corrected": "there were a lot of cases when people spent too much time there",
+                    "explanation": "The word 'case' should be plural ('cases') and 'spend' should be past tense ('spent') to match the context.",
+                    "context": "In the discussion about computer clubs, I mentioned that there were a lot of cases when people spent too much time there. This topic is important because it highlights the extreme results of excessive gaming."
+                },
+                {
+                    "original": "we literally died there and like after I don't know 30 hours session in a game",
+                    "corrected": "we literally died there after a 30-hour session in a game",
+                    "explanation": "'30 hours session' should be '30-hour session' as it uses a compound adjective, and 'like after' is unnecessary and informal.",
+                    "context": "As I was emphasizing the dangers of gaming, I said we literally died there after a 30-hour session in a game. It's crucial to convey the seriousness of these excessive gaming periods."
+                },
+                {
+                    "original": "it's not very clear that it's real like for for now the examiner may have doubts whether you whether it's a genuine example",
+                    "corrected": "it's not very clear that it's real; for now, the examiner may have doubts about whether it's a genuine example",
+                    "explanation": "The phrase 'whether you whether' is repetitive and incorrect; it should be 'about whether.' A semicolon is needed to separate two independent clauses.",
+                    "context": "I was trying to clarify the importance of providing evidence in our essay. I pointed out that it's not very clear that it's real; for now, the examiner may have doubts about whether it's a genuine example. Clarity in writing is essential for credibility."
+                },
+                {
+                    "original": "we need to put it okay for example there have been report cases because of consequences",
+                    "corrected": "we need to put it clearly; for example, there have been reported cases because of the consequences.",
+                    "explanation": "'report cases' should be corrected to 'reported cases,' and the sentence lacks clarity, thus requiring restructuring.",
+                    "context": "In trying to organize our thoughts, I noted that we need to put it clearly; for example, there have been reported cases because of the consequences. This will strengthen our argument."
+                },
+                {
+                    "original": "if I can say it okay then just let's keep it simple",
+                    "corrected": "if I can say that, then let's keep it simple",
+                    "explanation": "'say it' should be 'say that' for clarity and grammatical accuracy.",
+                    "context": "During our discussion about simplifying our writing, I remarked that if I can say that, then let's keep it simple. Simplifying our ideas makes them more effective."
+                },
+                {
+                    "original": "it was the reason of little ending",
+                    "corrected": "it was the reason for the unfortunate ending",
+                    "explanation": "Incorrect preposition use: 'of' should be replaced with 'for,' and 'little ending' lacks clarity.",
+                    "context": "While summarizing the tragic outcome, I mentioned that it was the reason for the unfortunate ending. Clearly stating the consequences is important for our argument."
+                },
+                {
+                    "original": "the conception not conception just it's way are similar spent",
+                    "corrected": "the concept, not conception; it’s a matter of how we spent",
+                    "explanation": "'conception' should be 'concept,' and the sentence structure is incorrect, making it difficult to understand.",
+                    "context": "In explaining our main idea, I clarified the concept, not conception; it’s a matter of how we spent our time. This is crucial for forming a cohesive argument."
+                },
+                {
+                    "original": "so we can write what teenagers but I'm not sure",
+                    "corrected": "so we can write about teenagers, but I'm not sure",
+                    "explanation": "The phrase 'what teenagers' is incorrect; it should be 'about teenagers' to convey the correct meaning.",
+                    "context": "While discussing our essay's content, I suggested that so we can write about teenagers, but I'm not sure how to approach it. It's essential to focus clearly on our subjects."
+                },
+                {
+                    "original": "it's not that complicated we have teenagers are using computer more and more",
+                    "corrected": "it's not that complicated; we have teenagers using computers more and more",
+                    "explanation": "The sentence structure is awkward, and 'are using' should be simplified to 'using' for better clarity.",
+                    "context": "In simplifying our writing task, I expressed that it's not that complicated; we have teenagers using computers more and more. This is our key argument."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "we can simply remove it can we put so here for example",
+                    "corrected": "we can simply remove it. Can we put 'so' here, for example?",
+                    "explanation": "The original sentence is a run-on sentence that lacks proper punctuation and capitalization for clarity.",
+                    "context": "In writing, clarity is important. We can simply remove it. Can we put 'so' here, for example, to make the sentence flow better?"
+                },
+                {
+                    "original": "causing health problems for a day",
+                    "corrected": "causing health problems daily.",
+                    "explanation": "The phrase 'for a day' implies a temporary situation, which doesn't accurately convey ongoing health issues.",
+                    "context": "The internet can negatively affect people. It can be a reason for causing health problems daily."
+                },
+                {
+                    "original": "one of the terms can help some people such as addiction problems",
+                    "corrected": "one of the terms can help some people with addiction problems.",
+                    "explanation": "The phrase needs 'with' to indicate the relationship between help and addiction problems correctly.",
+                    "context": "The discussion was about the internet's impact. One of the terms can help some people with addiction problems."
+                },
+                {
+                    "original": "while the internet can help some people to find new friends for example is it enough",
+                    "corrected": "while the internet can help some people to find new friends, for example, is it enough?",
+                    "explanation": "The original sentence is missing punctuation, which affects its clarity and turns it into a run-on.",
+                    "context": "In discussing the essay, it's important to clarify the points. While the internet can help some people to find new friends, for example, is it enough?"
+                },
+                {
+                    "original": "or relax after a long day I need to wake up",
+                    "corrected": "or relax after a long day. I need to wake up.",
+                    "explanation": "This is another run-on sentence that lacks appropriate punctuation to separate distinct thoughts.",
+                    "context": "After discussing the internet's benefits, it's time for a break. We can help some people to find new friends or relax after a long day. I need to wake up."
+                },
+                {
+                    "original": "I thought we should do it together okay okay",
+                    "corrected": "I thought we should do it together. Okay?",
+                    "explanation": "The original sentence misuses 'okay' as a filler, making it feel disjointed; proper punctuation would help.",
+                    "context": "While organizing the essay, clarity is key. I thought we should do it together. Okay?"
+                },
+                {
+                    "original": "we are talking about very specific cohort",
+                    "corrected": "we are talking about a very specific cohort.",
+                    "explanation": "The sentence lacks the article 'a,' which is necessary to be grammatically correct.",
+                    "context": "When narrowing down the topic, specificity matters. We are talking about a very specific cohort: teenagers."
+                },
+                {
+                    "original": "let’s first finish with the conclusion yeah",
+                    "corrected": "Let’s first finish with the conclusion, yeah?",
+                    "explanation": "The sentence lacks proper capitalization and punctuation; 'yeah' should also be punctuated.",
+                    "context": "It’s important to stay organized when drafting. Let’s first finish with the conclusion, yeah?"
+                },
+                {
+                    "original": "those words are very common yeah like when we are talking about you",
+                    "corrected": "Those words are very common, yeah? Like when we are talking about you.",
+                    "explanation": "Missing punctuation can lead to awkward phrasing; the section needs better structure.",
+                    "context": "When choosing words, certain phrases come up frequently. Those words are very common, yeah? Like when we are talking about you."
+                },
+                {
+                    "original": "it means like living abroad and earning money there and traveling as well or let's first let's first finish with the conclusion",
+                    "corrected": "It means living abroad, earning money, and traveling as well. Or let's first finish with the conclusion.",
+                    "explanation": "The original sentence is overly lengthy and confusing due to lack of punctuation.",
+                    "context": "Clarifying the implications is key. It means living abroad, earning money, and traveling as well. Or let's first finish with the conclusion."
+                },
+                {
+                    "original": "to find your friends again don't generalize like that",
+                    "corrected": "to find your friends again. Don't generalize like that.",
+                    "explanation": "The sentence is a run-on without proper punctuation, affecting readability.",
+                    "context": "While discussing friendship, it's crucial to be specific. To find your friends again. Don't generalize like that."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "it is becoming easier for people to travel and work in different countries it means what now people prefer not prefer but somebody prefers to living does it does it is that what the sentence means",
+                    "corrected": "It is becoming easier for people to travel and work in different countries. It means that now people prefer, or rather, some people prefer to live abroad.",
+                    "explanation": "The structure is run-on and unclear. 'Somebody prefers to living' is grammatically incorrect; it should be 'some people prefer to live.'",
+                    "context": "People are finding it easier to travel and work in different countries. It means that now some individuals may prefer to live abroad."
+                },
+                {
+                    "original": "it's easier to somebody to travel and work abroad for somebody for people again",
+                    "corrected": "It's easier for some people to travel and work abroad.",
+                    "explanation": "'It's easier to somebody' is incorrect; it should be 'easier for some people' to clarify the subject.",
+                    "context": "Traveling and working abroad has become smoother. It's easier for some people to travel and work abroad than it was before."
+                },
+                {
+                    "original": "meeting interesting people and career development and I wonder meeting like that's a great aspect for whom",
+                    "corrected": "Meeting interesting people is a great aspect for those who travel or live abroad.",
+                    "explanation": "The phrasing is confusing. The speaker should clarify they are referring to 'those who travel or live abroad.'",
+                    "context": "There are positive aspects of working abroad. Meeting interesting people is a significant benefit for those who travel or live in other countries."
+                },
+                {
+                    "original": "you're using the word abroad here as a adjective what do you mean abroad",
+                    "corrected": "You're using the word 'abroad' incorrectly here, as an adjective. What do you mean by 'abroad'?",
+                    "explanation": "'Abroad' should be a noun or adverb, not used as an adjective in this context.",
+                    "context": "We are discussing the term 'abroad' in context. You're using the word 'abroad' incorrectly here, as an adjective."
+                },
+                {
+                    "original": "that would make more sense okay like that european countries provide",
+                    "corrected": "That would make more sense if European countries provide.",
+                    "explanation": "Missing the subordinate clause. 'Like that' should be connected to the rest of the sentence for clarity.",
+                    "context": "We are constructing sentences about education. That would make more sense if European countries provide clear examples."
+                },
+                {
+                    "original": "it's a unique experience but it's difficult to gain in",
+                    "corrected": "It's a unique experience, but it's difficult to gain in one's native country.",
+                    "explanation": "The phrase is unclear due to missing subjects. Adding 'one's' clarifies who is having the experience.",
+                    "context": "Traveling abroad offers unique experiences. It's a unique experience, but it's difficult to gain in one's native country."
+                },
+                {
+                    "original": "we need to show that contrast between russian education and european education",
+                    "corrected": "We need to show the contrast between Russian education and European education.",
+                    "explanation": "Missing article 'the' before 'contrast' for grammatical correctness.",
+                    "context": "When discussing educational opportunities, we need to show the contrast between Russian education and European education."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "how are european universes better for your career development",
+                    "corrected": "how are European universities better for your career development",
+                    "explanation": "The word 'European' should be capitalized as it is a proper noun, and 'universes' is incorrect; it should be 'universities.'",
+                    "context": "We need to define how educational opportunities in Europe can impact career paths. How are European universities better for your career development? Scholarships can provide significant support."
+                },
+                {
+                    "original": "studying about studying",
+                    "corrected": "talking mostly about studying",
+                    "explanation": "'Studying about studying' is awkward; it’s better to say 'talking mostly about studying' for clarity.",
+                    "context": "If we focus too much on studying alone, we might lose sight of the broader topics. Can we still focus on career aspects while discussing studying?"
+                },
+                {
+                    "original": "we just don't have an opportunity because scholarships in russia",
+                    "corrected": "we just don't have many opportunities because scholarships in Russia",
+                    "explanation": "The phrase 'an opportunity' is too vague; 'many opportunities' better captures the limited options available. 'Russia' should be capitalized.",
+                    "context": "Many students are disheartened by the lack of scholarships. We just don't have many opportunities because scholarships in Russia are not substantial."
+                },
+                {
+                    "original": "no no like starting in europe how this is better for your career development",
+                    "corrected": "no, no, like studying in Europe, how is this better for your career development?",
+                    "explanation": "The phrase 'starting in Europe' is vague and should be replaced with 'studying in Europe.' Additionally, proper sentence structure needed.",
+                    "context": "It's important to establish why education in Europe is advantageous. No, no, like studying in Europe, how is this better for your career development?"
+                },
+                {
+                    "original": "scholarship means that your I remember",
+                    "corrected": "scholarship means that, I remember",
+                    "explanation": "The original phrase is awkward; a comma should separate the clauses for better clarity.",
+                    "context": "Understanding the differences in financial support is crucial. Scholarship means that, I remember, funding is often provided for education."
+                },
+                {
+                    "original": "is it enough to uh is it enough to live by no no",
+                    "corrected": "is it enough to live on? No, no.",
+                    "explanation": "'Live by' is incorrect in this context; 'live on' is the appropriate phrase.",
+                    "context": "Students often question the adequacy of financial support. Is it enough to live on? No, no, it’s not sufficient for expenses."
+                },
+                {
+                    "original": "but there is another thing yeah when you actually go and study in the university",
+                    "corrected": "but there is another thing: when you actually go and study at the university,",
+                    "explanation": "It should be 'at the university' instead of 'in the university' for accurate prepositional use, and a colon is needed for clause separation.",
+                    "context": "Understanding the nuances between different types of support is essential. But there is another thing: when you actually go and study at the university, you face different costs."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "But the thing is that, you know, many people, they confuse those words.",
+                    "corrected": "But the thing is that many people confuse those words.",
+                    "explanation": "The word 'they' is unnecessary here; the subject 'many people' is already clear.",
+                    "context": "I've noticed that many individuals often mix up these terms. Many people confuse those words. This can lead to misunderstandings."
+                },
+                {
+                    "original": "Scholarships for your achievements, grants, because you don't have enough money.",
+                    "corrected": "Scholarships are for your achievements, while grants are for those who don't have enough money.",
+                    "explanation": "The original sentence lacks clarity; 'while' should connect the two contrasting ideas properly.",
+                    "context": "It's important to distinguish between types of funding. Scholarships are for your achievements, while grants are for those who don't have enough money. This distinction helps in understanding financial aid."
+                },
+                {
+                    "original": "It's more comfortable. Comfortable is the most important thing.",
+                    "corrected": "It's about being more comfortable, and comfort is the most important thing.",
+                    "explanation": "The repetition of 'comfortable' is awkward; the phrase can be more smoothly expressed with slight rephrasing.",
+                    "context": "When discussing benefits, comfort plays a significant role. It's about being more comfortable, and comfort is the most important thing. This makes a difference in student life."
+                },
+                {
+                    "original": "Example is more important than your idea declaration.",
+                    "corrected": "The example is more important than your idea declaration.",
+                    "explanation": "Omitting 'the' makes the sentence sound less natural; articles are necessary for proper structure.",
+                    "context": "When structuring your writing, it's crucial to focus on examples. The example is more important than your idea declaration. This helps to clarify your argument."
+                },
+                {
+                    "original": "Like, if you approve students from poor country and you get a grant...",
+                    "corrected": "Like, if you admit students from poor countries and they receive a grant...",
+                    "explanation": "'Approve' is the wrong verb choice here; 'admit' fits the context better, and 'country' should be plural.",
+                    "context": "When discussing admission policies, it's important to be clear. If you admit students from poor countries and they receive a grant, it levels the playing field. This helps create equal opportunities."
+                },
+                {
+                    "original": "Students from countries can focus on this.",
+                    "corrected": "Students from various countries can focus on their studies.",
+                    "explanation": "The original sentence lacks specificity; 'various' clarifies that it's not just one country being referred to.",
+                    "context": "It's essential for students to concentrate on their academic work. Students from various countries can focus on their studies. This usually leads to better success rates."
+                },
+                {
+                    "original": "Rich kids that don't really have to worry and the report kids who just who work on the who have three jobs.",
+                    "corrected": "Rich kids who don't really have to worry and the poor kids who have to work three jobs.",
+                    "explanation": "The original sentence contains grammatical errors and awkward phrasing that disrupt clarity; revisions improve its flow.",
+                    "context": "In comparing different student experiences, the situation varies greatly. Rich kids who don't really have to worry contrast sharply with the poor kids who have to work three jobs. This disparity affects their educational experiences."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Internet connection",
+                    "definition": "The service that allows devices to access the internet.",
+                    "context": {
+                        "Context 1": "Yesterday, my internet connection was very slow, making it difficult to join classes.",
+                        "Context 2": "She has a strong internet connection, allowing her to stream movies without buffering.",
+                        "Context 3": "They decided to cancel the picnic because the park's internet connection was poor."
+                    }
+                },
+                {
+                    "word": "Bathrobe",
+                    "definition": "A loose, comfortable garment worn after a bath or while lounging at home.",
+                    "context": {
+                        "Context 1": "I was still in my bathrobe when the delivery arrived.",
+                        "Context 2": "He wore his bathrobe to the coffee shop, much to everyone's amusement.",
+                        "Context 3": "After a long day, she loves to relax in her soft, fluffy bathrobe."
+                    }
+                },
+                {
+                    "word": "Hoodie",
+                    "definition": "A sweatshirt with a hood, often used for casual wear.",
+                    "context": {
+                        "Context 1": "He bought a new hoodie to wear during the concert next month.",
+                        "Context 2": "She wore her favorite hoodie while hiking on a chilly day.",
+                        "Context 3": "The cat got caught in the hoodie when it tried to sneak inside."
+                    }
+                },
+                {
+                    "word": "Frozen",
+                    "definition": "Turned into ice by extreme cold; can also refer to something being in a state of suspension.",
+                    "context": {
+                        "Context 1": "The roads were frozen, making it hard to drive to school.",
+                        "Context 2": "I left my soup on the stove too long, and now it’s frozen solid.",
+                        "Context 3": "They decided to use frozen peas instead of fresh ones for the recipe."
+                    }
+                },
+                {
+                    "word": "Overslept",
+                    "definition": "To sleep longer than intended or to fail to wake up at the scheduled time.",
+                    "context": {
+                        "Context 1": "I overslept this morning and missed my first lesson.",
+                        "Context 2": "He overslept and arrived late to the meeting, feeling embarrassed.",
+                        "Context 3": "The dog overslept after playing all day and missed his evening walk."
+                    }
+                },
+                {
+                    "word": "Celebration",
+                    "definition": "A joyful event or gathering to mark a special occasion.",
+                    "context": {
+                        "Context 1": "We had a big celebration for our friend's birthday last weekend.",
+                        "Context 2": "The celebration of their victory lasted well into the night.",
+                        "Context 3": "The celebration of the new shop opening included free snacks for customers."
+                    }
+                },
+                {
+                    "word": "Challenging",
+                    "definition": "Something that is difficult and requires great effort to succeed.",
+                    "context": {
+                        "Context 1": "Going to school in icy conditions can be quite challenging.",
+                        "Context 2": "The crossword puzzle was challenging, but I enjoyed it.",
+                        "Context 3": "She found the recipe challenging but was proud of her final dish."
+                    }
+                },
+                {
+                    "word": "Statistically",
+                    "definition": "In a manner that is related to statistics, often used to describe data and trends.",
+                    "context": {
+                        "Context 1": "Statistically, most people are born in the summer months.",
+                        "Context 2": "The company analyzed their sales data statistically to make better decisions.",
+                        "Context 3": "Statistically speaking, cats are more popular pets than dogs in certain areas."
+                    }
+                },
+                {
+                    "word": "Casual",
+                    "definition": "Relaxed and unconcerned; informal.",
+                    "context": {
+                        "Context 1": "I prefer to wear casual clothes for online classes.",
+                        "Context 2": "The restaurant’s casual atmosphere makes it ideal for families.",
+                        "Context 3": "He went for a casual stroll in the park to enjoy the fresh air."
+                    }
+                },
+                {
+                    "word": "Communication",
+                    "definition": "The act of conveying information or expressing thoughts and feelings.",
+                    "context": {
+                        "Context 1": "Good communication is essential for effective teamwork in school.",
+                        "Context 2": "Animals use various forms of communication, like sounds or body language.",
+                        "Context 3": "She took a course on communication skills to improve her interactions."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Bathrobe",
+                    "fact": "Some people wear bathrobes even when they aren't at home, making it a fashionable trend!"
+                },
+                {
+                    "word": "Internet connection",
+                    "fact": "The first internet connection in the world was established in 1969, and it was only between four computers!"
+                },
+                {
+                    "word": "Hoodie",
+                    "fact": "The first hooded sweatshirts were created for laborers in the 1930s to keep them warm while working outside."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to school?",
+                    "answer": "Because it wanted to improve its 'byte' of knowledge!"
+                },
+                {
+                    "question": "What did one snowman say to the other snowman?",
+                    "answer": "Do you smell carrots?"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Addiction",
+                    "definition": "The fact or condition of being addicted to a particular substance or activity.",
+                    "context": {
+                        "Context 1": "Excessive gaming can lead to addiction, affecting mental health and relationships.",
+                        "Context 2": "His addiction to chocolate made it hard for him to stick to his diet.",
+                        "Context 3": "The addiction to mobile phones is becoming a growing concern among teenagers."
+                    }
+                },
+                {
+                    "word": "Isolation",
+                    "definition": "The state of being separated from others; solitude.",
+                    "context": {
+                        "Context 1": "The student experienced isolation when they spent too much time gaming alone.",
+                        "Context 2": "The explorer faced isolation in the remote Arctic wilderness.",
+                        "Context 3": "Isolation can lead to creative thinking for some artists working alone."
+                    }
+                },
+                {
+                    "word": "Consequences",
+                    "definition": "The result or effect of an action or condition.",
+                    "context": {
+                        "Context 1": "The consequences of playing video games for too long can be severe.",
+                        "Context 2": "His late-night studying had consequences the next day when he fell asleep in class.",
+                        "Context 3": "The consequences of forgetting an umbrella became clear when it started to rain."
+                    }
+                },
+                {
+                    "word": "Genuine",
+                    "definition": "Truly what something is said to be; authentic.",
+                    "context": {
+                        "Context 1": "The examples given should be genuine to strengthen the argument.",
+                        "Context 2": "She can always tell when someone gives her a genuine compliment.",
+                        "Context 3": "He looked for genuine smiles in the crowd during the performance."
+                    }
+                },
+                {
+                    "word": "Session",
+                    "definition": "A period during which a group meets to discuss or engage in an activity.",
+                    "context": {
+                        "Context 1": "The gaming session lasted for over 30 hours, which raised concerns.",
+                        "Context 2": "Every yoga session helped her feel more relaxed and focused.",
+                        "Context 3": "The training session included exercises and tips on improving teamwork."
+                    }
+                },
+                {
+                    "word": "Clarify",
+                    "definition": "To make a statement or situation less confused and more comprehensible.",
+                    "context": {
+                        "Context 1": "The teacher wanted to clarify the points made during the discussion.",
+                        "Context 2": "He had to clarify his directions when some students got lost.",
+                        "Context 3": "She needed to clarify her position on the project before the meeting."
+                    }
+                },
+                {
+                    "word": "Develop",
+                    "definition": "To grow or cause to grow and become more mature, advanced, or elaborate.",
+                    "context": {
+                        "Context 1": "The students wanted to develop their thoughts on the topic further.",
+                        "Context 2": "He decided to develop a new cooking skill during the pandemic.",
+                        "Context 3": "The project aims to develop environmental solutions for local communities."
+                    }
+                },
+                {
+                    "word": "Reference",
+                    "definition": "The action of mentioning or alluding to something.",
+                    "context": {
+                        "Context 1": "The essay should reference studies to support the arguments made.",
+                        "Context 2": "She used her favorite book as a reference for her research paper.",
+                        "Context 3": "In his speech, he made a reference to historical events to emphasize his point."
+                    }
+                },
+                {
+                    "word": "Engage",
+                    "definition": "To occupy, attract, or involve someone’s interest or attention.",
+                    "context": {
+                        "Context 1": "Teachers should engage students more effectively during lessons.",
+                        "Context 2": "The campaign aimed to engage the public in environmental issues.",
+                        "Context 3": "The documentary did a great job of engaging its audience with real-life stories."
+                    }
+                },
+                {
+                    "word": "Paraphrase",
+                    "definition": "To express the meaning of something written or spoken using different words.",
+                    "context": {
+                        "Context 1": "Students were asked to paraphrase the original text for clarity.",
+                        "Context 2": "He struggled to paraphrase the complex scientific article.",
+                        "Context 3": "In her report, she had to paraphrase quotes from various interviews."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Addiction",
+                    "fact": "Did you know that the term 'addiction' comes from a Latin word meaning 'to give over or surrender'?"
+                },
+                {
+                    "word": "Isolation",
+                    "fact": "In the Arctic, scientists live in isolation for months to study polar bears without disturbance!"
+                },
+                {
+                    "word": "Genuine",
+                    "fact": "The word 'genuine' is believed to be derived from the Latin 'genuinus', meaning 'of the same birth'—like a true heir!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the gamer bring a ladder to the computer club?",
+                    "answer": "Because they heard the games were on another level!"
+                },
+                {
+                    "question": "Why did the student always carry a notebook while gaming?",
+                    "answer": "Because they wanted to jot down their high scores!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Introductory",
+                    "definition": "Serving as an introduction; preliminary.",
+                    "context": {
+                        "Context 1": "It's important to avoid using too many introductory phrases in your writing.",
+                        "Context 2": "The introductory chapter of the book sets the stage for the entire story.",
+                        "Context 3": "She always begins her presentations with an introductory joke to engage the audience."
+                    }
+                },
+                {
+                    "word": "Recommendation",
+                    "definition": "A suggestion or advice about what to do.",
+                    "context": {
+                        "Context 1": "The teacher's recommendation was to structure your essay carefully.",
+                        "Context 2": "His recommendation for dinner was a local seafood restaurant.",
+                        "Context 3": "I followed her recommendation and started exercising daily."
+                    }
+                },
+                {
+                    "word": "Phenomenon",
+                    "definition": "An observable event or occurrence, especially something unusual.",
+                    "context": {
+                        "Context 1": "This phenomenon can affect young people significantly.",
+                        "Context 2": "The Northern Lights are a natural phenomenon that attracts thousands of tourists.",
+                        "Context 3": "A strange phenomenon occurred when the cat started barking."
+                    }
+                },
+                {
+                    "word": "Aspect",
+                    "definition": "A particular part or feature of something.",
+                    "context": {
+                        "Context 1": "There are many positive aspects to consider in your essay.",
+                        "Context 2": "The aspect of the film that stood out was the cinematography.",
+                        "Context 3": "Her ability to laugh at herself is a charming aspect of her personality."
+                    }
+                },
+                {
+                    "word": "Cohort",
+                    "definition": "A group of people banded together or treated as a group.",
+                    "context": {
+                        "Context 1": "We need to focus on a very specific cohort in this discussion.",
+                        "Context 2": "The cohort from our college reunion all seemed to have aged gracefully.",
+                        "Context 3": "The research team focused on the cohort of new mothers for their study."
+                    }
+                },
+                {
+                    "word": "Disadvantages",
+                    "definition": "Negative aspects or drawbacks of something.",
+                    "context": {
+                        "Context 1": "Let's discuss the disadvantages of using the internet excessively.",
+                        "Context 2": "For some people, living in a big city has more disadvantages than advantages.",
+                        "Context 3": "The disadvantages of eating too much sugar are well-documented."
+                    }
+                },
+                {
+                    "word": "Relax",
+                    "definition": "To make or become less tense or anxious.",
+                    "context": {
+                        "Context 1": "After a long day, the internet can help some people relax.",
+                        "Context 2": "He likes to relax by reading a good book by the fireplace.",
+                        "Context 3": "To relax before bed, she often listens to calming music."
+                    }
+                },
+                {
+                    "word": "Specific",
+                    "definition": "Clearly defined or identified; particular.",
+                    "context": {
+                        "Context 1": "We were talking about a very specific cohort in the conversation.",
+                        "Context 2": "Can you provide a specific example to illustrate your point?",
+                        "Context 3": "He asked for specific instructions on how to assemble the furniture."
+                    }
+                },
+                {
+                    "word": "Generate",
+                    "definition": "To cause something to be produced or created.",
+                    "context": {
+                        "Context 1": "We need to generate ideas that will make our project stand out.",
+                        "Context 2": "The new marketing strategy is expected to generate more revenue.",
+                        "Context 3": "His enthusiasm helped to generate a lot of excitement in the group."
+                    }
+                },
+                {
+                    "word": "Interpret",
+                    "definition": "To explain the meaning of something.",
+                    "context": {
+                        "Context 1": "Many people misinterpret the topic we are discussing.",
+                        "Context 2": "It's fascinating how different cultures interpret the same art piece.",
+                        "Context 3": "He could interpret the ancient text, revealing its secret messages."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Recommendation",
+                    "fact": "Did you know that the word 'recommend' comes from Latin roots meaning 'to present again' or 'to affirm'?"
+                },
+                {
+                    "word": "Phenomenon",
+                    "fact": "In physics, there’s a phenomenon called ‘quantum entanglement’ where particles can be connected, no matter how far apart they are!"
+                },
+                {
+                    "word": "Cohort",
+                    "fact": "Cohorts can be seen in nature too! In beehives, bees work together as a cohort to protect their queen."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the teacher wear sunglasses during class?",
+                    "answer": "Because her students were so bright!"
+                },
+                {
+                    "question": "Why was the equal sign so humble?",
+                    "answer": "Because it knew it wasn’t less than or greater than anyone else!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Considering the migration crisis from different perspectives helps us understand both sides.",
+                        "Context 2": "From her perspective, eating chocolate every day is a fantastic idea!",
+                        "Context 3": "The painting gives a unique perspective on city life in the 1920s."
+                    }
+                },
+                {
+                    "word": "Assimilate",
+                    "definition": "To take in and incorporate as one's own; to absorb into a wider society.",
+                    "context": {
+                        "Context 1": "Migrants often find it challenging to assimilate into a new culture.",
+                        "Context 2": "The new students struggled to assimilate all the information in their first class.",
+                        "Context 3": "While camping, we tried to assimilate the local customs, including wearing traditional outfits."
+                    }
+                },
+                {
+                    "word": "Paraphrase",
+                    "definition": "To express the meaning of something that has been written or spoken using different words.",
+                    "context": {
+                        "Context 1": "You can paraphrase the original idea to make it clearer.",
+                        "Context 2": "She decided to paraphrase the poem to make it easier for her classmates to understand.",
+                        "Context 3": "When telling a joke, it's often best to paraphrase the punchline for maximum effect."
+                    }
+                },
+                {
+                    "word": "Opportunities",
+                    "definition": "A set of circumstances that makes it possible to do something.",
+                    "context": {
+                        "Context 1": "Studying abroad can provide unique career opportunities.",
+                        "Context 2": "Finding opportunities to adopt a pet can change your life.",
+                        "Context 3": "In the gaming world, opportunities to level up can help you win more matches."
+                    }
+                },
+                {
+                    "word": "Unique",
+                    "definition": "Being the only one of its kind; unlike anything else.",
+                    "context": {
+                        "Context 1": "Traveling abroad offers a unique experience not found at home.",
+                        "Context 2": "He has a unique ability to guess people's favorite ice cream flavors.",
+                        "Context 3": "Every snowflake is unique, but so is your taste in snacks!"
+                    }
+                },
+                {
+                    "word": "Communication",
+                    "definition": "The act of conveying information or expressing thoughts and feelings.",
+                    "context": {
+                        "Context 1": "Effective communication is key to overcoming language barriers.",
+                        "Context 2": "He was excellent at communication, often relating stories about his pet cat.",
+                        "Context 3": "In a silent movie, communication happens through expressions and gestures."
+                    }
+                },
+                {
+                    "word": "Scholarships",
+                    "definition": "Financial aid awarded to a student to further their education.",
+                    "context": {
+                        "Context 1": "Many European universities offer scholarships to attract international students.",
+                        "Context 2": "She applied for several scholarships to help cover the cost of her new video game console.",
+                        "Context 3": "The bakery offered scholarships for students interested in pastry arts, deliciously paving their future!"
+                    }
+                },
+                {
+                    "word": "Career Development",
+                    "definition": "The process of managing your career path and enhancing your skills for future opportunities.",
+                    "context": {
+                        "Context 1": "Moving to another country can significantly aid in your career development.",
+                        "Context 2": "He attended various workshops for career development, hoping to become a stand-up comedian.",
+                        "Context 3": "In her free time, she read books about career development for her cat's influencer page."
+                    }
+                },
+                {
+                    "word": "Finance",
+                    "definition": "The management of large amounts of money, especially by governments or large companies.",
+                    "context": {
+                        "Context 1": "Learning about finance is crucial for anyone planning to study abroad.",
+                        "Context 2": "The ice cream shop's finance department was in charge of making sure they had enough sprinkles.",
+                        "Context 3": "Her finance skills came in handy when budgeting for her new life-size giraffe statue."
+                    }
+                },
+                {
+                    "word": "Social Isolation",
+                    "definition": "A complete lack of contact with other people, which can lead to feelings of loneliness.",
+                    "context": {
+                        "Context 1": "Social isolation can often be a challenge for migrants in a new country.",
+                        "Context 2": "My pet fish loves social isolation; he swims alone, oblivious to the other fish.",
+                        "Context 3": "During the winter, people often feel social isolation when the snow keeps them indoors."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Assimilate",
+                    "fact": "Did you know that a common way to assimilate into a new culture is to learn its food? Because who can resist delicious cuisine?"
+                },
+                {
+                    "word": "Unique",
+                    "fact": "The world’s unique address system truly stands out; in Japan, many houses don’t have traditional street numbers but are still easy to find – if you can read Japanese!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why don’t scientists trust atoms?",
+                    "answer": "Because they make up everything!"
+                },
+                {
+                    "question": "What did the fish say when it hit the wall?",
+                    "answer": "Dam!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Scholarship",
+                    "definition": "A financial aid award designed to support a student's education, awarded based on academic or other achievements.",
+                    "context": {
+                        "Context 1": "Many European countries offer scholarships for international students, allowing them to study without financial burdens.",
+                        "Context 2": "After hearing about the scholarship, she decided to apply to three different universities.",
+                        "Context 3": "He believed that obtaining a scholarship was as easy as filling out a form."
+                    }
+                },
+                {
+                    "word": "Stipend",
+                    "definition": "A fixed regular sum paid as a salary or allowance.",
+                    "context": {
+                        "Context 1": "In contrast to scholarships, stipends help cover students' daily living expenses while studying.",
+                        "Context 2": "The intern complained that the stipend was too low to afford rent in the city.",
+                        "Context 3": "He didn't realize that a stipend was often much smaller than a full salary."
+                    }
+                },
+                {
+                    "word": "Contrast",
+                    "definition": "To compare in such a way as to emphasize differences.",
+                    "context": {
+                        "Context 1": "We need to contrast the educational systems in Russia and Europe to see the differences.",
+                        "Context 2": "The artist contrasted bright colors to make the painting more vivid.",
+                        "Context 3": "Reading a book on history helped her contrast modern society with ancient civilizations."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude towards or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "From the Russian perspective, the educational opportunities in Europe are quite attractive.",
+                        "Context 2": "His perspective on the issue changed after he heard another person's opinion.",
+                        "Context 3": "Climbing the mountain gave her a breathtaking perspective of the valley below."
+                    }
+                },
+                {
+                    "word": "Opportunity",
+                    "definition": "A set of circumstances that makes it possible to do something.",
+                    "context": {
+                        "Context 1": "Studying abroad provides Russian students with unique opportunities for career development.",
+                        "Context 2": "He missed the opportunity to apply for the internship because he was on vacation.",
+                        "Context 3": "The unexpected opportunity to travel led her to discover a love for photography."
+                    }
+                },
+                {
+                    "word": "Diplomat",
+                    "definition": "An official representing a country abroad, often involved in negotiations and maintaining international relations.",
+                    "context": {
+                        "Context 1": "If Russian students aim to become diplomats, attending a university in Europe could be beneficial.",
+                        "Context 2": "As a diplomat, she often traveled to different countries to strengthen alliances.",
+                        "Context 3": "His dream of becoming a diplomat became reality when he completed his law degree."
+                    }
+                },
+                {
+                    "word": "Government",
+                    "definition": "The governing body of a nation, state, or community.",
+                    "context": {
+                        "Context 1": "The discussion highlighted how the Russian government does not provide sufficient scholarships.",
+                        "Context 2": "The government announced new policies to support small businesses.",
+                        "Context 3": "During the debate, they questioned how the government could help the environment."
+                    }
+                },
+                {
+                    "word": "Education",
+                    "definition": "The process of receiving or giving systematic instruction, especially at a school or university.",
+                    "context": {
+                        "Context 1": "Higher education in Europe is often more affordable and offers better opportunities for students.",
+                        "Context 2": "She valued education so much that she enrolled in an extra course on Saturdays.",
+                        "Context 3": "The education system in her country is known for its rigorous standards."
+                    }
+                },
+                {
+                    "word": "Professions",
+                    "definition": "A paid occupation, especially one that involves prolonged training and a formal qualification.",
+                    "context": {
+                        "Context 1": "Different professions require different degrees and skills, expanding students' options.",
+                        "Context 2": "In today’s world, many professions are becoming more technology-driven.",
+                        "Context 3": "He explored various professions before deciding to pursue teaching."
+                    }
+                },
+                {
+                    "word": "Financial Help",
+                    "definition": "Assistance or support that aids in covering expenses, especially for education.",
+                    "context": {
+                        "Context 1": "Many students seek financial help to ease the burden of educational costs.",
+                        "Context 2": "The charity provided financial help to families affected by the flood.",
+                        "Context 3": "He didn’t realize that financial help was available until he spoke to a counselor."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Scholarship",
+                    "fact": "Did you know that some universities offer scholarships for students with unusual talents, like juggling or unicycle riding?"
+                },
+                {
+                    "word": "Stipend",
+                    "fact": "The word stipend comes from the Latin word ‘stipendium,’ which referred to a soldier’s pay, but today it just means a fancy allowance!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student cross the road?",
+                    "answer": "To get to the other side of the scholarship application!"
+                },
+                {
+                    "question": "What did one international student say to another during finals?",
+                    "answer": "‘We’re all in this together, but I got the scholarship!’"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Scholarship",
+                    "definition": "Money given to support a student's education based on academic or other achievements.",
+                    "context": {
+                        "Context 1": "She received a scholarship because of her high grades in school.",
+                        "Context 2": "The scholarship to the art summer camp is granted solely based on creativity.",
+                        "Context 3": "He applied for a scholarship to help fund his dream vacation."
+                    }
+                },
+                {
+                    "word": "Grant",
+                    "definition": "A sum of money given by an organization for a specific purpose, often related to education or research.",
+                    "context": {
+                        "Context 1": "The university awarded him a grant to conduct his research in environmental science.",
+                        "Context 2": "She received a grant to open a bakery, allowing her to pursue her passion for baking.",
+                        "Context 3": "The city launched a grant program to encourage tourism and support local businesses."
+                    }
+                },
+                {
+                    "word": "Stipend",
+                    "definition": "A fixed regular sum paid as a salary or allowance, often to cover living expenses.",
+                    "context": {
+                        "Context 1": "As an intern, he received a stipend to help cover his living costs during the summer.",
+                        "Context 2": "The artist lived modestly, relying on a stipend from a fellowship to create her work.",
+                        "Context 3": "He received a stipend from his parents every month to help him with his grocery bills."
+                    }
+                },
+                {
+                    "word": "Tuition",
+                    "definition": "The fee or payment made for instruction at a school or university.",
+                    "context": {
+                        "Context 1": "Her parents are saving money to cover her tuition for college.",
+                        "Context 2": "After receiving a salary increase, he decided to pay his tuition upfront.",
+                        "Context 3": "The school offered a discount on tuition for siblings enrolling at the same time."
+                    }
+                },
+                {
+                    "word": "Comfortable Living",
+                    "definition": "A state of financial stability that allows for a decent quality of life without struggles.",
+                    "context": {
+                        "Context 1": "Many students aim for scholarships to ensure a comfortable living while studying.",
+                        "Context 2": "His career as a software engineer provides him with a comfortable living in the city.",
+                        "Context 3": "The couple prefers to live simply rather than striving for a more comfortable living."
+                    }
+                },
+                {
+                    "word": "Opportunities",
+                    "definition": "Situations or chances that can lead to advancement or improvement.",
+                    "context": {
+                        "Context 1": "Studying abroad provides many opportunities for personal and professional growth.",
+                        "Context 2": "The job fair opened up new opportunities for recent graduates.",
+                        "Context 3": "At the amusement park, there were several opportunities for fun and excitement."
+                    }
+                },
+                {
+                    "word": "Ablity",
+                    "definition": "The capacity to do something; skill or competence.",
+                    "context": {
+                        "Context 1": "Her ability to solve complex problems impressed her teachers.",
+                        "Context 2": "In the circus, her ability to juggle five balls at once amazed the audience.",
+                        "Context 3": "His ability to charm everyone he meets makes him a great conversationalist."
+                    }
+                },
+                {
+                    "word": "Modification",
+                    "definition": "The act of making changes or adjustments to something.",
+                    "context": {
+                        "Context 1": "The teacher suggested a modification to the student's essay to clarify his ideas.",
+                        "Context 2": "The recipe called for a modification to include gluten-free flour.",
+                        "Context 3": "The modification of his bicycle included a new set of tires and a better seat."
+                    }
+                },
+                {
+                    "word": "Interchangeably",
+                    "definition": "In a way that allows for exchange without a significant difference.",
+                    "context": {
+                        "Context 1": "Many people use 'scholarship' and 'grant' interchangeably, but they have different meanings.",
+                        "Context 2": "The teacher allowed students to use pencils and pens interchangeably during the test.",
+                        "Context 3": "Her friends called her by her nickname and her full name interchangeably."
+                    }
+                },
+                {
+                    "word": "Clarification",
+                    "definition": "The action of making a statement or situation less confused and more comprehensible.",
+                    "context": {
+                        "Context 1": "The professor provided clarification on how to apply for financial aid.",
+                        "Context 2": "After further clarification, the directions for the game became much clearer.",
+                        "Context 3": "The doctor gave her a clarification regarding her health check-up results."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Scholarship",
+                    "fact": "If a cat ever gets a scholarship for being cute, it would likely win every time!"
+                },
+                {
+                    "word": "Tuition",
+                    "fact": "In some countries, tuition fees are so low you could pay them with pocket change - or just a few cheesy puffs!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "What do you call a magician who loses his magic?",
+                    "answer": "Ian!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going today?"
+                },
+                {
+                    "Person 2": "Not too bad! Just trying to wake up. How about you?"
+                },
+                {
+                    "Person 1": "Same here. I’ve got school starting at 8 a.m., but I know I’ll be running late."
+                },
+                {
+                    "Person 2": "Oh no! Does that happen often?"
+                },
+                {
+                    "Person 1": "Not really, usually I’m on time. But this morning, freakin' traffic!"
+                },
+                {
+                    "Person 2": "That’s the worst! Is school going to be interesting today?"
+                },
+                {
+                    "Person 1": "I have no idea. The schedule looks pretty ordinary. Just more lessons."
+                },
+                {
+                    "Person 2": "Well, I hope something fun happens! Anything planned?"
+                },
+                {
+                    "Person 1": "Not much, just regular classes. It’s actually snowy outside, which makes getting to school a bit tricky."
+                },
+                {
+                    "Person 2": "Oh man, stay safe out there! I heard schools are closing because of the weather."
+                },
+                {
+                    "Person 1": "Yeah, luckily mine is still open. Just thankful for online classes if it gets worse!"
+                },
+                {
+                    "Person 2": "Good point! I’d take online classes over freezing outside any day!"
+                },
+                {
+                    "Person 1": "Exactly! Plus, I can wear my slippers during class."
+                },
+                {
+                    "Person 2": "Haha, that’s a bonus! So did you do anything fun this weekend?"
+                },
+                {
+                    "Person 1": "Yeah! We celebrated one of my friend's birthdays. It was a blast!"
+                },
+                {
+                    "Person 2": "Nice! Birthday parties are always fun. Did you have cake?"
+                },
+                {
+                    "Person 1": "Of course! Chocolate cake, the best kind."
+                },
+                {
+                    "Person 2": "Yum! I think birthdays are more fun when you get older. More experience celebrating, I guess!"
+                },
+                {
+                    "Person 1": "Totally! It makes a big difference. Plus, we have a few more coming up in February."
+                },
+                {
+                    "Person 2": "Oh, cool! Are you planning anything special?"
+                },
+                {
+                    "Person 1": "Maybe a little party again! They’re all close together, so it could be a big get-together."
+                },
+                {
+                    "Person 2": "That sounds awesome! I love when everyone’s birthday is around the same time."
+                },
+                {
+                    "Person 1": "Right? It's like a non-stop celebration. Just hope it’s warmer this time!"
+                },
+                {
+                    "Person 2": "Yeah, cold weather can be such a drag. But hey, let’s get to those essays we need to work on!"
+                },
+                {
+                    "Person 1": "Good idea! Let’s tackle this and then we can chat more!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about all those crazy gaming marathons people do? Like, some folks literally won't leave their chairs for hours!"
+                },
+                {
+                    "Person 2": "Yeah, I read about that! There was a story about a guy who played for 30 hours straight. That’s nuts!"
+                },
+                {
+                    "Person 1": "I can't even imagine. I feel tired after just a few hours of gaming! How do they do it?"
+                },
+                {
+                    "Person 2": "It's wild! But it makes you think about how addictive gaming can be. Like, what's keeping them glued to the screen for so long?"
+                },
+                {
+                    "Person 1": "Totally! I guess some people just lose track of time, especially if they’re playing with friends online."
+                },
+                {
+                    "Person 2": "For sure. And it’s not just about the game, either. Sometimes they feel lonely and gaming can be a way to escape."
+                },
+                {
+                    "Person 1": "Yeah, I can see that. But spending hours like that doesn’t sound healthy at all."
+                },
+                {
+                    "Person 2": "Right? I mean, sure, it's fun, but there’s a line. You gotta find a balance."
+                },
+                {
+                    "Person 1": "Exactly! Maybe we should start a gaming club that has scheduled breaks or something."
+                },
+                {
+                    "Person 2": "Haha, that could be the perfect idea! 'Game responsibly' could be our motto."
+                },
+                {
+                    "Person 1": "I love it! Let’s make sure we actually stick to those breaks, though."
+                },
+                {
+                    "Person 2": "Deal! And if we ever catch each other playing too long, we can call it out!"
+                },
+                {
+                    "Person 1": "Sounds like a plan! Let’s keep our gaming fun and healthy."
+                },
+                {
+                    "Person 2": "For sure! Here’s to keeping our gaming sessions awesome and not exhausting."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you see the new restaurant that just opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I heard about it! Is it any good?"
+                },
+                {
+                    "Person 1": "I think so! I went there last weekend, and the food was amazing. They have this dish that's out of this world."
+                },
+                {
+                    "Person 2": "Oh nice! What did you order?"
+                },
+                {
+                    "Person 1": "I got their signature burger. It comes with this special sauce that makes it so tasty!"
+                },
+                {
+                    "Person 2": "Sounds delicious! I love a good burger. Did you try any appetizers?"
+                },
+                {
+                    "Person 1": "Yeah, we shared some loaded nachos. They were piled high with cheese and guac. Perfect for sharing."
+                },
+                {
+                    "Person 2": "Yum! I’m a sucker for nachos. How was the vibe of the place?"
+                },
+                {
+                    "Person 1": "It was really chill. They played some great music, and the decor was super inviting."
+                },
+                {
+                    "Person 2": "That sounds like my kind of place! Are they open for lunch too?"
+                },
+                {
+                    "Person 1": "Yep, they do lunch specials during the week. We should definitely go together sometime!"
+                },
+                {
+                    "Person 2": "For sure! I’m always down for exploring new food places."
+                },
+                {
+                    "Person 1": "Great! Let’s plan for next Saturday?"
+                },
+                {
+                    "Person 2": "Sounds perfect. I’ll bring my appetite!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about how easy it’s becoming to work and travel abroad?"
+                },
+                {
+                    "Person 2": "Yeah! I was just reading about it. It’s pretty wild how many people are moving around these days."
+                },
+                {
+                    "Person 1": "For sure! It seems like almost everyone wants to experience living in another country."
+                },
+                {
+                    "Person 2": "Right? I think it’s great, but do you think everyone gets to assimilate well?"
+                },
+                {
+                    "Person 1": "That’s a good point. Sometimes, I feel like there can be a lot of communication barriers."
+                },
+                {
+                    "Person 2": "Exactly! And then it can be hard for newcomers to connect with locals."
+                },
+                {
+                    "Person 1": "But on the bright side, think about all the interesting people you can meet!"
+                },
+                {
+                    "Person 2": "Totally! Networking opportunities can be amazing when you travel. You never know who you’ll meet."
+                },
+                {
+                    "Person 1": "Plus, it’s a unique experience that can really help you grow, right?"
+                },
+                {
+                    "Person 2": "Definitely! I always find it interesting how different cultures can broaden your perspective."
+                },
+                {
+                    "Person 1": "Do you think it’s easier to do it now than in the past?"
+                },
+                {
+                    "Person 2": "Oh, for sure! With technology and cheaper travel options, it’s easier than ever to find jobs abroad."
+                },
+                {
+                    "Person 1": "Yeah, and we can apply for jobs online from anywhere. It’s kind of amazing."
+                },
+                {
+                    "Person 2": "It is! Just imagine moving to a new country and finding a job without even being there yet."
+                },
+                {
+                    "Person 1": "Sounds awesome! I might need to start planning a trip soon."
+                },
+                {
+                    "Person 2": "Same here! Let’s do some research on places we’d love to visit."
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you been keeping up with the news lately?"
+                },
+                {
+                    "Person 2": "Not really, I've been too busy with work. What's going on?"
+                },
+                {
+                    "Person 1": "They just announced some new scholarships for international students in Europe."
+                },
+                {
+                    "Person 2": "Oh, that sounds interesting! Do you think it's worth it? I mean, studying abroad can be tough."
+                },
+                {
+                    "Person 1": "Definitely! It can be a unique experience. A lot of European countries offer scholarships that cover living expenses. That makes it easier to focus on studies."
+                },
+                {
+                    "Person 2": "That's true. I remember when I was considering studying in Russia, it was tough to find financial help."
+                },
+                {
+                    "Person 1": "Yeah, scholarships in Russia aren't as generous. They usually don’t provide enough support for students."
+                },
+                {
+                    "Person 2": "Exactly! If you want to study and cover your daily expenses, it can be a real struggle."
+                },
+                {
+                    "Person 1": "In contrast, European universities seem to fund their students more comprehensively. They even provide stipends."
+                },
+                {
+                    "Person 2": "Right! A stipend can make a huge difference. It helps cover rent and food, you know?"
+                },
+                {
+                    "Person 1": "Absolutely! It’s crazy how much support some countries offer. It gives students a chance to focus on their passions instead of worrying about money."
+                },
+                {
+                    "Person 2": "For sure! So, do you think you would ever consider studying abroad?"
+                },
+                {
+                    "Person 1": "It’s crossed my mind! I think the experience would be invaluable. Plus, getting to meet people from different cultures sounds amazing."
+                },
+                {
+                    "Person 2": "Totally! I’d love to travel and learn more about other cultures through school."
+                },
+                {
+                    "Person 1": "Same here! Maybe we'll both end up in Europe one day."
+                },
+                {
+                    "Person 2": "That would be awesome! Let's keep an eye on those scholarship opportunities."
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you heard about the different types of financial aid for college?"
+                },
+                {
+                    "Person 2": "Totally! It can be really confusing though. There's scholarships, grants, and stipends, right?"
+                },
+                {
+                    "Person 1": "Exactly! A scholarship is usually based on achievements, like sports or academics."
+                },
+                {
+                    "Person 2": "Right! And grants are typically for those who need help with costs, like covering tuition?"
+                },
+                {
+                    "Person 1": "Yeah, and stipends are just monthly payments for living expenses, like a fixed amount."
+                },
+                {
+                    "Person 2": "I've noticed people mix them up all the time. They usually just say ‘scholarship’ for anything."
+                },
+                {
+                    "Person 1": "Yeah, it’s like they think all free money is the same! It’s good to know the differences."
+                },
+                {
+                    "Person 2": "For sure! It makes it easier when you're applying for schools and figuring out finances."
+                },
+                {
+                    "Person 1": "So, do you think most schools in Europe offer better financial aid options?"
+                },
+                {
+                    "Person 2": "I've heard that! They often have larger grants available for both local and international students."
+                },
+                {
+                    "Person 1": "That could really help students focus on their studies without all the financial stress."
+                },
+                {
+                    "Person 2": "Absolutely! It’s nice when students can concentrate on learning instead of working multiple jobs."
+                },
+                {
+                    "Person 1": "Exactly! It’d be great if more places did that. Have you started thinking about where to apply?"
+                },
+                {
+                    "Person 2": "Yeah, I'm looking into it! Just trying to figure out my finances first. How about you?"
+                },
+                {
+                    "Person 1": "Same here! Let’s share tips as we figure this whole college thing out."
+                },
+                {
+                    "Person 2": "Definitely! We can help each other through it. Sounds like a plan!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
