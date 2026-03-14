@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 7,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I just, he just bring it at one moment.",
+                    "corrected": "I just, he just brought it at one moment.",
+                    "explanation": "The verb 'bring' should be in the past tense 'brought' to match the past context.",
+                    "context": "My father gave me a military mask. I just, he just brought it at one moment. He handed it to me, and I was surprised."
+                },
+                {
+                    "original": "that's okay.",
+                    "corrected": "that's not okay.",
+                    "explanation": "The speaker appears to contradict their own statement about handling high temperatures.",
+                    "context": "When discussing their sickness, the speaker mentions feeling bad with high temperatures. That's not okay. I can't handle it well at all."
+                },
+                {
+                    "original": "to impress my enemy, my opponent.",
+                    "corrected": "to impress my opponent.",
+                    "explanation": "'Enemy' is used incorrectly in a non-conflict context; 'opponent' fits better here.",
+                    "context": "They are talking about a sports competition. I just need to impress my opponent. It's all about sportsmanship."
+                },
+                {
+                    "original": "I guess if I visit and, uh, make, uh, favors all these things on the teachers will be more loyal to me, you know?",
+                    "corrected": "I guess if I visit and, uh, do all these things for the teachers, they will be more loyal to me, you know?",
+                    "explanation": "The phrase 'make favors' is incorrect; it should be 'do favors for'.",
+                    "context": "The speaker is suggesting that their attendance might benefit them with the teachers. I guess if I visit and do all these things for the teachers, they will be more loyal to me, you know?"
+                },
+                {
+                    "original": "I have a document what I'm sick, because of my allergy.",
+                    "corrected": "I have a document that states I'm sick because of my allergy.",
+                    "explanation": "The word 'what' is incorrect in this context; 'that' should be used to introduce a clause.",
+                    "context": "Discussing illness and excuses for missing activities, the speaker mentions having documentation. I have a document that states I'm sick because of my allergy."
+                },
+                {
+                    "original": "I cannot, uh, have anything outside, especially about sports.",
+                    "corrected": "I cannot do anything outside, especially sports.",
+                    "explanation": "'Have' is wrong in this context; 'do' is the correct verb to use.",
+                    "context": "They are discussing their limitations due to illness. I cannot do anything outside, especially sports."
+                },
+                {
+                    "original": "Just to have said, just as I already say, which I'm here, even if I cannot do it,",
+                    "corrected": "Just to say, just as I already said, that I'm here, even if I cannot do it,",
+                    "explanation": "The phrase 'have said' is incorrect; it should be 'just to say.'",
+                    "context": "The speaker is reiterating their commitment despite their sickness. Just to say, just as I already said, that I'm here, even if I cannot do it."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I don't really think he's trustworthy, but we didn't have any options, so we had to pay him and, uh, like 20,000, like 20,000 rubles.",
+                    "corrected": "I don't really think he's trustworthy, but we didn't have any options, so we had to pay him about 20,000 rubles.",
+                    "explanation": "The phrase 'like 20,000' is informal and redundant; 'about 20,000' is clearer.",
+                    "context": "We've been looking for someone to help us with this document. I had doubts about his trustworthiness, but we didn't have any options, so we had to pay him about 20,000 rubles."
+                },
+                {
+                    "original": "It's a nightmare because like you have to go, you have to visit, uh, like the, uh, center to do the document center like 10 times, because every time you go there, something's wrong.",
+                    "corrected": "It's a nightmare because you have to visit the document center about 10 times; every time you go there, something's wrong.",
+                    "explanation": "The repetition of 'like' and 'uh' interrupts clarity; simplifying the structure makes it easier to understand.",
+                    "context": "I tried to get my documents processed legally. It's a nightmare because you have to visit the document center about 10 times; every time you go there, something's wrong."
+                },
+                {
+                    "original": "Nobody will hire you like officially.",
+                    "corrected": "Nobody will hire you officially.",
+                    "explanation": "The word 'like' is unnecessary and informal in this context.",
+                    "context": "In Kazakhstan, finding a job can be difficult. Nobody will hire you officially, which complicates things significantly."
+                },
+                {
+                    "original": "She did it for him for two weeks.",
+                    "corrected": "She did it for him in two weeks.",
+                    "explanation": "'For' implies an ongoing process, while 'in' refers to the completion of the task within a time frame.",
+                    "context": "I had hoped the process would be straightforward. She did it for him in two weeks, but complications arose afterward."
+                },
+                {
+                    "original": "You don't have a valid air repair.",
+                    "corrected": "You don't have a valid air permit.",
+                    "explanation": "'Air repair' is incorrect; it should be 'air permit,' which is the appropriate term for travel documentation.",
+                    "context": "He was preparing to cross the border. They told him he didn't have a valid air permit, which caused a lot of stress."
+                },
+                {
+                    "original": "I thought that that's a shitty idea.",
+                    "corrected": "I thought that was a bad idea.",
+                    "explanation": "Using 'shitty' is informal and may not be seen as professional; 'bad' is a more neutral term.",
+                    "context": "Our situation seemed precarious. I thought that was a bad idea to cross the border without proper documentation."
+                },
+                {
+                    "original": "Whenever you want, you're looking for a job, nobody will hire you like officially.",
+                    "corrected": "Whenever you're looking for a job, nobody will hire you officially.",
+                    "explanation": "The phrase 'like officially' is unnecessary; 'officially' alone is sufficient to convey the meaning.",
+                    "context": "In my experience looking for jobs, I noticed a troubling trend. Whenever you're looking for a job, nobody will hire you officially."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "China has a, has a border with the Calixto.",
+                    "corrected": "China has a border with Calixto.",
+                    "explanation": "The phrase 'has a, has a' is repetitive and unnecessary. 'Calixto' should not be preceded by 'the.'",
+                    "context": "I was discussing potential travel destinations. China has a border with Calixto. It would be interesting to visit China."
+                },
+                {
+                    "original": "I guess, uh, from tellings, uh, from my geography teacher, she told, uh, the China.",
+                    "corrected": "I guess from what my geography teacher told me, China is amazing.",
+                    "explanation": "Phrasing 'from tellings' and 'she told, uh, the China' is awkward; 'from what my geography teacher told me' is clearer. 'the China' is incorrect; it should just be 'China.'",
+                    "context": "I believe that China is an amazing place to visit. I guess from what my geography teacher told me, it's quite remarkable."
+                },
+                {
+                    "original": "Why cannot you with it, the rush?",
+                    "corrected": "Why can't you go to Russia?",
+                    "explanation": "'Why cannot you with it' is grammatically incorrect; it should be 'Why can't you go to.'",
+                    "context": "I wondered about travel options amidst the complexities. Why can't you go to Russia?"
+                },
+                {
+                    "original": "Like, I mean, this whole idea of crossing the border and then cross crossing the border back doesn't work.",
+                    "corrected": "This whole idea of crossing the border and then crossing back doesn't work.",
+                    "explanation": "The phrase 'crossing the border and then cross crossing' is awkward; it should simply repeat 'crossing.'",
+                    "context": "I was expressing concerns about travel logistics. This whole idea of crossing the border and then crossing back doesn't work."
+                },
+                {
+                    "original": "If you are expensive, yeah.",
+                    "corrected": "If you think it's expensive, yeah.",
+                    "explanation": "'If you are expensive' is incorrect; it should imply 'if you consider it expensive.'",
+                    "context": "I was discussing costs of items. If you think it's expensive, then you're right."
+                },
+                {
+                    "original": "And especially with all this thing, things you got, uh, in Kazakhstan.",
+                    "corrected": "And especially with all the things you got in Kazakhstan.",
+                    "explanation": "'All this thing, things' is a redundancy; it should be 'all the things.'",
+                    "context": "I was talking about the challenges of moving. And especially with all the things you got in Kazakhstan."
+                },
+                {
+                    "original": "Then I don't, well, I mean, yeah, it would be cool to, to, to live in Serbia.",
+                    "corrected": "Then I think it would be cool to live in Serbia.",
+                    "explanation": "The repeated 'to' is unnecessary; it should simply state 'it would be cool to live.'",
+                    "context": "We were exploring potential places to live. Then I think it would be cool to live in Serbia."
+                },
+                {
+                    "original": "I mean, if you enter the country, you can only stay there like for a couple of months top.",
+                    "corrected": "I mean, if you enter the country, you can only stay there for a couple of months at most.",
+                    "explanation": "The phrase 'a couple of months top' is awkward; 'at most' is clearer in this context.",
+                    "context": "I reflected on travel regulations. I mean, if you enter the country, you can only stay there for a couple of months at most."
+                },
+                {
+                    "original": "It sounds really difficult, you know, just all these things, all this person who can, or just make your documents valid or invalid.",
+                    "corrected": "It sounds really difficult, you know, with all these things and the people who can make your documents valid or invalid.",
+                    "explanation": "The original phrasing is confusing; it should clarify the reference to 'people' instead of 'this person.'",
+                    "context": "I was expressing my thoughts about bureaucratic challenges. It sounds really difficult, you know, with all these things and the people who can make your documents valid or invalid."
+                },
+                {
+                    "original": "Cause it's, you know, actually, uh, working with documents in this country is really stupid.",
+                    "corrected": "Because, you know, working with documents in this country is really stupid.",
+                    "explanation": "'Cause' is informal; 'because' is more appropriate in this context.",
+                    "context": "I was commenting on the inefficiencies in document handling. Because, you know, working with documents in this country is really stupid."
+                },
+                {
+                    "original": "I don't know this country, you know, but we just, we just lost our passports.",
+                    "corrected": "I don't know this country well, but we just lost our passports.",
+                    "explanation": "The phrase 'I don't know this country' should be specified as 'I don't know this country well' for clarity.",
+                    "context": "I reflected on our complicated situation with documentation. I don't know this country well, but we just lost our passports."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I will just leave.",
+                    "corrected": "I will just leave it.",
+                    "explanation": "The phrase 'leave' requires an object to clarify what is being left. 'Leave it' specifies that the speaker is leaving the situation behind.",
+                    "context": "I feel so frustrated with the situation here. If they don't give me a repair, I will just leave it."
+                },
+                {
+                    "original": "Nobody really knows how to interpret them.",
+                    "corrected": "Nobody really knows how to interpret it.",
+                    "explanation": "The word 'laws' is plural, so 'them' should be used. However, 'it' can refer to the singular concept of 'the law' in this context.",
+                    "context": "It's confusing navigating the legal system here. Nobody really knows how to interpret it clearly."
+                },
+                {
+                    "original": "You sounds really, I don't know, tormented.",
+                    "corrected": "You sound really, I don't know, tormented.",
+                    "explanation": "'Sounds' is a third-person singular form and should be 'sound' to agree with the second-person pronoun 'you'.",
+                    "context": "I can sense a lot of frustration in your voice. You sound really, I don't know, tormented."
+                },
+                {
+                    "original": "We don't know when he's ever back spires.",
+                    "corrected": "We don't know when his visa expires.",
+                    "explanation": "The term 'back spires' is likely a confusion of words. The correct term here is 'expires', referring to the expiration of a visa.",
+                    "context": "It's important to keep track of his legal documents. We don't know when his visa expires."
+                },
+                {
+                    "original": "He has. Uh, we're talking about your friend, uh, with who you live.",
+                    "corrected": "He has, uh, we're talking about your friend, with whom you live.",
+                    "explanation": "'Who' should be 'whom' as it is the object of the preposition 'with' in this context.",
+                    "context": "There's confusion regarding his situation. He has someone to rely on—uh, we're talking about your friend, with whom you live."
+                },
+                {
+                    "original": "I decided to study Buddhism.",
+                    "corrected": "I started studying Buddhism.",
+                    "explanation": "'Decided to study' suggests intent, while 'started studying' conveys that the action is ongoing.",
+                    "context": "With all these thoughts in my mind, I decided to study Buddhism. It has helped me find some peace."
+                },
+                {
+                    "original": "You know, that's really cool.",
+                    "corrected": "You know, that's really interesting.",
+                    "explanation": "'Cool' is colloquial and can be replaced with 'interesting' for a more formal tone.",
+                    "context": "The idea of becoming a monk is fascinating. You know, that's really interesting."
+                },
+                {
+                    "original": "That's a, that's a, that's special scissors.",
+                    "corrected": "That's a special pair of scissors.",
+                    "explanation": "The phrase 'a special scissors' incorrectly treats 'scissors' as singular. It should be 'a special pair of scissors.'",
+                    "context": "I found something very unique in my garage. That's a special pair of scissors."
+                },
+                {
+                    "original": "What the hell? What happened with the scissors?",
+                    "corrected": "What the hell? What happened to the scissors?",
+                    "explanation": "'Happened with' should be 'happened to' for correct prepositional usage in this context.",
+                    "context": "It seems like things are misplaced around here. What the hell? What happened to the scissors?"
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "I can, and I bought a lot of those emergency stuff.",
+                    "corrected": "I bought a lot of that emergency stuff.",
+                    "explanation": "Use 'that' instead of 'those' for uncountable nouns like 'stuff.'",
+                    "context": "I have been preparing for emergencies recently. I bought a lot of that emergency stuff. It's important to be ready for unexpected situations."
+                },
+                {
+                    "original": "All this medical stables, we used it to, we used it as a mangle table, barbecue table.",
+                    "corrected": "All this medical stuff, we used it as a mangled table, barbecue table.",
+                    "explanation": "'Stables' should be 'stuff,' and 'mangle' should be 'mangled' to describe the table correctly.",
+                    "context": "In my garage, there are various medical items. We used it as a mangled table, barbecue table. It was helpful in different situations."
+                },
+                {
+                    "original": "Which on which tools, on which different, on which scalpels.",
+                    "corrected": "Like something on which tools, on which scalpels.",
+                    "explanation": "The repetition of 'on which' makes the sentence awkward; it can be streamlined.",
+                    "context": "In my collection, I have many surgical tools. Like something on which tools can be placed, like scalpels. Organization is key."
+                },
+                {
+                    "original": "So he thought, no, you know, he wanted so much.",
+                    "corrected": "So he thought, no, he wanted it so much.",
+                    "explanation": "'He wanted so much' is an incomplete expression; it should specify what he wanted.",
+                    "context": "When I was a kid, I really wanted a scalpel. So he thought, no, he wanted it so much. That made him hesitant to buy it."
+                },
+                {
+                    "original": "Do you, do you cut things with your scalpel?",
+                    "corrected": "Do you cut things with your scalpel?",
+                    "explanation": "The repetition of 'do you' is unnecessary and grammatically incorrect.",
+                    "context": "My friend asked about the scalpel. Do you cut things with your scalpel? I explained that I don't actually use it."
+                },
+                {
+                    "original": "I don't know, checked on my fingers.",
+                    "corrected": "I don't know, I checked them on my fingers.",
+                    "explanation": "The structure is awkward; it needs clarity in the subject and verb.",
+                    "context": "I was curious about how sharp they were. I don't know, I checked them on my fingers. It wasn’t the best idea."
+                },
+                {
+                    "original": "Yeah, all in all, good. All in all good.",
+                    "corrected": "Yeah, all in all, it was good.",
+                    "explanation": "Missing subject which makes the structure incomplete.",
+                    "context": "After sharing my collection, I felt satisfied. Yeah, all in all, it was good. I enjoyed talking about it."
+                },
+                {
+                    "original": "This essay thinks that the drawbacks of holding events do not outweigh the benefits, because although the tourists from different countries might be a problem, this process may be a problem.",
+                    "corrected": "This essay argues that the drawbacks of holding events do not outweigh the benefits, because although tourists from different countries might pose a problem, this process could also be beneficial.",
+                    "explanation": "'Thinks' should be 'argues' for clarity and academic tone, and 'the tourists from different countries' should be simplified to 'tourists.'",
+                    "context": "I’m discussing the pros and cons of international events. This essay argues that the drawbacks do not outweigh the benefits. Tourists can create challenges, but they can also enrich the experience."
+                },
+                {
+                    "original": "Events and events and... You put the stress on the first syllable and the stress should be put on the second syllable.",
+                    "corrected": "You put the stress on the first syllable, but the stress should be on the second syllable.",
+                    "explanation": "Repetitive use of 'events and' is unnecessary and should be restructured.",
+                    "context": "We are correcting pronunciation. You put the stress on the first syllable, but the stress should be on the second syllable. It's vital for clarity."
+                },
+                {
+                    "original": "This part, I guess, like, not a problem, but a problem.",
+                    "corrected": "This part is confusing; it says not a problem but then states it is still a problem.",
+                    "explanation": "The phrasing is redundant and needs clarification for better understanding.",
+                    "context": "We were analyzing the clarity of my sentence. This part is confusing; it says not a problem but then states it is still a problem. It needs rephrasing to make sense."
+                },
+                {
+                    "original": "I mean, your idea is that before 2018 there used to be no skirmishes?",
+                    "corrected": "Are you suggesting that before 2018 there were no skirmishes?",
+                    "explanation": "This needs rephrasing for clarity and proper question format.",
+                    "context": "I was questioned about my statement regarding skirmishes. Are you suggesting that before 2018 there were no skirmishes? It's crucial to be clear about the timeline."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "This sentence is strange.",
+                    "corrected": "This sentence sounds strange.",
+                    "explanation": "The adjective 'strange' should be paired with 'sounds' to indicate how the sentence is perceived.",
+                    "context": "When discussing the phrasing of an earlier statement, I mentioned, 'This sentence is strange.' It's better to say 'This sentence sounds strange.' Improvement in phrasing is important."
+                },
+                {
+                    "original": "They visited the country and spent their money there, which can outweigh the amount of money the country spent.",
+                    "corrected": "They visited the country and spent their money there, which can be greater than what the country spent.",
+                    "explanation": "'Outweigh' is more often used in the context of weighing pros and cons rather than financial comparison; 'be greater than' is clearer for such contexts.",
+                    "context": "I was reflecting on the financial impact of tourists during an event. They visited the country and spent their money there, which can be greater than what the country spent. This helps in assessing the economic benefits."
+                },
+                {
+                    "original": "And the fact of traveling.",
+                    "corrected": "And the experience of traveling.",
+                    "explanation": "'The fact of traveling' is awkward; it’s clearer to say 'the experience of traveling' in this context.",
+                    "context": "Discussing how traveling can impress people, I noted that they are impressed by the unusual culture and the experience of traveling. This highlights the richness of cultural exchange."
+                },
+                {
+                    "original": "The number of... We need an example.",
+                    "corrected": "We need an example of the number.",
+                    "explanation": "The sentence structure is unclear; rephrasing it provides clarity on what needs to be exemplified.",
+                    "context": "While discussing conflicts that arose during an event, I stated, 'We need an example.' Specifically, we need an example of the number of incidents to support our points."
+                },
+                {
+                    "original": "I think everything is okay.",
+                    "corrected": "I think everything is fine.",
+                    "explanation": "While 'okay' is acceptable, 'fine' can sound more formal and is often preferred in discussions.",
+                    "context": "When evaluating a previous point, I expressed confidence in the content, saying, 'I think everything is okay.' It might be more appropriate to say 'everything is fine.'"
+                },
+                {
+                    "original": "And often spent more money there than was spent by the country to organize the event.",
+                    "corrected": "And often spent more money there than the government spent to organize the event.",
+                    "explanation": "Using 'the government' is clearer than saying 'the country,' which is more vague in this financial context.",
+                    "context": "During the dialogue about tourist expenditures, I said, 'And often spent more money there than was spent by the country to organize the event.' Instead, it's clearer to say 'the government.'"
+                },
+                {
+                    "original": "That can happen everywhere.",
+                    "corrected": "That can happen anywhere.",
+                    "explanation": "'Everywhere' implies all places whereas 'anywhere' refers to an unspecified location and fits better here.",
+                    "context": "In discussing the nature of skirmishes, I noted that 'that can happen everywhere.' However, it's more accurate to say 'that can happen anywhere' to emphasize potential incidents."
+                }
+            ]
+        },
+        "mistakes_7": {
+            "mistakes_list": [
+                {
+                    "original": "It can be a demonstration of the positive side.",
+                    "corrected": "It can be a demonstration of a positive side.",
+                    "explanation": "The article 'the' is incorrectly used; it should be 'a' to indicate one of many positive aspects.",
+                    "context": "We were discussing the benefits of tourism in relation to the problems it brings. It can be a demonstration of a positive side. This really helps balance the negative aspects."
+                },
+                {
+                    "original": "We can say overshadow.",
+                    "corrected": "We can use overshadow.",
+                    "explanation": "'Say' is too informal in this context; 'use' is more appropriate when referring to a word choice.",
+                    "context": "We were trying to find a better synonym for 'outweigh' in our writing. We can use overshadow. This will improve our essay's clarity."
+                },
+                {
+                    "original": "It is fine yeah but the last thing instead of outweigh we can use this synonym.",
+                    "corrected": "It is fine, but instead of outweigh, we can use this synonym.",
+                    "explanation": "The sentence had a run-on structure; a comma after 'fine' improves readability.",
+                    "context": "We were finalizing our points in the essay and reviewing synonyms. It is fine, but instead of outweigh, we can use this synonym to enhance our argument."
+                },
+                {
+                    "original": "The conclusion is so short.",
+                    "corrected": "The conclusion is quite short.",
+                    "explanation": "'So' can imply a negative connotation in this context; 'quite' offers a more neutral assessment.",
+                    "context": "I was mindful of the importance of our conclusion. The conclusion is quite short, but we can still improve it."
+                },
+                {
+                    "original": "Because example should be two sentence long.",
+                    "corrected": "Because examples should be two sentences long.",
+                    "explanation": "The noun 'example' should be plural ('examples') and 'sentence' should be plural ('sentences') for correctness.",
+                    "context": "We were discussing how many sentences should be in the examples section. Because examples should be two sentences long, let's make sure we expand on our points."
+                },
+                {
+                    "original": "Be lucky in your work.",
+                    "corrected": "Good luck with your work.",
+                    "explanation": "The phrase 'Be lucky' is awkward in this context; 'Good luck' is more commonly used.",
+                    "context": "As we wrapped up our lesson, I wanted to wish my classmate well. Good luck with your work on the essay and take care!"
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Epidemic",
+                    "definition": "A widespread occurrence of an infectious disease in a community at a particular time.",
+                    "context": {
+                        "Context 1": "During the lesson, we talked about an epidemic and how it can affect cities.",
+                        "Context 2": "Last summer, there was an epidemic of flu that affected many people in the town.",
+                        "Context 3": "The doctor warned that if the epidemic wasn't controlled, it could reach the entire country."
+                    }
+                },
+                {
+                    "word": "Temperature",
+                    "definition": "The degree of heat present in a substance or object.",
+                    "context": {
+                        "Context 1": "He mentioned having a high temperature, which indicated he was sick.",
+                        "Context 2": "The temperature outside today is much lower than it was yesterday.",
+                        "Context 3": "She adjusted the temperature of the oven to bake the cookies perfectly."
+                    }
+                },
+                {
+                    "word": "Painkillers",
+                    "definition": "Drugs or medications used to relieve pain.",
+                    "context": {
+                        "Context 1": "He had to take painkillers because his head was spinning from the fever.",
+                        "Context 2": "The dentist prescribed painkillers after my tooth extraction.",
+                        "Context 3": "Many athletes use painkillers to manage discomfort during competitions."
+                    }
+                },
+                {
+                    "word": "Respect",
+                    "definition": "A feeling of deep admiration for someone or something due to their abilities, qualities, or achievements.",
+                    "context": {
+                        "Context 1": "He mentioned he wanted to raise his level of respect among teachers by attending the competition.",
+                        "Context 2": "They earned the respect of their peers by volunteering for community service.",
+                        "Context 3": "Respect in a workplace is essential for a harmonious environment."
+                    }
+                },
+                {
+                    "word": "Allergy",
+                    "definition": "A condition in which the immune system reacts abnormally to a foreign substance.",
+                    "context": {
+                        "Context 1": "He explained that his allergy was a reason for missing outdoor activities.",
+                        "Context 2": "She discovered she had an allergy to pollen after experiencing sneezing fits in spring.",
+                        "Context 3": "The doctor advised him to avoid certain foods that could trigger his allergy."
+                    }
+                },
+                {
+                    "word": "Competitions",
+                    "definition": "Events in which people compete against each other for a prize or title.",
+                    "context": {
+                        "Context 1": "He mentioned school competitions involving parents, which he found silly.",
+                        "Context 2": "The annual competitions brought in participants from various countries.",
+                        "Context 3": "She trained for months to prepare for the swimming competitions this summer."
+                    }
+                },
+                {
+                    "word": "Challenging",
+                    "definition": "Something that is difficult and requires great effort.",
+                    "context": {
+                        "Context 1": "He found playing chess to be a challenging experience after getting sick.",
+                        "Context 2": "Running a marathon is considered a challenging feat for many athletes.",
+                        "Context 3": "The teacher assigned a challenging project to test the students' creativity."
+                    }
+                },
+                {
+                    "word": "Impress",
+                    "definition": "To make someone feel admiration and respect.",
+                    "context": {
+                        "Context 1": "He wanted to impress his teachers by showing up at the sport event.",
+                        "Context 2": "She wore a stunning dress to impress everyone at the gala.",
+                        "Context 3": "The magician wowed the audience to impress them with his tricks."
+                    }
+                },
+                {
+                    "word": "Argue",
+                    "definition": "To present reasons for or against something.",
+                    "context": {
+                        "Context 1": "In the lesson, they argued about the necessity of attending the competition.",
+                        "Context 2": "They often argue about which movie to watch on Friday nights.",
+                        "Context 3": "The scientists argue their findings will change how we treat the disease."
+                    }
+                },
+                {
+                    "word": "Conduct",
+                    "definition": "To organize and carry out.",
+                    "context": {
+                        "Context 1": "He jokingly questioned if the mask was used to conduct surgeries.",
+                        "Context 2": "The teacher will conduct an experiment in class tomorrow.",
+                        "Context 3": "They hired an expert to conduct the training session for new employees."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Epidemic",
+                    "fact": "The word 'epidemic' comes from the Greek word 'epidemos,' which means 'upon the people.'"
+                },
+                {
+                    "word": "Allergy",
+                    "fact": "Did you know allergies can develop at any age? You might not be allergic to peanuts now, but you could be next year!"
+                },
+                {
+                    "word": "Painkillers",
+                    "fact": "The first recorded use of painkillers dates back to ancient Egypt, where they used opium poppy."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why was the math book sad?",
+                    "answer": "Because it had too many problems!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Rejected",
+                    "definition": "Refused to accept, believe, or consider something.",
+                    "context": {
+                        "Context 1": "He was disappointed when his application was rejected twice.",
+                        "Context 2": "The bakery rejected my idea for a new pastry flavor.",
+                        "Context 3": "After being rejected from the orchestra, she decided to focus on solo performances."
+                    }
+                },
+                {
+                    "word": "Trustworthy",
+                    "definition": "Able to be relied on as honest or truthful.",
+                    "context": {
+                        "Context 1": "Although he seemed trustworthy, many people had doubts about his intentions.",
+                        "Context 2": "I always check online reviews to choose a trustworthy restaurant.",
+                        "Context 3": "Finding trustworthy friends can be challenging in a big city."
+                    }
+                },
+                {
+                    "word": "Nightmare",
+                    "definition": "A frightening or unpleasant dream or situation.",
+                    "context": {
+                        "Context 1": "Dealing with the bureaucracy for his documents felt like a nightmare.",
+                        "Context 2": "After sleeping poorly, she woke up from a nightmare about being chased.",
+                        "Context 3": "The traffic on the way to the concert was a nightmare, making them late."
+                    }
+                },
+                {
+                    "word": "Legally",
+                    "definition": "In a way that is allowed or permitted by law.",
+                    "context": {
+                        "Context 1": "I tried to do everything legally, but it was incredibly complicated.",
+                        "Context 2": "He legally adopted his partner’s child after years of planning.",
+                        "Context 3": "She made sure all her business transactions were legally documented."
+                    }
+                },
+                {
+                    "word": "Invalid",
+                    "definition": "Not valid; having no legal force or effect.",
+                    "context": {
+                        "Context 1": "His paperwork became invalid after the expiration date.",
+                        "Context 2": "The coupon was invalid because it had expired.",
+                        "Context 3": "An invalid argument can undermine your entire debate."
+                    }
+                },
+                {
+                    "word": "Document",
+                    "definition": "A piece of written, printed, or electronic matter that provides information.",
+                    "context": {
+                        "Context 1": "He had to file a document to apply for residency.",
+                        "Context 2": "The museum displayed an ancient document from the 12th century.",
+                        "Context 3": "They created a document outlining the rules for community participation."
+                    }
+                },
+                {
+                    "word": "Pros and Cons",
+                    "definition": "The positive and negative aspects of a situation.",
+                    "context": {
+                        "Context 1": "We weighed the pros and cons of moving to a new city.",
+                        "Context 2": "When buying a car, it’s essential to consider the pros and cons of each model.",
+                        "Context 3": "She always lists the pros and cons before making a significant decision."
+                    }
+                },
+                {
+                    "word": "Employer",
+                    "definition": "A person or organization that employs people.",
+                    "context": {
+                        "Context 1": "An employer must provide a safe working environment for their employees.",
+                        "Context 2": "As a freelance writer, I often have multiple employers.",
+                        "Context 3": "The employer organized a team-building retreat to improve morale."
+                    }
+                },
+                {
+                    "word": "Cross the border",
+                    "definition": "To go from one country to another, usually across a boundary.",
+                    "context": {
+                        "Context 1": "He was nervous to cross the border due to potential immigration issues.",
+                        "Context 2": "Every summer, she would cross the border to visit her relatives in Canada.",
+                        "Context 3": "During the family road trip, they planned to cross the border into Mexico."
+                    }
+                },
+                {
+                    "word": "Adventure",
+                    "definition": "An exciting or unusual experience; a risky undertaking.",
+                    "context": {
+                        "Context 1": "Each attempt to sort out his documents felt like an unexpected adventure.",
+                        "Context 2": "They went on an adventure to climb the tallest mountain in the region.",
+                        "Context 3": "Her life as a travel blogger is filled with new adventures every month."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Document",
+                    "fact": "The longest document ever created is the 'U.S. Constitution,' which has 4,543 words!"
+                },
+                {
+                    "word": "Invalid",
+                    "fact": "The word 'invalid' has a double life; it means both 'not valid' and, in computing, ‘an error message!’"
+                },
+                {
+                    "word": "Adventure",
+                    "fact": "Did you know that the word 'adventure' comes from the Latin word 'adventurus,' meaning 'about to happen'? Who knew that it was so optimistic!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "What did the document say to its owner?",
+                    "answer": "I'm feeling rather invalid today!"
+                },
+                {
+                    "question": "Why did the scarecrow win an award?",
+                    "answer": "Because he was outstanding in his field!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Border",
+                    "definition": "A line separating two political or geographical areas, especially countries.",
+                    "context": {
+                        "Context 1": "China has a border with Kazakhstan, making it easy to travel between the two countries.",
+                        "Context 2": "He painted the border of his garden with bright flowers.",
+                        "Context 3": "In sports, players often push the limits of the field's border."
+                    }
+                },
+                {
+                    "word": "Destiny",
+                    "definition": "The events that will necessarily happen to a particular person or thing in the future.",
+                    "context": {
+                        "Context 1": "For many, their destiny involves moving to another country as they seek new opportunities.",
+                        "Context 2": "The movie's plot revolved around the character's quest to change his destiny.",
+                        "Context 3": "She believes her destiny is to become a famous artist."
+                    }
+                },
+                {
+                    "word": "Document",
+                    "definition": "A written or printed paper that provides information or evidence.",
+                    "context": {
+                        "Context 1": "He needed proper documents to travel across borders legally.",
+                        "Context 2": "She was proud to receive a document stating she had completed her degree.",
+                        "Context 3": "The historical document revealed secrets about the town's past."
+                    }
+                },
+                {
+                    "word": "Bureaucracy",
+                    "definition": "A system of government in which most of the decisions are made by state officials rather than by elected representatives.",
+                    "context": {
+                        "Context 1": "The bureaucracy in Kazakhstan can be overwhelming for those trying to obtain travel documents.",
+                        "Context 2": "Many people find that workplace bureaucracy slows down project progress.",
+                        "Context 3": "Bureaucracy is often criticized for being inefficient and convoluted."
+                    }
+                },
+                {
+                    "word": "Smooth",
+                    "definition": "Having an even and regular surface; free from difficulties or obstacles.",
+                    "context": {
+                        "Context 1": "Living as an immigrant is not always smooth, as challenges can arise unexpectedly.",
+                        "Context 2": "The cake was so smooth that it didn’t need any icing.",
+                        "Context 3": "His transition to the new job was quite smooth, with no major issues."
+                    }
+                },
+                {
+                    "word": "Set up",
+                    "definition": "An arrangement of machinery or equipment; to prepare or organize something.",
+                    "context": {
+                        "Context 1": "His computer setup includes a powerful PC and a large monitor.",
+                        "Context 2": "She helped set up the chairs for the wedding ceremony.",
+                        "Context 3": "The kitchen setup was so efficient that cooking became enjoyable."
+                    }
+                },
+                {
+                    "word": "Explore",
+                    "definition": "To travel in or through an unfamiliar area to learn about it.",
+                    "context": {
+                        "Context 1": "He wants to explore different countries after leaving Kazakhstan.",
+                        "Context 2": "The scientists planned to explore the depths of the ocean for new species.",
+                        "Context 3": "Children love to explore new playgrounds during recess."
+                    }
+                },
+                {
+                    "word": "Creepy",
+                    "definition": "Causing an unpleasant feeling of fear or unease.",
+                    "context": {
+                        "Context 1": "The store they visited was described as creepy due to its dim lighting.",
+                        "Context 2": "The creepy sound in the attic made him nervous about going upstairs.",
+                        "Context 3": "She found the old doll in the shop to be quite creepy."
+                    }
+                },
+                {
+                    "word": "Expensive",
+                    "definition": "Costing a lot of money; high-priced.",
+                    "context": {
+                        "Context 1": "Living in Serbia can be expensive compared to other countries.",
+                        "Context 2": "That restaurant is known for its expensive but delicious dishes.",
+                        "Context 3": "Buying a car can be expensive depending on the model."
+                    }
+                },
+                {
+                    "word": "Things",
+                    "definition": "An object, animal, or substance that is not specifically named or known.",
+                    "context": {
+                        "Context 1": "After years of living in one place, they found themselves surrounded by things they had collected.",
+                        "Context 2": "In her bag, she had all sorts of things, from snacks to books.",
+                        "Context 3": "He couldn't find his keys amid all the things on the table."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Bureaucracy",
+                    "fact": "The word 'bureaucracy' comes from the French word 'bureau,' meaning desk, and 'kratos,' meaning power—so you can blame the desks for your paperwork!"
+                },
+                {
+                    "word": "Expensive",
+                    "fact": "Did you know that in Iceland, it is considered expensive to buy a hot dog? It’s true; you may need to take a loan for lunch there!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes of baggage!"
+                },
+                {
+                    "question": "Why did the immigrant always carry a suitcase?",
+                    "answer": "Because they were always packed with hope for a new adventure!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Deportation",
+                    "definition": "The act of removing a foreigner from a country, often due to illegal status.",
+                    "context": {
+                        "Context 1": "He was worried about the possibility of deportation if his visa expired.",
+                        "Context 2": "The country's strict laws on immigration have led to many cases of deportation recently.",
+                        "Context 3": "In the movie, the main character fears deportation due to a misunderstanding."
+                    }
+                },
+                {
+                    "word": "Document",
+                    "definition": "A written or printed paper that provides information or evidence.",
+                    "context": {
+                        "Context 1": "He lost the important document proving his residency status.",
+                        "Context 2": "The teacher handed out the assignment document to all the students.",
+                        "Context 3": "She decided to document her travels in a blog."
+                    }
+                },
+                {
+                    "word": "Fine",
+                    "definition": "A sum of money to be paid as a penalty for an offense.",
+                    "context": {
+                        "Context 1": "If he doesn't renew his registration, he risks getting a hefty fine.",
+                        "Context 2": "She paid the fine after being caught speeding.",
+                        "Context 3": "The city council announced a fine for littering in public parks."
+                    }
+                },
+                {
+                    "word": "Sensitive",
+                    "definition": "Easily upset or affected by certain matters; requiring careful handling.",
+                    "context": {
+                        "Context 1": "He tends to be sensitive about comments regarding his background.",
+                        "Context 2": "Certain environments can be sensitive to temperature changes.",
+                        "Context 3": "Her sensitive skin reacted badly to the new soap."
+                    }
+                },
+                {
+                    "word": "Assert",
+                    "definition": "To state a fact or belief confidently and forcefully.",
+                    "context": {
+                        "Context 1": "He asserted his rights during the legal proceedings.",
+                        "Context 2": "The scientist asserted that their findings were accurate.",
+                        "Context 3": "She needed to assert her authority as a team leader."
+                    }
+                },
+                {
+                    "word": "Territory",
+                    "definition": "An area of land under the jurisdiction of a particular group or government.",
+                    "context": {
+                        "Context 1": "They found themselves in uncharted territory when dealing with the new laws.",
+                        "Context 2": "The wolf defended his territory from intruders.",
+                        "Context 3": "In history class, we learned about the expansion of territory by ancient empires."
+                    }
+                },
+                {
+                    "word": "Predict",
+                    "definition": "To say or estimate that a specific thing will happen in the future.",
+                    "context": {
+                        "Context 1": "He couldn’t predict what would happen if he didn’t file his papers.",
+                        "Context 2": "Meteorologists predict the weather using various data.",
+                        "Context 3": "Many scientists predict that technology will continue to evolve rapidly."
+                    }
+                },
+                {
+                    "word": "Companion",
+                    "definition": "A person or animal with whom one spends a lot of time or travels.",
+                    "context": {
+                        "Context 1": "He considered his roommate a great companion during his stay.",
+                        "Context 2": "Dogs make wonderful companions for many people.",
+                        "Context 3": "She brought her companion to the party to feel more comfortable."
+                    }
+                },
+                {
+                    "word": "Legal",
+                    "definition": "Relating to the law; permitted by law.",
+                    "context": {
+                        "Context 1": "She tried to handle the situation legally to avoid issues.",
+                        "Context 2": "The legal rights of citizens are protected by the constitution.",
+                        "Context 3": "Many people seek legal advice before signing contracts."
+                    }
+                },
+                {
+                    "word": "Relaxed",
+                    "definition": "Free from tension and anxiety; at ease.",
+                    "context": {
+                        "Context 1": "He is much more relaxed about his residency status now.",
+                        "Context 2": "She felt relaxed after the meditation session.",
+                        "Context 3": "He prefers a relaxed environment when working from home."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Deportation",
+                    "fact": "In some countries, it is possible to be deported for 'serious moral turpitude' – asking for a nap in a job interview!"
+                },
+                {
+                    "word": "Document",
+                    "fact": "The word 'document' comes from the Latin word 'documentum,' which means 'a teaching' – so documents can actually be your teachers!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer break up with its girlfriend?",
+                    "answer": "She had too many issues with compatibility!"
+                },
+                {
+                    "question": "Why did the scarecrow win an award?",
+                    "answer": "Because he was outstanding in his field!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Scalpel",
+                    "definition": "A small, sharp knife used by surgeons for cutting tissue.",
+                    "context": {
+                        "Context 1": "The surgeon used a scalpel to make precise incisions during the operation.",
+                        "Context 2": "In art class, we used scalpels to create intricate designs on paper.",
+                        "Context 3": "He joked that a scalpel was the best tool for slicing his sandwich."
+                    }
+                },
+                {
+                    "word": "Tourniquet",
+                    "definition": "A device used for stopping the flow of blood, typically by constricting a limb.",
+                    "context": {
+                        "Context 1": "After the accident, the paramedic applied a tourniquet to the patient's arm to control the bleeding.",
+                        "Context 2": "During the camping trip, we learned how to fashion a tourniquet from a belt.",
+                        "Context 3": "He used a tourniquet on the hose to stop the water from leaking in the garden."
+                    }
+                },
+                {
+                    "word": "Cohesion",
+                    "definition": "The action of forming a united whole, often in writing or speech.",
+                    "context": {
+                        "Context 1": "The student's essay showed great cohesion, making it easy to follow the main argument.",
+                        "Context 2": "Cohesion of materials is important in construction to ensure stability.",
+                        "Context 3": "The football team displayed cohesion during their victory dance, moving in perfect sync."
+                    }
+                },
+                {
+                    "word": "Conflict",
+                    "definition": "A serious disagreement or argument, often a protracted one.",
+                    "context": {
+                        "Context 1": "The project faced several conflicts among team members regarding the direction of their work.",
+                        "Context 2": "In a classic story, the hero faces conflict when the villain threatens the village.",
+                        "Context 3": "The cooking competition had conflicts when two chefs wanted the same key ingredient."
+                    }
+                },
+                {
+                    "word": "Criteria",
+                    "definition": "Standards by which something may be judged or decided.",
+                    "context": {
+                        "Context 1": "The teacher explained the criteria for grading the essays to the students before they started writing.",
+                        "Context 2": "The criteria for selecting the best vacation spot included budget, climate, and activities available.",
+                        "Context 3": "Cats always use their own criteria to choose the best place to nap."
+                    }
+                },
+                {
+                    "word": "Phenomenon",
+                    "definition": "A fact or situation that is observed to exist or happen, especially one whose cause is in question.",
+                    "context": {
+                        "Context 1": "The phenomenon of laser cutting has revolutionized many industries.",
+                        "Context 2": "The Northern Lights are a beautiful natural phenomenon that attracts many tourists.",
+                        "Context 3": "He thought eating spaghetti upside down was a bizarre phenomenon of his friend's strange dinner parties."
+                    }
+                },
+                {
+                    "word": "Influx",
+                    "definition": "An arrival or entry of large numbers of people or things.",
+                    "context": {
+                        "Context 1": "The influx of tourists during the summer boosted local businesses.",
+                        "Context 2": "An influx of new students made the school hire additional teachers.",
+                        "Context 3": "The bakery experienced an influx of cookies when they had a buy-one-get-one-free sale."
+                    }
+                },
+                {
+                    "word": "Debate",
+                    "definition": "A formal discussion on a particular topic in a public meeting or legislative assembly, where opposing arguments are put forward.",
+                    "context": {
+                        "Context 1": "The school held a debate on climate change to encourage students to express their opinions.",
+                        "Context 2": "They had a fierce debate about whether to adopt a cat or a dog.",
+                        "Context 3": "In the debate of pizza toppings, everyone agreed that pineapple was controversial."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern used to illustrate a point or concept.",
+                    "context": {
+                        "Context 1": "The teacher gave several examples to clarify the difficult concepts in maths.",
+                        "Context 2": "He used a banana as an example to explain his new smoothie recipe.",
+                        "Context 3": "In a funny example of bad luck, his hat blew off his head right into the lake."
+                    }
+                },
+                {
+                    "word": "Accurate",
+                    "definition": "Free from mistakes or errors; precise.",
+                    "context": {
+                        "Context 1": "Her calculations were accurate, resulting in a successful project outcome.",
+                        "Context 2": "The weatherman delivered an accurate forecast, warning everyone of the incoming storm.",
+                        "Context 3": "He thought his magic trick was so accurate that it could impress even the sharpest skeptics."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Scalpel",
+                    "fact": "In ancient cultures, scalpels were made from flint or sharpened bones!"
+                },
+                {
+                    "word": "Tourniquet",
+                    "fact": "The word 'tourniquet' comes from the French word 'tourner,' meaning 'to turn.' It literally means you turn something to stop the blood flow!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why do surgeons always carry a red pen?",
+                    "answer": "In case they need to draw blood!"
+                },
+                {
+                    "question": "Why did the doctor carry a ladder?",
+                    "answer": "Because they wanted to reach new heights in their career!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Skirmish",
+                    "definition": "A minor or preliminary conflict or fight.",
+                    "context": {
+                        "Context 1": "There were several skirmishes between rival football fans during the World Cup.",
+                        "Context 2": "The two countries had a skirmish over territory that lasted only a few days.",
+                        "Context 3": "The skirmish between the cats and the dog ended quickly when the dog lost interest."
+                    }
+                },
+                {
+                    "word": "Brawl",
+                    "definition": "A noisy and violent fight involving a group of people.",
+                    "context": {
+                        "Context 1": "There were brawls in the stands during the football match.",
+                        "Context 2": "The street brawl broke out after a disagreement over a parking space.",
+                        "Context 3": "The children's brawl over the last cookie drew the attention of their parents."
+                    }
+                },
+                {
+                    "word": "Outweigh",
+                    "definition": "To be greater in weight, significance, or importance.",
+                    "context": {
+                        "Context 1": "The benefits of tourism can outweigh the costs associated with hosting large events.",
+                        "Context 2": "Her kindness can outweigh any mistakes she makes.",
+                        "Context 3": "The weight of the elephant far outweighed the small car parked nearby."
+                    }
+                },
+                {
+                    "word": "Lethal",
+                    "definition": "Relating to or causing death.",
+                    "context": {
+                        "Context 1": "The brawl turned lethal when one fan was seriously injured.",
+                        "Context 2": "The scientist researched lethal doses of various toxins.",
+                        "Context 3": "The lethal sneeze caused a chain reaction of laughter in the classroom."
+                    }
+                },
+                {
+                    "word": "Conflict",
+                    "definition": "A disagreement or clash between ideas, principles, or people.",
+                    "context": {
+                        "Context 1": "The conflict between fans escalated during the game.",
+                        "Context 2": "Their conflict over the right way to cook pasta ended in laughter.",
+                        "Context 3": "The superhero movie was filled with inner conflict as the hero faced a tough choice."
+                    }
+                },
+                {
+                    "word": "Tourism",
+                    "definition": "The business of providing services to people who are traveling for pleasure.",
+                    "context": {
+                        "Context 1": "Tourism increased significantly during the World Cup in Russia.",
+                        "Context 2": "Her passion for tourism led her to create a travel blog.",
+                        "Context 3": "The elephant's tourism tours attracted hundreds of travelers every year."
+                    }
+                },
+                {
+                    "word": "Impressed",
+                    "definition": "To have a strong effect on someone’s feelings or thoughts.",
+                    "context": {
+                        "Context 1": "Many people were impressed by the vibrant culture they experienced during their visit.",
+                        "Context 2": "He was impressed by the magician's incredible tricks.",
+                        "Context 3": "When they saw the giant cake, they were impressed that it could feed so many."
+                    }
+                },
+                {
+                    "word": "Unusual",
+                    "definition": "Not common or ordinary; remarkable.",
+                    "context": {
+                        "Context 1": "The unusual behavior of some fans caught the attention of local authorities.",
+                        "Context 2": "She wore an unusual hat that sparked conversations at the party.",
+                        "Context 3": "The unusual pet choices of the family included a parrot and a pig."
+                    }
+                },
+                {
+                    "word": "Government",
+                    "definition": "The governing body of a nation, state, or community.",
+                    "context": {
+                        "Context 1": "The government allocated funds for security during the World Cup.",
+                        "Context 2": "The government announced new policies to improve education.",
+                        "Context 3": "The cat formed a government of its own to rule over the other pets."
+                    }
+                },
+                {
+                    "word": "Attraction",
+                    "definition": "The action or power of attracting, or the factor that draws people.",
+                    "context": {
+                        "Context 1": "One major attraction of the World Cup is the diversity of cultures.",
+                        "Context 2": "The new amusement park has become a popular attraction for families.",
+                        "Context 3": "The attraction between the sun and the earth keeps us in orbit."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Skirmish",
+                    "fact": "Did you know that the word 'skirmish' originally referred to small-scale warfare, but now can encompass anything from a football fight to a sibling quarrel?"
+                },
+                {
+                    "word": "Brawl",
+                    "fact": "The longest brawl recorded in history lasted an incredible six hours at a wedding!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why don’t football players do well in school?",
+                    "answer": "Because they always get caught on the field for cheating!"
+                },
+                {
+                    "question": "Why was the football team so good at keeping secrets?",
+                    "answer": "Because they always held their positions!"
+                }
+            ]
+        },
+        "vocabulary_7": {
+            "vocabulary_list": [
+                {
+                    "word": "Skirmishes",
+                    "definition": "Minor fights or brief encounters, often in a larger conflict.",
+                    "context": {
+                        "Context 1": "Skirmishes between the two teams were common throughout the game.",
+                        "Context 2": "The skirmishes in his essay highlighted the challenges faced by local businesses.",
+                        "Context 3": "The children engaged in playful skirmishes during recess, showing their competitive spirit."
+                    }
+                },
+                {
+                    "word": "Demonstration",
+                    "definition": "The act of showing or proving something through evidence or example.",
+                    "context": {
+                        "Context 1": "The demonstration of the new product impressed the audience.",
+                        "Context 2": "The professor held a demonstration in class to explain the complex theory.",
+                        "Context 3": "They organized a demonstration in the park to raise awareness about climate change."
+                    }
+                },
+                {
+                    "word": "Overshadow",
+                    "definition": "To appear more prominent than something else, often leading to its diminished importance.",
+                    "context": {
+                        "Context 1": "The new policy might overshadow the progress made previously.",
+                        "Context 2": "The singer's new album overshadowed the success of her last one.",
+                        "Context 3": "In the movie, the villain’s actions overshadow the hero’s sacrifices."
+                    }
+                },
+                {
+                    "word": "Economic benefits",
+                    "definition": "The advantages or profits that a sector or individual gains from economic activity.",
+                    "context": {
+                        "Context 1": "The economic benefits of tourism significantly improved the local community.",
+                        "Context 2": "The economic benefits of going green are becoming more evident.",
+                        "Context 3": "Investing in education can bring long-term economic benefits to society."
+                    }
+                },
+                {
+                    "word": "Outweigh",
+                    "definition": "To be more significant or important than something else.",
+                    "context": {
+                        "Context 1": "The benefits of the new policy may outweigh the costs.",
+                        "Context 2": "In this case, the pros certainly outweigh the cons.",
+                        "Context 3": "Her skills outweigh her lack of experience in the industry."
+                    }
+                },
+                {
+                    "word": "Affirmative",
+                    "definition": "Expressing agreement or consent.",
+                    "context": {
+                        "Context 1": "His affirmative response encouraged the team to proceed.",
+                        "Context 2": "The general gave an affirmative nod, signaling agreement.",
+                        "Context 3": "The meeting ended on an affirmative note, with everyone in agreement."
+                    }
+                },
+                {
+                    "word": "Prolonging",
+                    "definition": "To extend the duration of something.",
+                    "context": {
+                        "Context 1": "Prolonging the meeting was not necessary, as all points had been covered.",
+                        "Context 2": "They decided against prolonging the project to meet the deadline.",
+                        "Context 3": "She had a hard time prolonging her vacation plans due to work commitments."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "Her perspective on the issue helped the group see things differently.",
+                        "Context 2": "From a historical perspective, these events are significant.",
+                        "Context 3": "Traveling can broaden your perspective on life."
+                    }
+                },
+                {
+                    "word": "Phenomenon",
+                    "definition": "An observable event or occurrence, especially one that is unusual or significant.",
+                    "context": {
+                        "Context 1": "The phenomenon of climate change is affecting the planet.",
+                        "Context 2": "The lights in the sky were a natural phenomenon that amazed the audience.",
+                        "Context 3": "This social media phenomenon has transformed how we communicate."
+                    }
+                },
+                {
+                    "word": "Collaborate",
+                    "definition": "To work jointly with others, especially in an intellectual endeavor.",
+                    "context": {
+                        "Context 1": "The team decided to collaborate on the project to combine their strengths.",
+                        "Context 2": "Artists often collaborate to create unique pieces of art.",
+                        "Context 3": "Businesses may collaborate to increase their market reach."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Skirmishes",
+                    "fact": "Did you know that ‘skirmish’ originally referred to the actions of scouts in military operations? Just imagine them quickly reporting back about dinner parties instead!"
+                },
+                {
+                    "word": "Economic benefits",
+                    "fact": "The term ‘economic benefits’ can sometimes sound so serious that it’s easy to forget that it can also involve ice cream trucks and street festivals!"
+                },
+                {
+                    "word": "Prolonging",
+                    "fact": "Interesting fact: Prolonging your vacation is often considered more difficult than prolonging a meeting—because who wants to miss out on fun!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student always carry a pencil and a notebook?",
+                    "answer": "Because they wanted to sketch out their brilliant ideas!"
+                },
+                {
+                    "question": "Why do students bring a ladder to school?",
+                    "answer": "Because they want to go to high school!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going? You look kinda tired today."
+                },
+                {
+                    "Person 2": "Ugh, don’t even get me started! I was up all night feeling sick."
+                },
+                {
+                    "Person 1": "Oh no! What’s wrong? Did you catch something?"
+                },
+                {
+                    "Person 2": "Yeah, I think I caught a bug. After our last game, I just felt horrible."
+                },
+                {
+                    "Person 1": "Yikes! That’s the worst. Did you get a fever or something?"
+                },
+                {
+                    "Person 2": "Exactly! I was burning up. It was like 100 degrees or more, and my head was pounding."
+                },
+                {
+                    "Person 1": "Ugh, that sounds rough. So you're feeling better now?"
+                },
+                {
+                    "Person 2": "Yeah, today I'm okay, but yesterday... let’s just say it was a struggle. I had to take some meds just to calm down."
+                },
+                {
+                    "Person 1": "Good to hear you're feeling better. But you said you were up all night? That’s tough."
+                },
+                {
+                    "Person 2": "Right? I couldn’t get comfortable. It was either too hot under the blankets or too cold without them."
+                },
+                {
+                    "Person 1": "I hate when that happens! It's like your body just won't cooperate."
+                },
+                {
+                    "Person 2": "Exactly! And to top it all off, I've got this sports event to go to with my parents later. It's so annoying."
+                },
+                {
+                    "Person 1": "Oh, that sounds fun, right? Sports competitions and all that?"
+                },
+                {
+                    "Person 2": "Fun? More like a torture session! It's Saturday, and I'd rather be relaxing at home."
+                },
+                {
+                    "Person 1": "But don’t you need to show up? Isn’t it part of the deal?"
+                },
+                {
+                    "Person 2": "Unfortunately, yeah. I have to be there, but I would much rather stay in bed."
+                },
+                {
+                    "Person 1": "Are your parents at least excited to go?"
+                },
+                {
+                    "Person 2": "Not really! They’re not thrilled about it either. It's just a silly event."
+                },
+                {
+                    "Person 1": "If I were you, I’d just skip it and focus on getting better."
+                },
+                {
+                    "Person 2": "Trust me, I've thought about it! But I want to keep my teachers happy and not get on their bad side."
+                },
+                {
+                    "Person 1": "Makes sense. You don’t want to rock the boat, right?"
+                },
+                {
+                    "Person 2": "Exactly! Just trying to show my face and still be in the good books, you know?"
+                },
+                {
+                    "Person 1": "Well, I hope it goes smoothly for you! Just take care of yourself."
+                },
+                {
+                    "Person 2": "Thanks! I appreciate it. Hopefully, after today, I can kick back and relax."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you heard about my friend who’s been dealing with all that paperwork?"
+                },
+                {
+                    "Person 2": "Oh no, what happened? More trouble with his visa?"
+                },
+                {
+                    "Person 1": "Yeah, he got rejected two times already! It's been such a hassle."
+                },
+                {
+                    "Person 2": "Wow, that sounds rough. What’s the hold-up?"
+                },
+                {
+                    "Person 1": "Well, he had to file some documents, but it's a total mess. Each time he goes to the office, something's wrong."
+                },
+                {
+                    "Person 2": "That’s frustrating. What kind of problems are they having?"
+                },
+                {
+                    "Person 1": "Sometimes the database isn’t working, or they can’t find his application. Other times, the signatures or dates don’t match."
+                },
+                {
+                    "Person 2": "That’s insane! How does anyone get through that?"
+                },
+                {
+                    "Person 1": "Exactly! So, he found another person to help, but it's pricey. He’s paying 20,000 rubles for it!"
+                },
+                {
+                    "Person 2": "Yikes, that's a lot! Do you think this new guy is reliable?"
+                },
+                {
+                    "Person 1": "Honestly, I’m not sure. He’s promised to get it done quickly, but you never know."
+                },
+                {
+                    "Person 2": "Yeah, it can be a gamble. Has your friend thought about just leaving the country?"
+                },
+                {
+                    "Person 1": "Yeah, he’s considering it. But it's tricky because they need proof of employment to stay legally."
+                },
+                {
+                    "Person 2": "That sounds complicated. What's the plan if this new guy doesn't come through?"
+                },
+                {
+                    "Person 1": "If he can’t sort it out, my friend might have to leave Kazakhstan for good."
+                },
+                {
+                    "Person 2": "Oh man, that’s tough. Hopefully, this new guy can get it sorted for him."
+                },
+                {
+                    "Person 1": "I hope so too! Fingers crossed everything works out."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey there! Have you thought about where you’d like to travel next?"
+                },
+                {
+                    "Person 2": "Not really, but I’ve always wanted to check out China. It just seems so fascinating!"
+                },
+                {
+                    "Person 1": "China would be awesome! I’ve heard so many great things about it. What makes you want to go there?"
+                },
+                {
+                    "Person 2": "Well, I've heard about the rich history and culture. Plus, the food looks incredible!"
+                },
+                {
+                    "Person 1": "Right? But with everything going on, it feels like traveling is a bit tricky."
+                },
+                {
+                    "Person 2": "Totally! I mean, I was talking to a friend about moving abroad, and we started considering all these logistics."
+                },
+                {
+                    "Person 1": "Yeah, I get that. Packing up and moving is such a hassle. What do you even do with all your stuff?"
+                },
+                {
+                    "Person 2": "Exactly! I have so much stuff piled up over the years—dishes, electronics, you name it."
+                },
+                {
+                    "Person 1": "Oh man, I feel like my kitchen alone has enough gadgets to open a store."
+                },
+                {
+                    "Person 2": "Haha, same! I mean, just a frying pan can cost a fortune!"
+                },
+                {
+                    "Person 1": "It’s wild! Sometimes I just think about selling everything and starting fresh somewhere."
+                },
+                {
+                    "Person 2": "That’s an idea! I might do that when we finally escape Kazakhstan. It’s been on my mind so much."
+                },
+                {
+                    "Person 1": "Are there any other countries you’ve considered aside from China?"
+                },
+                {
+                    "Person 2": "Well, I thought about maybe heading to Thailand or Vietnam. They’re not as expensive."
+                },
+                {
+                    "Person 1": "Those sound great! I’ve heard Vietnam is beautiful and super cheap."
+                },
+                {
+                    "Person 2": "Yeah, plus the whole traveling thing sounds exciting. Just hop from country to country!"
+                },
+                {
+                    "Person 1": "Exactly! It’s like an adventure! But I bet the paperwork can be a pain."
+                },
+                {
+                    "Person 2": "Oh, definitely! It’s such a mess here. Everything just feels so complicated."
+                },
+                {
+                    "Person 1": "Yeah, it seems like if you have the money, things work out a bit easier."
+                },
+                {
+                    "Person 2": "So true! If only it didn't take so much cash to make things happen."
+                },
+                {
+                    "Person 1": "Hey, but we’ll figure it out! One step at a time, right?"
+                },
+                {
+                    "Person 2": "Absolutely! Let’s plan our escape!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever thought about how complicated things can get with paperwork? It's a nightmare sometimes!"
+                },
+                {
+                    "Person 2": "Oh man, totally! I had to deal with visa stuff last year, and I felt like I was losing my mind trying to figure it all out."
+                },
+                {
+                    "Person 1": "Right? It’s like nobody really knows the rules, or they’re always changing them. You ask five people, and you get five different answers."
+                },
+                {
+                    "Person 2": "Exactly! I had one person tell me, 'Oh, it’ll be fine, just pay a fee.' Then another said, 'You might get deported!' Like, what’s the truth?"
+                },
+                {
+                    "Person 1": "Ugh, that’s the worst! And there’s always that looming anxiety of 'What if I messed up?'"
+                },
+                {
+                    "Person 2": "Seriously! And then you end up just waiting and hoping for the best. I remember waiting to hear back for weeks!"
+                },
+                {
+                    "Person 1": "I know, right? It’s like, is it too much to ask for some clarity? At least give us a timeline!"
+                },
+                {
+                    "Person 2": "Exactly! And don’t even get me started on tracking down documents. Lost files can turn into a whole ordeal."
+                },
+                {
+                    "Person 1": "Tell me about it! My friend had to dig through a mountain of paperwork just to find one little thing for his application."
+                },
+                {
+                    "Person 2": "Wow, that’s dedication! I think I would have given up at some point. Why can’t things be more straightforward?"
+                },
+                {
+                    "Person 1": "Honestly, I wish it was like that! I mean, it’s so frustrating sometimes that you think, 'Maybe it’s easier to just pack up and leave.'"
+                },
+                {
+                    "Person 2": "Right? But then you'd miss out on everything here! I just try to remind myself that it’ll be worth it in the end."
+                },
+                {
+                    "Person 1": "Same here! Just hoping everything works out for everyone involved. We just have to hang in there."
+                },
+                {
+                    "Person 2": "Yep, one day at a time! And maybe treat ourselves to some ice cream afterward to celebrate surviving the chaos."
+                },
+                {
+                    "Person 1": "Definitely! Ice cream sounds perfect. Let’s make that a plan!"
+                },
+                {
+                    "Person 2": "Absolutely! Just have to get through this paperwork first!"
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you ever try those fancy scissors they use for surgeries?"
+                },
+                {
+                    "Person 2": "Oh, the surgical scissors? Yeah, I've seen them! They're super sharp, right?"
+                },
+                {
+                    "Person 1": "Exactly! I bought a pair once just for fun. Thought it’d be cool to have around."
+                },
+                {
+                    "Person 2": "Nice! Why did you get them though? Planning to perform surgery at home?"
+                },
+                {
+                    "Person 1": "Not quite! I just collect random emergency supplies. Got a bunch of stuff like tourniquets too."
+                },
+                {
+                    "Person 2": "Wow, that’s kind of intense! What’s a tourniquet for, anyway?"
+                },
+                {
+                    "Person 1": "It's a strap to stop bleeding in case of a bad cut. Just a precaution, you know?"
+                },
+                {
+                    "Person 2": "Totally makes sense. I think I’d panic if I had to use one! Got anything else cool?"
+                },
+                {
+                    "Person 1": "Yeah, I've got scalpels! Quite a few, actually. It’s kind of intriguing."
+                },
+                {
+                    "Person 2": "Scalpels? That’s so random! Aren’t those a bit dangerous?"
+                },
+                {
+                    "Person 1": "For sure! But I just like having them. I was obsessed with them as a kid."
+                },
+                {
+                    "Person 2": "Really? What did you want to do with them?"
+                },
+                {
+                    "Person 1": "Honestly, I just wanted to draw and cut stuff, but I ended up hurting my fingers a few times."
+                },
+                {
+                    "Person 2": "Ouch! That sounds rough. How did that happen?"
+                },
+                {
+                    "Person 1": "I was testing to see how sharp they were. Not my best idea!"
+                },
+                {
+                    "Person 2": "Yeah, I can see that! But hey, at least you didn’t end up like a surgery patient, right?"
+                },
+                {
+                    "Person 1": "True! Just a little reckless. What about you? Any cool collections?"
+                },
+                {
+                    "Person 2": "Not really! I’m just trying to keep my plants alive over here."
+                },
+                {
+                    "Person 1": "That’s a collection in its own way! How’s that going?"
+                },
+                {
+                    "Person 2": "It’s a challenge, but I’m getting better. No scalpel needed, thankfully!"
+                },
+                {
+                    "Person 1": "Haha, good call! Let’s stick to growing plants without surgeries."
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that football game last night? It was wild!"
+                },
+                {
+                    "Person 2": "I missed it! What happened? Was it one of those nail-biters?"
+                },
+                {
+                    "Person 1": "Totally! It was back and forth the whole time. But there were some crazy fights in the stands too!"
+                },
+                {
+                    "Person 2": "Oh man, I hope it wasn't too serious. Those brawls can get out of hand."
+                },
+                {
+                    "Person 1": "Yeah, but it was just a little skirmish. Nothing too lethal, just some push and shove."
+                },
+                {
+                    "Person 2": "That's good then! But still, it's kind of crazy how these things keep happening."
+                },
+                {
+                    "Person 1": "Right? It's like you can't just enjoy the game anymore without some drama."
+                },
+                {
+                    "Person 2": "I know! And my buddy went to the last World Cup in Russia. He said there were a few incidents, but overall it was a blast."
+                },
+                {
+                    "Person 1": "Yeah, I heard the tourists really helped the local economy too. They spent a lot!"
+                },
+                {
+                    "Person 2": "Absolutely! It's a win-win if the conflicts are kept to a minimum."
+                },
+                {
+                    "Person 1": "For sure! The culture and all the places to visit are such a draw for people."
+                },
+                {
+                    "Person 2": "I’d love to travel to a World Cup someday. Just need to save up!"
+                },
+                {
+                    "Person 1": "Same here! Maybe we should plan a trip together."
+                },
+                {
+                    "Person 2": "That would be epic! Let's start looking into it."
+                }
+            ]
+        },
+        "dialogue_7": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, how's it going?"
+                },
+                {
+                    "Person 2": "Not bad! Just enjoying the weekend. How about you?"
+                },
+                {
+                    "Person 1": "Pretty good! Just trying to catch up on some reading."
+                },
+                {
+                    "Person 2": "Nice! What are you reading?"
+                },
+                {
+                    "Person 1": "It's a mystery novel. I’m hooked! But I keep getting distracted by my phone."
+                },
+                {
+                    "Person 2": "Oh man, I know that struggle! I can’t even sit through a movie without checking notifications."
+                },
+                {
+                    "Person 1": "Exactly! It’s like my attention span has shrunk."
+                },
+                {
+                    "Person 2": "Same here! Have you thought about setting some limits on your phone use?"
+                },
+                {
+                    "Person 1": "Yeah, I’ve considered it. Maybe I should do no phone an hour before bed?"
+                },
+                {
+                    "Person 2": "That sounds like a solid plan! I might give that a try too."
+                },
+                {
+                    "Person 1": "Alright, let’s hold each other accountable!"
+                },
+                {
+                    "Person 2": "Deal! Just remind me if I get sidetracked with TikTok."
+                },
+                {
+                    "Person 1": "Haha, will do! We can start fresh next week."
+                },
+                {
+                    "Person 2": "Sounds good! Let’s see how it goes!"
+                },
+                {
+                    "Person 1": "For sure! Good luck with your reading!"
+                },
+                {
+                    "Person 2": "And good luck with your phone detox!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
