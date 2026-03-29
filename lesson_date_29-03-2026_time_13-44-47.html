@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "it's like plus 12, the maximum temperature that gets plus 12, which is way too warm for St. Petersburg for March.",
+                    "corrected": "it's like plus 12, the maximum temperature that gets to plus 12, which is way too warm for St. Petersburg in March.",
+                    "explanation": "The phrase should be 'gets to plus 12' instead of 'gets plus 12' for correct idiomatic usage. 'In March' is more appropriate than 'for March.'",
+                    "context": "I have too many things to do, so I don't really have too much time to rest. It's like plus 12, the maximum temperature that gets to plus 12, which is way too warm for St. Petersburg in March. I try to get outside as much as possible."
+                },
+                {
+                    "original": "the maximum temperature that gets plus 12, which is way too warm for St. Petersburg for March.",
+                    "corrected": "the maximum temperature that gets to plus 12, which is way too warm for St. Petersburg in March.",
+                    "explanation": "Similar mistake regarding 'gets to plus 12' vs. 'gets plus 12', and 'in March' is the correct preposition here.",
+                    "context": "But I'm trying to enjoy. The only good thing in my life right now is a very, very warm March that we got going on. The maximum temperature that gets to plus 12, which is way too warm for St. Petersburg in March."
+                },
+                {
+                    "original": "all my ass is completely sweaty.",
+                    "corrected": "all my back and my ass are completely sweaty.",
+                    "explanation": "Subject-verb agreement is needed; 'ass' should be in plural form with 'are' since 'all my back and my ass' are two subjects.",
+                    "context": "I'm sweating here. All my back and my ass are completely sweaty. When I stand up, like there is a puddle on the chair."
+                },
+                {
+                    "original": "I just really like how it looks. It's not a... This symbol is not a purely a Christian thing.",
+                    "corrected": "It's not purely a Christian thing.",
+                    "explanation": "The phrase 'a purely a Christian thing' is incorrect; 'a' should be removed to avoid redundancy.",
+                    "context": "I'm not Christian. I just really like how it looks. It's not purely a Christian thing."
+                },
+                {
+                    "original": "every self, every French person who respects themselves, themselves, like they complain constantly.",
+                    "corrected": "every French person who respects themselves complains constantly.",
+                    "explanation": "The phrase 'every self, every French person who respects themselves, themselves' is redundant and confusing.",
+                    "context": "It's more, well, it's a French sport, you know, it's a national French sport. Every French person who respects themselves complains constantly."
+                },
+                {
+                    "original": "they're trying to learn French right now, but they aren't very fluid.",
+                    "corrected": "they're trying to learn French right now, but they aren't very fluent.",
+                    "explanation": "The word 'fluid' should be replaced with 'fluent' as it correctly describes language proficiency.",
+                    "context": "He basically bought himself the way there, but they're trying to learn French right now, but they aren't very fluent."
+                },
+                {
+                    "original": "especially if you're Russian and you don't speak any other language fluently.",
+                    "corrected": "especially if you're Russian and you don't speak any other language well.",
+                    "explanation": "'Fluently' is typically used for proficiency while 'well' is appropriate when discussing overall ability.",
+                    "context": "He cannot really get a job that easily. Especially if you're Russian and you don't speak any other language well."
+                },
+                {
+                    "original": "that's the thing.",
+                    "corrected": "that's the problem.",
+                    "explanation": "'That's the thing' can sound vague and informal; 'that's the problem' is clearer in this context.",
+                    "context": "He doesn't even speak English. That's the problem. He basically bought himself the way there, but they're trying to learn French right now."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "It's like you don't, you're not planning on moving to France?",
+                    "corrected": "It's like you're not planning on moving to France?",
+                    "explanation": "The phrase 'you don't' is incorrect here; it should be 'you're not' to indicate a lack of planning.",
+                    "context": "I've been thinking about moving to a different country. It's like you're not planning on moving to France? I'm just curious about your thoughts."
+                },
+                {
+                    "original": "I think I'm not going to have much trouble learning the language.",
+                    "corrected": "I think I'm going to have much trouble learning the language.",
+                    "explanation": "The phrase should use 'going to' without 'not' to convey confidence instead of doubt.",
+                    "context": "I want to immerse myself in another culture. I think I'm going to have much trouble learning the language. But I'm really motivated to try."
+                },
+                {
+                    "original": "I can only go, I cannot only say I did it or my friend did it.",
+                    "corrected": "I can't just say I did it or my friend did it.",
+                    "explanation": "The phrase 'I can only go' is unnecessary; 'can't just' better expresses limitation without confusion.",
+                    "context": "When presenting an argument, I can only go. I can't just say I did it or my friend did it. I need concrete examples."
+                },
+                {
+                    "original": "Well, you know what? This example is not bad. Actually, yeah.",
+                    "corrected": "Well, you know what? This example is actually not bad.",
+                    "explanation": "The phrase should be reordered for clarity; 'actually' should precede 'not bad' for proper emphasis.",
+                    "context": "We're reviewing examples in class. Well, you know what? This example is actually not bad. I can see its potential."
+                },
+                {
+                    "original": "That would be dystopian.",
+                    "corrected": "That would be a dystopian situation.",
+                    "explanation": "The adverb 'dystopian' needs to be used as an adjectival phrase to make a complete thought.",
+                    "context": "We were discussing policies regarding physical books. That would be a dystopian situation. It implies a lack of freedom."
+                },
+                {
+                    "original": "If we, if we look at some university in rural or like settlement.",
+                    "corrected": "If we look at a university in a rural area or a settlement.",
+                    "explanation": "The phrase 'if we look at some university' is vague; 'a university in a rural area' is clearer.",
+                    "context": "When discussing different educational environments, it varies widely. If we look at a university in a rural area or a settlement, it’s different from urban universities."
+                },
+                {
+                    "original": "In some universities in Russia, it automatically makes a claim that in anywhere other than Russia, it is not true logical state.",
+                    "corrected": "Claiming this in some universities in Russia implies that it's not true in any other country.",
+                    "explanation": "The phrasing is convoluted; simplifying it to 'implies' makes the meaning clearer.",
+                    "context": "During our discussion, I pointed out assumptions. Claiming this in some universities in Russia implies that it's not true in any other country. We need a broader perspective."
+                },
+                {
+                    "original": "I cannot really say it's true in, I don't know, university of some place.",
+                    "corrected": "I cannot really say it's true in any university without specifics.",
+                    "explanation": "The phrasing is vague and informal; providing clarity by focusing on 'any university' is preferable.",
+                    "context": "We were evaluating the validity of our statements. I cannot really say it's true in any university without specifics. We need to be careful."
+                },
+                {
+                    "original": "You know what? I'll send it to you in Telegram. Peanut and Telegram.",
+                    "corrected": "You know what? I'll send it to you on Telegram.",
+                    "explanation": "The phrase 'in Telegram' is incorrect; 'on Telegram' is the proper preposition for this context.",
+                    "context": "Communication is important in our collaboration. You know what? I'll send it to you on Telegram. It's much easier that way."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "they prefer them on big only because they prefer them, which is personal",
+                    "corrected": "they prefer them mainly because of personal preference",
+                    "explanation": "The phrase 'on big' is incorrect and unclear; 'mainly because of' clarifies the reasoning.",
+                    "context": "Some people might choose paper books over e-books. They prefer them mainly because of personal preference. This choice is subjective and varies from person to person."
+                },
+                {
+                    "original": "a statistic. Make up statistics again.",
+                    "corrected": "a statistic. Make up a statistic again.",
+                    "explanation": "The phrase 'make up statistics' should use the singular 'statistic' for agreement with 'a.'",
+                    "context": "I mentioned the need for supporting evidence. Make up a statistic again. It would help to strengthen my argument."
+                },
+                {
+                    "original": "if you just lower the prices on everything, your business cannot really survive.",
+                    "corrected": "if you just lower the prices of everything, your business cannot really survive.",
+                    "explanation": "'Prices on' should be replaced with 'prices of,' which is the correct preposition to use in this context.",
+                    "context": "We were discussing pricing strategies for books. If you just lower the prices of everything, your business cannot really survive. It's important to consider sustainability."
+                },
+                {
+                    "original": "making up statistics. We are kind of lying here.",
+                    "corrected": "making up statistics. We are somewhat dishonest here.",
+                    "explanation": "The phrase 'kind of lying' may sound informal; 'somewhat dishonest' provides a clearer and more formal expression.",
+                    "context": "As we debated the integrity of our claims, making up statistics felt wrong. We are somewhat dishonest here. It’s crucial to use accurate information."
+                },
+                {
+                    "original": "the struggle with like the economical situation right now",
+                    "corrected": "the struggle with the economic situation right now",
+                    "explanation": "'Economical' relates to efficiency or cost-saving, while 'economic' pertains to the economy.",
+                    "context": "I wanted to address current challenges. The struggle with the economic situation right now really impacts book sales. People are questioning their spending habits."
+                },
+                {
+                    "original": "you know, like those exchange points, but that really doesn't does not matter",
+                    "corrected": "you know, like those exchange points, but that really does not matter",
+                    "explanation": "The phrase 'does not does not' is a redundancy; correcting it to 'does not' resolves this.",
+                    "context": "I thought of a solution regarding book exchanges. You know, like those exchange points, but that really does not matter for this discussion. The focus should be on sales trends."
+                },
+                {
+                    "original": "I mean, basically, in those two sentences, like the idea is clear.",
+                    "corrected": "I mean, basically, in those two sentences, the idea is clear.",
+                    "explanation": "The phrase 'like the idea is clear' is a bit informal and can be simplified to improve clarity.",
+                    "context": "I was summarizing the points made earlier. I mean, basically, in those two sentences, the idea is clear. It illustrates the main argument well."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "In favor of We'll give up physical books.",
+                    "corrected": "In favor of giving up physical books.",
+                    "explanation": "The phrase 'We'll give up' is not correctly structured. The gerund 'giving up' should be used instead.",
+                    "context": "Many people believe that in the future, we will shift to digital formats. In favor of giving up physical books, they argue that digital options are more convenient."
+                },
+                {
+                    "original": "Mother fuckers.",
+                    "corrected": "This expression is inappropriate.",
+                    "explanation": "This language is informal and can be considered offensive; a more appropriate expression should be used in a lesson.",
+                    "context": "During the lesson, I expressed my frustration at the idea of giving up physical books completely. This language was a slip of professionalism."
+                },
+                {
+                    "original": "There is opinion that people will give up physical books in favor of online reading.",
+                    "corrected": "There is an opinion that people will give up physical books in favor of online reading.",
+                    "explanation": "The article 'an' is missing before 'opinion.'",
+                    "context": "In our discussion, I mentioned that there is an opinion that people will give up physical books. This change is driving the transition towards online reading."
+                },
+                {
+                    "original": "Usually, you know, this is most of the time better than that.",
+                    "corrected": "Usually, this is better than that.",
+                    "explanation": "The phrase 'you know' is filler and makes the sentence awkward; simplifying it improves clarity.",
+                    "context": "We talked about preferences in reading formats. Usually, this is better than that when it comes to efficiency."
+                },
+                {
+                    "original": "Do you hear me? Nothing? No.",
+                    "corrected": "Do you hear me? Is there nothing? No.",
+                    "explanation": "The original phrasing is unclear and should be more specific to convey doubt about the response.",
+                    "context": "I was checking for responses during a part of the lesson. Do you hear me? Is there nothing? No response was a bit frustrating."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Suspicious",
+                    "definition": "Arousing distrust or doubt.",
+                    "context": {
+                        "Context 1": "The sudden warm weather in March felt suspicious to me.",
+                        "Context 2": "He gave me a suspicious look when I entered the room.",
+                        "Context 3": "The suspicious package was reported to the authorities immediately."
+                    }
+                },
+                {
+                    "word": "Irritated",
+                    "definition": "Feeling or showing anger or annoyance.",
+                    "context": {
+                        "Context 1": "I felt irritated by my parents’ constant complaining.",
+                        "Context 2": "She was irritated when her computer crashed right before her presentation.",
+                        "Context 3": "He was irritated that he had to wait in line for so long."
+                    }
+                },
+                {
+                    "word": "Permanent Residence",
+                    "definition": "The right to live indefinitely in a country other than one's country of origin.",
+                    "context": {
+                        "Context 1": "My parents are trying to obtain permanent residence in France.",
+                        "Context 2": "After living in the U.S. for several years, he finally got permanent residence.",
+                        "Context 3": "She was excited to learn she received permanent residence in Canada."
+                    }
+                },
+                {
+                    "word": "Complex Situation",
+                    "definition": "A situation that is complicated or difficult to understand.",
+                    "context": {
+                        "Context 1": "Their family's decision about moving is a complex situation.",
+                        "Context 2": "The negotiations surrounding the peace treaty presented a complex situation.",
+                        "Context 3": "Understanding the rules of chess can be a complex situation for beginners."
+                    }
+                },
+                {
+                    "word": "Complain",
+                    "definition": "To express dissatisfaction or annoyance about something.",
+                    "context": {
+                        "Context 1": "Every French person seems to think complaining is a national sport.",
+                        "Context 2": "She tends to complain whenever the weather isn't perfect.",
+                        "Context 3": "He called to complain about the defective product he received."
+                    }
+                },
+                {
+                    "word": "Real Estate",
+                    "definition": "Property consisting of land and the buildings on it.",
+                    "context": {
+                        "Context 1": "My parents own real estate in France.",
+                        "Context 2": "Real estate prices are skyrocketing in urban areas these days.",
+                        "Context 3": "After becoming a millionaire, he invested heavily in real estate."
+                    }
+                },
+                {
+                    "word": "Fluent",
+                    "definition": "Able to express oneself easily and accurately in a language.",
+                    "context": {
+                        "Context 1": "They are trying to learn French but aren't fluent yet.",
+                        "Context 2": "She became fluent in Spanish after living in Spain for a year.",
+                        "Context 3": "Being fluent in multiple languages can enhance employability."
+                    }
+                },
+                {
+                    "word": "Annoy",
+                    "definition": "To irritate someone or make them slightly angry.",
+                    "context": {
+                        "Context 1": "My parents annoy me a lot with their complaints.",
+                        "Context 2": "The constant noise from construction work began to annoy the residents.",
+                        "Context 3": "His habit of interrupting others can really annoy his friends."
+                    }
+                },
+                {
+                    "word": "Acquire",
+                    "definition": "To gain possession or control of something.",
+                    "context": {
+                        "Context 1": "He is trying to acquire a job in France.",
+                        "Context 2": "The company plans to acquire another firm to expand its reach.",
+                        "Context 3": "She hopes to acquire new skills through her training program."
+                    }
+                },
+                {
+                    "word": "Fluid",
+                    "definition": "Able to flow easily and smoothly.",
+                    "context": {
+                        "Context 1": "My parents aren’t very fluid in French or English.",
+                        "Context 2": "The dancer's movements were fluid and graceful.",
+                        "Context 3": "The fluid dynamics of the ocean are fascinating to study."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Complain",
+                    "fact": "Did you know that studies have shown people who complain excessively may have higher blood pressure? It's not just annoying; it's unhealthy too!"
+                },
+                {
+                    "word": "Real Estate",
+                    "fact": "In Singapore, owning a piece of property is so expensive that some buyers are now purchasing 'air rights' to build on top of existing buildings. Talk about a real estate bubble!"
+                },
+                {
+                    "word": "Fluent",
+                    "fact": "The word 'fluent' comes from the Latin word 'fluere', which means 'to flow'. So when you're fluent in a language, you're essentially making it flow smoothly!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to school?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What did one wall say to the other wall?",
+                    "answer": "I'll meet you at the corner!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Motivation",
+                    "definition": "The reason or reasons one has for acting or behaving in a particular way.",
+                    "context": {
+                        "Context 1": "She felt that motivation was essential for her to learn French in just a few months.",
+                        "Context 2": "His motivation for running marathons was to raise money for charity.",
+                        "Context 3": "Lack of motivation can prevent students from achieving their academic goals."
+                    }
+                },
+                {
+                    "word": "Permanent",
+                    "definition": "Lasting or intended to last or remain unchanged indefinitely.",
+                    "context": {
+                        "Context 1": "They decided to make their workspace a permanent location for the project.",
+                        "Context 2": "He chose a permanent residence in the city after years of moving around.",
+                        "Context 3": "Plastic is a material that can be permanent in the environment for hundreds of years."
+                    }
+                },
+                {
+                    "word": "Guarantee",
+                    "definition": "A formal promise or assurance that certain conditions will be fulfilled.",
+                    "context": {
+                        "Context 1": "Learning the language won't guarantee success when moving abroad.",
+                        "Context 2": "The store offers a money-back guarantee if you are not satisfied with your purchase.",
+                        "Context 3": "There's no guarantee that it won't rain on the wedding day."
+                    }
+                },
+                {
+                    "word": "Convenience",
+                    "definition": "The state of being able to proceed with something with little effort or difficulty.",
+                    "context": {
+                        "Context 1": "Digital textbooks provide a convenience that physical books can't match.",
+                        "Context 2": "The convenience of online shopping has changed the way we buy groceries.",
+                        "Context 3": "She appreciated the convenience of having a coffee shop just downstairs."
+                    }
+                },
+                {
+                    "word": "Prioritize",
+                    "definition": "To designate or treat something as more important than other things.",
+                    "context": {
+                        "Context 1": "The university decided to prioritize digital formats to help students be healthier.",
+                        "Context 2": "He needs to prioritize his homework over playing video games.",
+                        "Context 3": "During a crisis, companies often prioritize the safety of their employees."
+                    }
+                },
+                {
+                    "word": "Statistical",
+                    "definition": "Of or relating to the use of statistics; numerical representation.",
+                    "context": {
+                        "Context 1": "There aren't any statistical data to support his claim about reading preferences.",
+                        "Context 2": "The statistical analysis of the survey revealed surprising trends in consumer behavior.",
+                        "Context 3": "She presented a statistical report showing the changes in temperature over the last century."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "He shared his experience of moving to a new country and learning a language.",
+                        "Context 2": "Traveling gives you a unique experience that can't be replicated in books.",
+                        "Context 3": "Her experience as a teacher helped her understand the needs of her students."
+                    }
+                },
+                {
+                    "word": "Struggle",
+                    "definition": "A forceful or violent effort to get free of restraint or constriction.",
+                    "context": {
+                        "Context 1": "She shared her struggle with finding an example that illustrates her point.",
+                        "Context 2": "They had to struggle to get the heavy box up the stairs.",
+                        "Context 3": "The struggle for civil rights has been ongoing for many decades."
+                    }
+                },
+                {
+                    "word": "Ambiguous",
+                    "definition": "Open to more than one interpretation; not having one obvious meaning.",
+                    "context": {
+                        "Context 1": "Their topic was too ambiguous, making it hard to find a clear focus.",
+                        "Context 2": "He gave an ambiguous answer that left everyone confused about his intentions.",
+                        "Context 3": "Ambiguous laws can lead to different interpretations in a courtroom."
+                    }
+                },
+                {
+                    "word": "Dystopian",
+                    "definition": "Relating to or denoting an imagined state or society where there is great suffering or injustice.",
+                    "context": {
+                        "Context 1": "He mentioned that banning physical books would create a dystopian environment for students.",
+                        "Context 2": "The book described a dystopian future where technology controls every aspect of life.",
+                        "Context 3": "Dystopian films often explore the consequences of a totalitarian government."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Motivation",
+                    "fact": "The longest recorded time without sleep is approximately 11 days, but motivation to stay awake comes at a cost!"
+                },
+                {
+                    "word": "Ambiguous",
+                    "fact": "The word 'ambiguous' itself is quite ambiguous—it can mean unclear, uncertain, or even open to interpretation!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "What do you call a pirate who skips class?",
+                    "answer": "Captain Hooky!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Preference",
+                    "definition": "A greater liking for one alternative over another.",
+                    "context": {
+                        "Context 1": "People often have a preference for paper books over e-books due to their tactile nature.",
+                        "Context 2": "Her preference for tropical vacations means she rarely visits the mountains.",
+                        "Context 3": "The restaurant caters to the preference of customers who enjoy spicy food."
+                    }
+                },
+                {
+                    "word": "Economically",
+                    "definition": "In a way that relates to economics or the economy.",
+                    "context": {
+                        "Context 1": "The bookstore managed to survive economically despite challenges.",
+                        "Context 2": "They chose to travel economically by using public transport instead of taxis.",
+                        "Context 3": "The company is focused on expanding its economically sustainable practices."
+                    }
+                },
+                {
+                    "word": "Statistic",
+                    "definition": "A numerical fact or figure, often used to analyze data.",
+                    "context": {
+                        "Context 1": "The lesson suggested using a statistic to support claims about book sales.",
+                        "Context 2": "According to a recent statistic, eating breakfast can improve concentration in school.",
+                        "Context 3": "The statistic about smartphone usage among teens surprised many parents."
+                    }
+                },
+                {
+                    "word": "Claim",
+                    "definition": "State or assert that something is the case, typically without providing evidence or proof.",
+                    "context": {
+                        "Context 1": "They made a claim that people are still buying physical books despite the internet.",
+                        "Context 2": "His claim that he could run a marathon without training raised eyebrows.",
+                        "Context 3": "The company's claim of being eco-friendly was scrutinized by consumers."
+                    }
+                },
+                {
+                    "word": "Boasting",
+                    "definition": "Talking about something with pride.",
+                    "context": {
+                        "Context 1": "The rising secondhand book market is boasting improved sales figures.",
+                        "Context 2": "She was boasting about her new job at the prestigious company.",
+                        "Context 3": "The athlete was boasting of his record-breaking performance at the championships."
+                    }
+                },
+                {
+                    "word": "Manage",
+                    "definition": "To be in charge of or control a situation, organization, or resource.",
+                    "context": {
+                        "Context 1": "The bookstore managed to thrive despite the rise of digital media.",
+                        "Context 2": "He struggled to manage his time effectively between work and studies.",
+                        "Context 3": "The coach helped the team manage their resources during the tournament."
+                    }
+                },
+                {
+                    "word": "Statistics",
+                    "definition": "The practice or science of collecting and analyzing numerical data.",
+                    "context": {
+                        "Context 1": "Using accurate statistics can strengthen an argument about book sales.",
+                        "Context 2": "Statistics show that more people are exercising regularly now than a decade ago.",
+                        "Context 3": "The field of statistics is crucial in understanding market trends."
+                    }
+                },
+                {
+                    "word": "Convincing",
+                    "definition": "Capable of causing someone to believe that something is true.",
+                    "context": {
+                        "Context 1": "A convincing example can sway opinions in a debate about book sales.",
+                        "Context 2": "Her convincing performance earned her the lead role in the play.",
+                        "Context 3": "The lawyer presented a convincing argument that led to his client's acquittal."
+                    }
+                },
+                {
+                    "word": "Despite",
+                    "definition": "Without being affected by; in defiance of.",
+                    "context": {
+                        "Context 1": "People continue to purchase books despite the popularity of e-readers.",
+                        "Context 2": "Despite the rain, the outdoor concert was a success.",
+                        "Context 3": "She completed the marathon despite her injury."
+                    }
+                },
+                {
+                    "word": "Exist",
+                    "definition": "To have objective reality or being.",
+                    "context": {
+                        "Context 1": "Bookstores still exist, indicating a continued interest in physical books.",
+                        "Context 2": "Dinosaurs existed millions of years ago.",
+                        "Context 3": "Some myths suggest that fairies exist in hidden meadow realms."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Statistic",
+                    "fact": "Did you know that about 75% of all statistics are made up on the spot? Just kidding—it's a statistic!"
+                },
+                {
+                    "word": "Despite",
+                    "fact": "The word 'despite' comes from the Latin 'despectus,' which means 'to look down upon.' So, it literally means you can still look at something negatively and yet still happen!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the ghost go to the bookstore?",
+                    "answer": "Because he heard the best stories were 'spirited'!"
+                },
+                {
+                    "question": "Why don't books ever get lost?",
+                    "answer": "Because they always have their 'binding' to hold them together!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Physical Copy",
+                    "definition": "A tangible version of a book, magazine, or document rather than a digital or electronic version.",
+                    "context": {
+                        "Context 1": "In the discussion, it was suggested that students will give up physical copies of books in the future.",
+                        "Context 2": "He prefers a physical copy of the book so he can highlight and write notes in the margins.",
+                        "Context 3": "Many people still enjoy the smell of a physical copy of an old book, which cannot be replicated digitally."
+                    }
+                },
+                {
+                    "word": "Open Source",
+                    "definition": "Software or content that is made available for use, modification, and sharing by anyone.",
+                    "context": {
+                        "Context 1": "He mentioned that open source resources will reduce the need for physical copies.",
+                        "Context 2": "The open source software community thrives on collaboration and innovation.",
+                        "Context 3": "Some culinary recipes are considered open source, allowing chefs to create their own versions."
+                    }
+                },
+                {
+                    "word": "Oxford Comma",
+                    "definition": "A punctuation mark that comes before the conjunction in a list, used for clarity.",
+                    "context": {
+                        "Context 1": "The lesson pointed out the importance of the Oxford comma in academic writing.",
+                        "Context 2": "Without the Oxford comma, the sentence could imply that my parents are a cat and a dog.",
+                        "Context 3": "The Oxford comma is hotly debated among writers, with some swearing by it and others against it."
+                    }
+                },
+                {
+                    "word": "Bandwidth",
+                    "definition": "The amount of data that can be transmitted over a network in a given time.",
+                    "context": {
+                        "Context 1": "They emphasized the need to save bandwidth while discussing online reading.",
+                        "Context 2": "Low bandwidth can lead to buffering when streaming videos.",
+                        "Context 3": "He joked that his brain runs out of bandwidth when trying to focus on multiple tasks."
+                    }
+                },
+                {
+                    "word": "Affordable",
+                    "definition": "Reasonably priced; something that consumers can buy without discomfort.",
+                    "context": {
+                        "Context 1": "They agreed that online books might be more affordable than physical copies.",
+                        "Context 2": "The city is working on providing affordable housing for its residents.",
+                        "Context 3": "Her goal is to find an affordable vacation spot that doesn't compromise on views."
+                    }
+                },
+                {
+                    "word": "Comfortable",
+                    "definition": "Providing physical ease and relaxation; free from stress or discomfort.",
+                    "context": {
+                        "Context 1": "The discussion included how online reading can be more comfortable than holding physical books.",
+                        "Context 2": "Her chair is so comfortable that she often dozes off while watching TV.",
+                        "Context 3": "Finding a comfortable pair of shoes is essential for long hikes."
+                    }
+                },
+                {
+                    "word": "Available",
+                    "definition": "Ready for use or accessible.",
+                    "context": {
+                        "Context 1": "They believed that more reading materials would be available online in the future.",
+                        "Context 2": "The book was not available at the library, so I had to buy it.",
+                        "Context 3": "He checked his schedule to see if he was available for the meeting on Friday."
+                    }
+                },
+                {
+                    "word": "Opinion",
+                    "definition": "A belief or judgment that rests on grounds insufficient to produce complete certainty.",
+                    "context": {
+                        "Context 1": "The conversation revolved around the opinion that online reading is better than traditional methods.",
+                        "Context 2": "Everyone is entitled to their own opinion, but facts should also be considered.",
+                        "Context 3": "His opinion on pineapple on pizza has sparked many debates among friends."
+                    }
+                },
+                {
+                    "word": "Drive",
+                    "definition": "To operate and control the direction and speed of a vehicle; also means to motivate or propel.",
+                    "context": {
+                        "Context 1": "The discussion touched upon the drive towards digital reading materials.",
+                        "Context 2": "She decided to drive to the beach early to beat the traffic.",
+                        "Context 3": "His ambition and drive to succeed lead him to take on multiple projects at once."
+                    }
+                },
+                {
+                    "word": "Crazy",
+                    "definition": "Extremely enthusiastic or wild; mentally deranged or insane.",
+                    "context": {
+                        "Context 1": "The speaker described some predictions about technology as crazy.",
+                        "Context 2": "His crazy ideas often lead to innovative solutions.",
+                        "Context 3": "She had a crazy aunt who would dance on the tables at family gatherings."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Oxford Comma",
+                    "fact": "The Oxford comma is so contentious that it's become a meme, leading to slogans like 'Save the Oxford Comma!' and 'No comma, no peace!'"
+                },
+                {
+                    "word": "Crazy",
+                    "fact": "In the 18th century, 'crazy' used to mean 'full of cracks' or 'dilapidated,' which ironically fits many of our family's holiday decorations!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the book join the gym?",
+                    "answer": "Because it wanted to work on its spine!"
+                },
+                {
+                    "question": "What do you call a teacher who never farts in public?",
+                    "answer": "A private tutor!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! You look a bit stressed. Everything alright?"
+                },
+                {
+                    "Person 2": "Yeah, just juggling a ton of things at once. I barely have time to breathe!"
+                },
+                {
+                    "Person 1": "I get that! On the bright side, at least the weather is nice, right?"
+                },
+                {
+                    "Person 2": "True! Can you believe it’s like 60 degrees in March? I’m not complaining though!"
+                },
+                {
+                    "Person 1": "Right? I’ve been trying to spend more time outside. Feels good to soak up some sun."
+                },
+                {
+                    "Person 2": "Definitely! I went on a walk yesterday with my parents. They just got back from France!"
+                },
+                {
+                    "Person 1": "Nice! How was that? Did they have fun?"
+                },
+                {
+                    "Person 2": "Well, they had a blast. But they won’t stop complaining about how hard life is now that they’re back!"
+                },
+                {
+                    "Person 1": "Ugh, that sounds frustrating. Sometimes it feels like people just want to complain."
+                },
+                {
+                    "Person 2": "Exactly! I watched some blogs about that too. It’s like a whole culture there."
+                },
+                {
+                    "Person 1": "I think I’ve heard the same! Everyone expects you to join in on the complaining."
+                },
+                {
+                    "Person 2": "Right? It’s just exhausting. They went on and on about it during our walk."
+                },
+                {
+                    "Person 1": "So, are they planning to stay in France for good?"
+                },
+                {
+                    "Person 2": "They’re working on it, but it’s complicated. They want to but my little brother and grandma don’t want to leave."
+                },
+                {
+                    "Person 1": "That’s tough. Family decisions can be messy."
+                },
+                {
+                    "Person 2": "Yeah. I feel a bit left out too. They didn’t even think to take me with them!"
+                },
+                {
+                    "Person 1": "Wow, that’s kind of a big deal! Did they just spring it on you?"
+                },
+                {
+                    "Person 2": "Yep! One day I got a call saying they sold their car and were moving. I was like, wait, what?"
+                },
+                {
+                    "Person 1": "Oh man, that’s so sudden. Are you okay with all of it?"
+                },
+                {
+                    "Person 2": "I mean, I’m getting by. Just figuring things out on my own."
+                },
+                {
+                    "Person 1": "You’ll manage! You’re tough. What’s your dad doing now?"
+                },
+                {
+                    "Person 2": "He’s still working in Russia for now. Finding a job there is lot easier for him."
+                },
+                {
+                    "Person 1": "That makes sense. It’s hard enough moving countries, let alone learning a new language."
+                },
+                {
+                    "Person 2": "Yeah, exactly. They’re trying to learn French, but it’s not going that great."
+                },
+                {
+                    "Person 1": "Oh, French can be tricky! Do you think you’ll learn it someday?"
+                },
+                {
+                    "Person 2": "Maybe! I’ve never really liked it though. It’s just not my thing."
+                },
+                {
+                    "Person 1": "That’s fine! You don’t have to like every language. Just go with what feels right for you."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you been practicing your French lately?"
+                },
+                {
+                    "Person 2": "Not really. I like Italian and Spanish more, but French just feels so tricky."
+                },
+                {
+                    "Person 1": "I get that. So, are you thinking about moving to France or something?"
+                },
+                {
+                    "Person 2": "Yeah, I'm hoping to move somewhere in Europe. I think if I get motivated, I could pick up the language pretty quickly."
+                },
+                {
+                    "Person 1": "You just need that push, right? Like, if someone told you you'd get a cool job if you learn it, you'd be fluent in no time."
+                },
+                {
+                    "Person 2": "Totally! But for now, it seems like there's a lot more to worry about than just the language."
+                },
+                {
+                    "Person 1": "That's fair. So, did you find that document you were talking about?"
+                },
+                {
+                    "Person 2": "Not yet. I thought I had the link saved, but I lost it. Can you send it to me again?"
+                },
+                {
+                    "Person 1": "Sure! I’ll send it through chat. Last time I sent it, you didn’t save it?"
+                },
+                {
+                    "Person 2": "Exactly! I thought it wouldn’t be a long-term thing."
+                },
+                {
+                    "Person 1": "Well, it looks like it is! I'll ping it to you right now."
+                },
+                {
+                    "Person 2": "Awesome! Thanks a ton. Once I get it, I’ll add my notes to our shared folder."
+                },
+                {
+                    "Person 1": "Sounds good! It’ll be nice to see everything organized in one place."
+                },
+                {
+                    "Person 2": "Yeah, makes it easier to find things later. So, what’s the next step for our project?"
+                },
+                {
+                    "Person 1": "We should come up with some examples for our discussion, maybe about the shift to digital books?"
+                },
+                {
+                    "Person 2": "Oh yeah! That’s a good idea. Lots of universities are moving away from physical books, right?"
+                },
+                {
+                    "Person 1": "For sure! And it’ll be interesting to see how that impacts students."
+                },
+                {
+                    "Person 2": "Definitely! Let’s explore that a bit more. It sounds like a solid topic."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you see that bookstore that just opened downtown?"
+                },
+                {
+                    "Person 2": "Yeah, I did! Looks really nice. I love the vibe of independent bookstores."
+                },
+                {
+                    "Person 1": "Same here! It’s so much better than just scrolling through e-books."
+                },
+                {
+                    "Person 2": "Totally! There's something special about holding a book in your hands, right?"
+                },
+                {
+                    "Person 1": "Absolutely! Plus, I heard they have some cool events planned, like book signings and readings."
+                },
+                {
+                    "Person 2": "Oh, that sounds awesome! I’ve always wanted to meet a local author."
+                },
+                {
+                    "Person 1": "Me too! And I think they even have a coffee shop inside. Perfect for a cozy reading session!"
+                },
+                {
+                    "Person 2": "Nice! I could spend hours there. I just love browsing through the shelves."
+                },
+                {
+                    "Person 1": "Right? And you never know what hidden gems you'll find. I found a rare edition of my favorite book once!"
+                },
+                {
+                    "Person 2": "That's amazing! It’s like a treasure hunt. I feel like people are starting to appreciate physical books more now."
+                },
+                {
+                    "Person 1": "Yeah! Even with all these digital options, there's just something about a real book."
+                },
+                {
+                    "Person 2": "Exactly! Plus, supporting local businesses feels good."
+                },
+                {
+                    "Person 1": "For sure! How about we check it out this weekend?"
+                },
+                {
+                    "Person 2": "Count me in! I’ll bring my reading list."
+                },
+                {
+                    "Person 1": "Perfect! Can’t wait to see what new books we discover!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you see that article about how people might stop using physical books in the future?"
+                },
+                {
+                    "Person 2": "Yeah, I did! It's kind of wild to think about, right? Like, will we really just read everything on screens?"
+                },
+                {
+                    "Person 1": "I know! I love the feel of a real book in my hands, though. It just feels more personal."
+                },
+                {
+                    "Person 2": "Totally! I mean, there's something special about flipping pages and having a dedicated space for books on your shelf."
+                },
+                {
+                    "Person 1": "Exactly! Plus, online reading is convenient, but it can’t replace that cozy feeling of a reading nook with a good book."
+                },
+                {
+                    "Person 2": "Right? And I feel like I get distracted by my phone much more when I'm reading online."
+                },
+                {
+                    "Person 1": "For sure! I try to avoid my phone when I'm reading, but sometimes it’s just too tempting."
+                },
+                {
+                    "Person 2": "Same! I’ll read a couple of pages and then check my notifications. It breaks the flow."
+                },
+                {
+                    "Person 1": "Do you think we'll lose physical books entirely?"
+                },
+                {
+                    "Person 2": "I hope not! But a lot of people are moving towards e-readers and audiobooks, which is a bit concerning."
+                },
+                {
+                    "Person 1": "Yeah, but I think there will always be a place for physical books, especially among book lovers."
+                },
+                {
+                    "Person 2": "Agreed! There’s always going to be a market for collectors and those who just love the experience."
+                },
+                {
+                    "Person 1": "Definitely! So, do you want to do a book swap sometime? I have a couple I'd love to share."
+                },
+                {
+                    "Person 2": "Absolutely! Let’s plan for next weekend!"
+                },
+                {
+                    "Person 1": "Sounds perfect! I can’t wait to see what you’ve been reading."
+                },
+                {
+                    "Person 2": "Me too! It’ll be fun to chat about them over coffee."
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
