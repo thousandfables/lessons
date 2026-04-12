@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "You just woke up, ok Well, in Vietnam it's 2 pm.",
+                    "corrected": "You just woke up? Okay, well, in Vietnam, it's 2 PM.",
+                    "explanation": "Missing punctuation and capitalization errors. '?' should be used for a question, and 'Okay' is the correct spelling.",
+                    "context": "I just woke up, and it's surprising to me that it's already 2 PM in Vietnam. I find it interesting how time zones affect our daily schedules."
+                },
+                {
+                    "original": "Because everybody wakes up at 6, at 7 Because it's really important to use morning.",
+                    "corrected": "Because everybody wakes up at 6 or 7. It's really important to use the morning.",
+                    "explanation": "The structure should include a conjunction 'or' for alternatives and 'the morning' needs 'the' to specify the time.",
+                    "context": "In Vietnam, everyone wakes up around 6 or 7 AM. It's really important to utilize the morning hours because it gets hot later in the day."
+                },
+                {
+                    "original": "So now half a day has already passed at this point.",
+                    "corrected": "So now half the day has already passed.",
+                    "explanation": "The phrase 'at this point' is unnecessary and can be removed for clarity.",
+                    "context": "As we discuss our daily routines, I realize that half the day has already passed. Time flies by quickly, especially in the hot afternoon."
+                },
+                {
+                    "original": "It's just part of your studies at university.",
+                    "corrected": "It's just part of your studies at the university.",
+                    "explanation": "'The' is needed to specify the particular university in context.",
+                    "context": "We were talking about how military service can be integrated into university studies. It's just part of your studies at the university."
+                },
+                {
+                    "original": "Because you can live in some You could live in this place?",
+                    "corrected": "Because you could live in this place?",
+                    "explanation": "Repetition of 'you can live' and 'you could live' creates confusion. The second phrase should be properly informed by the preceding statement.",
+                    "context": "I explained how the military academy in St. Petersburg allowed for a somewhat easy living situation. Because you could live in this place?"
+                },
+                {
+                    "original": "We can live, it was not very official.",
+                    "corrected": "We could live there; it was not very official.",
+                    "explanation": "Past tense 'could' should be used to align with the past context and 'there' specifies the location better.",
+                    "context": "Looking back, we could live there, even though it wasn't very official. It made the whole experience kind of relaxed."
+                },
+                {
+                    "original": "Yes, so I got the proper education for that You started to be a pharmacist?",
+                    "corrected": "Yes, so I got the proper education for that. Did you start to be a pharmacist?",
+                    "explanation": "Question format is incomplete; needs converting into an interrogative structure and separating the sentences with a period.",
+                    "context": "I transitioned through different careers. Yes, so I got the proper education for that. Did you start to be a pharmacist?"
+                },
+                {
+                    "original": "It was a big mistake, I think, because I work as a software developer.",
+                    "corrected": "It was a big mistake, I think, because I am working as a software developer.",
+                    "explanation": "Present continuous 'am working' implies an ongoing action, aligning better with the context.",
+                    "context": "Reflecting on my career choices, I realize it was a big mistake, I think, because I am working as a software developer now."
+                },
+                {
+                    "original": "You just look like a charming software developer, you know A little bit messy, like a crazy scientist, you know, but there is some charm in it.",
+                    "corrected": "You just look like a charming software developer, you know? A little bit messy, like a crazy scientist, but there's some charm in it.",
+                    "explanation": "A question mark is needed before transitioning to a new sentence. A contraction is also used for fluidity.",
+                    "context": "I'm joking with my friend about their appearance. You just look like a charming software developer, you know? A little bit messy, like a crazy scientist, but there's some charm in it."
+                },
+                {
+                    "original": "I need to Gain money, so I So I used to work in the pharmacy.",
+                    "corrected": "I needed to gain money, so I used to work in the pharmacy.",
+                    "explanation": "The past tense 'needed' is correct for the context and 'gain' should not be capitalized.",
+                    "context": "Reflecting on my choices, I felt I needed to gain money, so I used to work in the pharmacy during my university years."
+                },
+                {
+                    "original": "There are a lot of poor people here, but you know, I don't like they don't look like They're too unhappy.",
+                    "corrected": "There are a lot of poor people here, but you know, I don't think they look too unhappy.",
+                    "explanation": "Incorrect phrasing; the structure should indicate a thought rather than use 'like' for comparison.",
+                    "context": "Discussing social attitudes, I mentioned that there are a lot of poor people here. But you know, I don't think they look too unhappy."
+                },
+                {
+                    "original": "Like if you look at a beggar at an average beggar in Russia, this is a very like How to say this person looks like they are very very unhappy.",
+                    "corrected": "If you look at an average beggar in Russia, this is a person who looks very, very unhappy.",
+                    "explanation": "The 'like' is redundant and should be removed, with 'this is a person who looks' improving clarity.",
+                    "context": "In contrasting lifestyles, I reflected on the differences in attitudes. If you look at an average beggar in Russia, this is a person who looks very, very unhappy."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "it's not the first time I hear about Sri Lanka",
+                    "corrected": "it's not the first time I've heard about Sri Lanka",
+                    "explanation": "The present perfect tense 'I've heard' is needed here to indicate an action that has relevance to the present.",
+                    "context": "I've been thinking about different travel destinations lately. It's not the first time I've heard about Sri Lanka. It seems to be a popular tourist spot."
+                },
+                {
+                    "original": "There weren't much tourists",
+                    "corrected": "There weren't many tourists",
+                    "explanation": "'Much' is used with uncountable nouns, while 'many' is used with countable nouns like 'tourists.'",
+                    "context": "I've done some research about Sri Lanka. There weren't many tourists when I checked it out. Now it seems to be more popular."
+                },
+                {
+                    "original": "So it's very cheap So it's very cheap",
+                    "corrected": "So it's very cheap.",
+                    "explanation": "The repeated phrase needs to be removed for clarity and conciseness.",
+                    "context": "When we were discussing Sri Lanka, I mentioned its affordability. So it's very cheap. You can get a huge, fresh meal for just a couple of dollars."
+                },
+                {
+                    "original": "I am agree with you.",
+                    "corrected": "I agree with you.",
+                    "explanation": "The correct expression is 'I agree', as 'am' is not used with 'agree' in this context.",
+                    "context": "While talking about missing the sea, I chimed in to share my feelings. I agree with you. I also miss the sea every time the heat hits."
+                },
+                {
+                    "original": "it's not a right destination maybe",
+                    "corrected": "it's not the right destination, maybe.",
+                    "explanation": "'A right destination' should be 'the right destination' to specify a particular choice.",
+                    "context": "We were discussing travel plans and challenges. It's not the right destination, maybe. It can be difficult to plan trips these days."
+                },
+                {
+                    "original": "I lost any opportunity to get 2022",
+                    "corrected": "I lost any opportunity in 2022.",
+                    "explanation": "The preposition 'in' should be used to refer to a specific time period.",
+                    "context": "Reflecting on past experiences, I mentioned opportunities that slipped away from me. I lost any opportunity in 2022. It feels like I missed out on important chances."
+                },
+                {
+                    "original": "I found this woman was with the best woman in the world.",
+                    "corrected": "I found this woman to be the best woman in the world.",
+                    "explanation": "The construction needs 'to be' for clarity and grammatical correctness.",
+                    "context": "When I was reminiscing about previous relationships, I said something confusing. I found this woman to be the best woman in the world, but hindsight changed my view."
+                },
+                {
+                    "original": "it's not story",
+                    "corrected": "it's not a story.",
+                    "explanation": "The article 'a' is needed before 'story' to make the sentence grammatically correct.",
+                    "context": "I was trying to convey my thoughts about how we perceive our past. It's not a story. It's more about feelings and experiences we go through."
+                },
+                {
+                    "original": "it was like by a bus ticket and you will be there by the four-hour maybe",
+                    "corrected": "it was like you could get there by a bus ticket in maybe four hours.",
+                    "explanation": "The sentence needs restructuring for clarity and the preposition 'in' should be used to indicate time.",
+                    "context": "I was reminiscing about how easy travel used to be. It was like you could get there by a bus ticket in maybe four hours. Traveling was so accessible back then."
+                },
+                {
+                    "original": "Like saying expressions that are very common in Russia",
+                    "corrected": "Like expressions that are very common in Russia.",
+                    "explanation": "'Saying expressions' is redundant; simply stating 'like expressions' is clearer.",
+                    "context": "During our conversation, I reflected on how languages differ. Like expressions that are very common in Russia may not have direct equivalents in English."
+                },
+                {
+                    "original": "the grass has been greener",
+                    "corrected": "the grass is always greener.",
+                    "explanation": "The common phrase is 'the grass is always greener,' which means people tend to think others' situations are better than theirs.",
+                    "context": "When discussing nostalgia, I mentioned a common saying. The grass is always greener. It seems that people often romanticize the past."
+                },
+                {
+                    "original": "there is no special way of like referring to it.",
+                    "corrected": "there is no special way of referring to it.",
+                    "explanation": "The word 'like' is unnecessary and should be omitted for clarity.",
+                    "context": "As we discussed language differences, I pointed out challenges. There is no special way of referring to it in English."
+                },
+                {
+                    "original": "Use he do he does",
+                    "corrected": "Yes, he does use English.",
+                    "explanation": "The correct present simple form is 'does' for the subject 'he.'",
+                    "context": "I was asked about my friend's English skills. Yes, he does use English while working. However, his job as a software developer doesn't require him to speak it frequently."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "the oldest man in our Community was a Surgeon 27 years old surgeon with three years of the practice experience",
+                    "corrected": "the oldest man in our community was a surgeon, a 27-year-old surgeon with three years of experience.",
+                    "explanation": "The phrase structure is confusing. '27 years old' should be '27-year-old' as a compound adjective, and 'the practice experience' is redundant; just 'experience' is sufficient.",
+                    "context": "In our community, we have various professionals. The oldest man in our community was a surgeon, a 27-year-old surgeon with three years of experience. He contributed significantly to our health care."
+                },
+                {
+                    "original": "We actually don't didn't have a dumb people there",
+                    "corrected": "We actually didn't have any dumb people there.",
+                    "explanation": "The phrase 'don't didn't' is a contradiction; use past tense 'didn't.' 'A dumb people' is incorrect; it should be 'any dumb people.'",
+                    "context": "During my service, we had a diverse group of individuals. We actually didn't have any dumb people there. Everyone had their unique skills and values."
+                },
+                {
+                    "original": "they were dumb but not of them was good",
+                    "corrected": "they were dumb, but none of them were good.",
+                    "explanation": "The phrase 'not of them' is incorrect; 'none of them' should be used. The verb form should match the plural subject 'none.'",
+                    "context": "In that environment, interactions could be challenging. They were dumb, but none of them were good. It made collaboration difficult."
+                },
+                {
+                    "original": "okay, What kind of what kind of for the environment?",
+                    "corrected": "Okay, what kind of environment was it?",
+                    "explanation": "The original sentence structure is awkward and repetitive; it should be streamlined for clarity.",
+                    "context": "Reflecting on my experience, I think about the surroundings. Okay, what kind of environment was it? It was challenging and stressful."
+                },
+                {
+                    "original": "which day was like",
+                    "corrected": "What day was it like?",
+                    "explanation": "The phrasing 'which day was like' is incorrect; it should be 'what day was it like' to ask about a particular experience.",
+                    "context": "When thinking back to my daily routine, I often recall specific moments. What day was it like? It was filled with a lot of activities."
+                },
+                {
+                    "original": "we worked on University places",
+                    "corrected": "we worked in university departments.",
+                    "explanation": "'University places' is vague; 'departments' is more precise and common in the academic context.",
+                    "context": "During my service, my colleagues and I had various responsibilities. We worked in university departments. Each role was essential for our tasks."
+                },
+                {
+                    "original": "I raised the hand and Shared my will to Walk the software developer",
+                    "corrected": "I raised my hand and shared my desire to become a software developer.",
+                    "explanation": "The phrase 'raised the hand' should be 'raised my hand,' and 'shared my will to walk' should be revised to 'shared my desire to become.'",
+                    "context": "In a meeting, I took the initiative to express my interest. I raised my hand and shared my desire to become a software developer. They appreciated my eagerness."
+                },
+                {
+                    "original": "but is the Dedicated place for teaching or studying one science All university",
+                    "corrected": "but it is a dedicated place for teaching or studying one subject at the university.",
+                    "explanation": "The original sentence is fragmented and needs clarity; 'All university' is incomplete and should specify 'at the university.'",
+                    "context": "Discussing academic structures is important to understand our roles. But it is a dedicated place for teaching or studying one subject at the university. This differentiation helps clarify responsibilities."
+                },
+                {
+                    "original": "we were working we we was working on that faculties",
+                    "corrected": "we were working on those faculties.",
+                    "explanation": "The repetition 'we we was' is incorrect; it should be one 'we were.' The plural 'that faculties' should be 'those faculties.'",
+                    "context": "I remember collaborating with others on various projects. We were working on those faculties, ensuring we met our goals and deadlines."
+                },
+                {
+                    "original": "he was on sentry duty at the entrance. yeah check",
+                    "corrected": "he was on guard duty at the entrance.",
+                    "explanation": "'Sentry duty' is less common; 'guard duty' is more widely understood in this context.",
+                    "context": "Safety was a primary concern during our service. He was on guard duty at the entrance. This role was crucial for maintaining security."
+                },
+                {
+                    "original": "it is so Difficult to name this because you haven't any experience calling this in English",
+                    "corrected": "it is so difficult to name this because you don't have any experience using this term in English.",
+                    "explanation": "'Haven't' should be 'don't have' to match the context. 'Calling this in English' is awkward; 'using this term in English' is clearer.",
+                    "context": "When discussing military roles, terminology can be tricky. It is so difficult to name this because you don't have any experience using this term in English. Specific language requires familiarity."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "somebody tries to knocks",
+                    "corrected": "somebody tries to knock",
+                    "explanation": "The correct form is 'tries to knock'; 'knocks' is not needed because 'tries to' should be followed by the base form of the verb.",
+                    "context": "In a situation where someone is trying to get into the bathroom, I thought about how to respond. Somebody tries to knock on the door. I need to let them know that I'm here."
+                },
+                {
+                    "original": "the person that are like somebody is here",
+                    "corrected": "the person that is here",
+                    "explanation": "The subject 'person' is singular, so it should be followed by 'is' instead of 'are'.",
+                    "context": "I was wondering how to let someone know I was in the bathroom. I need to tell the person that is here with me."
+                },
+                {
+                    "original": "it's not the most natural way",
+                    "corrected": "it isn't the most natural way",
+                    "explanation": "Using 'is not' is correct, but the contraction 'isn't' sounds more natural in conversation.",
+                    "context": "I was reflecting on my choice of words in this situation. I understand my response, but it isn't the most natural way to express that I am occupied."
+                },
+                {
+                    "original": "I was thinking a busy maybe taken",
+                    "corrected": "I was thinking maybe busy or taken",
+                    "explanation": "The sentence is missing conjunctions; 'maybe busy or taken' is the correct phrasing.",
+                    "context": "As I considered how to communicate my situation, I struggled to find the right words. I was thinking maybe busy or taken would work."
+                },
+                {
+                    "original": "that was that was all I could produce",
+                    "corrected": "that was all I could produce",
+                    "explanation": "The repetition of 'that was' is unnecessary; it can be stated once for clarity.",
+                    "context": "In that moment, I felt frustrated with my limited vocabulary. That was all I could produce."
+                },
+                {
+                    "original": "it's if it's working",
+                    "corrected": "if it's working",
+                    "explanation": "The phrase 'it's if' is redundant and unclear; it should simply be 'if it's working'.",
+                    "context": "I draw parallels between programming and language. If it's working, there's no need to change the code."
+                },
+                {
+                    "original": "it's not dumb",
+                    "corrected": "it's not wrong",
+                    "explanation": "'Not dumb' may be informal; 'not wrong' is more appropriate in this context.",
+                    "context": "As I explained my thoughts, I wanted to clarify that my understanding is valid. It's not wrong to approach communication like this."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Conscription",
+                    "definition": "Mandatory enlistment for state service, typically into the armed forces.",
+                    "context": {
+                        "Context 1": "In some countries, conscription is necessary to ensure enough soldiers are available for national defense.",
+                        "Context 2": "He wasn't sure if conscription meant he had to join the army immediately.",
+                        "Context 3": "During the festival, they celebrated freedom from past conscription laws."
+                    }
+                },
+                {
+                    "word": "Conscript",
+                    "definition": "A person who is enrolled compulsorily, especially for military service.",
+                    "context": {
+                        "Context 1": "He was a conscript during the national emergency, serving for one year.",
+                        "Context 2": "She didn't choose to be a conscript; it was imposed by the government.",
+                        "Context 3": "The conscript was excited when he received his first paycheck."
+                    }
+                },
+                {
+                    "word": "Pharmacy",
+                    "definition": "A store where medicinal drugs are dispensed and sold.",
+                    "context": {
+                        "Context 1": "She worked in a pharmacy, selling medications and providing health advice to customers.",
+                        "Context 2": "His favorite place to study was the pharmacy, where he could find all the best literature.",
+                        "Context 3": "The art exhibit at the pharmacy showcased local artists' works."
+                    }
+                },
+                {
+                    "word": "Obligatory",
+                    "definition": "Required by law or rule; compulsory.",
+                    "context": {
+                        "Context 1": "Attending the ceremony was obligatory for all graduates.",
+                        "Context 2": "He thought wearing a hat was obligatory every time he went outside.",
+                        "Context 3": "Going to bed early is obligatory for kids who want to wake up refreshed."
+                    }
+                },
+                {
+                    "word": "Bribe",
+                    "definition": "Money or favor given or promised in order to influence the judgement or conduct of a person in a position of authority.",
+                    "context": {
+                        "Context 1": "He decided to bribe the officer to get an easier workload at the academy.",
+                        "Context 2": "She expected a bribe for the perfectly wrapped gift she planned to give her friend.",
+                        "Context 3": "The magician accepted a bribe from his audience to reveal his secrets."
+                    }
+                },
+                {
+                    "word": "Disaster",
+                    "definition": "A sudden event that causes great damage or ruins something.",
+                    "context": {
+                        "Context 1": "Not all jobs in the pharmacy are a disaster; some are rewarding.",
+                        "Context 2": "For them, forgetting the birthday cake was a disaster of epic proportions.",
+                        "Context 3": "The school's field trip turned into a disaster when the bus broke down."
+                    }
+                },
+                {
+                    "word": "Attraction",
+                    "definition": "The action or power of attracting, or drawing people towards something.",
+                    "context": {
+                        "Context 1": "He felt a strange attraction to the vibrant culture of Vietnam.",
+                        "Context 2": "The amusement park had a rollercoaster that was its main attraction.",
+                        "Context 3": "The attraction between the two friends grew stronger as they spent more time together."
+                    }
+                },
+                {
+                    "word": "Naps",
+                    "definition": "A short sleep, usually taken during the day.",
+                    "context": {
+                        "Context 1": "She often took naps during her lunch break to recharge for the workday.",
+                        "Context 2": "His dog loved to take naps in the sunshine by the window.",
+                        "Context 3": "The library had designated hours for quiet napping spaces."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "She realized that her perspective on the military changed after talking with a conscript.",
+                        "Context 2": "From his perspective, the movie ended too abruptly.",
+                        "Context 3": "The artist painted from a perspective that made the landscape look surreal."
+                    }
+                },
+                {
+                    "word": "U-turn",
+                    "definition": "A complete change in direction, especially a reversal of policy or opinion.",
+                    "context": {
+                        "Context 1": "His career change from pharmacist to software developer was a big U-turn.",
+                        "Context 2": "The driver made a U-turn when he realized he had taken the wrong road.",
+                        "Context 3": "After much deliberation, the committee executed a U-turn on their previous decision."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Bribe",
+                    "fact": "In ancient Rome, it was common for politicians to bribe citizens with bread to get votes!"
+                },
+                {
+                    "word": "Pharmacy",
+                    "fact": "Did you know that the first official pharmacy was established in Baghdad in 754 AD?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the pharmacist start gardening?",
+                    "answer": "Because he wanted to improve his thyme management!"
+                },
+                {
+                    "question": "Why did the conscript bring a ladder to the army?",
+                    "answer": "Because he heard the job had great upward mobility!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Megalopolis",
+                    "definition": "A very large and densely populated city or urban area.",
+                    "context": {
+                        "Context 1": "Ho Chi Minh is an Asian megapolis with a vibrant culture and history.",
+                        "Context 2": "The scientist studied the effects of pollution in megapolis regions.",
+                        "Context 3": "The tourist visited a small town but preferred the excitement of a megapolis."
+                    }
+                },
+                {
+                    "word": "Appreciate",
+                    "definition": "To recognize the worth or value of something.",
+                    "context": {
+                        "Context 1": "We tend to appreciate things more once we lose them.",
+                        "Context 2": "He failed to appreciate the beauty of nature until he moved to the city.",
+                        "Context 3": "People often appreciate their pets after watching a sad movie about animals."
+                    }
+                },
+                {
+                    "word": "Hindsight",
+                    "definition": "Understanding the nature of an event after it has happened.",
+                    "context": {
+                        "Context 1": "In hindsight, I realize those were the best days of my life.",
+                        "Context 2": "She wished she had bought the house when it was cheaper; hindsight is 20/20.",
+                        "Context 3": "Looking back in hindsight, he regretted not studying harder in school."
+                    }
+                },
+                {
+                    "word": "Spontaneous",
+                    "definition": "Performed or occurring as a result of a sudden inner impulse or inclination.",
+                    "context": {
+                        "Context 1": "Our plans today will be spontaneous; we might just wander around the city.",
+                        "Context 2": "The spontaneous decision to go road-tripping led them on an adventure.",
+                        "Context 3": "Spontaneous parties are often the most fun because they’re unplanned."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "Traveling to new countries is a great experience for anyone.",
+                        "Context 2": "His experience with carpentry helped him build his own furniture.",
+                        "Context 3": "Eating sushi for the first time was a surprising experience for her."
+                    }
+                },
+                {
+                    "word": "Cash",
+                    "definition": "Money in the form of coins or banknotes.",
+                    "context": {
+                        "Context 1": "In Sri Lanka, you can enjoy delicious meals for only a few dollars in cash.",
+                        "Context 2": "He prefers to use cash instead of credit cards for budgeting.",
+                        "Context 3": "The bank warned him to be careful with cash transactions to avoid scams."
+                    }
+                },
+                {
+                    "word": "Opportunity",
+                    "definition": "A set of circumstances that makes it possible to do something.",
+                    "context": {
+                        "Context 1": "He lost any opportunity to travel to Finland last year.",
+                        "Context 2": "The internship provided her with a golden opportunity in her career.",
+                        "Context 3": "Taking risks often leads to new opportunities for personal growth."
+                    }
+                },
+                {
+                    "word": "Observation",
+                    "definition": "The action or process of observing something to gain information.",
+                    "context": {
+                        "Context 1": "I share your observation that life in some places is much simpler.",
+                        "Context 2": "His keen observation skills helped him identify errors in the experiment.",
+                        "Context 3": "The artist's observation of everyday life inspired her latest mural."
+                    }
+                },
+                {
+                    "word": "Lotteries",
+                    "definition": "Games of chance in which participants buy tickets for the chance to win a prize.",
+                    "context": {
+                        "Context 1": "Selling lottery tickets is a common sight in busy city streets.",
+                        "Context 2": "He chose to play the lottery every week in hopes of winning big.",
+                        "Context 3": "Lotteries were once a popular form of entertainment in ancient Rome."
+                    }
+                },
+                {
+                    "word": "Tourist Destination",
+                    "definition": "A location that is popular for tourists to visit.",
+                    "context": {
+                        "Context 1": "Sri Lanka is becoming a popular tourist destination due to its beauty.",
+                        "Context 2": "They decided to visit a popular tourist destination for their vacation.",
+                        "Context 3": "The city transformed into a tourist destination after developing its infrastructure."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Megalopolis",
+                    "fact": "Did you know that Tokyo, a megapolis, has so many people they often run trains that carry over 1,000 passengers at a time?"
+                },
+                {
+                    "word": "Hindsight",
+                    "fact": "Hindsight is 20/20, but that doesn’t help when you wish you had brought an umbrella when the weather forecast was clear!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why do we tell actors to break a leg?",
+                    "answer": "Because every play has a cast!"
+                },
+                {
+                    "question": "Why was the computer cold?",
+                    "answer": "It left its Windows open!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Pharmacist",
+                    "definition": "A professional who prepares and dispenses medications and provides health advice.",
+                    "context": {
+                        "Context 1": "As a pharmacist, he was trained to understand how medications interact with each other.",
+                        "Context 2": "The pharmacist at the grocery store was helpful in explaining how to use the over-the-counter remedies.",
+                        "Context 3": "While traveling, she met a pharmacist who shared stories about working in different countries."
+                    }
+                },
+                {
+                    "word": "Sentry",
+                    "definition": "A guard stationed to keep watch or to control access.",
+                    "context": {
+                        "Context 1": "He was assigned to be a sentry at the entrance of the military base.",
+                        "Context 2": "In the movie, the sentry fell asleep while on duty and caused a major security breach.",
+                        "Context 3": "The sentry at the zoo was particularly friendly, often waving at visitors."
+                    }
+                },
+                {
+                    "word": "Parsing",
+                    "definition": "The process of analyzing a string of symbols in programming or linguistics.",
+                    "context": {
+                        "Context 1": "He spent hours parsing the data to extract useful information for his report.",
+                        "Context 2": "Parsing the lyrics of the song helped her understand its deeper meanings.",
+                        "Context 3": "During the robot building workshop, students learned how to parse commands to control their creations."
+                    }
+                },
+                {
+                    "word": "Faculty",
+                    "definition": "A group of university departments or a specific academic division.",
+                    "context": {
+                        "Context 1": "She was part of the pharmacy faculty, where she learned about various medications.",
+                        "Context 2": "The faculty of arts organized an exhibition showcasing students' artwork.",
+                        "Context 3": "His father was a member of the faculty at the engineering school, specializing in robotics."
+                    }
+                },
+                {
+                    "word": "Agitation",
+                    "definition": "A state of anxiety or nervous excitement, often involving stirring up emotions.",
+                    "context": {
+                        "Context 1": "The agitation in the crowd grew as the election results were announced.",
+                        "Context 2": "He felt agitation when he realized he had left his wallet at home.",
+                        "Context 3": "The agitation of the fans was evident during the thrilling game."
+                    }
+                },
+                {
+                    "word": "Coding",
+                    "definition": "The process of writing instructions for computers using programming languages.",
+                    "context": {
+                        "Context 1": "He enjoyed coding and spent most of his days in front of a computer screen working on projects.",
+                        "Context 2": "After learning coding, she developed a new app that organizes schedules efficiently.",
+                        "Context 3": "The summer camp focused on teaching kids coding skills using games."
+                    }
+                },
+                {
+                    "word": "Environment",
+                    "definition": "The surroundings or conditions in which a person operates or lives.",
+                    "context": {
+                        "Context 1": "The military environment was challenging, with strict rules and regulations.",
+                        "Context 2": "She loved the peaceful environment of the countryside, away from the city's hustle.",
+                        "Context 3": "The laboratory provided a controlled environment for conducting scientific experiments."
+                    }
+                },
+                {
+                    "word": "Custodian",
+                    "definition": "A person responsible for the upkeep and maintenance of a building or place.",
+                    "context": {
+                        "Context 1": "The custodian at the university ensured the classrooms were clean and ready for students.",
+                        "Context 2": "He aspired to be a custodian of ancient artifacts in a museum.",
+                        "Context 3": "While working as a custodian, he discovered his love for art restoration."
+                    }
+                },
+                {
+                    "word": "Duty",
+                    "definition": "A moral or legal obligation; a responsibility.",
+                    "context": {
+                        "Context 1": "His duty as a sentry required him to remain vigilant at all times.",
+                        "Context 2": "She felt it was her duty to volunteer at the local shelter every weekend.",
+                        "Context 3": "As a duty-bound citizen, he participated in community service projects."
+                    }
+                },
+                {
+                    "word": "Automation",
+                    "definition": "The use of technology to perform tasks without human intervention.",
+                    "context": {
+                        "Context 1": "The automation of processes improved efficiency in the army's operations.",
+                        "Context 2": "She dreamed of a future where automation made household chores effortless.",
+                        "Context 3": "In agriculture, automation has transformed how crops are planted and harvested."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Pharmacist",
+                    "fact": "Did you know that the first pharmacy in the world was opened in Baghdad in 754 AD?"
+                },
+                {
+                    "word": "Sentry",
+                    "fact": "The term 'sentry' comes from the French word 'santrie,' meaning 'to watch over.'"
+                },
+                {
+                    "word": "Automation",
+                    "fact": "Did you know that some automated vacuum cleaners have been named 'Robovac,' sounding like a superhero for cleaning?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer stay warm?",
+                    "answer": "Because it left its Windows open!"
+                },
+                {
+                    "question": "What did the robot say to the human?",
+                    "answer": "I compute you, and I can’t take it anymore!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Occupied",
+                    "definition": "Being used or filled; not available for use.",
+                    "context": {
+                        "Context 1": "The bathroom was occupied when I tried to enter.",
+                        "Context 2": "During the meeting, all the chairs were occupied by the attendees.",
+                        "Context 3": "The house was occupied by a family, making it impossible to view for prospective buyers."
+                    }
+                },
+                {
+                    "word": "Scenario",
+                    "definition": "A sequence of events, especially when imagined or planned.",
+                    "context": {
+                        "Context 1": "In this scenario, someone knocks on the bathroom door unexpectedly.",
+                        "Context 2": "The movie presented a dystopian scenario where robots control society.",
+                        "Context 3": "In an emergency scenario, all exits must be clearly marked."
+                    }
+                },
+                {
+                    "word": "Notify",
+                    "definition": "To inform someone about something.",
+                    "context": {
+                        "Context 1": "I needed to notify the person waiting outside the bathroom that it was occupied.",
+                        "Context 2": "Please notify the manager if you see any issues in the office.",
+                        "Context 3": "They will notify the public about the new road regulations."
+                    }
+                },
+                {
+                    "word": "Mumble",
+                    "definition": "To speak quietly or indistinctly.",
+                    "context": {
+                        "Context 1": "I mumbled my response when someone asked me if the bathroom was occupied.",
+                        "Context 2": "He tends to mumble when he’s nervous, making it hard for others to understand him.",
+                        "Context 3": "The teacher asked him to stop mumbling and speak clearly."
+                    }
+                },
+                {
+                    "word": "Natural",
+                    "definition": "In accordance with how things typically are or happen; not artificial.",
+                    "context": {
+                        "Context 1": "It’s not the most natural way to express that the bathroom is occupied.",
+                        "Context 2": "Her laughter was natural and contagious, making everyone feel at ease.",
+                        "Context 3": "The landscape has been kept natural to preserve its beauty."
+                    }
+                },
+                {
+                    "word": "Awkward",
+                    "definition": "Causing or feeling embarrassment or discomfort.",
+                    "context": {
+                        "Context 1": "I felt awkward when someone knocked on the bathroom door while I was inside.",
+                        "Context 2": "There was an awkward silence after the joke fell flat.",
+                        "Context 3": "He always finds himself in awkward situations during family gatherings."
+                    }
+                },
+                {
+                    "word": "Work",
+                    "definition": "To have an effect or function effectively.",
+                    "context": {
+                        "Context 1": "If it works, you shouldn't change the sentence even if it seems awkward.",
+                        "Context 2": "Despite the long hours, she loves her work in environmental science.",
+                        "Context 3": "The machine didn’t work properly after the last maintenance."
+                    }
+                },
+                {
+                    "word": "Fine",
+                    "definition": "Satisfactory; acceptable.",
+                    "context": {
+                        "Context 1": "The explanation you provided is fine, but it could be improved.",
+                        "Context 2": "He felt fine after recovering from the flu.",
+                        "Context 3": "It's fine to ask for help when you need it."
+                    }
+                },
+                {
+                    "word": "Try",
+                    "definition": "To make an attempt or effort to do something.",
+                    "context": {
+                        "Context 1": "You can try to think of a better way to say it in English.",
+                        "Context 2": "He will try to finish his homework early this time.",
+                        "Context 3": "They decided to try a new recipe for dinner."
+                    }
+                },
+                {
+                    "word": "Enter",
+                    "definition": "To go or come into a place.",
+                    "context": {
+                        "Context 1": "I wanted to enter the bathroom, but it was occupied.",
+                        "Context 2": "The dog was eager to enter the house after playing outside.",
+                        "Context 3": "Make sure to enter the PIN correctly to access your account."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Occupied",
+                    "fact": "Did you know that in ancient Roman times, public toilets were communal, and people sat side by side rather than in stalls?"
+                },
+                {
+                    "word": "Mumble",
+                    "fact": "Research shows that babies who mumble resonate with sounds they hear from their parents in their first year of life!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "What do you call a bathroom that tells jokes?",
+                    "answer": "A loo-morist!"
+                },
+                {
+                    "question": "Why did the toilet paper roll down the hill?",
+                    "answer": "To get to the bottom!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! What's up? What are you drinking this morning?"
+                },
+                {
+                    "Person 2": "Just some tea. I literally just woke up!"
+                },
+                {
+                    "Person 1": "Wow, lucky you! It's already afternoon here while you're just starting your day."
+                },
+                {
+                    "Person 2": "Yeah, it's crazy. I forget sometimes that time zones can be so different."
+                },
+                {
+                    "Person 1": "For sure! What do you have planned for today then?"
+                },
+                {
+                    "Person 2": "I'm meeting up with a friend I haven't seen in a couple of years. I'm pretty excited!"
+                },
+                {
+                    "Person 1": "Oh nice! Where are you guys meeting?"
+                },
+                {
+                    "Person 2": "He’s in town, so we're catching up at a café in St. Petersburg."
+                },
+                {
+                    "Person 1": "That sounds like a great spot! How do you know him?"
+                },
+                {
+                    "Person 2": "We served together in the military. It’s been ages since we hung out."
+                },
+                {
+                    "Person 1": "Oh wow, I would have never guessed you were in the military!"
+                },
+                {
+                    "Person 2": "Yeah, it wasn’t as tough as it sounds. I actually studied while I was there."
+                },
+                {
+                    "Person 1": "That's interesting! So what did you study?"
+                },
+                {
+                    "Person 2": "I trained as a pharmacist. But now I work as a software developer."
+                },
+                {
+                    "Person 1": "That's quite the switch! How did you go from pharmacies to coding?"
+                },
+                {
+                    "Person 2": "Honestly, I just didn't enjoy working at the pharmacy, so I decided to change careers."
+                },
+                {
+                    "Person 1": "I totally get that. It's important to find something you like!"
+                },
+                {
+                    "Person 2": "Yeah, and working in a pharmacy at night during college was tough."
+                },
+                {
+                    "Person 1": "I can imagine! Balancing school and work is never easy."
+                },
+                {
+                    "Person 2": "Definitely. Speaking of, I think I need a coffee soon!"
+                },
+                {
+                    "Person 1": "Coffee is always a good idea! Are you planning to go out for it?"
+                },
+                {
+                    "Person 2": "Yeah, I know a cozy little café nearby. Perfect for catching up."
+                },
+                {
+                    "Person 1": "Sounds delightful! Enjoy your time and your coffee!"
+                },
+                {
+                    "Person 2": "Thanks! I will! You have a good day too!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going today?"
+                },
+                {
+                    "Person 2": "Pretty good! Just enjoying my day off. How about you?"
+                },
+                {
+                    "Person 1": "Not much, just hanging out. I was thinking about grabbing some lunch. Any recommendations?"
+                },
+                {
+                    "Person 2": "Yeah, there’s this new taco place that just opened up. Heard their fish tacos are amazing!"
+                },
+                {
+                    "Person 1": "Fish tacos? That sounds great! Do they have outdoor seating?"
+                },
+                {
+                    "Person 2": "Yeah, they do! It's perfect for this nice weather we're having."
+                },
+                {
+                    "Person 1": "Awesome! I’ll definitely check it out. By the way, have you been anywhere fun recently?"
+                },
+                {
+                    "Person 2": "Actually, I went on a little road trip last weekend! Drove up to the mountains for some hiking."
+                },
+                {
+                    "Person 1": "That sounds fantastic! I love hiking. How were the views?"
+                },
+                {
+                    "Person 2": "Stunning! The leaves are just starting to change colors. It was like stepping into a painting."
+                },
+                {
+                    "Person 1": "Wow, I can totally picture that. I need to get out there before the leaves fall."
+                },
+                {
+                    "Person 2": "For sure! We should plan a trip together sometime."
+                },
+                {
+                    "Person 1": "Definitely! A hiking trip sounds like a blast."
+                },
+                {
+                    "Person 2": "Cool! Let’s make it happen. Maybe next month?"
+                },
+                {
+                    "Person 1": "Yeah, I should be free then. Let’s keep an eye on the weather!"
+                },
+                {
+                    "Person 2": "Absolutely! Can’t wait to get back to nature!"
+                },
+                {
+                    "Person 1": "Me too! Alright, lunch first, then we'll plan our hiking adventures."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you ever think about how different military life can be from what we imagine?"
+                },
+                {
+                    "Person 2": "Totally! Everyone thinks it’s just about tough training and discipline, but there's a lot more to it."
+                },
+                {
+                    "Person 1": "Right? I met some people who were in the military, and they were surprisingly smart."
+                },
+                {
+                    "Person 2": "For sure! I mean, there are doctors and engineers serving. It's not just about brawn."
+                },
+                {
+                    "Person 1": "Exactly! I heard there was a young surgeon in a unit doing incredible things."
+                },
+                {
+                    "Person 2": "Yeah, a 27-year-old surgeon! It’s impressive how skilled people can be in those roles."
+                },
+                {
+                    "Person 1": "But it must be tough on them, being in a high-stress environment like that."
+                },
+                {
+                    "Person 2": "Definitely. Stress can change people, even if they’re good at heart."
+                },
+                {
+                    "Person 1": "What was an average day for you like if you had to do something in that environment?"
+                },
+                {
+                    "Person 2": "Ah, it usually started around 6 AM. We’d all get up and go to our assigned duties."
+                },
+                {
+                    "Person 1": "Sounds early! What kind of work did you do?"
+                },
+                {
+                    "Person 2": "I worked in a facility—kind of like a lab, but we also had to handle some software tasks."
+                },
+                {
+                    "Person 1": "Software tasks? Interesting! What kind of stuff did you work on?"
+                },
+                {
+                    "Person 2": "Oh, just some apps to help automate things. They really appreciated having tech-savvy folks around."
+                },
+                {
+                    "Person 1": "So you were basically a pharmacist and a coder?"
+                },
+                {
+                    "Person 2": "Exactly! I didn’t expect it, but it was a good way to help out."
+                },
+                {
+                    "Person 1": "That’s pretty cool! Did you find that challenging?"
+                },
+                {
+                    "Person 2": "At first, but it got easier. And oh! We even had a nice office where we could relax sometimes."
+                },
+                {
+                    "Person 1": "Sounds like a sweet gig! Did you actually have to do any physical training?"
+                },
+                {
+                    "Person 2": "Not much. Just a bit of guard duty now and then to keep watch at entrances."
+                },
+                {
+                    "Person 1": "Wow, that's definitely different from what I would have imagined!"
+                },
+                {
+                    "Person 2": "Yeah, most people think it’s all about heavy workouts and marching. It's not always that simple."
+                },
+                {
+                    "Person 1": "It’s fascinating how diverse experiences can be. Makes you think, right?"
+                },
+                {
+                    "Person 2": "Absolutely! Every story is unique, just like the people living them."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! You won't believe what happened to me at work today."
+                },
+                {
+                    "Person 2": "Oh? What happened?"
+                },
+                {
+                    "Person 1": "So I was in the bathroom, washing my hands, and someone knocked on the door."
+                },
+                {
+                    "Person 2": "Ah, classic! Did you just ignore them?"
+                },
+                {
+                    "Person 1": "Kinda! I was panicking because I wasn't sure what to say. Like, do I say it’s occupied or what?"
+                },
+                {
+                    "Person 2": "Yeah, it's awkward. The first thing that comes to mind is just saying it's busy."
+                },
+                {
+                    "Person 1": "Exactly! But then I remembered to say it's occupied. I was just staring at the door thinking, 'What now?'"
+                },
+                {
+                    "Person 2": "Haha! We've all been there. I’ve been stuck in that moment too. It’s so weird trying to think of the right word."
+                },
+                {
+                    "Person 1": "Right? There should be a universal phrase for that situation!"
+                },
+                {
+                    "Person 2": "Totally! Just like in programming: if it works, don’t mess with it."
+                },
+                {
+                    "Person 1": "Oh, that’s a good comparison! Why complicate things if it does the job?"
+                },
+                {
+                    "Person 2": "Exactly! But sometimes I feel like I've forgotten basic conversational skills. Seriously."
+                },
+                {
+                    "Person 1": "Same here! We need to practice being normal humans again."
+                },
+                {
+                    "Person 2": "Haha! Let’s have more of these casual chats and get it back."
+                },
+                {
+                    "Person 1": "Definitely! All I need is to stay away from awkward bathroom encounters."
+                },
+                {
+                    "Person 2": "Good plan! Maybe we should create a handbook for those situations."
+                },
+                {
+                    "Person 1": "Now that sounds like a brilliant idea!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
