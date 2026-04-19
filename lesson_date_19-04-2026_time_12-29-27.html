@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Your internet, did it work well today?",
+                    "corrected": "Did your internet work well today?",
+                    "explanation": "The sentence structure is incorrect; the auxiliary verb should come before the subject in a question.",
+                    "context": "We've been trying to solve connection issues. Did your internet work well today? I think it has been a little unstable."
+                },
+                {
+                    "original": "I think something will be wrong.",
+                    "corrected": "I think something is wrong.",
+                    "explanation": "'Will be' is incorrect in this context; 'is' should be used to indicate a current state.",
+                    "context": "I'm dealing with a lot of technical issues right now. I think something is wrong with the connection on my end."
+                },
+                {
+                    "original": "But in Russia, it's like beet.",
+                    "corrected": "But in Russia, it's like beets.",
+                    "explanation": "The term 'beet' should be plural ('beets') when referring to the general vegetable category.",
+                    "context": "We were discussing how different countries produce sugar. But in Russia, it's like beets, as we make sugar from them."
+                },
+                {
+                    "original": "You usually drink what?",
+                    "corrected": "What do you usually drink?",
+                    "explanation": "The phrasing is awkward and should be structured as a direct question with proper word order.",
+                    "context": "I was surprised to hear about your drink preferences. What do you usually drink? I'm interested in the different juices you enjoy."
+                },
+                {
+                    "original": "I drink it so often because...",
+                    "corrected": "I drink it so often that...",
+                    "explanation": "'Because' is not the right conjunction here; 'that' should be used for clarity in expressing cause.",
+                    "context": "I was explaining my love for a certain beverage. I drink it so often that it makes me feel good, especially after a long day."
+                },
+                {
+                    "original": "That's why you look up a pronunciation of new words.",
+                    "corrected": "That's why you should look up the pronunciation of new words.",
+                    "explanation": "The sentence lacks the auxiliary 'should' to convey advice or recommendation.",
+                    "context": "We were discussing the importance of accurate pronunciation. That's why you should look up the pronunciation of new words; it helps a lot."
+                },
+                {
+                    "original": "It's even if this juice is without sugar, it's so sweet.",
+                    "corrected": "Even if this juice is without sugar, it's still so sweet.",
+                    "explanation": "The sentence structure is awkward; 'still' should be used to indicate ongoing state.",
+                    "context": "We were talking about how refreshing certain juices can be. Even if this juice is without sugar, it's still so sweet, which really surprises me."
+                },
+                {
+                    "original": "I don't want to drink this smoothie.",
+                    "corrected": "I don't want to drink this smoothie right now.",
+                    "explanation": "The sentence lacks clarity about the timing; adding 'right now' improves understanding.",
+                    "context": "I was reflecting on my current cravings. I don't want to drink this smoothie right now, even though I usually enjoy it."
+                },
+                {
+                    "original": "But in Thailand everything is like tastier.",
+                    "corrected": "But in Thailand, everything is tastier.",
+                    "explanation": "The phrase 'is like tastier' is incorrect; simply stating 'is tastier' is more appropriate.",
+                    "context": "We were reminiscing about our travels. But in Thailand, everything is tastier because of the fresh ingredients."
+                },
+                {
+                    "original": "It’s that the climate is much hotter.",
+                    "corrected": "It's because the climate is much hotter.",
+                    "explanation": "Using 'because' provides the necessary explanation, while 'that' does not fit the context.",
+                    "context": "We were discussing why certain foods might taste better in warmer climates. It's because the climate is much hotter, which affects our appetite."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I didn't see her for a very long time.",
+                    "corrected": "I hadn't seen her for a very long time.",
+                    "explanation": "The past perfect 'hadn't seen' should be used here to indicate an action that occurred before another past action.",
+                    "context": "I hadn't seen her for a very long time. The last time we met was in February. That's why we had so much to talk about."
+                },
+                {
+                    "original": "But maybe just anyway, I feel that everything that they do is more like slowly.",
+                    "corrected": "But maybe just anyway, I feel that everything I do is more like slowly.",
+                    "explanation": "'Everything that they do' is incorrect; it should refer to the speaker’s own actions. Also, 'more like slowly' is awkward; simply 'slowly' is sufficient.",
+                    "context": "I feel that everything I do is more like slowly. I've been struggling with keeping up with my tasks. I wish I could manage my time better."
+                },
+                {
+                    "original": "I can do everything faster and efficient.",
+                    "corrected": "I can do everything faster and more efficiently.",
+                    "explanation": "The comparative 'more efficient' should be used instead of 'efficient' to modify 'faster'.",
+                    "context": "I can do everything faster and more efficiently. I’ve been feeling overwhelmed lately. I want to improve my productivity."
+                },
+                {
+                    "original": "I haven't experienced it in like in two weeks since I arrived here to Vietnam.",
+                    "corrected": "I haven't experienced it in the last two weeks since I arrived in Vietnam.",
+                    "explanation": "The phrase 'in like in' is redundant; 'in the last two weeks' is the correct expression.",
+                    "context": "I haven't experienced it in the last two weeks since I arrived in Vietnam. It's been an interesting time for me. I’ve been adjusting to the new environment."
+                },
+                {
+                    "original": "You don't have a single three minute.",
+                    "corrected": "You don't have a single three minutes.",
+                    "explanation": "'Three minute' should be pluralized to 'three minutes' since it refers to a span of time.",
+                    "context": "You don't have a single three minutes. I feel the same way. There's always so much to do when you're traveling."
+                },
+                {
+                    "original": "But just I don't because I can't wake up.",
+                    "corrected": "But I just don't because I can't wake up.",
+                    "explanation": "The word order is awkward; 'I just don't' is more coherent.",
+                    "context": "But I just don't because I can't wake up. I keep struggling to wake up on time. I wish I could get better sleep."
+                },
+                {
+                    "original": "My dad, he went to another city a few days ago.",
+                    "corrected": "My dad went to another city a few days ago.",
+                    "explanation": "The pronoun 'he' is unnecessary and makes the sentence awkward; it's more fluid without it.",
+                    "context": "My dad went to another city a few days ago. It changed my morning routine. I used to wake up at five a.m. because of him."
+                },
+                {
+                    "original": "Before I thought that just it's my problem that I wake up at five a.m.",
+                    "corrected": "Before, I thought that it was just my problem that I woke up at five a.m.",
+                    "explanation": "The tense should be past ('it was', 'I woke up') given the context of past thoughts.",
+                    "context": "Before, I thought that it was just my problem that I woke up at five a.m. But now I realize it might be other factors. It’s been a struggle."
+                },
+                {
+                    "original": "Because like I already got used to it.",
+                    "corrected": "Because I had already gotten used to it.",
+                    "explanation": "The past perfect 'had gotten used to' is necessary to convey that the action occurred before another past action.",
+                    "context": "Because I had already gotten used to it. After so much time, it felt like my normal routine. Adjusting has been challenging."
+                },
+                {
+                    "original": "I should do it because this is the only reason why it's I'm very tired.",
+                    "corrected": "I should do it because that's the only reason why I'm very tired.",
+                    "explanation": "The phrase 'it's I'm' is incorrect; it should be 'that's I'm'.",
+                    "context": "I should do it because that's the only reason why I'm very tired. I realize the importance of self-care. I need to prioritize my well-being."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "Sometimes, especially if I was studying hard before, I feel that like I like doing nothing, but only maybe two days it's maximum.",
+                    "corrected": "Sometimes, especially if I have studied hard before, I feel like doing nothing, but only maybe two days is the maximum.",
+                    "explanation": "The speaker should use 'have studied' for the present perfect, and 'it's maximum' should be changed to 'is the maximum' for grammatical correctness.",
+                    "context": "I remember that when I get sick, it's tough for me to do anything. Sometimes, especially if I have studied hard before, I feel like doing nothing, but only maybe two days is the maximum. After that, I can't stand it anymore."
+                },
+                {
+                    "original": "And especially if you can't recover, like I still I still sick.",
+                    "corrected": "And especially if you can't recover, like I am still sick.",
+                    "explanation": "'I still sick' is incomplete; it should be 'I am still sick' for correct verb usage.",
+                    "context": "When I'm unwell, it can be really frustrating. And especially if you can't recover, like I am still sick, I feel restless and want to move."
+                },
+                {
+                    "original": "I don't know how come.",
+                    "corrected": "I don't know how that happened.",
+                    "explanation": "The phrase 'how come' is informal and can lead to confusion; 'how that happened' is more precise.",
+                    "context": "While discussing the aspects of vacation, I mentioned two types. I think about each one carefully, but I don't know how that happened."
+                },
+                {
+                    "original": "But just you need to. Have this all in a year.",
+                    "corrected": "But you just need to have all of this in a year.",
+                    "explanation": "The original sentence has a fragment and lacks clarity; it should be combined to improve flow.",
+                    "context": "I really believe that vacations are important. But you just need to have all of this in a year to feel balanced."
+                },
+                {
+                    "original": "You get a new inspiration. Seeing you like different people who can motivate you.",
+                    "corrected": "You get new inspiration from seeing different people who can motivate you.",
+                    "explanation": "'Seeing you like different people' is incorrect; it should express action and connection more clearly.",
+                    "context": "When I'm in a big city like Ho Chi Minh, I find it invigorating. You get new inspiration from seeing different people who can motivate you, which adds to the experience."
+                },
+                {
+                    "original": "I didn't have any nature, you know the only thing I will be reminded if I go there like to my hometown is that oh yeah I grew up without any nature.",
+                    "corrected": "I didn't have any nature. You know, the only thing I remember when I go back to my hometown is that I grew up without any nature.",
+                    "explanation": "The original is a run-on sentence and needs clearer punctuation and phrasing.",
+                    "context": "Reflecting on my childhood, it's clear that my environment shaped me. I didn't have any nature. You know, the only thing I remember when I go back to my hometown is that I grew up without any nature."
+                },
+                {
+                    "original": "When there is nothing much to do and you're kind of like you just feel like chilling.",
+                    "corrected": "When there isn't much to do, and you just feel like chilling.",
+                    "explanation": "The use of 'like' is unnecessary and informal in this context; it should be removed for clarity.",
+                    "context": "On my resort vacations, I enjoy relaxation. When there isn't much to do, and you just feel like chilling, it provides a needed break."
+                },
+                {
+                    "original": "That here you want to be active here you can go to the sea.",
+                    "corrected": "Here, you want to be active, and you can go to the sea.",
+                    "explanation": "The original sentence lacks punctuation and has repetition; it should clarify thoughts with proper punctuation.",
+                    "context": "In contrast, my experience in Ho Chi Minh is different. Here, you want to be active, and you can go to the sea for more experiences."
+                },
+                {
+                    "original": "The only way how you can arrive there is only like this trail or on yacht yacht yacht.",
+                    "corrected": "The only way to arrive there is either by this trail or by yacht.",
+                    "explanation": "The repetition of 'yacht' is unnecessary, and simplifying the phrasing makes it clearer.",
+                    "context": "Describing the hiking trails, I find it unique. The only way to arrive there is either by this trail or by yacht, which adds to the adventure."
+                },
+                {
+                    "original": "The toilet is outside and everything like this shower is also it is all is made from it's made of is made of wood.",
+                    "corrected": "The toilet is outside, and everything like the shower is made of wood.",
+                    "explanation": "The original version has run-on sentences and lacks clarity; it should be concise.",
+                    "context": "Camping is a unique experience. The toilet is outside, and everything like the shower is made of wood, which gives it an authentic feel."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "you just you wet you are sweating sweating and you you everything that is really so simple but you appreciate it much more",
+                    "corrected": "you are just sweating and everything is really so simple, but you appreciate it much more",
+                    "explanation": "The original sentence has redundant phrases and lacks clarity; it should be streamlined for better comprehension.",
+                    "context": "After a busy day, you often find yourself exhausted. You are just sweating and everything is really so simple, but you appreciate it much more. You recognize this feeling after being active."
+                },
+                {
+                    "original": "you just like you have no problems with sleep",
+                    "corrected": "you just have no problems with sleep",
+                    "explanation": "'You just like you have' introduces unnecessary complexity; simplifying it clarifies the statement.",
+                    "context": "After a long day filled with activity, you notice that sleep comes easily. You just have no problems with sleep. Insomnia seems to be a thing of the past."
+                },
+                {
+                    "original": "I want to try that you know what I want to somewhere here in Vietnam",
+                    "corrected": "I want to try that; you know what? I want to go somewhere here in Vietnam",
+                    "explanation": "The original sentence lacks punctuation and clarity. A semicolon and clearer structure help convey the message better.",
+                    "context": "I'm thinking about new experiences. I want to try that; you know what? I want to go somewhere here in Vietnam and connect with nature."
+                },
+                {
+                    "original": "I think it would be hard I think nature like I described it would be impossible to find every place every place has a different",
+                    "corrected": "I think it would be hard; nature, like I described it, would be impossible to find. Every place is different.",
+                    "explanation": "This sentence is a run-on; using appropriate punctuation clarifies each thought.",
+                    "context": "Finding the right natural setting can be challenging. I think it would be hard; nature, like I described it, would be impossible to find. Every place is different, contributing to the challenge."
+                },
+                {
+                    "original": "even in Thailand I saw many um cities in in in in rils like this cities the not cities towns very small places that are not popular",
+                    "corrected": "even in Thailand, I saw many cities in rural areas like this; they are not cities but towns, very small places that are not popular",
+                    "explanation": "Repeated words and awkward phrasing make this unclear. Correcting it removes redundancy and improves flow.",
+                    "context": "Traveling through Thailand, I discovered several intriguing spots. Even in Thailand, I saw many cities in rural areas like this; they are not cities but towns, very small places that are not popular but beautiful."
+                },
+                {
+                    "original": "but the nature is really beautiful and it looks like a small village where only uh like um not for not for tourism",
+                    "corrected": "but the nature is really beautiful, and it looks like a small village that is not for tourism",
+                    "explanation": "The phrase 'where only uh like um not for not for tourism' is unclear and redundant; simplifying it makes the meaning evident.",
+                    "context": "When exploring, I often seek natural beauty. But the nature is really beautiful, and it looks like a small village that is not for tourism, giving it a unique charm."
+                },
+                {
+                    "original": "like you are the person who uh who placed that seed in my mind",
+                    "corrected": "like you are the person who planted that seed in my mind",
+                    "explanation": "'Placed that seed' is awkward and not idiomatic; 'planted' is a more common expression.",
+                    "context": "It's interesting how conversations can inspire new ideas. Like you are the person who planted that seed in my mind, encouraging my thoughts about travel."
+                },
+                {
+                    "original": "I'm gonna uh give you I'm gonna put you to sleep not put like I'm gonna let you sleep",
+                    "corrected": "I'm going to let you sleep, not put you to sleep.",
+                    "explanation": "Colloquial expressions like 'gonna' are fine in informal speech, but the redundancy makes the intention unclear.",
+                    "context": "Before ending our conversation, I want you to rest well. I'm going to let you sleep, not put you to sleep. You deserve a good break."
+                },
+                {
+                    "original": "today we're gonna uh end finishing today we're gonna uh end finish a little bit earlier",
+                    "corrected": "today we're going to finish a little bit earlier",
+                    "explanation": "The phrase 'end finishing' is awkward; simplifying it to just 'finish' is clearer.",
+                    "context": "Time flew during our session, but I want to be respectful of your schedule. Today we're going to finish a little bit earlier. I appreciate your input!"
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Stability",
+                    "definition": "The state of being stable, balance, or steady.",
+                    "context": {
+                        "Context 1": "The connection has issues with stability, making it hard to communicate effectively.",
+                        "Context 2": "A stable economy is crucial for the growth of any country.",
+                        "Context 3": "Rock climbers look for stability in their footholds to avoid falling."
+                    }
+                },
+                {
+                    "word": "Remote",
+                    "definition": "Situated far away or distant; operating over a distance.",
+                    "context": {
+                        "Context 1": "Working remotely can lead to various technical issues during video calls.",
+                        "Context 2": "The remote island was rarely visited by tourists due to its inaccessibility.",
+                        "Context 3": "I prefer remote control cars for racing because they offer better maneuverability."
+                    }
+                },
+                {
+                    "word": "Juice",
+                    "definition": "A drink made from the extraction or pressing of the liquid from fruits or vegetables.",
+                    "context": {
+                        "Context 1": "Drinking pomegranate juice in the morning can be energizing.",
+                        "Context 2": "The chef added some orange juice to the marinade for extra flavor.",
+                        "Context 3": "I once tried to juice a watermelon, and it made a huge mess everywhere!"
+                    }
+                },
+                {
+                    "word": "Energizing",
+                    "definition": "Giving vitality and energy; invigorating.",
+                    "context": {
+                        "Context 1": "The sugar cane juice was invigorating and helped wake him up.",
+                        "Context 2": "A brisk walk in the morning can be quite energizing.",
+                        "Context 3": "That new coffee flavor is energizing, I felt like I could run a marathon after one sip!"
+                    }
+                },
+                {
+                    "word": "Laggy",
+                    "definition": "Not responding quickly; slow or delayed, especially with technology.",
+                    "context": {
+                        "Context 1": "The video call was laggy, making it hard to follow the conversation.",
+                        "Context 2": "When the computer is laggy, it's frustrating to get work done efficiently.",
+                        "Context 3": "His car drives laggy when it needs an oil change."
+                    }
+                },
+                {
+                    "word": "Pomegranate",
+                    "definition": "A fruit with a tough outer layer and many seeds, known for its juicy interior.",
+                    "context": {
+                        "Context 1": "Pomegranate juice is often consumed for its health benefits.",
+                        "Context 2": "The pomegranate tree flourishes in warm climates and produces beautiful flowers.",
+                        "Context 3": "Some people say counting pomegranate seeds brings good luck!"
+                    }
+                },
+                {
+                    "word": "Smoothie",
+                    "definition": "A thick beverage made by blending fruits or vegetables with liquid.",
+                    "context": {
+                        "Context 1": "I love a mango smoothie for breakfast on hot days.",
+                        "Context 2": "The smoothie stand offered various flavors, including tropical and berry mixes.",
+                        "Context 3": "My dog always looks at me when I make smoothies, hoping for a taste!"
+                    }
+                },
+                {
+                    "word": "Battery",
+                    "definition": "A device that stores energy for use in electronic devices.",
+                    "context": {
+                        "Context 1": "She realized her phone's battery was dead, which caused her to lose connection.",
+                        "Context 2": "Replacing the battery in my remote control was easier than I thought.",
+                        "Context 3": "When she found a battery-powered toy, it brought back childhood memories."
+                    }
+                },
+                {
+                    "word": "Technical issues",
+                    "definition": "Problems relating to the technology being used.",
+                    "context": {
+                        "Context 1": "Malfunctions during video calls often arise due to technical issues.",
+                        "Context 2": "Her presentation was thwarted by unforeseen technical issues.",
+                        "Context 3": "The technical issues encountered while recording led to a blooper reel!"
+                    }
+                },
+                {
+                    "word": "Hydrated",
+                    "definition": "Having enough water in the body; well-moistened.",
+                    "context": {
+                        "Context 1": "Staying hydrated is essential, especially in hot weather.",
+                        "Context 2": "She forgot to bring water on her hike and quickly became dehydrated.",
+                        "Context 3": "After a long workout, he was careful to drink plenty of fluids to stay hydrated."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Pomegranate",
+                    "fact": "Did you know that a pomegranate can contain up to 1,000 seeds?"
+                },
+                {
+                    "word": "Battery",
+                    "fact": "In 1800, the first battery was invented, leading to some seriously shocking results!"
+                },
+                {
+                    "word": "Energizing",
+                    "fact": "Coffee isn’t the only energizing beverage; in some cultures, they drink ginger tea to wake up!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes of anxiety!"
+                },
+                {
+                    "question": "Why was the smartphone feeling down?",
+                    "answer": "Because it lost its charge!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Fulfillment",
+                    "definition": "A feeling of satisfaction or happiness as a result of fully developing one's potential or character.",
+                    "context": {
+                        "Context 1": "Spending quality time with friends gives me a sense of fulfillment.",
+                        "Context 2": "He sought fulfillment through various hobbies, but nothing seemed to satisfy him.",
+                        "Context 3": "She felt a sense of fulfillment after completing her degree."
+                    }
+                },
+                {
+                    "word": "Tiring",
+                    "definition": "Causing fatigue or exhaustion.",
+                    "context": {
+                        "Context 1": "Staying up late to study can be very tiring.",
+                        "Context 2": "The long hike was tiring but worth the view at the top.",
+                        "Context 3": "Playing video games for hours can be tiring as well."
+                    }
+                },
+                {
+                    "word": "Sensitive",
+                    "definition": "Quick to detect or respond to changes, signals, or influences.",
+                    "context": {
+                        "Context 1": "She felt sensitive to noise when trying to sleep.",
+                        "Context 2": "The sensitive plant reacts quickly to touch.",
+                        "Context 3": "He is sensitive to criticism, often taking it to heart."
+                    }
+                },
+                {
+                    "word": "Productive",
+                    "definition": "Achieving or producing a significant amount or result.",
+                    "context": {
+                        "Context 1": "I prefer to have busy days that feel more productive.",
+                        "Context 2": "After a long meeting, she felt less productive due to the distractions.",
+                        "Context 3": "Farmers focused on productive ways to increase their crop yield."
+                    }
+                },
+                {
+                    "word": "Socializing",
+                    "definition": "Engaging in social activities; interacting with others.",
+                    "context": {
+                        "Context 1": "Socializing with friends helps me recharge after a busy week.",
+                        "Context 2": "He enjoys socializing at community events, meeting new people.",
+                        "Context 3": "Socializing is important for developing language skills in young children."
+                    }
+                },
+                {
+                    "word": "Sleep schedule",
+                    "definition": "The regular timing of an individual's sleep and wakefulness.",
+                    "context": {
+                        "Context 1": "I need to maintain a better sleep schedule to feel energized.",
+                        "Context 2": "Her sleep schedule became irregular during the holidays.",
+                        "Context 3": "A good sleep schedule can improve your overall health."
+                    }
+                },
+                {
+                    "word": "Addicted",
+                    "definition": "Physically and mentally dependent on a particular substance or activity.",
+                    "context": {
+                        "Context 1": "I feel addicted to scrolling through TikTok late at night.",
+                        "Context 2": "He was addicted to coffee, needing multiple cups daily to function.",
+                        "Context 3": "Many people find themselves addicted to their smartphones."
+                    }
+                },
+                {
+                    "word": "Meditations",
+                    "definition": "The practice of focusing the mind for a period of time, often for spiritual purposes.",
+                    "context": {
+                        "Context 1": "I should try meditations to help with my stress and fatigue.",
+                        "Context 2": "Meditations can be found in various cultures, each with unique techniques.",
+                        "Context 3": "He experimented with different types of meditations before finding what worked for him."
+                    }
+                },
+                {
+                    "word": "Quality time",
+                    "definition": "Time spent with loved ones that is valuable and fulfilling.",
+                    "context": {
+                        "Context 1": "I love spending quality time with my friends at the park.",
+                        "Context 2": "He often reflects on the quality time he spent with his grandparents.",
+                        "Context 3": "Quality time is essential for maintaining healthy relationships."
+                    }
+                },
+                {
+                    "word": "Crow",
+                    "definition": "The loud, harsh cry of a rooster or similar bird.",
+                    "context": {
+                        "Context 1": "The rooster's crow woke me up early this morning.",
+                        "Context 2": "In a farm setting, you can hear roosters crowing everywhere.",
+                        "Context 3": "He learned about how to mimic a crow for his school project."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Sensitive",
+                    "fact": "Did you know that sensitive plants close their leaves when touched? Talk about taking things personally!"
+                },
+                {
+                    "word": "Crow",
+                    "fact": "Roosters can be so loud that in some countries, it's illegal to keep them in the city!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the rooster go to the gym?",
+                    "answer": "To work on his 'pecking' order!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Recover",
+                    "definition": "To return to a normal state of health, mind, or strength.",
+                    "context": {
+                        "Context 1": "After being sick for a week, it took her some time to recover fully.",
+                        "Context 2": "He struggled to recover the ball during the soccer game.",
+                        "Context 3": "They need to recover the lost data from the computer crash."
+                    }
+                },
+                {
+                    "word": "Megalopolis",
+                    "definition": "A very large city or urban area, often made up of several large cities that have grown together.",
+                    "context": {
+                        "Context 1": "Living in a megalopolis like New York can be both exciting and overwhelming.",
+                        "Context 2": "The megalopolis of ants inside the anthill was fascinating to observe.",
+                        "Context 3": "This painting is a beautiful glimpse of the megalopolis of ancient Rome."
+                    }
+                },
+                {
+                    "word": "Resort",
+                    "definition": "A place where people go for relaxation or recreation, often in a picturesque setting.",
+                    "context": {
+                        "Context 1": "They decided to vacation at a beachfront resort to enjoy the sun.",
+                        "Context 2": "The fairy tale mentioned a magical resort where heroes rest after their quests.",
+                        "Context 3": "At the resort, the guests were treated to live music by the poolside."
+                    }
+                },
+                {
+                    "word": "Active",
+                    "definition": "Engaging or ready to engage in physically energetic activities.",
+                    "context": {
+                        "Context 1": "She prefers an active lifestyle filled with sports and outdoor fun.",
+                        "Context 2": "An active volcano can erupt anytime without warning.",
+                        "Context 3": "The active ingredients in the medicine are what make it effective."
+                    }
+                },
+                {
+                    "word": "Inspiration",
+                    "definition": "The process of being mentally stimulated to do or feel something, especially to do something creative.",
+                    "context": {
+                        "Context 1": "Traveling to new places gave her the inspiration she needed for her art.",
+                        "Context 2": "The inspiring story of the scientist motivated many students.",
+                        "Context 3": "They sought inspiration from nature for their new architectural designs."
+                    }
+                },
+                {
+                    "word": "Cultural",
+                    "definition": "Relating to the ideas, customs, and social behavior of a society.",
+                    "context": {
+                        "Context 1": "Exploring the cultural aspects of a city can enrich your travel experience.",
+                        "Context 2": "Cultural differences can lead to misunderstandings in international business.",
+                        "Context 3": "The cultural festival celebrated traditions from around the world."
+                    }
+                },
+                {
+                    "word": "Tradition",
+                    "definition": "A custom or belief that is passed down from one generation to another.",
+                    "context": {
+                        "Context 1": "Every summer, our family follows the tradition of camping together.",
+                        "Context 2": "In their tradition, they always celebrate the harvest with a big feast.",
+                        "Context 3": "The tradition of storytelling helps preserve history in many cultures."
+                    }
+                },
+                {
+                    "word": "Reminisce",
+                    "definition": "To indulge in enjoyable recollection of past events.",
+                    "context": {
+                        "Context 1": "When they gather together, they reminisce about their childhood adventures.",
+                        "Context 2": "He likes to reminisce about the time he lived in Paris.",
+                        "Context 3": "The old photograph made her reminisce about her college years."
+                    }
+                },
+                {
+                    "word": "Settlement",
+                    "definition": "A small community or village, especially one with a historical or cultural significance.",
+                    "context": {
+                        "Context 1": "The settlement was established by farmers looking for fertile land.",
+                        "Context 2": "In the settlement of the board game, each player had to build their own territory.",
+                        "Context 3": "The archaeological site revealed the remnants of an ancient settlement."
+                    }
+                },
+                {
+                    "word": "Excurison",
+                    "definition": "A short journey or trip, especially one taken for pleasure.",
+                    "context": {
+                        "Context 1": "The excursion to the museum was a fun way to learn about history.",
+                        "Context 2": "They planned an excursion to the mountains for a day of hiking.",
+                        "Context 3": "During the excursion, they saw dolphins jumping in the ocean."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Megalopolis",
+                    "fact": "The term 'megalopolis' was invented in the late 1930s to describe the urban sprawl of cities that seem to have no end!"
+                },
+                {
+                    "word": "Tradition",
+                    "fact": "Did you know that breaking a plate on New Year’s Eve in Greece is considered good luck? Talk about smashing traditions!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the vacationer bring a ladder to the resort?",
+                    "answer": "Because they heard the views were through the roof!"
+                },
+                {
+                    "question": "What did the hiking trail say to the mountain?",
+                    "answer": "I’m so drawn to you, it’s hard to stay away!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Insomnia",
+                    "definition": "Difficulty in falling or staying asleep.",
+                    "context": {
+                        "Context 1": "After a long day of physical activity, I realized my insomnia had disappeared.",
+                        "Context 2": "He was so focused on his work that he developed insomnia and couldn’t sleep at night.",
+                        "Context 3": "The old cat seemed to suffer from insomnia and would roam the house at odd hours."
+                    }
+                },
+                {
+                    "word": "Nature",
+                    "definition": "The physical world collectively, including plants, animals, and landscapes.",
+                    "context": {
+                        "Context 1": "Being outside in nature really helps clear my mind and relax.",
+                        "Context 2": "She decorated her room with nature-themed art to feel more connected to the outdoors.",
+                        "Context 3": "The nature of their relationship changed after the trip to the mountains."
+                    }
+                },
+                {
+                    "word": "Explore",
+                    "definition": "To travel through an unfamiliar area to learn about it.",
+                    "context": {
+                        "Context 1": "After a busy day exploring the town, I felt thoroughly satisfied.",
+                        "Context 2": "She decided to explore different cuisines by trying new restaurants every week.",
+                        "Context 3": "The team was excited to explore the results of their scientific experiment."
+                    }
+                },
+                {
+                    "word": "Inspiration",
+                    "definition": "The process of being mentally stimulated to do or feel something.",
+                    "context": {
+                        "Context 1": "You inspired me to think differently about how to connect with nature.",
+                        "Context 2": "The artist found inspiration in the patterns of leaves and flowers.",
+                        "Context 3": "His speech served as an inspiration for many students to pursue their dreams."
+                    }
+                },
+                {
+                    "word": "Connect",
+                    "definition": "To join or link together; to establish a relationship.",
+                    "context": {
+                        "Context 1": "I want to connect with nature and feel its calming influence.",
+                        "Context 2": "It's important to connect with your friends during tough times.",
+                        "Context 3": "They decided to connect the two regions by building a new bridge."
+                    }
+                },
+                {
+                    "word": "Village",
+                    "definition": "A group of houses and associated buildings, larger than a hamlet and smaller than a town.",
+                    "context": {
+                        "Context 1": "You can find beautiful villages tucked away in the hills.",
+                        "Context 2": "The village had a charming annual festival that attracted visitors.",
+                        "Context 3": "He dreamed of living in a village where everyone knew each other."
+                    }
+                },
+                {
+                    "word": "Problem",
+                    "definition": "A matter or situation regarded as unwelcome or harmful and needing to be dealt with.",
+                    "context": {
+                        "Context 1": "Lack of sleep used to be a problem for me until I traveled more.",
+                        "Context 2": "He had a problem with his car, so he took it to the mechanic.",
+                        "Context 3": "Finding a problem to solve can sometimes lead to innovative ideas."
+                    }
+                },
+                {
+                    "word": "Traveling",
+                    "definition": "The act of going from one place to another, often involving a journey.",
+                    "context": {
+                        "Context 1": "I enjoy traveling because it helps me meet new people and experience different cultures.",
+                        "Context 2": "Traveling can be tiring, but the memories made are worth it.",
+                        "Context 3": "He spent his summer traveling through Europe on a bicycle."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "I think traveling allows you to experience different cultures firsthand.",
+                        "Context 2": "His work experience made him an ideal candidate for the job.",
+                        "Context 3": "They shared their experience of skydiving with excitement."
+                    }
+                },
+                {
+                    "word": "Plant",
+                    "definition": "A living organism that typically grows in soil and absorbs water and nutrients from it.",
+                    "context": {
+                        "Context 1": "You can find many plants in nature that are not found anywhere else.",
+                        "Context 2": "She decided to plant flowers in her garden to attract butterflies.",
+                        "Context 3": "The company planned to plant trees in honor of Earth Day."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Explore",
+                    "fact": "Did you know that the word 'explore' comes from the Latin word 'explorare,' which means 'to search out?'"
+                },
+                {
+                    "word": "Village",
+                    "fact": "According to a study, there are more than 1,000 deserted villages in the UK!"
+                },
+                {
+                    "word": "Traveling",
+                    "fact": "Traveling is scientifically proven to make you happier; it’s one of the best ways to give your brain a refresh!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why do travelers always carry maps?",
+                    "answer": "Because they don’t want to get lost in their thoughts!"
+                },
+                {
+                    "question": "What do you call a bear that’s traveling?",
+                    "answer": "A ‘globe-bear’ trotter!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, how's your day going?"
+                },
+                {
+                    "Person 2": "It's alright, but man, I really didn't sleep well last night."
+                },
+                {
+                    "Person 1": "Same here! I was tossing and turning all night."
+                },
+                {
+                    "Person 2": "You ever drink sugar cane juice? It really helps me wake up."
+                },
+                {
+                    "Person 1": "I’ve never had it. What’s it like?"
+                },
+                {
+                    "Person 2": "It’s super sweet and refreshing! They squeeze the juice right out of the cane."
+                },
+                {
+                    "Person 1": "That sounds interesting! I generally stick to pomegranate juice."
+                },
+                {
+                    "Person 2": "Pomegranate juice? Oh, I love that! Is it sweet?"
+                },
+                {
+                    "Person 1": "Yeah, it's pretty sweet, especially if you get the good stuff. You would call it grenadine, right?"
+                },
+                {
+                    "Person 2": "No, that's different! Grenadine is more like a syrup for drinks."
+                },
+                {
+                    "Person 1": "Right! Pomegranate must be what we're talking about. It gives you a good energy boost."
+                },
+                {
+                    "Person 2": "Absolutely! I usually have it when I need a pick-me-up."
+                },
+                {
+                    "Person 1": "Speaking of pick-me-ups, coconut water is another great option! Have you tried it?"
+                },
+                {
+                    "Person 2": "Oh yes! It's so refreshing, especially on a hot day."
+                },
+                {
+                    "Person 1": "And cracking open a fresh coconut is the best! Drinking right from it feels special."
+                },
+                {
+                    "Person 2": "For sure! You can't compare that to bottled coconut water."
+                },
+                {
+                    "Person 1": "Exactly! I remember having smoothies in Thailand; they were out of this world."
+                },
+                {
+                    "Person 2": "Yes! The tropical fruits there make everything taste better."
+                },
+                {
+                    "Person 1": "What would you say is your favorite smoothie flavor?"
+                },
+                {
+                    "Person 2": "Definitely mango! Or maybe a mix with berries. You can't go wrong with berries!"
+                },
+                {
+                    "Person 1": "True! We should totally make some smoothies together next time."
+                },
+                {
+                    "Person 2": "That sounds like a fun plan! I’ll bring the fruits!"
+                },
+                {
+                    "Person 1": "Deal! Let’s do it soon before we forget. "
+                },
+                {
+                    "Person 2": "For sure! Let’s set a date."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! You look a bit sleepy today. What’s up?"
+                },
+                {
+                    "Person 2": "Yeah, I didn't sleep great. I was out late with a friend last night."
+                },
+                {
+                    "Person 1": "Oh, fun! What did you guys do?"
+                },
+                {
+                    "Person 2": "We just hung out at her place. She had some wine and we talked for hours."
+                },
+                {
+                    "Person 1": "Sounds like a good time! How late did you stay up?"
+                },
+                {
+                    "Person 2": "We finally crashed around 2 AM. I’m paying for it today, though."
+                },
+                {
+                    "Person 1": "Yeah, lack of sleep gets me every time. I feel like a zombie afterward."
+                },
+                {
+                    "Person 2": "Right? But at least it was quality time with a friend. I hate when I stay up late just scrolling on my phone."
+                },
+                {
+                    "Person 1": "Absolutely. Socializing feels more fulfilling, even if you’re tired the next day."
+                },
+                {
+                    "Person 2": "Exactly! But I went to the gym today, and it was rough with no sleep."
+                },
+                {
+                    "Person 1": "I bet! Sometimes I just need to take a nap to recover."
+                },
+                {
+                    "Person 2": "Same here. But I feel like I can do more when I’m busy, you know?"
+                },
+                {
+                    "Person 1": "Totally! When I’m active, I feel productive. But too much downtime makes me feel restless."
+                },
+                {
+                    "Person 2": "For sure. It’s all about finding that balance, right?"
+                },
+                {
+                    "Person 1": "Exactly! But I could use some tips on how to get better sleep. Any ideas?"
+                },
+                {
+                    "Person 2": "I’ve heard meditation helps. I should probably give it a try too."
+                },
+                {
+                    "Person 1": "Yeah, I need to look into that. I want to stay energized to keep up with everything!"
+                },
+                {
+                    "Person 2": "Same here! Let’s figure it out together. Maybe we can share some tips!"
+                },
+                {
+                    "Person 1": "That sounds great! Let’s catch up again soon and compare strategies."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever been so sick that all you want to do is nothing?"
+                },
+                {
+                    "Person 2": "Oh, totally! When I have a fever, I can't focus on anything. But after a couple of days, I'm just dying to get up and do something!"
+                },
+                {
+                    "Person 1": "Right? I feel like I can't stand being idle for too long. It's tough."
+                },
+                {
+                    "Person 2": "Exactly. I usually end up cooking or something to keep myself busy."
+                },
+                {
+                    "Person 1": "Speaking of busy, what’s your idea of a perfect vacation?"
+                },
+                {
+                    "Person 2": "I think it depends. Sometimes I love the city vibe, like a vacation in a big city where you can explore. But then there's the resort life, too."
+                },
+                {
+                    "Person 1": "Right! A big city can be so inspiring—new people, museums, all that culture!"
+                },
+                {
+                    "Person 2": "For sure. And then there are nature trips, like hiking or camping, which I love as well!"
+                },
+                {
+                    "Person 1": "I can see how that would be refreshing. How long do you think is enough for each type?"
+                },
+                {
+                    "Person 2": "Honestly, I'd say around ten days for a city trip and maybe a week for a resort. Nature trips don't need too long, maybe five days?"
+                },
+                {
+                    "Person 1": "That makes sense. It’s about getting that balance, right?"
+                },
+                {
+                    "Person 2": "Totally! Each type has its own charm. Last year, I went to this beautiful island resort where you just chill all day."
+                },
+                {
+                    "Person 1": "Oh, nice! I like that kind of vacation, just lying in a hammock and enjoying the beach."
+                },
+                {
+                    "Person 2": "Yeah, and now living in a bustling city like Ho Chi Minh, it's all about that energy and movement. You can't help but feel alive."
+                },
+                {
+                    "Person 1": "Exactly! I want that energy! But I’ve never tried camping. What's it like?"
+                },
+                {
+                    "Person 2": "I love it! My family goes every year. We do a lot of hiking and it's exhausting but so worth it."
+                },
+                {
+                    "Person 1": "I bet! But I can imagine how good a shower feels after a hike, right?"
+                },
+                {
+                    "Person 2": "Oh, for sure! After a long day out, nothing beats a refreshing swim or a warm shower."
+                },
+                {
+                    "Person 1": "Now I want to try camping! Sounds like such a great way to unwind."
+                },
+                {
+                    "Person 2": "You should! It’s a whole different experience, being in nature like that."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! You ever have those days where you're just exhausted from all the running around?"
+                },
+                {
+                    "Person 2": "Totally! After a long day of exploring, I just crash. It feels great, though!"
+                },
+                {
+                    "Person 1": "Right? I find that I sleep like a rock after a busy day. No more tossing and turning."
+                },
+                {
+                    "Person 2": "Same here! I think being active really helps knock out any insomnia."
+                },
+                {
+                    "Person 1": "Absolutely! I’ve been thinking about planning a getaway, maybe somewhere in nature."
+                },
+                {
+                    "Person 2": "That sounds amazing! There's something peaceful about being surrounded by nature."
+                },
+                {
+                    "Person 1": "Exactly! I was looking at places in Thailand or Vietnam. Think I could find a spot like that?"
+                },
+                {
+                    "Person 2": "For sure! Even smaller towns that aren’t touristy have their charm. Nature is everywhere!"
+                },
+                {
+                    "Person 1": "You’re right. I actually feel inspired to look for a place like that."
+                },
+                {
+                    "Person 2": "Awesome! You should definitely find one and take loads of pictures!"
+                },
+                {
+                    "Person 1": "Will do! I’ll share them with you once I visit."
+                },
+                {
+                    "Person 2": "Sounds great! By the way, are we wrapping up early today?"
+                },
+                {
+                    "Person 1": "Yeah, I thought we could end a bit earlier and you could take a little nap."
+                },
+                {
+                    "Person 2": "Good idea! A nap does sound nice right about now."
+                },
+                {
+                    "Person 1": "Alright, take care! Catch you later!"
+                },
+                {
+                    "Person 2": "Thanks! Sleep tight!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
