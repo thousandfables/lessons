@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Because like the part that kind of fixes it, that fixates the microphone to the table.",
+                    "corrected": "Because like the part that kind of fixes it, that fixates the microphone on the table.",
+                    "explanation": "The preposition 'to' is incorrect here; 'on' should be used to describe the placement of the microphone in relation to the table.",
+                    "context": "Now it seems that everything's working. The problem with my mic is that there is no more microphone stand for the mic. Because like the part that kind of fixes it, that fixates the microphone on the table."
+                },
+                {
+                    "original": "Because if you look at the map, I gotta close those tabs sooner or later.",
+                    "corrected": "Because if you look at the map, I have to close those tabs sooner or later.",
+                    "explanation": "'Gotta' is informal and not suitable for academic or formal contexts; 'have to' is more appropriate here.",
+                    "context": "We are right at the middle here in the city of Da Nang. Because if you look at the map, I have to close those tabs sooner or later."
+                },
+                {
+                    "original": "That's a lot of cities, yeah.",
+                    "corrected": "Those are a lot of cities, yeah.",
+                    "explanation": "'That's' is grammatically incorrect here because it does not accurately refer to the plural noun 'cities.'",
+                    "context": "We've already been traveling in Vietnam. That's a lot of cities, yeah."
+                },
+                {
+                    "original": "There are, you know, in Vietnam there are 20 million people.",
+                    "corrected": "You know, there are 20 million people in Vietnam.",
+                    "explanation": "The phrase structure is awkward; starting with 'You know' makes it more fluent and direct.",
+                    "context": "What about agglomeration? You know, there are 20 million people in Vietnam."
+                },
+                {
+                    "original": "Hanoi? Hanoi. Yeah, I know there's a capital, only eight people.",
+                    "corrected": "Yeah, I know it's the capital, with only eight million people.",
+                    "explanation": "The phrase is incorrect; 'there's a capital, only eight people' should mention 'million' for accuracy.",
+                    "context": "I'm actually, how many people live in Hanoi? Hanoi? Yeah, I know it's the capital, with only eight million people."
+                },
+                {
+                    "original": "But so far, so far we really like.",
+                    "corrected": "But so far, we really like it.",
+                    "explanation": "The sentence is incomplete; it needs an object ('it') to clarify what is liked.",
+                    "context": "I don't know. But so far, we really like it."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "that's like, this is Buddha, this is the view from those mountains.",
+                    "corrected": "that's like, this is Buddha, this is the view from these mountains.",
+                    "explanation": "'Those' is used incorrectly; 'these' should be used to refer to mountains that are close.",
+                    "context": "In this city, the view is stunning. That's like, this is Buddha, this is the view from these mountains. There are many spots for beautiful pictures."
+                },
+                {
+                    "original": "and to take some pictures, some photos.",
+                    "corrected": "and to take some photos.",
+                    "explanation": "The phrase 'some pictures, some photos' is redundant; 'photos' is sufficient.",
+                    "context": "Today I want to go out with my friends and to take some photos. We hope to capture the beautiful landscapes."
+                },
+                {
+                    "original": "I find beautiful places where I can take photos from TikTok.",
+                    "corrected": "I find beautiful places where I can take photos for TikTok.",
+                    "explanation": "'From' is incorrect; 'for' is the correct preposition to indicate purpose.",
+                    "context": "I often explore my city, looking for the best spots. I find beautiful places where I can take photos for TikTok. It's fun sharing those moments."
+                },
+                {
+                    "original": "And just today randomly I was scrolling YouTube and I saw the post with a drone hitting like a drone in the middle of the street.",
+                    "corrected": "And just today randomly I was scrolling YouTube and I saw a post about a drone hitting something in the middle of the street.",
+                    "explanation": "The phrase 'the post with a drone hitting like a drone' is unclear; it should directly state what is being hit.",
+                    "context": "I haven't been following the news much. And just today randomly I was scrolling YouTube and I saw a post about a drone hitting something in the middle of the street. It was shocking."
+                },
+                {
+                    "original": "I can literally see you know, the damage and the you know, all the pieces, shattered pieces.",
+                    "corrected": "I can literally see the damage and all the shattered pieces.",
+                    "explanation": "Unnecessary repetition of 'you know' makes the sentence awkward; it's better to make it direct.",
+                    "context": "I vividly remember that morning. I can literally see the damage and all the shattered pieces. It was heartbreaking."
+                },
+                {
+                    "original": "I live near the place where there are people training, like military trainings.",
+                    "corrected": "I live near the place where people do military training.",
+                    "explanation": "'Training' should be used as a verb here; 'military trainings' is not natural in this context.",
+                    "context": "I've been feeling uneasy lately. I live near the place where people do military training. It's unsettling to hear them often."
+                },
+                {
+                    "original": "Okay. Okay. Are there any strategic things there?",
+                    "corrected": "Okay. Okay. Are there any strategic facilities there?",
+                    "explanation": "'Things' is too vague; 'facilities' is more specific and appropriate.",
+                    "context": "Our conversation shifted to the military activities nearby. Okay. Okay. Are there any strategic facilities there? I'm curious."
+                },
+                {
+                    "original": "it's permanent, yeah. It's permanent.",
+                    "corrected": "It's not a permanent place for training; it's temporary.",
+                    "explanation": "The meaning was unclear; the expression needed clarification between 'permanent' and 'not permanent'.",
+                    "context": "The military training setup worries me sometimes. It's not a permanent place for training; it's temporary, but still concerning."
+                },
+                {
+                    "original": "it works. Yeah, but you know what is the coolest thing about Vietnam?",
+                    "corrected": "It works. Yeah, but you know what the coolest thing about Vietnam is?",
+                    "explanation": "The order of the phrase is incorrect; the verb should follow 'is' for proper sentence structure.",
+                    "context": "I've enjoyed my time here. It works. Yeah, but you know what the coolest thing about Vietnam is? The connectivity."
+                },
+                {
+                    "original": "because like when you travel in between cities on a bus, literally on a bus and you're just in the middle of nowhere.",
+                    "corrected": "Because when you travel between cities on a bus, you're literally in the middle of nowhere.",
+                    "explanation": "Repetitive phrases like 'literally on a bus' should be avoided; it should be more succinct.",
+                    "context": "Traveling is a unique experience here. Because when you travel between cities on a bus, you're literally in the middle of nowhere. Yet, you still have internet."
+                },
+                {
+                    "original": "What Monica, about pictures, about taking... By the way, why?",
+                    "corrected": "What about pictures, and taking... By the way, why?",
+                    "explanation": "The phrasing 'What Monica' is awkward; it should focus on 'What about pictures'.",
+                    "context": "I wanted to switch topics. What about pictures, and taking... By the way, why are you so enthusiastic about this? I'm curious."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "They on their Instagram, they have like they post things.",
+                    "corrected": "They have on their Instagram, they post things.",
+                    "explanation": "The structure is incorrect; 'They on their Instagram' should use 'have' instead of omitting it.",
+                    "context": "Some people post a lot on Instagram. They have on their Instagram, they post things like photos and videos regularly."
+                },
+                {
+                    "original": "it's a memories for me.",
+                    "corrected": "it's a memory for me.",
+                    "explanation": "'Memories' is plural; here, 'memory' should be singular to refer to the concept properly.",
+                    "context": "Looking back at old pictures can bring back feelings. It's a memory for me that I cherish deeply."
+                },
+                {
+                    "original": "When you look at those pictures, or maybe maybe...",
+                    "corrected": "When you look at those pictures, or maybe...",
+                    "explanation": "Repetition of 'maybe' is unnecessary and disrupts the flow of the sentence.",
+                    "context": "Photos can evoke strong feelings and memories. When you look at those pictures, or maybe even videos, you remember the good times."
+                },
+                {
+                    "original": "You're reminded of those memories.",
+                    "corrected": "You are reminded of those memories.",
+                    "explanation": "The contraction 'You're' should be expanded to 'You are' for clarity in this context.",
+                    "context": "Memories can be powerful triggers. You are reminded of those memories every time you see those photos."
+                },
+                {
+                    "original": "It wasn't popular.",
+                    "corrected": "It wasn't very popular.",
+                    "explanation": "The addition of 'very' provides clarity on the degree of popularity being discussed.",
+                    "context": "Sometimes we feel pressured to share things on social media. It wasn't very popular, which is why I decided to delete that account."
+                },
+                {
+                    "original": "There is like... If you think there are...",
+                    "corrected": "There isn't like... If you think there are...",
+                    "explanation": "The phrasing 'there is like' should be properly structured to convey negation effectively.",
+                    "context": "It's important to feel free in our expression and actions. There isn't like anything that I can imagine doing that I would feel ashamed of."
+                },
+                {
+                    "original": "Sometimes they show different processes.",
+                    "corrected": "Sometimes it shows different processes.",
+                    "explanation": "The subject 'they' should be replaced with 'it' to match the singular noun 'diagram'.",
+                    "context": "In diagrams, clarity is paramount. Sometimes it shows different processes that we need to analyze."
+                },
+                {
+                    "original": "like one and it's a cyclic process.",
+                    "corrected": "like one, and it's a cyclic process.",
+                    "explanation": "A comma before 'and' improves the sentence structure, separating the clauses correctly.",
+                    "context": "Processes vary in nature. They're like one, and it's a cyclic process that keeps repeating."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "It cannot be not important.",
+                    "corrected": "It cannot be unimportant.",
+                    "explanation": "'Not important' is grammatically fine but less idiomatic; 'unimportant' expresses the same idea more clearly.",
+                    "context": "We were discussing the process and its various parts. It cannot be unimportant. Every step has a role in understanding recycling."
+                },
+                {
+                    "original": "This is how I will do it.",
+                    "corrected": "This is how I'm going to do it.",
+                    "explanation": "Using 'will' can imply certainty, while 'going to' indicates a planned intention; both are correct but 'going to' is more conversational in this context.",
+                    "context": "I was thinking of organizing my writing. This is how I'm going to do it: I’ll separate it into three steps."
+                },
+                {
+                    "original": "We gotta maintain this balance.",
+                    "corrected": "We have to maintain this balance.",
+                    "explanation": "'Gotta' is informal; 'have to' is more appropriate in an educational or formal context.",
+                    "context": "Explaining the approach we need to take, I said we have to maintain this balance in our writing."
+                },
+                {
+                    "original": "I decided to extend my overall paragraph.",
+                    "corrected": "I decided to extend my overview paragraph.",
+                    "explanation": "'Overall paragraph' is uncommonly used; 'overview paragraph' is the more standard term for summarizing content.",
+                    "context": "While discussing writing strategies, I mentioned how I decided to extend my overview paragraph for clarity."
+                },
+                {
+                    "original": "They start creating something new.",
+                    "corrected": "They start to create something new.",
+                    "explanation": "Using 'to create' is more grammatically correct; the infinitive form is needed after 'start'.",
+                    "context": "I was pointing out common mistakes in reporting. They start to create something new without evidence."
+                },
+                {
+                    "original": "For example, picture five.",
+                    "corrected": "For example, in picture five.",
+                    "explanation": "Adding 'in' provides clearer context, indicating you're referring to content within that specific picture.",
+                    "context": "Discussing specific examples, I said, for example, in picture five, you see some actions."
+                },
+                {
+                    "original": "If you look at picture five, you see that those pieces are being dumped into some liquid.",
+                    "corrected": "If you look at picture five, you can see that those pieces are being dumped into a liquid.",
+                    "explanation": "Changing 'you see' to 'you can see' makes the sentence more formal and appropriately indicates observation.",
+                    "context": "Analyzing imagery in our materials, I mentioned, if you look at picture five, you can see that those pieces are being dumped into a liquid."
+                },
+                {
+                    "original": "It’s just some bottles.",
+                    "corrected": "They're just some bottles.",
+                    "explanation": "Switching from 'it’s' to 'they're' corrects the subject-verb agreement, as 'bottles' is plural.",
+                    "context": "During our analysis, I clarified that the observations were vague: they're just some bottles."
+                },
+                {
+                    "original": "I'm certain. I'm sure.",
+                    "corrected": "I'm certain that it will happen.",
+                    "explanation": "The phrase 'I'm sure' is repetitive; combining them into one expressive phrase improves clarity.",
+                    "context": "Expressing confidence about the project, I said, I'm certain that it will happen."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Microphone",
+                    "definition": "An instrument for converting sound waves into electrical energy variations which may then be amplified, transmitted, or recorded.",
+                    "context": {
+                        "Context 1": "The instructor had to replace the microphone during the lesson due to connection issues.",
+                        "Context 2": "He used a megaphone instead of a microphone to address the large crowd.",
+                        "Context 3": "At the concert, her microphone malfunctioned just as she started singing."
+                    }
+                },
+                {
+                    "word": "Wi-Fi",
+                    "definition": "A wireless networking technology that allows devices to communicate over a wireless signal.",
+                    "context": {
+                        "Context 1": "The poor quality of the wi-fi on his laptop made it difficult to have a smooth lesson.",
+                        "Context 2": "She went to the café to use their free Wi-Fi while studying.",
+                        "Context 3": "My parents still don't know how to connect to the wi-fi even though I’ve told them numerous times."
+                    }
+                },
+                {
+                    "word": "Lag",
+                    "definition": "A delay or slowness in response or performance, especially in computer and online interactions.",
+                    "context": {
+                        "Context 1": "The lag in the video call made it hard for them to have a conversation.",
+                        "Context 2": "During the video game, I experienced lag because of my internet connection.",
+                        "Context 3": "The movie had a lag in the second act that frustrated many viewers."
+                    }
+                },
+                {
+                    "word": "Chilly",
+                    "definition": "Uncomfortably cool or cold.",
+                    "context": {
+                        "Context 1": "The weather was described as chilly, making it necessary to wear a sweater.",
+                        "Context 2": "He felt chilly walking out of the warm building into the cold wind.",
+                        "Context 3": "The chilly reception from her colleagues made her second-guess her presentation."
+                    }
+                },
+                {
+                    "word": "Comfort",
+                    "definition": "A state of physical ease and freedom from pain or constraint.",
+                    "context": {
+                        "Context 1": "The lesson was more enjoyable thanks to the comfort of the new chairs.",
+                        "Context 2": "She always wore her favorite socks for maximum comfort during long flights.",
+                        "Context 3": "The movie was about finding comfort in uncomfortable situations."
+                    }
+                },
+                {
+                    "word": "Highland",
+                    "definition": "An area of high or hilly land.",
+                    "context": {
+                        "Context 1": "The instructor referred to a highland area in Vietnam where the temperature is cooler.",
+                        "Context 2": "The highland people are known for their unique cultures and traditions.",
+                        "Context 3": "In college, they studied the geological formations of the highland regions."
+                    }
+                },
+                {
+                    "word": "Picturesque",
+                    "definition": "Visually attractive, especially in a quaint or charming way.",
+                    "context": {
+                        "Context 1": "They described the honeymoon city as picturesque due to its beautiful landscapes.",
+                        "Context 2": "The artist found inspiration in the picturesque views of the countryside.",
+                        "Context 3": "The filmmaker chose a picturesque setting for the romantic comedy."
+                    }
+                },
+                {
+                    "word": "Agglomeration",
+                    "definition": "A mass or collection of things; the act of gathering or clustering.",
+                    "context": {
+                        "Context 1": "The conversation mentioned the agglomeration of eight million people in Hanoi.",
+                        "Context 2": "The scientist studied the agglomeration of particles in the lab.",
+                        "Context 3": "Urban agglomeration can create both opportunities and challenges."
+                    }
+                },
+                {
+                    "word": "Countryside",
+                    "definition": "Land that is outside cities and towns; rural areas.",
+                    "context": {
+                        "Context 1": "The lesson compared the countryside in Vietnam to that in Russia.",
+                        "Context 2": "They planned to escape to the countryside for a peaceful weekend.",
+                        "Context 3": "Growing up in the countryside gave her a deep appreciation for nature."
+                    }
+                },
+                {
+                    "word": "Explore",
+                    "definition": "To travel through (an unfamiliar area) in order to learn about it.",
+                    "context": {
+                        "Context 1": "They planned to explore northern Vietnam after their stay in Da Nang.",
+                        "Context 2": "She loved to explore new cuisines when traveling to different countries.",
+                        "Context 3": "The kids went to explore the forest behind their house."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Wi-Fi",
+                    "fact": "Did you know that Wi-Fi actually stands for 'Wireless Fidelity' and has nothing to do with fidelity in relationships?"
+                },
+                {
+                    "word": "Picturesque",
+                    "fact": "The word 'picturesque' was initially used in the art world to describe a scene that looked like a painting!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the microphone bring a ladder to class?",
+                    "answer": "Because it wanted to reach new heights in sound quality!"
+                },
+                {
+                    "question": "Why did the Wi-Fi breakup with the cable?",
+                    "answer": "Because it said it needed more space!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Terrace",
+                    "definition": "A raised, flat area or platform, often used for outdoor activities or views.",
+                    "context": {
+                        "Context 1": "We visited a beautiful terrace with stunning views of the mountains.",
+                        "Context 2": "The restaurant had a lovely terrace where customers could enjoy their meals outside.",
+                        "Context 3": "He built a terrace in his backyard for gardening and relaxation."
+                    }
+                },
+                {
+                    "word": "VPN",
+                    "definition": "A Virtual Private Network that encrypts your internet connection and helps maintain privacy online.",
+                    "context": {
+                        "Context 1": "We used a VPN to access TikTok, as it is blocked in Russia.",
+                        "Context 2": "Travelers often use a VPN to secure their Wi-Fi connection in public places.",
+                        "Context 3": "I set up a VPN at home to keep my online activities private."
+                    }
+                },
+                {
+                    "word": "Drone",
+                    "definition": "An unmanned aerial vehicle that can be remotely controlled or fly autonomously.",
+                    "context": {
+                        "Context 1": "A drone captured footage of the crowded streets, showcasing everyday life.",
+                        "Context 2": "He used a drone to take stunning aerial photographs of the landscape.",
+                        "Context 3": "The movie featured a dramatic chase scene involving a drone and a speeding car."
+                    }
+                },
+                {
+                    "word": "Stable",
+                    "definition": "Steady, not likely to change or vary; consistent.",
+                    "context": {
+                        "Context 1": "The internet here is stable, allowing for smooth video streaming.",
+                        "Context 2": "His financial situation has become more stable since he got a new job.",
+                        "Context 3": "The horse was well trained and very stable during the competition."
+                    }
+                },
+                {
+                    "word": "Communication",
+                    "definition": "The act of exchanging information, thoughts, or feelings.",
+                    "context": {
+                        "Context 1": "There was a lack of communication about the internet issues in the city center.",
+                        "Context 2": "Effective communication is key to a successful relationship.",
+                        "Context 3": "We need communication in our team to avoid misunderstandings."
+                    }
+                },
+                {
+                    "word": "Picturesque",
+                    "definition": "Visually attractive, especially in a quaint or charming way.",
+                    "context": {
+                        "Context 1": "She found a picturesque location perfect for taking photos.",
+                        "Context 2": "The village was picturesque, with its colorful houses and flower-filled gardens.",
+                        "Context 3": "As we drove along the coast, there were picturesque views around every corner."
+                    }
+                },
+                {
+                    "word": "Laggy",
+                    "definition": "Having delays or sluggishness, especially in digital contexts like video games or internet browsing.",
+                    "context": {
+                        "Context 1": "My internet is so laggy that I struggle to load web pages smoothly.",
+                        "Context 2": "The game became unplayable because of its laggy controls.",
+                        "Context 3": "During the video call, her voice was laggy, making it hard to understand her."
+                    }
+                },
+                {
+                    "word": "Military",
+                    "definition": "Relating to the armed forces of a country.",
+                    "context": {
+                        "Context 1": "There are military training exercises happening near where I live.",
+                        "Context 2": "The military played a crucial role in disaster relief efforts after the earthquake.",
+                        "Context 3": "He studied military history at university and wrote a thesis on ancient warfare."
+                    }
+                },
+                {
+                    "word": "Digitalized",
+                    "definition": "Converted into a digital format, making it easier to access and use technology.",
+                    "context": {
+                        "Context 1": "Vietnam is very digitalized, with internet access available even in rural areas.",
+                        "Context 2": "The library has digitalized its entire collection, allowing people to read online.",
+                        "Context 3": "Her company is focusing on digitalized marketing strategies to reach more customers."
+                    }
+                },
+                {
+                    "word": "Outfit",
+                    "definition": "A set of clothes worn together, often selected for a particular occasion or purpose.",
+                    "context": {
+                        "Context 1": "I bought a new outfit to wear for taking pictures today.",
+                        "Context 2": "He decided to wear a casual outfit for his day off.",
+                        "Context 3": "The costume designer created a stunning outfit for the lead actor in the play."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "VPN",
+                    "fact": "The very first VPN was created in 1996 as a way to connect two networks over the internet securely. It’s come a long way since then!"
+                },
+                {
+                    "word": "Drone",
+                    "fact": "The world’s smallest drone is about the size of a bee and can fly around flowers to collect data for scientists!"
+                },
+                {
+                    "word": "Military",
+                    "fact": "There's a military penguin named Colonel-in-Chief that serves in Finland's army. Yes, you heard that right!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why don’t seagulls fly over the bay?",
+                    "answer": "Because then they’d be bagels!"
+                },
+                {
+                    "question": "Why was the computer cold?",
+                    "answer": "Because it left its Windows open!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Archive",
+                    "definition": "To store away documents, photos, or information for future reference.",
+                    "context": {
+                        "Context 1": "I archived all of my old photos on Instagram because I didn't want them public anymore.",
+                        "Context 2": "The library decided to archive the historical documents for preservation.",
+                        "Context 3": "Each year, we archive our project reports to keep track of our progress."
+                    }
+                },
+                {
+                    "word": "Nostalgic",
+                    "definition": "Feeling sentimental or wistful about the past.",
+                    "context": {
+                        "Context 1": "Looking at old photos always makes me feel nostalgic about my childhood.",
+                        "Context 2": "The music from my youth is nostalgic and brings back many memories.",
+                        "Context 3": "Visiting my hometown after many years gave me a nostalgic feeling."
+                    }
+                },
+                {
+                    "word": "Remind",
+                    "definition": "To cause someone to remember someone or something.",
+                    "context": {
+                        "Context 1": "Those pictures can remind you of all the fun times you had.",
+                        "Context 2": "A scent can often remind us of specific memories from our childhood.",
+                        "Context 3": "She taped a note to her mirror to remind her to practice self-love."
+                    }
+                },
+                {
+                    "word": "Memories",
+                    "definition": "The faculty by which the mind stores and remembers information.",
+                    "context": {
+                        "Context 1": "The photos helped me relive those beautiful memories.",
+                        "Context 2": "Writing in a journal can help you keep track of your daily memories.",
+                        "Context 3": "They created a scrapbook to preserve their family's cherished memories."
+                    }
+                },
+                {
+                    "word": "Cheat Code",
+                    "definition": "A code or method that makes a game easier or allows players to bypass sections.",
+                    "context": {
+                        "Context 1": "Using the cloud feels like a cheat code for preserving memories.",
+                        "Context 2": "In many video games, cheat codes can unlock special characters.",
+                        "Context 3": "He joked that his friend had a cheat code for passing exams."
+                    }
+                },
+                {
+                    "word": "Silly",
+                    "definition": "Having or showing a lack of common sense or judgment; absurd and foolish.",
+                    "context": {
+                        "Context 1": "I don't mind posting silly pictures sometimes; it's all in good fun.",
+                        "Context 2": "His silly antics during meetings always make everyone laugh.",
+                        "Context 3": "The child's silly face brought smiles to everyone around."
+                    }
+                },
+                {
+                    "word": "Unimportant",
+                    "definition": "Not significant or worthy of attention.",
+                    "context": {
+                        "Context 1": "Sometimes those unimportant moments can turn into great memories.",
+                        "Context 2": "She dismissed the unimportant details of the meeting.",
+                        "Context 3": "He realized that worrying about the unimportant things was a waste of time."
+                    }
+                },
+                {
+                    "word": "Process",
+                    "definition": "A series of actions or steps taken in order to achieve a particular end.",
+                    "context": {
+                        "Context 1": "We need to understand the process of creating recycled plastic bottles.",
+                        "Context 2": "Cooking can be seen as a process with multiple steps involved.",
+                        "Context 3": "The hiring process can take several weeks to complete."
+                    }
+                },
+                {
+                    "word": "Cyclic",
+                    "definition": "Occurring in cycles; repeating in a regular pattern.",
+                    "context": {
+                        "Context 1": "The cyclic nature of the seasons brings changes in weather.",
+                        "Context 2": "The cyclic process of a washing machine helps clean clothes effectively.",
+                        "Context 3": "In biology, many processes are cyclic, like the water cycle."
+                    }
+                },
+                {
+                    "word": "Linear",
+                    "definition": "Arranged in or extending along a straight line; sequential.",
+                    "context": {
+                        "Context 1": "A linear process is often easier to follow than a cyclic one.",
+                        "Context 2": "In storytelling, a linear plot moves along a straight timeline.",
+                        "Context 3": "His linear approach to problem-solving made it simpler."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Nostalgic",
+                    "fact": "Nostalgia was once considered a serious medical condition; people were sent home from war to recover from it!"
+                },
+                {
+                    "word": "Cheat Code",
+                    "fact": "The phrase 'cheat code' has entered everyday language, often referring to anything that makes life easier, like coffee!"
+                },
+                {
+                    "word": "Silly",
+                    "fact": "Did you know that in some cultures, making silly faces can be a traditional way to greet little children?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the photographer bring a ladder to the photo shoot?",
+                    "answer": "Because they wanted to take their images to the next level!"
+                },
+                {
+                    "question": "Why don't Instagram influencers ever go hungry?",
+                    "answer": "Because they always have a full plate of likes!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Recycling",
+                    "definition": "The process of converting waste materials into reusable materials.",
+                    "context": {
+                        "Context 1": "Recycling helps to reduce the amount of waste sent to landfills.",
+                        "Context 2": "Recycling is like a magic trick that turns old stuff into new stuff!",
+                        "Context 3": "In her garden, she practices recycling by composting kitchen scraps."
+                    }
+                },
+                {
+                    "word": "Process",
+                    "definition": "A series of actions or steps taken to achieve a particular end.",
+                    "context": {
+                        "Context 1": "The process of recycling starts with collecting plastic bottles.",
+                        "Context 2": "Cooking is a process that involves preparing, mixing, and serving ingredients.",
+                        "Context 3": "Her fitness process included diet changes and regular exercise."
+                    }
+                },
+                {
+                    "word": "Cyclical",
+                    "definition": "Describing a process that occurs in cycles or repeatedly.",
+                    "context": {
+                        "Context 1": "The recycling process is cyclical, as materials can be reused endlessly.",
+                        "Context 2": "The cyclical nature of the seasons affects agriculture.",
+                        "Context 3": "Their friendship was cyclical, as they would reconnect every few years."
+                    }
+                },
+                {
+                    "word": "Compressed",
+                    "definition": "To reduce in size or volume by applying pressure.",
+                    "context": {
+                        "Context 1": "After being crushed, the bottles were compressed into blocks for recycling.",
+                        "Context 2": "The technician compressed the file to make it easier to upload.",
+                        "Context 3": "He compressed the sponge to squeeze out extra water."
+                    }
+                },
+                {
+                    "word": "Waste",
+                    "definition": "Unwanted or unusable material left after the completion of a process.",
+                    "context": {
+                        "Context 1": "Recycling helps to minimize waste in our communities.",
+                        "Context 2": "He cleaned up the waste left after the picnic.",
+                        "Context 3": "In the movie, the aliens lived on a planet covered in waste from previous civilizations."
+                    }
+                },
+                {
+                    "word": "Material",
+                    "definition": "The matter from which a thing is made; substance.",
+                    "context": {
+                        "Context 1": "Raw materials are transformed into new products during recycling.",
+                        "Context 2": "She chose a material for her dress that was soft and comfortable.",
+                        "Context 3": "The architect needed various materials to build the new library."
+                    }
+                },
+                {
+                    "word": "Manufacture",
+                    "definition": "To make or produce something, especially on a large scale using machinery.",
+                    "context": {
+                        "Context 1": "Many products made from recycled materials are manufactured in local factories.",
+                        "Context 2": "They manufacture toys and games for children.",
+                        "Context 3": "The car was manufactured using the latest technology."
+                    }
+                },
+                {
+                    "word": "Sort",
+                    "definition": "To arrange or classify into groups based on shared characteristics.",
+                    "context": {
+                        "Context 1": "Workers at the recycling center sort bottles by type and color.",
+                        "Context 2": "I need to sort my laundry before washing it to avoid color runs.",
+                        "Context 3": "He likes to sort his books by genre for easy access."
+                    }
+                },
+                {
+                    "word": "Stage",
+                    "definition": "A particular point or step in a process.",
+                    "context": {
+                        "Context 1": "During the sorting stage, the bottles are grouped for recycling.",
+                        "Context 2": "She practiced her speech on the stage before the big event.",
+                        "Context 3": "The project consists of four stages before completion."
+                    }
+                },
+                {
+                    "word": "Bottles",
+                    "definition": "Containers, typically cylindrical, used to hold liquids.",
+                    "context": {
+                        "Context 1": "Plastic bottles are often recycled to create new products.",
+                        "Context 2": "He drank water from his reusable bottle during the hike.",
+                        "Context 3": "The magician pulled surprise items from a seemingly empty bottle."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Recycling",
+                    "fact": "Did you know that recycling one aluminum can saves enough energy to power a TV for three hours?"
+                },
+                {
+                    "word": "Compressed",
+                    "fact": "When you compress a soda can, it becomes 80% smaller, making it much easier to store!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the recycling bin break up with its partner?",
+                    "answer": "Because it found them too trashy!"
+                },
+                {
+                    "question": "What does a recycled paper say when it sees a cardboard box?",
+                    "answer": "I'm so glad we've both been through the process!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going today?"
+                },
+                {
+                    "Person 2": "Pretty good! I just got back from a nice walk. The weather is really nice."
+                },
+                {
+                    "Person 1": "Oh nice! What's the temperature like?"
+                },
+                {
+                    "Person 2": "It’s about 75 degrees. Perfect for a stroll!"
+                },
+                {
+                    "Person 1": "Sounds great! I love days like that. Finally feels like spring."
+                },
+                {
+                    "Person 2": "Definitely! I can't wait to go outside with just a t-shirt and shorts."
+                },
+                {
+                    "Person 1": "Right? This weather is just what we needed after that long winter."
+                },
+                {
+                    "Person 2": "For sure! I’ve been thinking about having a picnic this weekend."
+                },
+                {
+                    "Person 1": "That sounds like a plan! Where do you want to go?"
+                },
+                {
+                    "Person 2": "How about that park downtown? They have nice spots by the lake."
+                },
+                {
+                    "Person 1": "Perfect! We can grab some sandwiches and maybe a frisbee?"
+                },
+                {
+                    "Person 2": "Yes! I’ll bring some drinks too. It’ll be fun."
+                },
+                {
+                    "Person 1": "Absolutely! Can't wait to hang out in the sun!"
+                },
+                {
+                    "Person 2": "Me neither! It's going to be a blast."
+                },
+                {
+                    "Person 1": "Alright, let's make sure to plan it out later!"
+                },
+                {
+                    "Person 2": "For sure! Just text me with the details."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, what’s up? How's it going?"
+                },
+                {
+                    "Person 2": "Not much! Just enjoying the nice weather. Thinking of going out to take some photos today."
+                },
+                {
+                    "Person 1": "That sounds fun! Where are you planning to go?"
+                },
+                {
+                    "Person 2": "I haven't decided yet. I want to find a beautiful spot, maybe somewhere with a good view."
+                },
+                {
+                    "Person 1": "Nice! Are you going to post them on Instagram?"
+                },
+                {
+                    "Person 2": "Yeah, for sure! I just got some new clothes and I want to show them off."
+                },
+                {
+                    "Person 1": "Awesome! Do you have a specific location in mind?"
+                },
+                {
+                    "Person 2": "I found a couple of places online, but I want to explore a bit more to see what else is out there."
+                },
+                {
+                    "Person 1": "Good idea! It's always nice to discover new spots."
+                },
+                {
+                    "Person 2": "Exactly! And I love taking pictures in nature. Makes everything look so vibrant."
+                },
+                {
+                    "Person 1": "For sure! I feel like being outside really lifts your mood."
+                },
+                {
+                    "Person 2": "Totally! Speaking of which, have you checked out that new park on the east side?"
+                },
+                {
+                    "Person 1": "Not yet! I've heard it has some great walking trails."
+                },
+                {
+                    "Person 2": "Yeah, I think I'll head there. Maybe you should join me!"
+                },
+                {
+                    "Person 1": "I'd love to! Let me grab my camera, and we can go together."
+                },
+                {
+                    "Person 2": "Perfect! A little adventure followed by photo sessions."
+                },
+                {
+                    "Person 1": "Sounds like a plan! Let’s do it!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, do you ever think about posting on Instagram? Like, do you do that a lot?"
+                },
+                {
+                    "Person 2": "Honestly, I hardly ever post. I think I've only posted a couple of times this year."
+                },
+                {
+                    "Person 1": "Really? What do you usually share when you do?"
+                },
+                {
+                    "Person 2": "Mostly when I go on trips or maybe when I buy something new. But it’s pretty rare for me."
+                },
+                {
+                    "Person 1": "I get that. I used to post all the time when I was younger, but then I archived most of my old photos."
+                },
+                {
+                    "Person 2": "Archived? Like, did you totally delete your account?"
+                },
+                {
+                    "Person 1": "No, I didn’t delete it. I just made all my photos private and removed my followers."
+                },
+                {
+                    "Person 2": "I see. Why did you decide to do that?"
+                },
+                {
+                    "Person 1": "Just felt like I didn’t want anyone to see my old stuff anymore. But sometimes I look back at those photos and feel nostalgic."
+                },
+                {
+                    "Person 2": "Nostalgic? How does that make you feel?"
+                },
+                {
+                    "Person 1": "It’s nice! I remember all the fun times I had. It’s like a little trip down memory lane."
+                },
+                {
+                    "Person 2": "That’s true! I never used to take many pictures, but since my last trip, I’ve started capturing more moments."
+                },
+                {
+                    "Person 1": "That sounds amazing! I think it’s cool to have those memories."
+                },
+                {
+                    "Person 2": "For sure! Even if it feels silly at the time, it’s nice to look back on those memories later."
+                },
+                {
+                    "Person 1": "Exactly! It’s like a cheat code for remembering fun moments in life."
+                },
+                {
+                    "Person 2": "Totally! Back in the day, nobody had that kind of access to their memories."
+                },
+                {
+                    "Person 1": "Right? Now we can just snap a picture, and it's saved for us."
+                },
+                {
+                    "Person 2": "I guess that’s why we shouldn’t be afraid to post silly stuff. It’s all part of creating memories."
+                },
+                {
+                    "Person 1": "Yes! Nothing wrong with being a little silly sometimes. It makes life interesting!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you get a chance to check out that new recycling center they opened downtown?"
+                },
+                {
+                    "Person 2": "I did! It's pretty cool. They showed the whole process of how they turn bottles into new products."
+                },
+                {
+                    "Person 1": "Right? I didn’t realize that they crush, sort, and then make blocks from the bottles."
+                },
+                {
+                    "Person 2": "Yeah, it's a whole cycle! It starts with collecting the bottles, then they crush them, and finally, they create new things like clothes and bags."
+                },
+                {
+                    "Person 1": "Exactly! It’s fascinating how they manage to recycle so much. Makes you think twice about throwing something away."
+                },
+                {
+                    "Person 2": "For sure! It’s nice to see how those old bottles can get a second chance."
+                },
+                {
+                    "Person 1": "And I heard they have a display showing the different stages of the recycling process."
+                },
+                {
+                    "Person 2": "Yes! I thought the illustrations were really helpful, especially to understand what happens step by step."
+                },
+                {
+                    "Person 1": "Totally. Plus, it’s a great way to educate people about recycling."
+                },
+                {
+                    "Person 2": "Exactly! I wish more places would do something like that."
+                },
+                {
+                    "Person 1": "Me too! Do you think they have any workshops on recycling?"
+                },
+                {
+                    "Person 2": "I hope so! It'd be awesome to learn more and maybe even volunteer there."
+                },
+                {
+                    "Person 1": "That would be great! Let’s keep an eye out for any events they might have."
+                },
+                {
+                    "Person 2": "Definitely! It’ll be fun and we can help the environment at the same time."
+                },
+                {
+                    "Person 1": "Sounds like a plan! Let’s meet up later this week to check it out."
+                },
+                {
+                    "Person 2": "Yes! Looking forward to it!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
