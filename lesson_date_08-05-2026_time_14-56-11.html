@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I think I'm more than reading in French but not speaking.",
+                    "corrected": "I think I read more in French than I speak.",
+                    "explanation": "The comparison was unclear; 'more than reading' should be replaced with 'read more' to clarify the statement.",
+                    "context": "I have been learning French, mostly through reading. I think I read more in French than I speak, as speaking is quite challenging for me."
+                },
+                {
+                    "original": "it's so complicated to speaking because it's so hard for me.",
+                    "corrected": "it's so complicated to speak because it's so hard for me.",
+                    "explanation": "'To speaking' is incorrect; the infinitive form 'to speak' should be used here.",
+                    "context": "I'm finding languages quite challenging. It's so complicated to speak because it's so hard for me to communicate effectively."
+                },
+                {
+                    "original": "I think it's really hard right now but right now I have more interesting interesting offers about interesting offers about wine qualification.",
+                    "corrected": "I think it's really hard right now, but I have more interesting offers related to wine qualifications.",
+                    "explanation": "The repetitive use of 'interesting offers' is redundant. A clearer structure is needed to express the idea.",
+                    "context": "I feel the current situation is quite tough for the wine industry. However, I have received more interesting offers related to wine qualifications."
+                },
+                {
+                    "original": "I think it's not enough for special qualification courses with special English.",
+                    "corrected": "I think it's not enough for special qualification courses that require special English.",
+                    "explanation": "The phrase 'with special English' is awkward; 'that require special English' makes the meaning clearer.",
+                    "context": "While I can manage basic conversations, I think my English isn't enough for special qualification courses that require special language skills."
+                },
+                {
+                    "original": "I think difficult for me it's talking about more difficult material I think.",
+                    "corrected": "I think talking about more difficult material is difficult for me.",
+                    "explanation": "The sentence structure is confusing; it should have a clear subject-verb-object format.",
+                    "context": "I often struggle with complex topics. I think talking about more difficult material is difficult for me due to my language limitations."
+                },
+                {
+                    "original": "I think my level in the basically for me it's normal for traveling and speaking with winemakers.",
+                    "corrected": "I think my level is basically normal for traveling and speaking with winemakers.",
+                    "explanation": "'In the basically' is incorrect; simply saying 'is basically' is the correct usage.",
+                    "context": "My language skills were developed mainly for travel. I think my level is basically normal for traveling and speaking with winemakers."
+                },
+                {
+                    "original": "I don't have words I think.",
+                    "corrected": "I don't think I have the right words.",
+                    "explanation": "The original statement is awkward; rephrasing provides clarity.",
+                    "context": "During conversations, I often find myself at a loss for words. I don't think I have the right words to express my thoughts."
+                },
+                {
+                    "original": "I'm watching videos in YouTube and Facebook in English about wines about travelings about rock climbing to.",
+                    "corrected": "I'm watching videos on YouTube and Facebook in English about wines, traveling, and rock climbing too.",
+                    "explanation": "'In YouTube' should be 'on YouTube,' and 'about travelings' can simply be 'about traveling.'",
+                    "context": "I enjoy learning through different media. I'm watching videos on YouTube and Facebook in English about wines, traveling, and rock climbing too."
+                },
+                {
+                    "original": "And this is a natural sugar. This sugar born in grapes in the growing process.",
+                    "corrected": "And this is a natural sugar. This sugar is produced in grapes during the growing process.",
+                    "explanation": "The phrase 'born in grapes' is incorrect; 'produced during the growing process' is more accurate.",
+                    "context": "When we discuss wines, it's crucial to understand the natural elements. This is a natural sugar. This sugar is produced in grapes during the growing process."
+                },
+                {
+                    "original": "And the wines because it's a it's a low.",
+                    "corrected": "And the wines are of low quality.",
+                    "explanation": "The original sentence is unclear and grammatically incorrect; specifying 'are of low quality' is clearer.",
+                    "context": "Quality is a significant factor in winemaking. And the wines are of low quality when they have added sugars, which impacts the overall taste."
+                },
+                {
+                    "original": "And after this wines, more sugar less, sugar, sugar less.",
+                    "corrected": "And after this, the wines have more sweetness.",
+                    "explanation": "The original sentence is confusing with unnecessary repetition; clarity is improved by simplifying the idea.",
+                    "context": "Different winemaking techniques can alter taste profiles. And after this, the wines have more sweetness, which makes them enjoyable."
+                },
+                {
+                    "original": "I think my second level being working in a hotel with many alcohols, type of alcohols.",
+                    "corrected": "I think my second level was working in a hotel with many types of alcohol.",
+                    "explanation": "'Being working' is incorrect; 'was working' conveys the past tense appropriately, and 'type of alcohols' should be 'types of alcohol'.",
+                    "context": "My journey into the beverage industry has been fascinating. I think my second level was working in a hotel with many types of alcohol."
+                },
+                {
+                    "original": "I'm texting with winemakers.",
+                    "corrected": "I'm in contact with winemakers.",
+                    "explanation": "'Texting' is too informal in this context; 'in contact' better reflects ongoing communication.",
+                    "context": "My passion for wines drives me to connect with industry professionals. I'm in contact with winemakers and learning from their experiences."
+                },
+                {
+                    "original": "But you don't need to drink all wines in the tasting.",
+                    "corrected": "But you don't need to drink all the wines during the tasting.",
+                    "explanation": "The phrase 'all wines in the tasting' needs 'the' for specificity, and 'during' sounds more natural than 'in.'",
+                    "context": "Learning the nuances of wine tasting can be tricky. But you don't need to drink all the wines during the tasting; spitting is common practice."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "And I think that's all more important finds and more expensive lines from this region.",
+                    "corrected": "And I think that's all the more important finds and more expensive wines from this region.",
+                    "explanation": "The correct word is 'wines' (not 'lines') in this context to refer to types of wine.",
+                    "context": "I've been discussing various wine regions. I think that's all the more important finds and more expensive wines from this region. It's fascinating how many varieties exist in winemaking."
+                },
+                {
+                    "original": "I don't know. Yes, but not regulated.",
+                    "corrected": "I don’t know. Yes, but it’s not regulated.",
+                    "explanation": "The phrase needs a subject; 'it' clarifies what is not regulated.",
+                    "context": "We were discussing wine production practices. I don’t know. Yes, but it’s not regulated. This can lead to varying quality standards in the industry."
+                },
+                {
+                    "original": "No, they. Usually they only drinks.",
+                    "corrected": "No, they usually only drink.",
+                    "explanation": "'Drinks' should be 'drink,' as the subject 'they' is plural and requires the base form of the verb.",
+                    "context": "I was making a point about typical customer behavior. No, they usually only drink. People generally come to enjoy the experience rather than just to sip wine."
+                },
+                {
+                    "original": "In Italy, I think important one one of the important region.",
+                    "corrected": "In Italy, I think one of the important regions.",
+                    "explanation": "The sentence should clarify that 'one of the important regions' indicates specificity without redundancy.",
+                    "context": "While talking about Italian wine regions. In Italy, I think one of the important regions is Tuscany. It’s renowned for its exquisite wines and rich history."
+                },
+                {
+                    "original": "And I think it's a Tuscan. Tuscana.",
+                    "corrected": "And I think it's Tuscany.",
+                    "explanation": "'Tuscana' is incorrect in English; 'Tuscany' is the proper noun for the Italian region.",
+                    "context": "I was trying to name the region I mentioned. And I think it's Tuscany. It's famous for its Chianti wines among others."
+                },
+                {
+                    "original": "Yes, I think they are white wine critics or wine writers.",
+                    "corrected": "Yes, I think they are wine critics or wine writers.",
+                    "explanation": "The term 'white wine critics' is unnecessarily specific; not all critics write exclusively about white wine.",
+                    "context": "I was discussing famous wine critics. Yes, I think they are wine critics or wine writers. They have a wide range of expertise in various wine types."
+                },
+                {
+                    "original": "I think I have I have no stable free time.",
+                    "corrected": "I think I don't have any stable free time.",
+                    "explanation": "Use of 'have' twice is redundant; 'don't have' correctly denotes absence.",
+                    "context": "I was speaking about my busy schedule. I think I don't have any stable free time. It's hard to find a moment for myself when work takes over."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Degustation",
+                    "definition": "The action of tasting food or drink, especially wine, in order to appreciate its flavor and quality.",
+                    "context": {
+                        "Context 1": "The winemaker emphasized the importance of proper degustation to truly understand the wine's characteristics.",
+                        "Context 2": "At the restaurant, the chef offered a special degustation menu featuring small plates designed for tasting.",
+                        "Context 3": "For his birthday, he planned a chocolate degustation to sample various artisanal chocolates."
+                    }
+                },
+                {
+                    "word": "Fermentation",
+                    "definition": "A biochemical process that converts sugars into acids, gases, or alcohol, often used in the production of wine and beer.",
+                    "context": {
+                        "Context 1": "The fermentation process is crucial in winemaking, as it determines the wine's final flavor.",
+                        "Context 2": "They learned how fermentation is used in baking to make bread rise.",
+                        "Context 3": "The scientist studied fermentation to develop new biofuels from plant materials."
+                    }
+                },
+                {
+                    "word": "Acidity",
+                    "definition": "A measure of the sourness or sharpness in a wine, typically associated with its freshness and ability to balance sweetness.",
+                    "context": {
+                        "Context 1": "A good wine should have a balanced acidity to complement its sweetness.",
+                        "Context 2": "She didn't like the acidity of the lemons, preferring sweeter fruits.",
+                        "Context 3": "The doctor explained that the acidity in her stomach was causing discomfort."
+                    }
+                },
+                {
+                    "word": "Embargo",
+                    "definition": "A prohibition on trade with a particular country, often imposed for political reasons.",
+                    "context": {
+                        "Context 1": "The wine industry faced significant challenges due to the embargo on foreign wines.",
+                        "Context 2": "An embargo was placed on the export of certain goods to protect local industries.",
+                        "Context 3": "During wartime, countries often impose embargoes to limit resources to the enemy."
+                    }
+                },
+                {
+                    "word": "Rustic",
+                    "definition": "Relating to the countryside; simple, rural, or characteristic of pastoral life.",
+                    "context": {
+                        "Context 1": "The vineyard had a rustic charm, making it a popular spot for tourists.",
+                        "Context 2": "He preferred rustic furniture made from reclaimed wood for his home.",
+                        "Context 3": "The rustic recipe included simple ingredients straight from the farm."
+                    }
+                },
+                {
+                    "word": "Tannic",
+                    "definition": "Having a high tannin content, which gives wines astringency and complexity.",
+                    "context": {
+                        "Context 1": "The tannic nature of the red wine made it a perfect match for the rich dish.",
+                        "Context 2": "Her coffee was too tannic for her liking, preferring a smoother brew.",
+                        "Context 3": "He compared the tannic qualities of different types of teas during the tasting."
+                    }
+                },
+                {
+                    "word": "Qualification",
+                    "definition": "Credentials or achievements that demonstrate competence in a specific field.",
+                    "context": {
+                        "Context 1": "The winemaker pursued further qualification to enhance his skills.",
+                        "Context 2": "Her qualification as a fitness trainer allowed her to start her own gym.",
+                        "Context 3": "The new job required a qualification in computer science for applicants."
+                    }
+                },
+                {
+                    "word": "Community",
+                    "definition": "A group of people living in the same place or having a particular characteristic in common.",
+                    "context": {
+                        "Context 1": "The wine community in Kazakhstan is thriving with many enthusiasts and events.",
+                        "Context 2": "The community came together to clean up the local park.",
+                        "Context 3": "He enjoyed participating in the online gaming community where members shared tips and strategies."
+                    }
+                },
+                {
+                    "word": "Technique",
+                    "definition": "A specific method or way of doing something, often used in reference to skilled tasks.",
+                    "context": {
+                        "Context 1": "The winemaker discussed the technique needed to produce the perfect wine.",
+                        "Context 2": "Her painting technique involved using bold colors and dynamic strokes.",
+                        "Context 3": "The athlete improved his performance by refining his technique in the sport."
+                    }
+                },
+                {
+                    "word": "Intense",
+                    "definition": "Having strong or extreme qualities, often used to describe flavors, emotions, or concentrations.",
+                    "context": {
+                        "Context 1": "The intense flavors of the wine captivated all the tastings.",
+                        "Context 2": "He enjoyed watching intense action movies that kept him on the edge of his seat.",
+                        "Context 3": "After an intense workout, she felt both energized and exhausted."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Acidity",
+                    "fact": "Did you know that the acidity in wine can actually help preserve it, making it last longer on the shelf? So, you might say that balance is key!"
+                },
+                {
+                    "word": "Fermentation",
+                    "fact": "Fermentation is such a popular process that there are over 5,000 different types of fermented foods worldwide, including kimchi, sauerkraut, and even chocolate!"
+                },
+                {
+                    "word": "Embargo",
+                    "fact": "The term 'embargo' comes from the Spanish word 'embargar,' which means 'to seize.' So it's a serious word with a serious take on seizing trade!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the winemaker break up with his girlfriend?",
+                    "answer": "Because she kept saying they needed more space for fermentation!"
+                },
+                {
+                    "question": "What do you call a wine taster who always tells the truth?",
+                    "answer": "A grape witness!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Wasted",
+                    "definition": "Extremely drunk or intoxicated.",
+                    "context": {
+                        "Context 1": "After tasting over 30 wines, he felt wasted and needed to sit down.",
+                        "Context 2": "She was wasted after just one cocktail at the party.",
+                        "Context 3": "The comedian joked that he was so wasted he forgot his own punchline."
+                    }
+                },
+                {
+                    "word": "Essential",
+                    "definition": "Absolutely necessary; extremely important.",
+                    "context": {
+                        "Context 1": "Water is essential for survival.",
+                        "Context 2": "His essential role in the team ensured its success.",
+                        "Context 3": "Laughing is essential for a good life, just like eating dessert!"
+                    }
+                },
+                {
+                    "word": "Critic",
+                    "definition": "A person who expresses an unfavorable opinion of something.",
+                    "context": {
+                        "Context 1": "The wine critic wrote a glowing review of the vineyard's latest bottle.",
+                        "Context 2": "He was a film critic who never missed a premiere.",
+                        "Context 3": "A cat's biggest critic is often itself when it sees its reflection!"
+                    }
+                },
+                {
+                    "word": "Vineyard",
+                    "definition": "A plantation of grapevines, typically for winemaking.",
+                    "context": {
+                        "Context 1": "They visited a beautiful vineyard in France to learn about wine production.",
+                        "Context 2": "The vineyard hosted an annual festival celebrating the grape harvest.",
+                        "Context 3": "In a land far away, aliens owned a vineyard where they grew space grapes."
+                    }
+                },
+                {
+                    "word": "Taste",
+                    "definition": "To perceive or experience a flavor through the mouth.",
+                    "context": {
+                        "Context 1": "She took a sip to taste the wine before making a choice.",
+                        "Context 2": "He had a taste for adventure and loved trying new foods.",
+                        "Context 3": "The judge had to taste the pie to declare the winner of the baking contest."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "The knowledge or skill acquired through practical involvement.",
+                    "context": {
+                        "Context 1": "He described his experience tasting wines in France.",
+                        "Context 2": "She has years of experience in teaching English as a second language.",
+                        "Context 3": "Jumping out of a plane was an experience he would never forget!"
+                    }
+                },
+                {
+                    "word": "Sell",
+                    "definition": "To give something in exchange for money.",
+                    "context": {
+                        "Context 1": "They plan to sell the wines they selected to customers.",
+                        "Context 2": "The store will sell out of the new video game within hours.",
+                        "Context 3": "He decided to sell his collection of comic books for extra money."
+                    }
+                },
+                {
+                    "word": "Decision",
+                    "definition": "A conclusion or resolution reached after consideration.",
+                    "context": {
+                        "Context 1": "Making a decision about which wines to buy was difficult.",
+                        "Context 2": "The group made a unanimous decision to hold the meeting on Friday.",
+                        "Context 3": "She had a tough decision to make: chocolate or vanilla ice cream."
+                    }
+                },
+                {
+                    "word": "Region",
+                    "definition": "An area or division, especially part of a country or the world having definable characteristics.",
+                    "context": {
+                        "Context 1": "Bordeaux is a famous wine region in France.",
+                        "Context 2": "The Amazon rainforest is a unique region filled with diverse wildlife.",
+                        "Context 3": "In the kitchen, the baking region was set up for making cookies."
+                    }
+                },
+                {
+                    "word": "Important",
+                    "definition": "Of great significance or value.",
+                    "context": {
+                        "Context 1": "It's important to know the flavor profiles of different wines.",
+                        "Context 2": "Education is important for a successful future.",
+                        "Context 3": "It's important to remember your umbrella when the forecast predicts rain!"
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Wasted",
+                    "fact": "In some cultures, ‘wasted’ can mean more than just being drunk—it can indicate overindulgence in food too!"
+                },
+                {
+                    "word": "Vineyard",
+                    "fact": "There are more grape varieties in the world than there are countries!"
+                },
+                {
+                    "word": "Critic",
+                    "fact": "The term 'critic' comes from the Greek word 'kritikos,' meaning 'able to judge.' So, in a way, all humans are critics at heart!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the wine connoisseur bring string to the vineyard?",
+                    "answer": "To tie one on!"
+                },
+                {
+                    "question": "What did the grape do when it got stepped on?",
+                    "answer": "Nothing, it just let out a little wine!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you been trying any new wines lately?"
+                },
+                {
+                    "Person 2": "Not really! I've just been sticking to my favorites. How about you?"
+                },
+                {
+                    "Person 1": "I recently tried a really nice Riesling. It had a perfect balance of sweetness and acidity."
+                },
+                {
+                    "Person 2": "Nice! I’ve always liked Rieslings. They can be surprisingly complex."
+                },
+                {
+                    "Person 1": "Exactly! I love how different they can taste depending on where they're from."
+                },
+                {
+                    "Person 2": "For sure! Speaking of which, have you ever been to a wine tasting event?"
+                },
+                {
+                    "Person 1": "I went to one last summer. It was so much fun! I learned a lot about different grape varieties."
+                },
+                {
+                    "Person 2": "That sounds awesome! I’ve been meaning to go to one, but never find the time."
+                },
+                {
+                    "Person 1": "You should definitely make time! It's a great way to meet people too."
+                },
+                {
+                    "Person 2": "I’m sold! I’ll look for an event nearby. What's the best part about tasting for you?"
+                },
+                {
+                    "Person 1": "I think it’s the whole experience—you know, learning about the wine, enjoying the flavors, and just relaxing."
+                },
+                {
+                    "Person 2": "Totally! It’s like a mini escape. Do you have any favorite regions for wine?"
+                },
+                {
+                    "Person 1": "I’m pretty fond of California wines. Napa Valley has some incredible selections."
+                },
+                {
+                    "Person 2": "Right? I love the bold reds from there. You ever think of visiting?"
+                },
+                {
+                    "Person 1": "Definitely! It’s on my bucket list. What about you?"
+                },
+                {
+                    "Person 2": "Same here! I want to explore the vineyards and really dive into the local scene."
+                },
+                {
+                    "Person 1": "Let’s plan a trip together then! It could be a lot of fun."
+                },
+                {
+                    "Person 2": "Absolutely, I’m in! Let’s start planning!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you tried any new wines lately?"
+                },
+                {
+                    "Person 2": "Oh, definitely! I went to a wine tasting last weekend. It was a blast!"
+                },
+                {
+                    "Person 1": "Nice! How many wines did you try?"
+                },
+                {
+                    "Person 2": "I think around fifteen. By the end, I could barely focus!"
+                },
+                {
+                    "Person 1": "Haha, yeah, after a certain point, it’s hard to keep track."
+                },
+                {
+                    "Person 2": "True. I had to spit out some of the wines. Otherwise, I’d have just fallen asleep."
+                },
+                {
+                    "Person 1": "That’s smart! Did you find any favorites?"
+                },
+                {
+                    "Person 2": "Absolutely! I loved a Pinot Noir from California. It was smooth and fruity."
+                },
+                {
+                    "Person 1": "Sounds delicious! I've been wanting to explore wines from California."
+                },
+                {
+                    "Person 2": "You should! They have some amazing ones. What about you? Any favorites?"
+                },
+                {
+                    "Person 1": "I really enjoy a good Chianti from Italy. It’s so rich and flavorful."
+                },
+                {
+                    "Person 2": "Chianti is fantastic! I love its acidity and how well it pairs with food."
+                },
+                {
+                    "Person 1": "Exactly! Do you often go to wine places?"
+                },
+                {
+                    "Person 2": "I try to, but it’s tough with my schedule. Weekend tastings are the best!"
+                },
+                {
+                    "Person 1": "Yeah, finding time can be a challenge. But it’s worth it!"
+                },
+                {
+                    "Person 2": "For sure! We should plan a wine tasting trip together sometime."
+                },
+                {
+                    "Person 1": "I’d love that! Let’s find a good vineyard and make a day of it."
+                },
+                {
+                    "Person 2": "Sounds like a plan! I can’t wait!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
