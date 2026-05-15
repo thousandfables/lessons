@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 6,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "That’s called work week, you know, like 90% of people.",
+                    "corrected": "That's called a work week, you know, like 90% of people.",
+                    "explanation": "Missing article 'a' before 'work week'.",
+                    "context": "I was explaining my unusual schedule at work. That's called a work week, you know, like 90% of people. It's just a standard thing for most workers."
+                },
+                {
+                    "original": "But this happened mistakenly because I forgot.",
+                    "corrected": "But this happened by mistake because I forgot.",
+                    "explanation": "'Happened mistakenly' is incorrect; 'by mistake' is the appropriate phrase.",
+                    "context": "I was talking about how my schedule got messed up. But this happened by mistake because I forgot. It was a simple error in planning."
+                },
+                {
+                    "original": "But there are no days between Monday and Sunday.",
+                    "corrected": "But there are no days off between Monday and Sunday.",
+                    "explanation": "The phrase is awkward and doesn't convey the intended meaning correctly; 'days off' clarifies it.",
+                    "context": "I was explaining my working schedule to my friend. But there are no days off between Monday and Sunday. I work continuously without a break."
+                },
+                {
+                    "original": "Sometimes it's boring. Yeah. And sometimes I don't know what to do and that's why times... Goes... Times goes really... Slowly?",
+                    "corrected": "Sometimes it's boring. Yeah. And sometimes I don't know what to do, and that's why time goes really slowly.",
+                    "explanation": "'Times goes' should be 'time goes', as 'time' is an uncountable noun in this context.",
+                    "context": "I was sharing my feelings about work. Sometimes it's boring. Yeah. And sometimes I don't know what to do, and that's why time goes really slowly. It feels endless at times."
+                },
+                {
+                    "original": "Do you have maybe lunch together?",
+                    "corrected": "Do you maybe have lunch together?",
+                    "explanation": "The placement of 'maybe' is awkward; it should be placed before the verb.",
+                    "context": "I was asking about social interactions at work. Do you maybe have lunch together? It's important to bond with colleagues."
+                },
+                {
+                    "original": "I’m a little bit shaky right now. A little bit because I’ve been driving a bike for like three or maybe more hours without a break.",
+                    "corrected": "I’m a little shaky right now. A little shaky because I’ve been riding a bike for like three or maybe more hours without a break.",
+                    "explanation": "'Driving a bike' is incorrect; 'riding a bike' is the correct term.",
+                    "context": "I was expressing my current condition. I’m a little shaky right now. A little shaky because I’ve been riding a bike for like three or maybe more hours without a break. It's pretty exhausting."
+                },
+                {
+                    "original": "You don't need driving license to drive a bike, yeah?",
+                    "corrected": "You don't need a driving license to ride a bike, yeah?",
+                    "explanation": "Missing article 'a' before 'driving license,' and 'ride' is correct for bikes.",
+                    "context": "We were discussing bike regulations. You don't need a driving license to ride a bike, yeah? It's quite lenient in many places."
+                },
+                {
+                    "original": "Like the bribe of 700 rubles. And that's it.",
+                    "corrected": "Like a bribe of 700 rubles. And that's it.",
+                    "explanation": "Missing article 'a' before 'bribe'.",
+                    "context": "I was explaining how corrupt practices work locally. Like a bribe of 700 rubles. And that's it. It's surprisingly cheap for avoiding trouble."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "And in my wallet now only like 700 rubles.",
+                    "corrected": "And now I only have about 700 rubles in my wallet.",
+                    "explanation": "The original sentence's word order is awkward; 'only like' should be changed to 'only have about' for clarity.",
+                    "context": "I've been cautious about money lately. And now I only have about 700 rubles in my wallet. This is in case the police stop me."
+                },
+                {
+                    "original": "Like in most countries that like the fines are pretty high if you drive without driving license.",
+                    "corrected": "Like in most countries, the fines are pretty high if you drive without a driver's license.",
+                    "explanation": "The phrase 'that like' is unnecessary and incorrect. Use 'the' to specify fines, and 'without a driver's license' is the correct form.",
+                    "context": "I'm talking about driving regulations in different countries. Like in most countries, the fines are pretty high if you drive without a driver's license. It's important to follow these laws."
+                },
+                {
+                    "original": "I mean they can just revoke your driver's license for that.",
+                    "corrected": "I mean, they can just revoke your driver's license for that.",
+                    "explanation": "A comma is needed after 'I mean' to separate the thought properly.",
+                    "context": "I'm explaining the seriousness of driving regulations. I mean, they can just revoke your driver's license for that. It's really not worth risking it."
+                },
+                {
+                    "original": "If you don't have a driver's license, in a rental shop they wouldn't just rent you a bike out.",
+                    "corrected": "If you don't have a driver's license, a rental shop wouldn't rent you a bike.",
+                    "explanation": "The phrase 'they wouldn't just rent you a bike out' is awkward; 'wouldn't rent you a bike' is clearer.",
+                    "context": "I'm talking about renting bikes without proper documentation. If you don't have a driver's license, a rental shop wouldn't rent you a bike. This is common practice."
+                },
+                {
+                    "original": "Sometimes he can't connect the router. He writes it on his PC.",
+                    "corrected": "Sometimes he can't connect the router, and he writes about it on his PC.",
+                    "explanation": "A connecting conjunction is needed to link the two clauses properly.",
+                    "context": "I'm discussing a friend's technical issues. Sometimes he can't connect the router, and he writes about it on his PC. It's frustrating for him."
+                },
+                {
+                    "original": "Is that much higher?",
+                    "corrected": "Is it much higher?",
+                    "explanation": "'Is that' should be 'Is it' for proper question formation.",
+                    "context": "I was questioning some statistics. Is it much higher? I was surprised to learn the numbers."
+                },
+                {
+                    "original": "It's so hard for me to type right now and to click the mouse.",
+                    "corrected": "It's so hard for me to type and click the mouse right now.",
+                    "explanation": "The placement of 'right now' is more natural at the end of the sentence.",
+                    "context": "While trying to express my difficulties, I said, It's so hard for me to type and click the mouse right now. Multitasking can be tough!"
+                },
+                {
+                    "original": "But, I mean, you know, I don't really care.",
+                    "corrected": "But I mean, you know, I don't really care.",
+                    "explanation": "The comma after 'But' is unnecessary and can be omitted.",
+                    "context": "I was explaining my feelings about the situation. But I mean, you know, I don't really care. I just want to enjoy the ride."
+                },
+                {
+                    "original": "Because driving a bike is too cool to not try.",
+                    "corrected": "Because riding a bike is too cool not to try.",
+                    "explanation": "'Driving' is not the right term for bicycles; 'riding' is more appropriate, and 'to not try' should be 'not to try.'",
+                    "context": "I was sharing my enthusiasm for cycling. Because riding a bike is too cool not to try. I can't wait to get on one!"
+                },
+                {
+                    "original": "a game of chance.",
+                    "corrected": "a game of chance.",
+                    "explanation": "No correction needed, but clarity in context is improved.",
+                    "context": "I was discussing the risks involved in activities. It's a game of chance. Sometimes you win, sometimes you lose."
+                },
+                {
+                    "original": "Actually, you know what? A lot of people, they make a mistake of...",
+                    "corrected": "Actually, you know what? A lot of people make the mistake of...",
+                    "explanation": "The phrase 'they make a mistake of' should be 'make the mistake of' for clarity and grammatical accuracy.",
+                    "context": "I've noticed a common issue among learners. Actually, you know what? A lot of people make the mistake of thinking they need to learn every meaning of a word. It's not effective."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "And it introduces a lot.",
+                    "corrected": "And it introduces a lot of things.",
+                    "explanation": "The sentence lacks specificity; without 'of things,' it sounds incomplete.",
+                    "context": "I was thinking of how using different types of transportation can change your experience. And it introduces a lot of things, particularly when you start using something new."
+                },
+                {
+                    "original": "But of course you got to get to the level first, when you can kind of like get around words.",
+                    "corrected": "But of course you have to get to the level first where you can kind of get around words.",
+                    "explanation": "'Got to' is informal and less appropriate in this context; 'have to' is more standard.",
+                    "context": "Learning a language requires practice. But of course you have to get to the level first where you can kind of get around words."
+                },
+                {
+                    "original": "Like you don't need a translator, you don't need to rely on a tool to help you.",
+                    "corrected": "You don't need a translator; you don't need to rely on a tool to help you.",
+                    "explanation": "The use of 'like' is unnecessary and can be removed for clarity.",
+                    "context": "Once you feel comfortable communicating, it becomes easier. You don't need a translator; you don't need to rely on a tool to help you."
+                },
+                {
+                    "original": "It's like, how are those things called?",
+                    "corrected": "It's like, what are those things called?",
+                    "explanation": "'How' is incorrect here; 'what' should be used to ask for names.",
+                    "context": "Sometimes I find it difficult to remember certain words. It's like, what are those things called? It can be frustrating to find the right terms."
+                },
+                {
+                    "original": "That's what I had in mind.",
+                    "corrected": "That's what I was thinking of.",
+                    "explanation": "'Had in mind' is slightly awkward; 'was thinking of' is clearer.",
+                    "context": "When discussing ideas or analogies, clarity is important. That's what I was thinking of when I suggested that example."
+                },
+                {
+                    "original": "That's a good analogy, but not very relevant.",
+                    "corrected": "That's a good analogy, but it's not very relevant.",
+                    "explanation": "The sentence is missing 'it's,' making it sound abrupt.",
+                    "context": "When making comparisons, relevance is key. That's a good analogy, but it's not very relevant to our current discussion."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "they say 50 and you can guess however you want to 13, is it 15, is it 30, is it 50?",
+                    "corrected": "they say 50, and you can guess whatever you want: is it 13, 15, 30, or 50?",
+                    "explanation": "The phrase 'however you want' is informal and not quite appropriate here; 'whatever you want' is more fitting. Additionally, the structure could be clearer with a colon before the list of numbers.",
+                    "context": "When trying to practice pronunciation, I noticed that Vietnamese speakers struggle with certain numbers. They say 50, and you can guess whatever you want: is it 13, 15, 30, or 50? It's really confusing."
+                },
+                {
+                    "original": "But the result... But I mean, this is not a one-time thing that happened at some point in the past.",
+                    "corrected": "But the result... This is not a one-time event that happened at some point in the past.",
+                    "explanation": "'One-time thing' is a bit informal; 'one-time event' is more precise and formal in this context.",
+                    "context": "In discussing the cyclical nature of a process, I emphasized that it isn't just a one-time thing. But the result... This is not a one-time event that happened at some point in the past."
+                },
+                {
+                    "original": "So, that means thatkonac בתasár limbs.",
+                    "corrected": "So that means they can eat metal limbs.",
+                    "explanation": "The phrase is unclear and seems to be a mix of non-English words; the corrected version clarifies the idea.",
+                    "context": "In talking about food processing, I mentioned unusual ingredients. So that means they can eat metal limbs. The process really surprised me."
+                },
+                {
+                    "original": "I'm not sure you can call this big.",
+                    "corrected": "I'm not sure you can call this 'big'.",
+                    "explanation": "The word 'big' should be enclosed in quotation marks to indicate that it's being used in a specific sense.",
+                    "context": "While discussing the scale of a recycling operation, I reflected on the terminology. I'm not sure you can call this 'big'. It feels more nuanced than that."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "Worker sort plastic bottles.",
+                    "corrected": "Workers sort plastic bottles.",
+                    "explanation": "The subject 'worker' should be pluralized to 'workers' in this context to agree with the verb 'sort.'",
+                    "context": "We're discussing the process of recycling. Workers sort plastic bottles and then they are then being pressed into blocks."
+                },
+                {
+                    "original": "Those are like, it's not that.",
+                    "corrected": "Those are like, it's not that clear.",
+                    "explanation": "The word 'that' is vague; adding 'clear' makes the speaker's intention clearer.",
+                    "context": "During the explanation, I mentioned some processes are difficult to understand. Those are like, it's not that clear how everything fits together."
+                },
+                {
+                    "original": "Which are then being pressed into blocks.",
+                    "corrected": "Which are then pressed into blocks.",
+                    "explanation": "'Being' is unnecessary here; using the simple present is sufficient to convey the action.",
+                    "context": "As we talked about how the plastic bottles are processed, I emphasized that they are then pressed into blocks."
+                },
+                {
+                    "original": "Are being pressed into blocks.",
+                    "corrected": "Are pressed into blocks.",
+                    "explanation": "Similar to the previous mistake, 'being' is again not needed to express the action in this context.",
+                    "context": "We were analyzing the steps in the recycling process. The bottles are pressed into blocks efficiently."
+                },
+                {
+                    "original": "Because like we don’t want to emphasize the process.",
+                    "corrected": "Because we don’t want to emphasize the process.",
+                    "explanation": "The phrase 'like' is unnecessary and overly informal in this context.",
+                    "context": "During our discussion, I explained how we just want to state facts. Because we don’t want to emphasize the process, we need concise language."
+                },
+                {
+                    "original": "I thought there is a not a.",
+                    "corrected": "I thought there was not a.",
+                    "explanation": "The verb 'is' should be changed to 'was' for past tense consistency.",
+                    "context": "In the lesson, I reflected on previous misconceptions. I thought there was not a clear distinction between terms."
+                },
+                {
+                    "original": "Sand plus water are added.",
+                    "corrected": "Sand plus water is added.",
+                    "explanation": "The combination 'sand plus water' is treated as a singular subject, so the verb should be 'is.'",
+                    "context": "While reviewing the ingredients of the material, I pointed out the mixture. Sand plus water is added to create a usable substance."
+                },
+                {
+                    "original": "Just merged step eight and step nine into one sentence that could be made.",
+                    "corrected": "I just merged step eight and step nine into one sentence that could be made.",
+                    "explanation": "The addition of 'I' clarifies who is performing the action of merging the steps.",
+                    "context": "While summarizing my work, I realized I need to clarify my explanations. I just merged step eight and step nine into one sentence."
+                },
+                {
+                    "original": "Because I didn't understand these words.",
+                    "corrected": "Because I didn’t understand these specific words.",
+                    "explanation": "Adding 'specific' improves clarity by indicating which words were misunderstood.",
+                    "context": "I often struggle with terminology in lessons. Because I didn’t understand these specific words, it impacted my overall understanding."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "I thought it's two ways how you can make bricks.",
+                    "corrected": "I thought there are two ways to make bricks.",
+                    "explanation": "The phrase 'it's two ways how' is incorrect; it should be 'there are' for proper subject-verb agreement.",
+                    "context": "In discussing brick-making techniques, I expressed my understanding. I thought there are two ways to make bricks, but I wasn't sure."
+                },
+                {
+                    "original": "Are putting into a drying oven are placed or are put.",
+                    "corrected": "They are placed in a drying oven.",
+                    "explanation": "'Are putting' is incorrect in this passive context; it should be 'are placed' to correctly describe the action.",
+                    "context": "While explaining the drying process for bricks, I realized I needed to clarify the action. They are placed in a drying oven to ensure proper moisture reduction."
+                },
+                {
+                    "original": "Maybe before. They're dried. Like. Before drying.",
+                    "corrected": "Maybe we should say before drying.",
+                    "explanation": "The phrase is incomplete and disjointed; it should be a complete thought for clarity.",
+                    "context": "When discussing the stages of brick production, I wanted to suggest clarity in the explanation. Maybe we should say before drying to enhance understanding."
+                },
+                {
+                    "original": "When it's raw and after drying.",
+                    "corrected": "When it is raw and after it is dried.",
+                    "explanation": "The contraction 'it's' is less formal; 'it is' makes the statement clearer in this context.",
+                    "context": "As we clarified the process steps further, I noted the state of the clay. When it is raw and after it is dried, these distinctions are important."
+                },
+                {
+                    "original": "I would do it. I would. I would say it cleaner.",
+                    "corrected": "I would express it more clearly.",
+                    "explanation": "'I would say it cleaner' is informal; 'more clearly' is the correct adverbial form.",
+                    "context": "In the effort to improve clarity in my presentation, I expressed my intention. I would express it more clearly to avoid confusion."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Angle",
+                    "definition": "A particular way of approaching or considering something; a perspective.",
+                    "context": {
+                        "Context 1": "I noticed the angle of the camera changed the way the room looked.",
+                        "Context 2": "The artist painted the landscape from a unique angle.",
+                        "Context 3": "In negotiations, it’s important to view the issue from every angle to reach a fair deal."
+                    }
+                },
+                {
+                    "word": "Collide",
+                    "definition": "To come into conflict or crash together.",
+                    "context": {
+                        "Context 1": "The end of your shift collided with the beginning of mine.",
+                        "Context 2": "The two cars collided at the intersection.",
+                        "Context 3": "When ideas collide, sometimes innovation is born."
+                    }
+                },
+                {
+                    "word": "Schedule",
+                    "definition": "A plan for carrying out a process or procedure, giving lists of intended events and times.",
+                    "context": {
+                        "Context 1": "We create our schedule at the beginning of every week.",
+                        "Context 2": "He lost track of his schedule and missed the meeting.",
+                        "Context 3": "The concert schedule is online for everyone to see."
+                    }
+                },
+                {
+                    "word": "Hostess",
+                    "definition": "A person who receives or entertains guests, especially in a restaurant.",
+                    "context": {
+                        "Context 1": "Malika works as a hostess at a restaurant.",
+                        "Context 2": "The hostess welcomed us with a smile.",
+                        "Context 3": "As a party hostess, she made sure everyone felt included."
+                    }
+                },
+                {
+                    "word": "Boring",
+                    "definition": "Not interesting; dull.",
+                    "context": {
+                        "Context 1": "Sometimes her job is boring when there is nothing to do.",
+                        "Context 2": "The lecture was so boring that many students fell asleep.",
+                        "Context 3": "He found the movie boring and left halfway through."
+                    }
+                },
+                {
+                    "word": "Communicate",
+                    "definition": "To share or exchange information, news, or ideas.",
+                    "context": {
+                        "Context 1": "Do you communicate with your colleagues during lunch?",
+                        "Context 2": "It’s essential to communicate clearly in any relationship.",
+                        "Context 3": "Animals communicate in different ways, using sounds, body language, and scents."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "I want to understand your perspective on the issue.",
+                        "Context 2": "From his perspective, the project was a failure.",
+                        "Context 3": "Gaining a new perspective can often change our opinions."
+                    }
+                },
+                {
+                    "word": "Bribe",
+                    "definition": "To persuade someone to act in one's favor, typically illegally or dishonestly, by a gift of money or valuables.",
+                    "context": {
+                        "Context 1": "In some places, you can bribe a policeman to avoid a ticket.",
+                        "Context 2": "The politician was accused of accepting a bribe to push through the legislation.",
+                        "Context 3": "She tried to bribe her way to the top with gifts and favors."
+                    }
+                },
+                {
+                    "word": "Shift",
+                    "definition": "A period of time worked by a group of workers who start and stop work at the same time.",
+                    "context": {
+                        "Context 1": "The end of your shift is when my shift begins.",
+                        "Context 2": "He always takes a break between shifts to recharge.",
+                        "Context 3": "Shifts in the climate are affecting our seasons."
+                    }
+                },
+                {
+                    "word": "Colleague",
+                    "definition": "A person with whom one works in a profession or business.",
+                    "context": {
+                        "Context 1": "Malika has good colleagues at her job.",
+                        "Context 2": "My colleague helped me finish the project on time.",
+                        "Context 3": "Colleagues often bond over shared experiences and challenges."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Boring",
+                    "fact": "Did you know that the longest recorded hiccup spell lasted 68 years? Talk about a boring dinner conversation!"
+                },
+                {
+                    "word": "Bribe",
+                    "fact": "In some places, bribing a police officer is so common, they should probably add it to their resumes!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer go to work?",
+                    "answer": "Because it wanted to get its byte of the day!"
+                },
+                {
+                    "question": "Why don't scientists trust atoms?",
+                    "answer": "Because they make up everything!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Fines",
+                    "definition": "Monetary penalties imposed for violating laws or regulations.",
+                    "context": {
+                        "Context 1": "In Russia, fines for speeding can be as low as 600 rubles.",
+                        "Context 2": "The parking fines in the city increased last year and caught many drivers off guard.",
+                        "Context 3": "He paid off his fines for not wearing a seatbelt while driving."
+                    }
+                },
+                {
+                    "word": "Revoke",
+                    "definition": "To take back or withdraw a decision, allowing no longer for something to be applied.",
+                    "context": {
+                        "Context 1": "In Russia, they can revoke your driver's license for not having one while biking.",
+                        "Context 2": "The school decided to revoke his scholarship due to poor academic performance.",
+                        "Context 3": "After two months, he had his gaming privileges revoked for excessive playtime."
+                    }
+                },
+                {
+                    "word": "Maneuver",
+                    "definition": "To move skillfully or carefully.",
+                    "context": {
+                        "Context 1": "Bikes are highly maneuverable, allowing for easy movement in crowded areas.",
+                        "Context 2": "The dog learned to maneuver around obstacles during agility training.",
+                        "Context 3": "During the emergency, the pilot had to maneuver the plane to avoid turbulence."
+                    }
+                },
+                {
+                    "word": "Agile",
+                    "definition": "Able to move quickly and easily; nimble.",
+                    "context": {
+                        "Context 1": "An agile bike can navigate tight corners smoothly.",
+                        "Context 2": "The gymnast was agile enough to perform complex routines effortlessly.",
+                        "Context 3": "In the world of basketball, being agile can make a player more elusive."
+                    }
+                },
+                {
+                    "word": "Fleet-footed",
+                    "definition": "Able to run quickly; nimble.",
+                    "context": {
+                        "Context 1": "The fleet-footed athlete won the race with ease.",
+                        "Context 2": "In the jungle, fleet-footed animals like deer can escape quickly from predators.",
+                        "Context 3": "He was known for being fleet-footed, catching everyone off guard during the game."
+                    }
+                },
+                {
+                    "word": "Statistics",
+                    "definition": "A branch of mathematics dealing with data, organization, analysis, interpretation, and presentation.",
+                    "context": {
+                        "Context 1": "He mentioned that understanding statistics is important for evaluating speed limits.",
+                        "Context 2": "The statistics show that more people prefer summer to winter.",
+                        "Context 3": "In class, they learned how to analyze statistics for a school project."
+                    }
+                },
+                {
+                    "word": "Probability",
+                    "definition": "A measure of the likelihood that an event will occur.",
+                    "context": {
+                        "Context 1": "Driving without a license increases the probability of receiving fines.",
+                        "Context 2": "The probability of rain tomorrow seems high based on weather forecasts.",
+                        "Context 3": "In gambling, understanding probability can greatly influence your betting strategy."
+                    }
+                },
+                {
+                    "word": "Culture",
+                    "definition": "The social behavior, norms, and practices of a particular group or society.",
+                    "context": {
+                        "Context 1": "Biking is part of their culture, making it accessible for many.",
+                        "Context 2": "Every culture has its own unique traditions and celebrations.",
+                        "Context 3": "The culture of the company emphasizes teamwork and collaboration."
+                    }
+                },
+                {
+                    "word": "Rent",
+                    "definition": "To pay someone for the use of something.",
+                    "context": {
+                        "Context 1": "They wouldn’t rent you a bike if you don't have a driver's license.",
+                        "Context 2": "We decided to rent a cabin by the lake for our vacation.",
+                        "Context 3": "He rented a projector for the movie night."
+                    }
+                },
+                {
+                    "word": "Compartment",
+                    "definition": "A separate section or portion of a larger space.",
+                    "context": {
+                        "Context 1": "He keeps half of his money in a different compartment of his bag.",
+                        "Context 2": "The train has compartments for passengers to sit privately.",
+                        "Context 3": "The suitcase has multiple compartments for better organization."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Agile",
+                    "fact": "Did you know that the word agile comes from the Latin 'agilis,' which means 'quick' or 'nimble'? It’s often used to describe not just athletes but also those capable of quick thinking!"
+                },
+                {
+                    "word": "Fleet-footed",
+                    "fact": "The term fleet-footed dates back to Old English and has been used to describe characters in folklore who could outrun their enemies!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the bicycle fall over?",
+                    "answer": "Because it was two-tired!"
+                },
+                {
+                    "question": "What do you call a man who lost all of his money?",
+                    "answer": "A loan survivor!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Maneuverable",
+                    "definition": "Capable of being moved or directed with skill and ease.",
+                    "context": {
+                        "Context 1": "The new model of the bike is much more maneuverable than the previous one, allowing for sharp turns.",
+                        "Context 2": "The magician’s tricks often require him to be very maneuverable on stage.",
+                        "Context 3": "In a crowded market, a tiny car is more maneuverable than a large truck."
+                    }
+                },
+                {
+                    "word": "Fleet",
+                    "definition": "A group of vehicles, ships, or aircraft operating together.",
+                    "context": {
+                        "Context 1": "The company has a fleet of delivery trucks that cover the whole city.",
+                        "Context 2": "The soldiers marched in formation as part of the military fleet.",
+                        "Context 3": "After the storm, the fishing fleet returned home with a smaller catch than usual."
+                    }
+                },
+                {
+                    "word": "Associate",
+                    "definition": "To connect someone or something in your mind with someone or something else.",
+                    "context": {
+                        "Context 1": "When I think of summer, I often associate it with beach vacations.",
+                        "Context 2": "She likes to associate her work with creative projects that inspire her.",
+                        "Context 3": "Most people associate the smell of fresh-baked bread with comfort and home."
+                    }
+                },
+                {
+                    "word": "Pronunciation",
+                    "definition": "The way in which a word is pronounced.",
+                    "context": {
+                        "Context 1": "There are different pronunciations based on regional accents, like 'either' or 'either.'",
+                        "Context 2": "Correct pronunciation is key to being understood in any language.",
+                        "Context 3": "She listened to the audio recordings to improve her pronunciation of difficult words."
+                    }
+                },
+                {
+                    "word": "Crutch",
+                    "definition": "A support used by someone who is unable to walk properly.",
+                    "context": {
+                        "Context 1": "After his injury, he used a crutch to help him walk again.",
+                        "Context 2": "Sometimes, people use emotional crutches to cope with stress in unhealthy ways.",
+                        "Context 3": "The athlete was determined to practice without crutches once he healed."
+                    }
+                },
+                {
+                    "word": "Independence",
+                    "definition": "The state of being free from outside control; self-governance.",
+                    "context": {
+                        "Context 1": "Learning to speak a new language brings a sense of independence from translation tools.",
+                        "Context 2": "Many countries celebrate independence day to commemorate their freedom.",
+                        "Context 3": "He values his independence and enjoys traveling alone."
+                    }
+                },
+                {
+                    "word": "Analogous",
+                    "definition": "Comparable in certain respects, typically in a way that makes clearer the nature of things compared.",
+                    "context": {
+                        "Context 1": "Learning a language is analogous to riding a bike; it takes practice and balance.",
+                        "Context 2": "The professor explained that the human brain is analogous to a computer in many ways.",
+                        "Context 3": "Their relationship was analogous to that of siblings, full of love and occasional rivalry."
+                    }
+                },
+                {
+                    "word": "Discover",
+                    "definition": "To find or learn something for the first time.",
+                    "context": {
+                        "Context 1": "When learning English, you may discover new words every day.",
+                        "Context 2": "She hopes to discover new species during her expedition to the rainforest.",
+                        "Context 3": "Many people discover their passions through trial and error."
+                    }
+                },
+                {
+                    "word": "Explore",
+                    "definition": "To investigate, examine, or survey an area or a subject in detail.",
+                    "context": {
+                        "Context 1": "As a language learner, you should explore different contexts to advance your vocabulary.",
+                        "Context 2": "Children love to explore the outdoors and learn about nature.",
+                        "Context 3": "She decided to explore various cuisines during her travels."
+                    }
+                },
+                {
+                    "word": "Confidence",
+                    "definition": "The feeling or belief that one can rely on someone or something; firm trust.",
+                    "context": {
+                        "Context 1": "Practicing speaking English helps build confidence in communication.",
+                        "Context 2": "His confidence grew after winning the writing competition.",
+                        "Context 3": "Having confidence can make performing on stage much easier."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Maneuverable",
+                    "fact": "Did you know that some of the world's smallest military vehicles are surprisingly maneuverable? They can fit in the tightest spots!"
+                },
+                {
+                    "word": "Crutch",
+                    "fact": "In some cultures, crutches have been humorously depicted in cartoons as helping characters escape from awkward situations!"
+                },
+                {
+                    "word": "Confidence",
+                    "fact": "The word 'confidence' comes from the Latin 'confidere,' which means 'to trust.' So every time you feel confident, you're trusting yourself!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "What do you call a bike that can't stand up by itself?",
+                    "answer": "Two-tired!"
+                },
+                {
+                    "question": "Why did the teacher go to the beach?",
+                    "answer": "Because she wanted to test the waters!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Independence",
+                    "definition": "The state of being free from outside control; the power to make one's own decisions.",
+                    "context": {
+                        "Context 1": "After getting her bike, she finally felt a sense of independence.",
+                        "Context 2": "The independence of the country was celebrated with a grand parade.",
+                        "Context 3": "He achieved financial independence by starting his own business."
+                    }
+                },
+                {
+                    "word": "Limitations",
+                    "definition": "Restrictions or constraints that may hinder progress or ability.",
+                    "context": {
+                        "Context 1": "The limitations of public transport made it difficult for her to reach the mountains.",
+                        "Context 2": "His physical limitations did not stop him from pursuing his dreams.",
+                        "Context 3": "The limitations set by the rules made the game more challenging."
+                    }
+                },
+                {
+                    "word": "Facility",
+                    "definition": "A place, amenity, or piece of equipment provided for a particular purpose.",
+                    "context": {
+                        "Context 1": "The recycling center is a facility designed for processing waste.",
+                        "Context 2": "The sports facility includes a swimming pool and a gym.",
+                        "Context 3": "They built a new facility to support creative arts in the community."
+                    }
+                },
+                {
+                    "word": "Facilitate",
+                    "definition": "To make an action or process easier.",
+                    "context": {
+                        "Context 1": "The teacher's role is to facilitate the learning process.",
+                        "Context 2": "New technology can facilitate communication across long distances.",
+                        "Context 3": "She used a planner to facilitate her busy schedule."
+                    }
+                },
+                {
+                    "word": "Cyclical",
+                    "definition": "Characterized by cycles; recurring in a regular pattern.",
+                    "context": {
+                        "Context 1": "The recycling process is a cyclical operation that happens every day.",
+                        "Context 2": "The cyclical nature of the seasons affects agricultural practices.",
+                        "Context 3": "The cyclical flow of water in the environment is essential for life."
+                    }
+                },
+                {
+                    "word": "Bump",
+                    "definition": "A raised part on a surface; also used to describe a jolt or jarring impact.",
+                    "context": {
+                        "Context 1": "She felt every bump on the road during her bike ride.",
+                        "Context 2": "He tripped over a bump in the rug and fell.",
+                        "Context 3": "The car hit a bump and jostled everyone inside."
+                    }
+                },
+                {
+                    "word": "Control",
+                    "definition": "To direct or command over something; to exercise restraint.",
+                    "context": {
+                        "Context 1": "He had to control his bike to maintain balance on the road.",
+                        "Context 2": "She lost control of her emotions during the movie.",
+                        "Context 3": "They set strict rules to control the budget of the project."
+                    }
+                },
+                {
+                    "word": "Tense",
+                    "definition": "A grammatical term indicating the time of an action (past, present, or future).",
+                    "context": {
+                        "Context 1": "Understanding the correct tense is crucial to effective communication.",
+                        "Context 2": "The past tense was used incorrectly in his writing.",
+                        "Context 3": "During the game, the atmosphere was tense as both teams approached the end."
+                    }
+                },
+                {
+                    "word": "Main paragraphs",
+                    "definition": "The primary sections of a written work that provide important information or arguments.",
+                    "context": {
+                        "Context 1": "In her report, she wrote the main paragraphs clearly outlining each point.",
+                        "Context 2": "The main paragraphs of the book discuss various theories of psychology.",
+                        "Context 3": "He structured his essay with main paragraphs for each argument."
+                    }
+                },
+                {
+                    "word": "Products",
+                    "definition": "Items produced for sale or use.",
+                    "context": {
+                        "Context 1": "The recycling center processes products from waste materials.",
+                        "Context 2": "The supermarket shelves were filled with new products for the holiday season.",
+                        "Context 3": "They showcased their latest products at the annual trade show."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Independence",
+                    "fact": "The United States declared independence on July 4, 1776, but it took several more years before they considered tea without dumping it into the harbor!"
+                },
+                {
+                    "word": "Limitations",
+                    "fact": "Did you know that squirrels can’t eat nuts without drinking water? Talk about limitations in their diet!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the bicycle fall over?",
+                    "answer": "Because it was two-tired!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Container",
+                    "definition": "A receptacle for holding goods or substances.",
+                    "context": {
+                        "Context 1": "A trash container is used for disposing of waste materials.",
+                        "Context 2": "They filled the container with water to water the plants.",
+                        "Context 3": "He bought a plastic container to store his leftover food."
+                    }
+                },
+                {
+                    "word": "Recycle",
+                    "definition": "To convert waste into reusable material.",
+                    "context": {
+                        "Context 1": "It is important to recycle plastic to reduce pollution.",
+                        "Context 2": "They decided to recycle old newspapers into new products.",
+                        "Context 3": "He learned how to recycle electronic waste during a workshop."
+                    }
+                },
+                {
+                    "word": "Compress",
+                    "definition": "To press together; to reduce in size or volume.",
+                    "context": {
+                        "Context 1": "The machine will compress plastic bottles into blocks.",
+                        "Context 2": "You need to compress the data before sending it via email.",
+                        "Context 3": "To fit the clothes in the suitcase, he decided to compress them tightly."
+                    }
+                },
+                {
+                    "word": "Manufacturing",
+                    "definition": "The process of making products from raw materials.",
+                    "context": {
+                        "Context 1": "The manufacturing process involves several steps to create bricks.",
+                        "Context 2": "She works in a factory that focuses on the manufacturing of toys.",
+                        "Context 3": "The car manufacturing industry has been affected by recent supply chain disruptions."
+                    }
+                },
+                {
+                    "word": "Process",
+                    "definition": "A series of actions or steps taken to achieve an end.",
+                    "context": {
+                        "Context 1": "We can't use a process for making bricks without defining the steps.",
+                        "Context 2": "The process of baking a cake requires careful measurement.",
+                        "Context 3": "She documented the process of her art project in a journal."
+                    }
+                },
+                {
+                    "word": "Pallet",
+                    "definition": "A flat transport structure that supports goods in a stable fashion.",
+                    "context": {
+                        "Context 1": "They used pallets to stack and transport the crates of products.",
+                        "Context 2": "The pallets were treated to withstand outdoor conditions.",
+                        "Context 3": "In the bakery, they placed the dough rising on wooden pallets."
+                    }
+                },
+                {
+                    "word": "Sort",
+                    "definition": "To arrange or categorize items based on specific criteria.",
+                    "context": {
+                        "Context 1": "The worker will sort plastic bottles before recycling them.",
+                        "Context 2": "She had to sort through her closet to donate old clothes.",
+                        "Context 3": "The librarian will sort the books by genre later this week."
+                    }
+                },
+                {
+                    "word": "Fragments",
+                    "definition": "Small pieces or parts that have broken off from something larger.",
+                    "context": {
+                        "Context 1": "The process creates small fragments of plastic that can be recycled.",
+                        "Context 2": "He discovered fragments of ancient pottery at the archaeological site.",
+                        "Context 3": "The storm left fragments of tree branches scattered everywhere."
+                    }
+                },
+                {
+                    "word": "Raw Material",
+                    "definition": "The basic material from which products are made.",
+                    "context": {
+                        "Context 1": "Heating pellets forms raw material for new products.",
+                        "Context 2": "Wood is a raw material often used in furniture making.",
+                        "Context 3": "They source their raw materials from sustainable farms."
+                    }
+                },
+                {
+                    "word": "Step",
+                    "definition": "A distinct stage in a process or sequence of actions.",
+                    "context": {
+                        "Context 1": "Step seven outlines how to heat the pellets.",
+                        "Context 2": "He took a step back to reassess the situation.",
+                        "Context 3": "Each step of the recipe must be followed for the best results."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Container",
+                    "fact": "Did you know that the largest container ship could carry over 24,000 containers? That's like stacking one on top of another and reaching the sky!"
+                },
+                {
+                    "word": "Recycle",
+                    "fact": "In Finland, you can get paid for recycling your bottles! Who knew being green could put some green in your pocket?"
+                },
+                {
+                    "word": "Pallet",
+                    "fact": "Pallets are so versatile, some people build furniture out of them! Your next couch could be made from 'pallet-tastic' creations!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the recycling bin break up with its trash can?",
+                    "answer": "Because it was tired of being taken for granted!"
+                },
+                {
+                    "question": "What did the worker say when he saw his compressed plastic block?",
+                    "answer": "This is a whole new level of being 'packed' in!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "consist",
+                    "definition": "To be made up of or composed of.",
+                    "context": {
+                        "Context 1": "Clay consists of sand and water.",
+                        "Context 2": "The committee consists of 10 members from different countries.",
+                        "Context 3": "The recipe consists of flour, sugar, and eggs."
+                    }
+                },
+                {
+                    "word": "mold",
+                    "definition": "A hollow container used to give shape to liquid or pliable material when it hardens.",
+                    "context": {
+                        "Context 1": "You can use a mold to shape the bricks.",
+                        "Context 2": "She used a mold to create a statue out of clay.",
+                        "Context 3": "The cake was baked in a heart-shaped mold."
+                    }
+                },
+                {
+                    "word": "sequence",
+                    "definition": "A particular order in which related events, movements, or things follow each other.",
+                    "context": {
+                        "Context 1": "What is the sequence to make the bricks?",
+                        "Context 2": "The sequence of colors in a rainbow is always the same.",
+                        "Context 3": "He memorized the sequence of numbers for the exam."
+                    }
+                },
+                {
+                    "word": "drying",
+                    "definition": "The process of removing moisture from something.",
+                    "context": {
+                        "Context 1": "The bricks are placed in a drying oven.",
+                        "Context 2": "I forgot to bring my laundry in after drying it outside.",
+                        "Context 3": "The artist let the paint dry before applying the next layer."
+                    }
+                },
+                {
+                    "word": "paragraph",
+                    "definition": "A distinct section of a piece of writing, usually dealing with a single theme.",
+                    "context": {
+                        "Context 1": "Your body paragraphs are fine, but need more structure.",
+                        "Context 2": "She wrote a paragraph about her vacation in Italy.",
+                        "Context 3": "The novel is divided into chapters, each containing several paragraphs."
+                    }
+                },
+                {
+                    "word": "process",
+                    "definition": "A series of actions or steps taken in order to achieve a particular end.",
+                    "context": {
+                        "Context 1": "It’s a non-cyclical process to make bricks.",
+                        "Context 2": "The hiring process can take several weeks.",
+                        "Context 3": "Cooking is both an art and a scientific process."
+                    }
+                },
+                {
+                    "word": "labor",
+                    "definition": "Work, especially physical work.",
+                    "context": {
+                        "Context 1": "It’s easier when the work is more labor-intensive.",
+                        "Context 2": "The farmer hired labor to help with the harvest.",
+                        "Context 3": "Many people prefer to use machines instead of manual labor."
+                    }
+                },
+                {
+                    "word": "raw",
+                    "definition": "Not cooked or processed; in its natural state.",
+                    "context": {
+                        "Context 1": "Before drying, the clay is still raw.",
+                        "Context 2": "Eating raw vegetables can be very healthy.",
+                        "Context 3": "The raw materials are crucial for the manufacturing process."
+                    }
+                },
+                {
+                    "word": "define",
+                    "definition": "To state the exact meaning of a word or phrase.",
+                    "context": {
+                        "Context 1": "Can you define what a body paragraph is?",
+                        "Context 2": "He struggled to define his goals for the future.",
+                        "Context 3": "The dictionary will help you define any unfamiliar words."
+                    }
+                },
+                {
+                    "word": "correspond",
+                    "definition": "To be in agreement or conformity.",
+                    "context": {
+                        "Context 1": "Your body paragraphs don’t correspond with your main ideas.",
+                        "Context 2": "The colors of the flag correspond to its historical significance.",
+                        "Context 3": "His actions did not correspond with his words."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "process",
+                    "fact": "Did you know that the word 'process' can refer to a series of events in a bakery or the steps for making a criminal case?"
+                },
+                {
+                    "word": "mold",
+                    "fact": "Molds can be used for more than just baking; there are molds for making ice, candles, and even soap!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the clay go to school?",
+                    "answer": "Because it wanted to become a little more 'shaped' in its knowledge!"
+                },
+                {
+                    "question": "Why don't bricks ever get in trouble?",
+                    "answer": "Because they always follow the 'mold' of good behavior!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! I noticed you’ve got more posters up on your wall. Did you rearrange your room?"
+                },
+                {
+                    "Person 2": "Yeah, I moved my computer a bit. Trying to make it more cozy, you know?"
+                },
+                {
+                    "Person 1": "Looks good! Soon you’ll have a full 360-degree tour of your room!"
+                },
+                {
+                    "Person 2": "Right? Maybe I should set up a VR option for my friends."
+                },
+                {
+                    "Person 1": "So, how’s your week been treating you?"
+                },
+                {
+                    "Person 2": "It’s been a bit tough, actually. I worked four days straight."
+                },
+                {
+                    "Person 1": "Wow, that’s a lot. How long were you working each day?"
+                },
+                {
+                    "Person 2": "About eight or nine hours. Kind of felt like a full work week."
+                },
+                {
+                    "Person 1": "I thought most people worked five days. You’re lucky though!"
+                },
+                {
+                    "Person 2": "It was kind of an accident. I ended up mixing up my schedule."
+                },
+                {
+                    "Person 1": "Oh no! So you just worked way more than you planned?"
+                },
+                {
+                    "Person 2": "Yeah, I really messed up. I ended up forgetting there aren’t any extra days in a week!"
+                },
+                {
+                    "Person 1": "That sounds frustrating! What's your typical schedule like?"
+                },
+                {
+                    "Person 2": "Usually it’s three days a week, but this week was just all over the place."
+                },
+                {
+                    "Person 1": "Is it physical work at least? Or is it mostly just sitting around?"
+                },
+                {
+                    "Person 2": "No, it’s not physical, it can get kind of boring."
+                },
+                {
+                    "Person 1": "I can imagine! What do you find the hardest part of your job?"
+                },
+                {
+                    "Person 2": "Sometimes I don’t know what to do, and the time drags on."
+                },
+                {
+                    "Person 1": "That’s gotta be rough. You’re a hostess, right?"
+                },
+                {
+                    "Person 2": "Yep! It can be challenging to always be on standby."
+                },
+                {
+                    "Person 1": "At least you get breaks. Do you get along with your co-workers?"
+                },
+                {
+                    "Person 2": "Yeah, we chat a bit, have lunch together. They’re decent colleagues."
+                },
+                {
+                    "Person 1": "That’s good! It's nice to have a friendly work environment."
+                },
+                {
+                    "Person 2": "For sure! Anyway, I just got a text from the landlord."
+                },
+                {
+                    "Person 1": "Everything alright?"
+                },
+                {
+                    "Person 2": "Yeah, just checking in. By the way, I went biking for hours earlier."
+                },
+                {
+                    "Person 1": "Wow, no breaks? You must be exhausted!"
+                },
+                {
+                    "Person 2": "A little! I took a bus for the longer part, but I got to enjoy the ride."
+                },
+                {
+                    "Person 1": "Riding a bike sounds fun! Do you need a license for that?"
+                },
+                {
+                    "Person 2": "Technically, yes, but nobody really cares about that."
+                },
+                {
+                    "Person 1": "That’s wild! What if you get stopped by the police?"
+                },
+                {
+                    "Person 2": "You just bribe them a bit. It’s easier than getting a license!"
+                },
+                {
+                    "Person 1": "Seriously? That seems so sketchy!"
+                },
+                {
+                    "Person 2": "I know, right? It’s way cheaper to pay off a cop than to go through the whole licensing mess."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you ever try riding a bike without a license?"
+                },
+                {
+                    "Person 2": "Not really! I’d be too scared to get stopped by the cops."
+                },
+                {
+                    "Person 1": "Yeah, I hear in some places the fines can be pretty steep!"
+                },
+                {
+                    "Person 2": "Exactly! I think I’d rather just stick to renting a bike legally."
+                },
+                {
+                    "Person 1": "Right? Plus, if you don't have a license, they won’t even let you rent one."
+                },
+                {
+                    "Person 2": "True. It makes sense, though. Safety first!"
+                },
+                {
+                    "Person 1": "Speaking of safety, I was reading about how biking can be pretty agile and quick."
+                },
+                {
+                    "Person 2": "Oh, for sure! Bikes can maneuver through traffic easy."
+                },
+                {
+                    "Person 1": "I know, right? They're so fun! I can't wait for the weather to warm up."
+                },
+                {
+                    "Person 2": "Me too! I think riding in the park is the best way to enjoy it."
+                },
+                {
+                    "Person 1": "Totally! And it's a great workout, too."
+                },
+                {
+                    "Person 2": "Definitely! Gotta get those legs moving."
+                },
+                {
+                    "Person 1": "Hey, do you know what 'fleet-footed' means?"
+                },
+                {
+                    "Person 2": "Yes! It means someone who's fast on their feet, right?"
+                },
+                {
+                    "Person 1": "Yeah! I had no idea it also connected to ships."
+                },
+                {
+                    "Person 2": "Some words have interesting links. It's fun to learn them in context!"
+                },
+                {
+                    "Person 1": "For sure! Makes it so much easier to remember."
+                },
+                {
+                    "Person 2": "Absolutely! Let’s hit the trails once it’s nice out."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you ever think about how learning new words can feel like discovering hidden treasures?"
+                },
+                {
+                    "Person 2": "Absolutely! It's like every time I learn a new word, I feel like I’ve found a new tool for expressing myself."
+                },
+                {
+                    "Person 1": "Right? I was just thinking about how some words, like 'agile,' can totally change the way you describe something."
+                },
+                {
+                    "Person 2": "Yeah! And the fun part is different people can pronounce them in different ways. Like 'either' or 'either.'"
+                },
+                {
+                    "Person 1": "Exactly! You can hear someone say it one way, and then someone else says it totally different."
+                },
+                {
+                    "Person 2": "It’s funny how language works. You’d think there’d be one right way, but it’s nice to have options."
+                },
+                {
+                    "Person 1": "For sure! I think the beauty of it is in the variety. It makes conversations more interesting."
+                },
+                {
+                    "Person 2": "Totally! And when you finally get comfortable with a language, you feel like you can express your thoughts so much better."
+                },
+                {
+                    "Person 1": "That’s such a good point. It’s like riding a bike—you start with training wheels, and then eventually, you’re just cruising along."
+                },
+                {
+                    "Person 2": "Yes! And the more you practice, the less you rely on those ‘training wheels’ like dictionaries or apps."
+                },
+                {
+                    "Person 1": "Exactly! It kind of boosts your confidence too. You feel more independent."
+                },
+                {
+                    "Person 2": "So true! It’s like you’re finally ready to explore the world on your own, instead of just following along."
+                },
+                {
+                    "Person 1": "Absolutely! Learning new words and phrases really opens up a whole new world."
+                },
+                {
+                    "Person 2": "Couldn’t agree more! Here’s to discovering more words and making our conversations even better!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you ever thought about how much easier it is to get around now that you have a bike?"
+                },
+                {
+                    "Person 2": "Oh, totally! I just got a bike and it feels so freeing. I can go anywhere without having to worry about taxi fares."
+                },
+                {
+                    "Person 1": "Right? I love that feeling! It's like you have the whole world at your fingertips."
+                },
+                {
+                    "Person 2": "Exactly! I went on a long ride this weekend, and I felt every bump in the road—but it was worth it!"
+                },
+                {
+                    "Person 1": "You must have some serious stamina! My legs were sore after just a few miles."
+                },
+                {
+                    "Person 2": "Haha, yeah. It's a workout for sure, but it’s a good one. Plus, I get to see so much more than I would in a car."
+                },
+                {
+                    "Person 1": "True! I think the fresh air makes it even better. It’s such a nice change of pace."
+                },
+                {
+                    "Person 2": "Definitely! Have you checked out the new bike paths downtown? They’re amazing!"
+                },
+                {
+                    "Person 1": "Not yet, but I've heard great things! We should go ride there together sometime."
+                },
+                {
+                    "Person 2": "That sounds fun! Let’s plan a ride this weekend. I'll even bring snacks!"
+                },
+                {
+                    "Person 1": "Perfect! I’m always up for a bike ride and some snacks. What time do you want to meet?"
+                },
+                {
+                    "Person 2": "How about 10 a.m.? We can beat the crowds."
+                },
+                {
+                    "Person 1": "Sounds good to me! I can’t wait!"
+                },
+                {
+                    "Person 2": "Me neither! It’ll be a blast."
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about the new recycling initiative in town?"
+                },
+                {
+                    "Person 2": "Yeah, I saw a sign about it! They're trying to get everyone to sort their trash properly, right?"
+                },
+                {
+                    "Person 1": "Exactly! They want us to separate plastics, papers, and organic waste."
+                },
+                {
+                    "Person 2": "I think that’s great! But honestly, I always get confused about what goes where."
+                },
+                {
+                    "Person 1": "Same here! Like, what do you do with those takeout containers? Can they be recycled?"
+                },
+                {
+                    "Person 2": "I’m pretty sure they can, but only if they’re clean. It’s a hassle sometimes."
+                },
+                {
+                    "Person 1": "Right? I feel like I need a degree just to recycle correctly."
+                },
+                {
+                    "Person 2": "Haha! For real. Maybe they should offer a workshop or something."
+                },
+                {
+                    "Person 1": "That would actually be helpful. Then we could learn while having fun!"
+                },
+                {
+                    "Person 2": "Totally! And maybe they could provide some cool reusable bags too."
+                },
+                {
+                    "Person 1": "Oh, for sure! Who doesn’t love a good freebie?"
+                },
+                {
+                    "Person 2": "Exactly! Let’s sign up if they do it."
+                },
+                {
+                    "Person 1": "Definitely! I’ll keep an eye out for any announcements."
+                },
+                {
+                    "Person 2": "Awesome! And hey, maybe we can go grab some coffee while we wait for that?"
+                },
+                {
+                    "Person 1": "That sounds perfect! I could use a caffeine boost right about now."
+                },
+                {
+                    "Person 2": "Let’s go then! I know a great spot just around the corner."
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you finish that project for class yet?"
+                },
+                {
+                    "Person 2": "Not yet! I'm still trying to wrap my head around the whole process."
+                },
+                {
+                    "Person 1": "I know what you mean. It can get pretty confusing, especially when it comes to the steps."
+                },
+                {
+                    "Person 2": "Right? Like, should I mold the clay first or dry it? It feels like I keep second-guessing myself."
+                },
+                {
+                    "Person 1": "I think molding it should be the first step, then you dry it. At least, that’s what I gathered."
+                },
+                {
+                    "Person 2": "Sounds about right! It’s like there are so many different ways to go about it."
+                },
+                {
+                    "Person 1": "Totally! And then there’s drying it. Do you just leave it out or put it in the oven?"
+                },
+                {
+                    "Person 2": "I heard the oven's the way to go, but I'm still figuring out the timing."
+                },
+                {
+                    "Person 1": "Yeah, I think it’s like 24 to 48 hours, depending on how thick the piece is."
+                },
+                {
+                    "Person 2": "Oh man, I really don’t want to mess it up. I just want my bricks to come out perfect."
+                },
+                {
+                    "Person 1": "Same! We could always compare notes once we both finish?"
+                },
+                {
+                    "Person 2": "That sounds like a plan! Let’s help each other out."
+                },
+                {
+                    "Person 1": "For sure! Well, I should get back to it. Good luck!"
+                },
+                {
+                    "Person 2": "Thanks! You too. Catch you later!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
