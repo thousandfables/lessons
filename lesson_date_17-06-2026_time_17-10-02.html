@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "There is because in recent years, oh, yeah, there has has been a tendency in the very recent years.",
+                    "corrected": "Oh, yeah, there has been a tendency in recent years.",
+                    "explanation": "The phrase 'there is because' is redundant and confusing; the correct form should simply state 'there has been a tendency.'",
+                    "context": "In recent discussions, I've noticed a pattern emerging among parents. Oh, yeah, there has been a tendency in recent years, indicating a shift in parenting styles."
+                },
+                {
+                    "original": "A tendency for in among Russian parents among Russian parents.",
+                    "corrected": "A tendency among Russian parents.",
+                    "explanation": "The phrase 'for in among' is incorrect and redundant; it should simply be 'among.'",
+                    "context": "I've been observing changes in parenting attitudes lately. There is a tendency among Russian parents to adapt their approaches."
+                },
+                {
+                    "original": "Therefore, they pay less attention maybe or they pay less attention.",
+                    "corrected": "Therefore, they have less control over their children.",
+                    "explanation": "The phrase 'they pay less attention maybe' is unclear; 'they have less control' is a more precise way to express the idea.",
+                    "context": "We've been talking about parenting and its implications. Therefore, they have less control over their children, which can lead to various issues."
+                },
+                {
+                    "original": "Which leads them to spending.",
+                    "corrected": "Which in turn leads them to spending.",
+                    "explanation": "The initial phrase is incomplete; 'which in turn leads them' completes the thought clearly.",
+                    "context": "I was outlining the consequences of poor parental control. Which in turn leads them to spending excessive time on distracting content."
+                },
+                {
+                    "original": "Leads to spending much time watching this distracting call.",
+                    "corrected": "Leads to spending much time watching distracting content.",
+                    "explanation": "The phrase 'this distracting call' is incorrect; 'distracting content' is the appropriate term here.",
+                    "context": "We've touched on how children consume media. It leads to spending much time watching distracting content that isn't conducive to their learning."
+                },
+                {
+                    "original": "Again, kids, not like just children.",
+                    "corrected": "Just using children every time would be good?",
+                    "explanation": "Using casual terms like 'kids' may not be appropriate for a formal essay; 'children' is better suited.",
+                    "context": "When discussing language formalities, I've been reminded to maintain a formal tone. Just using children every time would be good for clarity."
+                },
+                {
+                    "original": "What kind of news? You can reference that, or you can say that... it's a thing.",
+                    "corrected": "You can reference that, or mention that it's a trend.",
+                    "explanation": "'What kind of news?' is informal; a more suitable phrasing would directly engage with the context of referencing sources.",
+                    "context": "In our conversation, we discussed the reliability of sources. You can reference that, or mention that it's a trend observed in current media."
+                },
+                {
+                    "original": "How do you know that this happens?",
+                    "corrected": "How do you know that this is happening?",
+                    "explanation": "The verb tense 'happens' here is too general; 'is happening' conveys ongoing relevance.",
+                    "context": "When questioned about source credibility, I was prompted to clarify my observation. How do you know that this is happening so frequently?"
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "I haven't done all the exercises which were in this webpage, which you sent me, but I still think of the most difficult topics, yes, for all learners of English language, high level, you would always do mistakes in articles.",
+                    "corrected": "I haven't done all the exercises that were on this webpage you sent me, but I still think that articles are one of the most difficult topics for all learners of the English language at a high level; you always make mistakes with them.",
+                    "explanation": "Use 'that' for restrictive clauses; 'on' is correct here instead of 'in'; 'English language' should have 'the'; 'do mistakes' should be 'make mistakes'.",
+                    "context": "I haven't gone through all the exercises on the webpage you sent me. However, I believe articles are among the toughest topics for English learners at a high level; we always make mistakes with them."
+                },
+                {
+                    "original": "sometimes I do mistakes in them.",
+                    "corrected": "Sometimes I make mistakes with them.",
+                    "explanation": "'Do mistakes' is incorrect; 'make mistakes' is the correct phrase.",
+                    "context": "When it comes to articles, I sometimes struggle. I make mistakes with them occasionally."
+                },
+                {
+                    "original": "that's called possessive case.",
+                    "corrected": "That's called the possessive case.",
+                    "explanation": "The definite article 'the' is needed before 'possessive case'.",
+                    "context": "I want to explain a concept we refer to as the possessive case. It helps clarify relationships, like ownership."
+                },
+                {
+                    "original": "children's inexperience.",
+                    "corrected": "children's inexperience.",
+                    "explanation": "The phrase 'children's inexperience' is grammatically correct but needs clarification in context.",
+                    "context": "In discussing possessive cases, I gave examples like parents' bank accounts and children’s inexperience. Each shows possession."
+                },
+                {
+                    "original": "Did I make any mistakes in this?",
+                    "corrected": "Did I make any mistakes with this?",
+                    "explanation": "'In this' should be 'with this' when referring to a topic or subject matter.",
+                    "context": "I’m wondering if I've made any errors in my explanation. Did I make any mistakes with this?"
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Tendency",
+                    "definition": "An inclination toward a particular characteristic or type of behavior.",
+                    "context": {
+                        "Context 1": "There is a tendency among Russian parents to pay less attention to their children.",
+                        "Context 2": "The tendency of the leaves to change color in autumn is a beautiful sight.",
+                        "Context 3": "His tendency to procrastinate often led him to miss deadlines."
+                    }
+                },
+                {
+                    "word": "Attitude",
+                    "definition": "A settled way of thinking or feeling about something.",
+                    "context": {
+                        "Context 1": "Having a positive attitude can influence your overall success.",
+                        "Context 2": "Her attitude toward fitness inspired many of her friends to join her workouts.",
+                        "Context 3": "The dog's attitude changed when it saw the squirrel in the yard."
+                    }
+                },
+                {
+                    "word": "Informal",
+                    "definition": "Having a relaxed, friendly, or unofficial style.",
+                    "context": {
+                        "Context 1": "The use of informal language in formal essays can be problematic.",
+                        "Context 2": "Their informal meeting at the café helped strengthen their friendship.",
+                        "Context 3": "We had an informal dress code for the party, so everyone wore casual clothes."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or pattern; a specific instance that illustrates a broader concept.",
+                    "context": {
+                        "Context 1": "Your example about scammers could be improved for clarity.",
+                        "Context 2": "As an example, a lion is often considered the king of the jungle.",
+                        "Context 3": "In history class, we learned a fascinating example of ancient Roman architecture."
+                    }
+                },
+                {
+                    "word": "Statistics",
+                    "definition": "Numerical data that represent facts or conditions; a discipline that uses math for analyzing data.",
+                    "context": {
+                        "Context 1": "I collect my own statistics on language tests.",
+                        "Context 2": "The statistics revealed a shocking rise in unemployment during the pandemic.",
+                        "Context 3": "The statistics show that people who listen to music while studying often retain more information."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A model or instance that illustrates a rule or concept.",
+                    "context": {
+                        "Context 1": "He provided an example of a well-structured essay during the lesson.",
+                        "Context 2": "For example, the Eiffel Tower is a stunning piece of architecture.",
+                        "Context 3": "She quoted a famous example of resilience to motivate her team."
+                    }
+                },
+                {
+                    "word": "Distracting",
+                    "definition": "Causing a lack of attention or focus.",
+                    "context": {
+                        "Context 1": "Watching too much TV can be distracting for children.",
+                        "Context 2": "The noise outside was very distracting while I was studying.",
+                        "Context 3": "He found his phone to be a distracting influence during work hours."
+                    }
+                },
+                {
+                    "word": "Summarize",
+                    "definition": "To state or express the main points of something in a concise form.",
+                    "context": {
+                        "Context 1": "Can you summarize the main points of your essay?",
+                        "Context 2": "She always knew how to summarize the plot of a movie in just a few sentences.",
+                        "Context 3": "At the end of the meeting, the manager asked someone to summarize the key decisions made."
+                    }
+                },
+                {
+                    "word": "Formal",
+                    "definition": "Having a serious, official or conventional style.",
+                    "context": {
+                        "Context 1": "Formal language is important in academic writing.",
+                        "Context 2": "The wedding had a very formal ceremony with traditional attire.",
+                        "Context 3": "In a formal setting, it's important to use respectful language."
+                    }
+                },
+                {
+                    "word": "Control",
+                    "definition": "The power to influence or direct people's behavior or the course of events.",
+                    "context": {
+                        "Context 1": "Parents should have control over their children's media consumption.",
+                        "Context 2": "He felt that he had no control over the situation.",
+                        "Context 3": "She learned to control her anxiety through meditation."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Tendency",
+                    "fact": "Did you know that cats have a tendency to ignore their owners while still expecting to be fed?"
+                },
+                {
+                    "word": "Statistics",
+                    "fact": "In statistics, there’s a joke that 88% of all numbers are made up on the spot!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the math book look sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "What did the teacher say to the student who took a ladder to school?",
+                    "answer": "You’re going to high school!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Articles",
+                    "definition": "Words used before nouns to define their definiteness, quantity, or specificity.",
+                    "context": {
+                        "Context 1": "In English, 'the' and 'a' are examples of articles that help specify nouns.",
+                        "Context 2": "She placed the articles in the right folders for the presentation.",
+                        "Context 3": "The librarian arranged all the articles in alphabetical order on the shelves."
+                    }
+                },
+                {
+                    "word": "Countable Nouns",
+                    "definition": "Nouns that can be counted as individual units.",
+                    "context": {
+                        "Context 1": "Apples and oranges are countable nouns because you can say 'two apples' or 'three oranges.'",
+                        "Context 2": "He counted the countable nouns in the sentence, realizing he had too many.",
+                        "Context 3": "Countable nouns can often be used in recipes, like 'two cups of flour or five eggs.'"
+                    }
+                },
+                {
+                    "word": "Uncountable Nouns",
+                    "definition": "Nouns that cannot be counted individually and typically do not have a plural form.",
+                    "context": {
+                        "Context 1": "Water and rice are uncountable nouns since you don’t say 'two waters' or 'three rices.'",
+                        "Context 2": "At the art gallery, he admired the uncountable beauty of the paintings.",
+                        "Context 3": "Understanding how to use uncountable nouns is crucial when writing essays."
+                    }
+                },
+                {
+                    "word": "Possessive Case",
+                    "definition": "A grammatical case indicating ownership or relationship.",
+                    "context": {
+                        "Context 1": "The possessive case is shown by adding 's' as in 'Sarah's book.'",
+                        "Context 2": "The possessive case in the formula made it clear who owned the ingredients.",
+                        "Context 3": "In the possessive case, the dog's leash was tangled in the tree branches."
+                    }
+                },
+                {
+                    "word": "Quantifiers",
+                    "definition": "Words or phrases that express quantity.",
+                    "context": {
+                        "Context 1": "Quantifiers like 'many,' 'few,' and 'several' help describe amount.",
+                        "Context 2": "He used quantifiers to describe how much effort he put into the project.",
+                        "Context 3": "At the party, there were quantifiers of snack options available, from several chips to many dips."
+                    }
+                },
+                {
+                    "word": "Exercises",
+                    "definition": "Activities designed to help practice or improve skills.",
+                    "context": {
+                        "Context 1": "I completed all the grammar exercises assigned for homework.",
+                        "Context 2": "The exercises for the training session included team-building activities.",
+                        "Context 3": "He did his exercises in the park, enjoying the fresh air while working out."
+                    }
+                },
+                {
+                    "word": "Difficult Topics",
+                    "definition": "Subjects that are challenging to understand or address.",
+                    "context": {
+                        "Context 1": "Articles are considered one of the difficult topics in English grammar.",
+                        "Context 2": "The difficult topics in math can often leave students feeling frustrated.",
+                        "Context 3": "Navigating difficult topics in conversation can require careful handling and empathy."
+                    }
+                },
+                {
+                    "word": "Mistakes",
+                    "definition": "Errors made in doing or understanding something.",
+                    "context": {
+                        "Context 1": "Many learners make mistakes with articles in English.",
+                        "Context 2": "She regretted her mistakes in the project presentation due to lack of preparation.",
+                        "Context 3": "Everyone makes mistakes; it's part of the human experience!"
+                    }
+                },
+                {
+                    "word": "Clarify",
+                    "definition": "To make something clear or easier to understand.",
+                    "context": {
+                        "Context 1": "The teacher tried to clarify the rules regarding articles for the students.",
+                        "Context 2": "During the meeting, he needed to clarify his position on the issue.",
+                        "Context 3": "He used a diagram to clarify the complex process for the audience."
+                    }
+                },
+                {
+                    "word": "Grammar",
+                    "definition": "The system and structure of a language, including rules of syntax, morphology, and punctuation.",
+                    "context": {
+                        "Context 1": "Understanding grammar is essential for writing well in English.",
+                        "Context 2": "In her free time, she enjoyed studying grammar from different languages.",
+                        "Context 3": "The grammar mistakes in his speech made it difficult for the audience to follow."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Article",
+                    "fact": "Did you know that in French, the word for 'the' has four different forms depending on gender and number?"
+                },
+                {
+                    "word": "Possessive",
+                    "fact": "The possessive case can make your family tree look like a multiple-choice question!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the grammar teacher break up with the mathematician?",
+                    "answer": "Because they always had too many problems!"
+                },
+                {
+                    "question": "Why don’t we ask possessives how they feel?",
+                    "answer": "Because they always talk about what they own!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How did you do on that English test?"
+                },
+                {
+                    "Person 2": "Oh, I did pretty well! I scored a 94. What about you?"
+                },
+                {
+                    "Person 1": "Nice! I just barely passed, got an 81. Still better than my Russian though."
+                },
+                {
+                    "Person 2": "That's good! I heard your friend aced it with a 100, right?"
+                },
+                {
+                    "Person 1": "Yeah! She was so excited when she rushed in to tell me."
+                },
+                {
+                    "Person 2": "I can imagine! It must feel great receiving a score like that."
+                },
+                {
+                    "Person 1": "For sure! So, have you thought about taking the IELTS again?"
+                },
+                {
+                    "Person 2": "I have! I might do it just for fun and to collect some stats. You know how I am."
+                },
+                {
+                    "Person 1": "That sounds like you! But seriously, why take it more than twice?"
+                },
+                {
+                    "Person 2": "Well, there's always room for improvement, plus I like the challenge."
+                },
+                {
+                    "Person 1": "True! But I think I’d rather just relax than keep retesting myself."
+                },
+                {
+                    "Person 2": "Ha! Understandable. We all have our ways of having fun."
+                },
+                {
+                    "Person 1": "Speaking of fun, have you seen those crazy stories about kids getting tricked online?"
+                },
+                {
+                    "Person 2": "Yeah, I read a couple of those. It's wild how they can get tricked into giving away personal info."
+                },
+                {
+                    "Person 1": "Exactly! It’s scary to think about, but it’s happening more often."
+                },
+                {
+                    "Person 2": "Right? We should probably talk to our younger siblings about being careful online."
+                },
+                {
+                    "Person 1": "Definitely! Alright, let's wrap this up and make sure to check on them."
+                },
+                {
+                    "Person 2": "Good idea! Let’s catch up later."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you ever get a chance to check out that grammar topic on articles I sent you?"
+                },
+                {
+                    "Person 2": "Oh, I did! It was interesting, but honestly, I didn’t dive too deep into it."
+                },
+                {
+                    "Person 1": "No worries! Articles can be tricky. I feel like I mess up on them all the time."
+                },
+                {
+                    "Person 2": "Right? Sometimes I just guess which one to use, and it's usually wrong."
+                },
+                {
+                    "Person 1": "Same here! Countable and uncountable nouns are easier for me, but articles? Ugh."
+                },
+                {
+                    "Person 2": "Yeah, I can usually tell what's countable, but those articles always get me."
+                },
+                {
+                    "Person 1": "What about that possessive case we talked about? Did you find that one easier?"
+                },
+                {
+                    "Person 2": "Kind of! I mean, saying things like 'the children's toys' makes sense, but sometimes I trip up."
+                },
+                {
+                    "Person 1": "Totally! I tried using it in a sentence, but I think I got it wrong. Made my teacher cringe!"
+                },
+                {
+                    "Person 2": "Oh man, that’s the worst! But we’ll get it eventually, right?"
+                },
+                {
+                    "Person 1": "Definitely! I just need to practice a bit more and pay attention."
+                },
+                {
+                    "Person 2": "Same here! Maybe we should do some exercises together next time?"
+                },
+                {
+                    "Person 1": "Great idea! Let’s plan for that in a week or so."
+                },
+                {
+                    "Person 2": "Sounds good! And hey, don’t stress too much about it!"
+                },
+                {
+                    "Person 1": "Thanks! I appreciate it. Catch you later!"
+                },
+                {
+                    "Person 2": "See you! And remember to take care of that paperwork—don’t want it piling up!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
