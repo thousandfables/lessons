@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "tolku is Tibet religion.",
+                    "corrected": "tolku is a Tibetan religion.",
+                    "explanation": "The article 'a' is needed for grammatical correctness, and 'Tibet' should be used as an adjective form, 'Tibetan.'",
+                    "context": "I was discussing different religions in the lesson. I mentioned that tolku is a Tibetan religion. However, I don't really understand it."
+                },
+                {
+                    "original": "And I think I was looking stupid, but I wanted to tell about film, not about religion.",
+                    "corrected": "And I think I looked stupid, but I wanted to talk about the film, not about religion.",
+                    "explanation": "Here, 'was looking' can be simplified to 'looked' to convey a completed action; 'talk about the film' is the correct phrase.",
+                    "context": "I expressed my feelings about the presentation experience. I think I looked stupid during the discussion, but I had really wanted to talk about the film."
+                },
+                {
+                    "original": "And I wanted to spark interest in you ungrateful bastards.",
+                    "corrected": "And I wanted to spark your interest, you ungrateful bastards.",
+                    "explanation": "The phrase 'spark interest in you' is incorrect; it should be 'spark your interest' for clarity.",
+                    "context": "While expressing my frustration with the audience's questions, I mentioned how I wanted to spark their interest. I called them ungrateful bastards for not engaging with the film topic."
+                },
+                {
+                    "original": "this one is at least 250 words. This one is at least 150 words.",
+                    "corrected": "This one requires at least 250 words, and this one requires at least 150 words.",
+                    "explanation": "Changing 'is' to 'requires' clarifies the necessity of the word count for each task.",
+                    "context": "During the lesson, I clarified the requirements for writing tasks. I explained that one task requires at least 250 words while the other requires at least 150 words."
+                },
+                {
+                    "original": "and this is ideas.",
+                    "corrected": "and this is about ideas.",
+                    "explanation": "The phrase needs clarification; 'about ideas' adds context to the subject being discussed.",
+                    "context": "As I discussed essay writing, I pointed out that vocabulary and grammar are crucial. I emphasized that ideas are just as important."
+                },
+                {
+                    "original": "you are not constrained to anything you're not limited.",
+                    "corrected": "You are not constrained to anything; you are not limited.",
+                    "explanation": "The sentence is missing a conjunction or punctuation and needs clarity; adding a semicolon improves the sentence structure.",
+                    "context": "While discussing the freedom in essay topics, I reassured that students are not constrained. They are free to express their thoughts as they see fit."
+                },
+                {
+                    "original": "Yeah, but like it can also be, you know, like private private companies transporting goods like for logistics.",
+                    "corrected": "Yeah, but it can also include private companies transporting goods for logistics.",
+                    "explanation": "Repetitive phrasing and filler words ('like') make the sentence less clear; simplifying improves understanding.",
+                    "context": "When the topic of transport came up, I mentioned that it can also involve private companies. They play a significant role in logistics."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "what would you be more happy to see",
+                    "corrected": "what would you be happier to see",
+                    "explanation": "The adjective 'happy' should be in the comparative form 'happier' when comparing two things.",
+                    "context": "I was discussing transport options. I asked the question about what would make you happier: great roads or great railways. It’s important to find out what people prefer."
+                },
+                {
+                    "original": "most of people comfort",
+                    "corrected": "most people’s comfort",
+                    "explanation": "The phrase 'most of people' is incorrect; it should be 'most people' and possessive form 'people’s' indicates ownership.",
+                    "context": "We were considering what is more important for people in Russia. Most people’s comfort is vital for discussing transportation needs in urban settings."
+                },
+                {
+                    "original": "the most um now we have to write an example",
+                    "corrected": "the most common example we can provide is",
+                    "explanation": "The phrase 'the most um now we have to write' lacks clarity and structure; it should clearly state what the example is about.",
+                    "context": "In our discussion, we needed to provide examples. The most common example we can provide is how people use trains frequently in Moscow."
+                },
+                {
+                    "original": "they need railways and for example you know people in moscow",
+                    "corrected": "they need railways; for example, people in Moscow",
+                    "explanation": "The use of 'and' instead of a semicolon creates a run-on sentence; a semicolon separates two related independent clauses.",
+                    "context": "We explored the necessity of railways. They need railways; for example, people in Moscow often buy summer houses and require convenient transport."
+                },
+                {
+                    "original": "that's not usually to go to vladivostok",
+                    "corrected": "that’s usually not for going to Vladivostok",
+                    "explanation": "The structure is awkward; 'that's not usually to go' should be rephrased for clarity.",
+                    "context": "I mentioned how frequent train use can sometimes be misconstrued. That’s usually not for going to Vladivostok; trains are more commonly used for closer destinations."
+                },
+                {
+                    "original": "that is very close to moscow",
+                    "corrected": "that are very close to Moscow",
+                    "explanation": "The verb 'is' does not agree with the plural noun 'ways'; 'are' should be used.",
+                    "context": "When discussing affordable summer getaways, I pointed out places that are very close to Moscow. These locations are popular among residents."
+                },
+                {
+                    "original": "when do people in moscow use roads most often in both ways",
+                    "corrected": "when do people in Moscow use roads most often, in both directions",
+                    "explanation": "The phrase 'in both ways' should be 'in both directions' to sound more idiomatic.",
+                    "context": "In our discussion about road usage, I wondered when people in Moscow use roads most often, in both directions. This would help us understand traffic patterns better."
+                },
+                {
+                    "original": "maybe to buy lamborghini to go to varabi over gory",
+                    "corrected": "maybe to buy a Lamborghini and go to Vorobyovy Gory",
+                    "explanation": "Missing articles and capitalization of place names need correction; 'a' is required before Lamborghini, and 'Vorobyovy Gory' needs to be capitalized properly.",
+                    "context": "During the lesson, I humorously suggested reasons for road use. I said, 'Maybe to buy a Lamborghini and go to Vorobyovy Gory,' referring to leisure drives."
+                },
+                {
+                    "original": "if roads were less uh if traffic was less if there were more roads",
+                    "corrected": "if there were fewer roads and less traffic",
+                    "explanation": "'Less' is suitable for uncountable nouns, while 'fewer' should be used for countable nouns like 'roads.'",
+                    "context": "We were discussing traffic issues in Moscow. I pointed out if there were fewer roads and less traffic, it would improve commuting."
+                },
+                {
+                    "original": "you know i like your did you bleach them",
+                    "corrected": "You know I like your hair. Did you bleach it?",
+                    "explanation": "The original sentence run-on structure needs to be corrected for clarity and punctuation. 'Did you bleach them?' should refer to 'it' (the hair).",
+                    "context": "I shifted the topic to a compliment about the student's hair. I said, 'You know I like your hair. Did you bleach it?' to spark a casual conversation."
+                },
+                {
+                    "original": "home shirt yes t-shirt from home i don't know sure for home",
+                    "corrected": "a home shirt, yes, a t-shirt from home. I don’t know, it’s a shirt for home.",
+                    "explanation": "Punctuation and clarity are lacking; it's better to organize the sentence with proper punctuation and structure.",
+                    "context": "We were discussing clothing during the lesson, and I mentioned the shirt the student was wearing. I said, 'A home shirt, yes, a t-shirt from home,' for clarity."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Presentation",
+                    "definition": "The act of presenting information or an idea to an audience.",
+                    "context": {
+                        "Context 1": "During the presentation, I lost track of what I wanted to say about the film.",
+                        "Context 2": "She gave a brilliant presentation on climate change at the conference.",
+                        "Context 3": "The presentation was interrupted by technical difficulties, but he handled it well."
+                    }
+                },
+                {
+                    "word": "Convince",
+                    "definition": "To cause someone to believe firmly in the truth of something.",
+                    "context": {
+                        "Context 1": "I had to convince the audience to see my perspective on the film.",
+                        "Context 2": "He tried to convince his friend to adopt a healthier lifestyle.",
+                        "Context 3": "The lawyer worked hard to convince the jury of her client’s innocence."
+                    }
+                },
+                {
+                    "word": "Audience",
+                    "definition": "The assembled spectators or listeners at an event.",
+                    "context": {
+                        "Context 1": "The audience seemed disengaged during the discussion about religion.",
+                        "Context 2": "The magician captivated the audience with his amazing tricks.",
+                        "Context 3": "She tailored her speech to suit the interests of the audience present."
+                    }
+                },
+                {
+                    "word": "Interest",
+                    "definition": "The feeling of wanting to know or learn about something.",
+                    "context": {
+                        "Context 1": "I wanted to spark interest in the film, but they kept asking about religion.",
+                        "Context 2": "His interest in astronomy grew when he attended a fascinating lecture.",
+                        "Context 3": "The teacher encouraged students to pursue their interests as part of their studies."
+                    }
+                },
+                {
+                    "word": "Spark",
+                    "definition": "To ignite or trigger a response or reaction.",
+                    "context": {
+                        "Context 1": "I aimed to spark interest in the film with my presentation.",
+                        "Context 2": "The discovery of a new element sparked excitement in the scientific community.",
+                        "Context 3": "Her question sparked a lively debate among the participants."
+                    }
+                },
+                {
+                    "word": "Performance",
+                    "definition": "The act of presenting a play, concert, or other artistic representation.",
+                    "context": {
+                        "Context 1": "The performance was bold and captured everyone’s attention.",
+                        "Context 2": "His performance in the school play earned him many compliments.",
+                        "Context 3": "The athlete’s performance at the Olympics was unforgettable."
+                    }
+                },
+                {
+                    "word": "Credit",
+                    "definition": "Recognition or acknowledgment for an achievement or contribution.",
+                    "context": {
+                        "Context 1": "I hope they give credit to my passion for the film during the discussion.",
+                        "Context 2": "She received credit for her hard work on the project from her peers.",
+                        "Context 3": "The scientist received credit for her groundbreaking research in medicine."
+                    }
+                },
+                {
+                    "word": "Essay",
+                    "definition": "A short piece of writing on a particular subject.",
+                    "context": {
+                        "Context 1": "Writing the essay was easier when I had clear ideas to present.",
+                        "Context 2": "He spent hours researching to write a compelling essay on climate change.",
+                        "Context 3": "The teacher assigned a five-paragraph essay to gauge students’ writing skills."
+                    }
+                },
+                {
+                    "word": "Structure",
+                    "definition": "The arrangement or framework of a written work.",
+                    "context": {
+                        "Context 1": "The structure of my essay was crucial for conveying my argument clearly.",
+                        "Context 2": "He used a three-act structure for his screenplay to enhance storytelling.",
+                        "Context 3": "The building's structure was tested to ensure it could withstand earthquakes."
+                    }
+                },
+                {
+                    "word": "Challenge",
+                    "definition": "A task or situation that tests someone's abilities.",
+                    "context": {
+                        "Context 1": "I found it a challenge to speak about religion when I wanted to discuss the film.",
+                        "Context 2": "Landing a major client was a challenge that required teamwork and strategy.",
+                        "Context 3": "The marathon was a challenge that many runners trained hard to complete."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Presentation",
+                    "fact": "Did you know that the first recorded use of PowerPoint was in 1987? Now it feels like it's been around forever!"
+                },
+                {
+                    "word": "Audience",
+                    "fact": "The longest audience for a performance before an audience was held in London at a Royal Variety Performance, back in 1919!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to the presentation?",
+                    "answer": "Because they wanted to take their presentation to the next level!"
+                },
+                {
+                    "question": "Why don’t scientists trust atoms?",
+                    "answer": "Because they make up everything – even presentations!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Mobility",
+                    "definition": "The ability to move or be moved freely and easily.",
+                    "context": {
+                        "Context 1": "Mobility is essential for people who rely on public transport to commute.",
+                        "Context 2": "The new bike lanes improved mobility in the city for cyclists.",
+                        "Context 3": "Many animals exhibit incredible mobility, allowing them to adapt to their environments."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude toward or way of regarding something; a point of view.",
+                    "context": {
+                        "Context 1": "From the perspective of city planners, both railways and roads are crucial.",
+                        "Context 2": "She offered a fresh perspective on the topic during the discussion.",
+                        "Context 3": "His perspective was shaped by growing up in a multicultural environment."
+                    }
+                },
+                {
+                    "word": "Economy",
+                    "definition": "The system of production, consumption, and distribution of goods and services in a society.",
+                    "context": {
+                        "Context 1": "Having more roads could positively impact the economy by improving access.",
+                        "Context 2": "The economy suffered due to the lack of investment in infrastructure.",
+                        "Context 3": "Many people are concerned about the economy during times of political uncertainty."
+                    }
+                },
+                {
+                    "word": "Railway",
+                    "definition": "A track made of steel rails along which trains run.",
+                    "context": {
+                        "Context 1": "Railways can facilitate travel between cities that lack adequate road systems.",
+                        "Context 2": "The railway station was bustling with passengers eager to board their trains.",
+                        "Context 3": "In some countries, railway travel is the fastest way to reach the countryside."
+                    }
+                },
+                {
+                    "word": "Traffic",
+                    "definition": "The movement of vehicles and pedestrians in a given area.",
+                    "context": {
+                        "Context 1": "Traffic can be reduced with more extensive road networks.",
+                        "Context 2": "He spent an hour in traffic just to get to his friend's house.",
+                        "Context 3": "Wildlife crossing signs are important for minimizing traffic accidents involving animals."
+                    }
+                },
+                {
+                    "word": "Commute",
+                    "definition": "Travel some distance between one's home and place of work on a regular basis.",
+                    "context": {
+                        "Context 1": "People often commute by bus or train to reach their jobs in the city.",
+                        "Context 2": "Commuting can be stressful if it takes too long.",
+                        "Context 3": "Some people enjoy the peace of reading during their daily commute."
+                    }
+                },
+                {
+                    "word": "Infrastructure",
+                    "definition": "The basic physical systems of a country's or community's transportation and communication.",
+                    "context": {
+                        "Context 1": "Investing in infrastructure is important for improving public transport options.",
+                        "Context 2": "The city’s infrastructure needs updates to accommodate the growing population.",
+                        "Context 3": "In many rural areas, the lack of infrastructure can hinder economic development."
+                    }
+                },
+                {
+                    "word": "Subway",
+                    "definition": "An underground electric railway system used for mass transit in urban areas.",
+                    "context": {
+                        "Context 1": "Using the subway can be quicker than taking a bus in a busy city.",
+                        "Context 2": "He prefers the subway because it avoids traffic jams on the roads.",
+                        "Context 3": "In some places, the subway is the most reliable form of transportation."
+                    }
+                },
+                {
+                    "word": "Convenient",
+                    "definition": "Easy to use or access; suitable for a particular purpose.",
+                    "context": {
+                        "Context 1": "Railways provide a convenient option for those without cars.",
+                        "Context 2": "The store has convenient hours for busy shoppers.",
+                        "Context 3": "A convenient feature of this app is its user-friendly interface."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A mental view or outlook.",
+                    "context": {
+                        "Context 1": "The lesson emphasized understanding different perspectives on transportation.",
+                        "Context 2": "Artists often use perspective to create depth in paintings.",
+                        "Context 3": "Understanding her teacher's perspective helped students appreciate the lesson."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Economy",
+                    "fact": "Did you know that the word 'economy' comes from the Greek word 'oikonomia,' which means 'household management'? Let's hope our household budgets do better!"
+                },
+                {
+                    "word": "Mobility",
+                    "fact": "The fastest land animal, the cheetah, has such great mobility that it can reach speeds of up to 75 miles per hour in short bursts!"
+                },
+                {
+                    "word": "Subway",
+                    "fact": "The world's longest subway system is the Shanghai Metro, which has a total length of over 700 kilometers! That's a lot of underground travel!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why don't bicycles ever get lost?",
+                    "answer": "Because they always follow the 'cycle' path!"
+                },
+                {
+                    "question": "Why did the road break up with the railway?",
+                    "answer": "Because it felt like they were going in different directions!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that film last night? The one everyone’s talking about?"
+                },
+                {
+                    "Person 2": "Yeah, I did! I couldn’t believe how good it was. What did you think?"
+                },
+                {
+                    "Person 1": "I loved it! But I found the ending kind of confusing. Like, what was up with that twist?"
+                },
+                {
+                    "Person 2": "Right? I was totally not expecting that! I had to sit there and think about it for a minute."
+                },
+                {
+                    "Person 1": "Same here! I wanted to talk about the storyline, but everyone kept asking about the director's influences."
+                },
+                {
+                    "Person 2": "Ugh, that’s the worst! I mean, sure, it’s cool to know, but sometimes you just want to enjoy the movie."
+                },
+                {
+                    "Person 1": "Exactly! It’s like, can we just appreciate the film for what it is? I wanted to hear more about the characters."
+                },
+                {
+                    "Person 2": "Yes! The character development was amazing. I really felt for the main guy."
+                },
+                {
+                    "Person 1": "Me too! I thought his struggles were so relatable. It made the whole story hit harder."
+                },
+                {
+                    "Person 2": "Totally! And the cinematography, wow! It was so visually stunning."
+                },
+                {
+                    "Person 1": "For sure! I could talk about that movie forever. Do you think we should just start a film club?"
+                },
+                {
+                    "Person 2": "Haha! That’s not a bad idea. We could meet up and discuss new releases every week."
+                },
+                {
+                    "Person 1": "Yeah, and we can also invite more friends! Could be a fun way to hang out."
+                },
+                {
+                    "Person 2": "Count me in! Let’s plan out our first meeting soon."
+                },
+                {
+                    "Person 1": "Awesome! I can’t wait to dive deeper into film talk!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Do you prefer trains or good roads for getting around?"
+                },
+                {
+                    "Person 2": "Definitely trains! I don’t drive, so I rely on public transport a lot."
+                },
+                {
+                    "Person 1": "Same here! Trains are just so convenient for traveling between cities."
+                },
+                {
+                    "Person 2": "Totally! But I guess roads are important for everyday stuff in the city too."
+                },
+                {
+                    "Person 1": "True! I mostly use buses and the subway myself. What about you?"
+                },
+                {
+                    "Person 2": "I’m all about the metro. It’s quick and gets me where I need to go."
+                },
+                {
+                    "Person 1": "Yeah, metro systems can really save a lot of time during rush hour."
+                },
+                {
+                    "Person 2": "Exactly! But when summer rolls around, I know people love heading out of the city."
+                },
+                {
+                    "Person 1": "Right? A lot of folks escape to their summer houses. Those train rides come in handy then."
+                },
+                {
+                    "Person 2": "For sure! It’s like a mini vacation every weekend for them."
+                },
+                {
+                    "Person 1": "So, would you say roads are just as vital for city life, then?"
+                },
+                {
+                    "Person 2": "Definitely! I mean, people need to drive to work, run errands, and all that."
+                },
+                {
+                    "Person 1": "And we could always use more roads to help reduce traffic!"
+                },
+                {
+                    "Person 2": "For sure! Less traffic means happier commuters and a better economy."
+                },
+                {
+                    "Person 1": "I can’t imagine my mornings without a smooth drive!"
+                },
+                {
+                    "Person 2": "Right? So, it really comes down to a balance between roads and railways."
+                },
+                {
+                    "Person 1": "Exactly! Both are crucial for a city to thrive."
+                },
+                {
+                    "Person 2": "And thankfully, we have options to get around. It really helps!"
+                },
+                {
+                    "Person 1": "Absolutely! So, what’s on your agenda tonight?"
+                },
+                {
+                    "Person 2": "Just chilling and planning trips for the summer! Want to join?"
+                },
+                {
+                    "Person 1": "Sounds fun! Let’s plan something cool!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
