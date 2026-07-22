@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 5,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "Because we went to Laotia to buy a MacBook there.",
+                    "corrected": "Because we went to Laos to buy a MacBook there.",
+                    "explanation": "Laotia is incorrect; the correct name of the country is Laos.",
+                    "context": "I wanted to get my hands on a new computer. Because we went to Laos to buy a MacBook there. It seemed like a good place to find one."
+                },
+                {
+                    "original": "Are you calling from a MacBook right now?",
+                    "corrected": "Are you using a MacBook to call right now?",
+                    "explanation": "The term 'calling from' is awkward; 'using' is more appropriate to describe the situation.",
+                    "context": "I'm curious about your setup. Are you using a MacBook to call right now? It seems like a convenient choice."
+                },
+                {
+                    "original": "I think it's my fourth MacBook.",
+                    "corrected": "I think it's my fourth MacBook.",
+                    "explanation": "No need for correction; this sentence is already correct.",
+                    "context": "I've had a few of these devices over the years. I think it's my fourth MacBook. They've been reliable for me."
+                },
+                {
+                    "original": "What is the average time one MacBook...",
+                    "corrected": "What is the average lifespan of one MacBook...",
+                    "explanation": "The term 'average time' is vague; 'average lifespan' specifies the duration of use.",
+                    "context": "I'm trying to gauge how long these devices typically last. What is the average lifespan of one MacBook? I want to know about overall reliability."
+                },
+                {
+                    "original": "you had like one MacBook.",
+                    "corrected": "you had one MacBook.",
+                    "explanation": "'Like' is unnecessary here and makes the sentence less formal.",
+                    "context": "I want to know about your experience with MacBooks. You had one MacBook. Did it meet your expectations?"
+                },
+                {
+                    "original": "Because sometimes I want more new devices like facial camera.",
+                    "corrected": "Because sometimes I want newer devices with features like a facial camera.",
+                    "explanation": "The phrase 'more new devices' is awkward. 'Newer devices' is more natural, and 'facial camera' needs 'a' for clarity.",
+                    "context": "I'm looking to upgrade for better functionality. Because sometimes I want newer devices with features like a facial camera. It enhances my experience."
+                },
+                {
+                    "original": "I have just a very solid gaming laptop from HP.",
+                    "corrected": "I just have a very solid gaming laptop from HP.",
+                    "explanation": "The positioning of 'just' is better placed before the verb 'have' for clearer emphasis.",
+                    "context": "While I use Apple products, I also rely on other brands. I just have a very solid gaming laptop from HP. It serves my gaming needs."
+                },
+                {
+                    "original": "it's so useful devices.",
+                    "corrected": "they're such useful devices.",
+                    "explanation": "'It's' should be 'they're' to correctly refer to multiple devices; 'such' fits better than 'so' in this context.",
+                    "context": "I appreciate the functionality of my tech. They're such useful devices. They integrate well with everything."
+                },
+                {
+                    "original": "can you name maybe a couple, like two or three features that you like most, you know, about like Apple devices?",
+                    "corrected": "Can you name maybe a couple, like two or three features that you like most about Apple devices?",
+                    "explanation": "'About like' should be streamlined to just 'about' for improved clarity.",
+                    "context": "I'm interested in what attracts you to the brand. Can you name maybe a couple, like two or three features that you like most about Apple devices? I'm curious."
+                },
+                {
+                    "original": "you can get your information and photos and contacts to a new phone.",
+                    "corrected": "you can transfer your information, photos, and contacts to a new phone.",
+                    "explanation": "The verb 'get' is vague; 'transfer' is more specific and appropriate in this context.",
+                    "context": "Transferring data can be a hassle. You can transfer your information, photos, and contacts to a new phone. It simplifies the process."
+                },
+                {
+                    "original": "like you set everything up, it takes like at least three hours.",
+                    "corrected": "setting everything up takes at least three hours.",
+                    "explanation": "'Like' is unnecessary and makes the sentence less formal; 'it takes' simplifies the structure.",
+                    "context": "The process can be frustrating for many users. Setting everything up takes at least three hours. It's a hassle for sure."
+                },
+                {
+                    "original": "Imagine you on the vacation and you crashed your phone.",
+                    "corrected": "Imagine being on vacation and crashing your phone.",
+                    "explanation": "The structure is awkward; 'Imagine being' is more natural than 'Imagine you on.'",
+                    "context": "A scenario could show how handy tech can be. Imagine being on vacation and crashing your phone. It's a nightmare situation."
+                },
+                {
+                    "original": "And we are just to connect with a new phone and we are going all of them information to a new phone.",
+                    "corrected": "And we just connect to the new phone and transfer all that information to it.",
+                    "explanation": "'Are just to connect' is incorrect; it should be 'just connect' for clarity, and 'we are going all of them information' is awkward.",
+                    "context": "It is really convenient to switch devices. And we just connect to the new phone and transfer all that information to it. It's a smooth procedure."
+                },
+                {
+                    "original": "you like you have to constantly do backups.",
+                    "corrected": "you have to constantly do backups.",
+                    "explanation": "The phrase 'you like you' is redundant and should be simplified to maintain the flow.",
+                    "context": "Maintaining data security is key. You have to constantly do backups. It's essential for peace of mind."
+                },
+                {
+                    "original": "How it prance...Uploads, downloads, backups? Offered you.",
+                    "corrected": "How does it work for uploads, downloads, backups?",
+                    "explanation": "'How it prance' is incorrect; it should be 'How does it work.' 'Offered you' is also unclear in this context.",
+                    "context": "I'm unclear about the process. How does it work for uploads, downloads, backups? Understanding it will help me manage my devices better."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "the same backup who rewriting on your previous backup.",
+                    "corrected": "the same backup that is rewriting on your previous backup.",
+                    "explanation": "'Who' should be 'that' when referring to inanimate objects like backups. 'Is' should be included for grammatical accuracy.",
+                    "context": "When discussing how backups function, it's important to clarify. The same backup that is rewriting on your previous backup will keep the latest information. So, you don’t need to keep multiple copies of the same backup."
+                },
+                {
+                    "original": "working with text model.",
+                    "corrected": "working with text files.",
+                    "explanation": "The term 'model' is not appropriate here; 'files' is the correct noun to describe text documents in this context.",
+                    "context": "I often work on my computer, focusing on documents. I am working with text files and images, which are essential for my tasks."
+                },
+                {
+                    "original": "can you say that you are a good, that you are a careful user?",
+                    "corrected": "can you say that you are a careful user?",
+                    "explanation": "The repetition of 'that you are' is unnecessary and makes the sentence awkward. The phrasing can be simplified.",
+                    "context": "When discussing my computer usage, it’s important to convey my care for my devices. I can say that I am a careful user and always handle my technology responsibly."
+                },
+                {
+                    "original": "this thing costs like a lot.",
+                    "corrected": "this thing costs a lot.",
+                    "explanation": "The phrase 'like a lot' is informal and redundant; 'a lot' suffices for clarity.",
+                    "context": "When talking about technology investments, it's crucial to be direct. This thing costs a lot and is an important purchase."
+                },
+                {
+                    "original": "because I don't need more space. I don't have high weight files.",
+                    "corrected": "because I don't need more space. I don't have large files.",
+                    "explanation": "'High weight files' is not standard English; the correct term is 'large files' to describe file size.",
+                    "context": "I manage my storage effectively, so I don't feel the need for more space. I don't have large files that would require additional storage."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "I think more more cooler country, more north than Italy.",
+                    "corrected": "I think France is a cooler country, more north than Italy.",
+                    "explanation": "The original phrase lacks the subject 'France,' making it unclear. 'More cooler' is also incorrect; 'cooler' is sufficient.",
+                    "context": "When discussing the characteristics of different countries, I think France is a cooler country, more north than Italy. This influences the type of wines they produce."
+                },
+                {
+                    "original": "It's good where?",
+                    "corrected": "It's good in its own way.",
+                    "explanation": "The original phrasing is incomplete and ungrammatical. A more structured approach is needed.",
+                    "context": "In a conversation about Italian and French wines' merits, I clarified, 'It's good in its own way.' It illustrates how both have their unique qualities."
+                },
+                {
+                    "original": "Like French people are very sophisticated.",
+                    "corrected": "French people are very sophisticated.",
+                    "explanation": "The use of 'like' is unnecessary and makes the statement informal. A more direct statement is preferred.",
+                    "context": "While discussing the perception of French culture, I said, 'French people are very sophisticated.' This highlights the common stereotype."
+                },
+                {
+                    "original": "It's just like, you know, like, you know.",
+                    "corrected": "It's just like, you know.",
+                    "explanation": "The repetition of 'like, you know' is redundant. Keeping it concise improves clarity.",
+                    "context": "As I reflected on the weather's impact on our conversation, I said, 'It's just like, you know,' avoiding extra fillers helps the sentence flow better."
+                },
+                {
+                    "original": "It's a vacation in the future.",
+                    "corrected": "It's a vacation I am looking forward to in the future.",
+                    "explanation": "The original lacks clarity in intention. Adding 'I am looking forward to' clarifies the speaker's excitement about future plans.",
+                    "context": "When asked about future plans, I mentioned, 'It's a vacation I am looking forward to in the future.' It indicates my eagerness."
+                },
+                {
+                    "original": "But what are you feeling right now?",
+                    "corrected": "But how are you feeling right now?",
+                    "explanation": "'What are you feeling' is less idiomatic than 'how are you feeling,' which is the more common inquiry about emotions.",
+                    "context": "During a deeper conversation about feelings and desires, I transitioned with, 'But how are you feeling right now?' showing interest in the person's current state."
+                },
+                {
+                    "original": "I want to have that.",
+                    "corrected": "I want to experience that.",
+                    "explanation": "The phrase 'have that' is vague and informal. 'Experience that' is more precise and conveys a deeper desire.",
+                    "context": "In expressing anticipation for future plans, I said, 'I want to experience that.' This makes my intentions more clear."
+                },
+                {
+                    "original": "What makes you excited? Like, is there is there anything that makes you like, like, you know, anticipation that builds up anticipation inside?",
+                    "corrected": "What makes you excited? Is there anything that builds up anticipation inside you?",
+                    "explanation": "Repetitive phrases and filler words weaken the question. It is better to be direct and clear.",
+                    "context": "I was inquiring about someone's interests and excitement levels, so I simplified my query: 'What makes you excited? Is there anything that builds up anticipation inside you?'"
+                },
+                {
+                    "original": "Maybe your heart wants, you know, like sea or sun or the opposite mountains.",
+                    "corrected": "Maybe your heart wants the sea, the sun, or the opposite, the mountains.",
+                    "explanation": "Phrasing like 'you know' and 'like' are unnecessary and informal. Proper punctuation helps delineate options.",
+                    "context": "In exploring vacation desires, I said, 'Maybe your heart wants the sea, the sun, or the opposite, the mountains.' This clarifies my options and enhances understanding."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I like I like an action.",
+                    "corrected": "I like action.",
+                    "explanation": "The phrase 'I like an action' is incorrect; 'action' should not have the article 'an' in this context.",
+                    "context": "I prefer activities that involve movement. I like action. Lying on the beach is just too boring for me."
+                },
+                {
+                    "original": "exit like but then accidentally I had to go to a fancy pen to the peak of this bloody mountain.",
+                    "corrected": "I accidentally had to go to the peak of this bloody mountain.",
+                    "explanation": "The phrase 'exit like' is incorrect and should be omitted for clarity.",
+                    "context": "I thought I liked hiking, but then, accidentally, I had to go to the peak of this bloody mountain. It was a tough climb."
+                },
+                {
+                    "original": "the first like four hour",
+                    "corrected": "the first four hours",
+                    "explanation": "'the first like four hour' is incorrect; 'hours' should be plural and 'like' is unnecessary here.",
+                    "context": "In the first four hours, I really struggled with the hike. It was such a roller coaster."
+                },
+                {
+                    "original": "I was going to be there.",
+                    "corrected": "I was going to be stuck there.",
+                    "explanation": "'I was going to be there' is vague; 'stuck there' better conveys the sense of being trapped in the situation.",
+                    "context": "Three hours passed and I realized that I was going to be stuck there. Honestly, hiking felt unbearable at that moment."
+                },
+                {
+                    "original": "I would but I but I was at that time I was enjoying it.",
+                    "corrected": "I was enjoying it at that time.",
+                    "explanation": "The original statement is confusing due to repetition and awkward structure; it should be streamlined.",
+                    "context": "I was tired and soaked, but at that time, I was enjoying it. It took me five hours to start enjoying the hike."
+                },
+                {
+                    "original": "it's not hiking.",
+                    "corrected": "It's just walking.",
+                    "explanation": "'it's not hiking' lacks clarity; 'It's just walking' more accurately describes the activity.",
+                    "context": "I think two hours of that is not hiking at all. It's just walking, really. I prefer more intense hikes."
+                },
+                {
+                    "original": "What kind of like do you like intense hiking?",
+                    "corrected": "What kind of hiking do you like?",
+                    "explanation": "'What kind of like do you like' is awkward; it should directly ask about the type of hiking.",
+                    "context": "I wondered about their hiking preferences. What kind of hiking do you like? Do you enjoy intense hikes?"
+                },
+                {
+                    "original": "it's a special aggressive.",
+                    "corrected": "It's a special aggressive type.",
+                    "explanation": "The phrase 'it's a special aggressive' is incomplete; it should specify that it refers to a type of shoe.",
+                    "context": "Shoes for hiking need specific qualities. It's a special aggressive type designed for rough terrain."
+                },
+                {
+                    "original": "aggressive form.",
+                    "corrected": "aggressive shape.",
+                    "explanation": "In this context, 'shape' is a more suitable term than 'form' to describe the shoe structure.",
+                    "context": "A suitable shoe should have an aggressive shape to grip the rocks well. It needs to be functional."
+                },
+                {
+                    "original": "like waterproof.",
+                    "corrected": "They need to be waterproof.",
+                    "explanation": "The original phrase is incomplete and unclear; it should clearly state the requirement of waterproofing.",
+                    "context": "Shoes must have specific qualities. They need to be waterproof, especially during long hikes."
+                },
+                {
+                    "original": "your feet go into going off.",
+                    "corrected": "your feet feel soaked.",
+                    "explanation": "'go into going off' is unclear and should use a more straightforward expression.",
+                    "context": "When hiking, your shoes can get wet. Eventually, your feet feel soaked, which is uncomfortable."
+                },
+                {
+                    "original": "like around 5000 rubles.",
+                    "corrected": "around 5000 rubles.",
+                    "explanation": "The phrase 'like around' is redundant; it is sufficient to say 'around' for clarity.",
+                    "context": "I bought shoes that cost around 5000 rubles. They were an investment for my hiking adventures."
+                },
+                {
+                    "original": "or just a bag?",
+                    "corrected": "or just a bag?",
+                    "explanation": "The phrasing is awkward and should be revised for natural flow.",
+                    "context": "When preparing for a hike, you need to consider what to carry. Do you think a backpack is necessary or just a bag?"
+                },
+                {
+                    "original": "snake break sounds like you stopped for a snake.",
+                    "corrected": "snake break sounds like you stopped for a snake.",
+                    "explanation": "The sentence lacks clarity and should be revised to sound more natural.",
+                    "context": "When I mentioned a 'snake break,' it was meant humorously. Snake break sounds like you're stopping for a snake, doesn't it?"
+                },
+                {
+                    "original": "you got to buy expensive shoes.",
+                    "corrected": "You need to buy expensive shoes.",
+                    "explanation": "The phrase 'you got to' is informal; 'you need to' is a more appropriate way to express necessity.",
+                    "context": "For serious hikers, good gear is essential. You need to buy expensive shoes if you want to avoid issues on the trail."
+                },
+                {
+                    "original": "A shirt. Not a shirt.",
+                    "corrected": "Not a regular shirt.",
+                    "explanation": "The original phrasing is confusing; clarify by stating 'not a regular shirt' to distinguish between types of shirts.",
+                    "context": "When discussing clothing, I pointed out that you need certain items for hiking. Not a regular shirt; you need something more durable."
+                },
+                {
+                    "original": "and maybe some.",
+                    "corrected": "and maybe some other snacks.",
+                    "explanation": "The original statement is incomplete; it should specify that more snacks might be included for clarity.",
+                    "context": "When considering food for hikes, I usually pack peanuts. I also bring other snacks to keep my energy up."
+                },
+                {
+                    "original": "But why peanuts? Why?",
+                    "corrected": "But why peanuts?",
+                    "explanation": "The repetition of 'Why' is unnecessary and should be removed for clearer questioning.",
+                    "context": "In discussing nutrition, I emphasized the importance of snacks. But why peanuts? They have specific benefits for energy."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "I think everyday climbers not going to mountain with oxygen less.",
+                    "corrected": "I think everyday climbers don't go to mountains without oxygen.",
+                    "explanation": "The original sentence uses 'not' incorrectly and lacks proper verb conjugation; 'don't go' is needed while 'mountain' should be plural.",
+                    "context": "In our discussion about climbers, I mentioned how everyday climbers don't go to mountains without oxygen. It's not a common practice for them."
+                },
+                {
+                    "original": "It's not for usual using.",
+                    "corrected": "It's not for usual use.",
+                    "explanation": "'Usual using' is incorrect; 'usual use' is the correct noun form for 'use' in this context.",
+                    "context": "While talking about oxygen tanks, I pointed out that it's not for usual use. Only professional climbers typically use them."
+                },
+                {
+                    "original": "It's only just professional people.",
+                    "corrected": "It's only for professional people.",
+                    "explanation": "The word 'for' is necessary here; 'only just' is redundant.",
+                    "context": "I was explaining that oxygen tanks are only for professional people. Everyday climbers don't need them."
+                },
+                {
+                    "original": "They climb only short mountains, not tall big mountains.",
+                    "corrected": "They only climb short mountains, not tall ones.",
+                    "explanation": "The phrase 'tall big mountains' is awkward; 'tall ones' is a more idiomatic expression.",
+                    "context": "Discussing the types of mountains climbed by everyday climbers, I stated that they only climb short mountains, not tall ones."
+                },
+                {
+                    "original": "You have so many interesting hobbies, like, you know, climbing, like... What did we discuss?",
+                    "corrected": "You have so many interesting hobbies, like climbing. What did we discuss?",
+                    "explanation": "The repetition of 'like' and 'you know' is unnecessary and makes the sentence confusing.",
+                    "context": "Reflecting on Dima’s hobbies, I remarked that he has so many interesting ones, particularly climbing. I then tried to recall what we had previously discussed."
+                },
+                {
+                    "original": "It's a lot, it's a very emotional thing.",
+                    "corrected": "It's a lot; it's a very emotional experience.",
+                    "explanation": "Using 'thing' is too vague; 'experience' is a clearer and more specific term.",
+                    "context": "I was expressing how climbing is a lot and a very emotional experience. It must be shared through pictures and videos."
+                },
+                {
+                    "original": "If you don't post them, they just die.",
+                    "corrected": "If you don't post them, those emotions fade away.",
+                    "explanation": "'They just die' is overly dramatic; 'fade away' is a more natural expression in this context.",
+                    "context": "I emphasized the importance of sharing emotions through posts. If you don't post them, those emotions fade away."
+                },
+                {
+                    "original": "I have it in my Telegram.",
+                    "corrected": "I have them in my Telegram.",
+                    "explanation": "'It' should be 'them' because multiple photos or videos are being referred to.",
+                    "context": "While discussing sharing photos, I said that I have them in my Telegram. I wanted to make it clear that I have multiple items to share."
+                },
+                {
+                    "original": "In your Telegram profile, I have photos.",
+                    "corrected": "In my Telegram profile, I have photos.",
+                    "explanation": "The original 'I have photos' suggests it's Dima's profile; the subject should be 'my' instead of 'your.'",
+                    "context": "Continuing our conversation, I clarified that in my Telegram profile, I have photos from my hiking adventures."
+                },
+                {
+                    "original": "Maybe you need to, like, add me to friends or something so that I can see those pictures.",
+                    "corrected": "Maybe you need to add me as a friend so that I can see those pictures.",
+                    "explanation": "The phrase 'add me to friends' is awkward; 'add me as a friend' is the correct expression.",
+                    "context": "I suggested that Dima might need to add me as a friend to see the photos I'm talking about. It's a common way to share content."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "MacBook",
+                    "definition": "A brand of laptop computers designed and marketed by Apple Inc.",
+                    "context": {
+                        "Context 1": "My friend just bought a MacBook for school, and she loves it.",
+                        "Context 2": "I bought a MacBook, but I'm not sure how to use it yet.",
+                        "Context 3": "Many professionals prefer using a MacBook due to its reliability."
+                    }
+                },
+                {
+                    "word": "Long-lasting",
+                    "definition": "Able to continue for a long time without significant deterioration.",
+                    "context": {
+                        "Context 1": "I believe that my MacBook is a long-lasting device since it works well after several years.",
+                        "Context 2": "This brand of batteries is known for its long-lasting power in small appliances.",
+                        "Context 3": "The long-lasting paint on the exterior of the house has not faded in years."
+                    }
+                },
+                {
+                    "word": "Ecosystem",
+                    "definition": "A complex network or interconnected system, particularly in technology.",
+                    "context": {
+                        "Context 1": "My friend has an entire ecosystem of Apple devices, including the iPhone and iPad.",
+                        "Context 2": "The rainforest is a rich ecosystem that supports diverse species.",
+                        "Context 3": "In the world of technology, a well-designed ecosystem can enhance user experience across devices."
+                    }
+                },
+                {
+                    "word": "Features",
+                    "definition": "Distinctive attributes or aspects of something.",
+                    "context": {
+                        "Context 1": "I love the features of my MacBook, like the facial recognition and easy file sharing.",
+                        "Context 2": "The new smartphone has impressive features including a high-resolution camera.",
+                        "Context 3": "Most cars now come with safety features like backup cameras and automated braking."
+                    }
+                },
+                {
+                    "word": "Backup",
+                    "definition": "A copy of data stored separately to prevent loss in case of failure.",
+                    "context": {
+                        "Context 1": "I regularly backup my MacBook to ensure that my data is saved in case anything goes wrong.",
+                        "Context 2": "It's important to backup your files before upgrading your computer's operating system.",
+                        "Context 3": "He called his friend for a backup when he couldn't solve the problem alone."
+                    }
+                },
+                {
+                    "word": "Connect",
+                    "definition": "To join or link together.",
+                    "context": {
+                        "Context 1": "You can connect your new MacBook to your old one to transfer files easily.",
+                        "Context 2": "The teacher asked the students to connect the dots in the puzzle.",
+                        "Context 3": "She wanted to connect with her friends after moving to a new city."
+                    }
+                },
+                {
+                    "word": "Information",
+                    "definition": "Data or facts that are communicated or received.",
+                    "context": {
+                        "Context 1": "The MacBook allows me to store a lot of important information securely.",
+                        "Context 2": "The teacher provided the students with information about the upcoming exam.",
+                        "Context 3": "He searched online for information about the best travel destinations."
+                    }
+                },
+                {
+                    "word": "Upload",
+                    "definition": "To transfer data from one computer or device to another.",
+                    "context": {
+                        "Context 1": "I need to upload my photos to the cloud for safekeeping.",
+                        "Context 2": "He decided to upload his resume to job search websites.",
+                        "Context 3": "After editing the video, I will upload it to my YouTube channel."
+                    }
+                },
+                {
+                    "word": "Device",
+                    "definition": "A piece of equipment made for a specific purpose.",
+                    "context": {
+                        "Context 1": "Many people own multiple devices, including smartphones, laptops, and tablets.",
+                        "Context 2": "The tracking device helped locate the missing car.",
+                        "Context 3": "His favorite gaming device was an old video game console from the 90s."
+                    }
+                },
+                {
+                    "word": "Settings",
+                    "definition": "Configurable options that determine how a device operates.",
+                    "context": {
+                        "Context 1": "You can adjust the settings on your MacBook to improve performance.",
+                        "Context 2": "Before the meeting, she checked the video call settings to ensure everything was working.",
+                        "Context 3": "He often changes the settings on his game to make it more challenging."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Ecosystem",
+                    "fact": "Did you know that the term 'ecosystem' was first coined in 1935 by British ecologist Arthur Tansley? It has taken on a life of its own!"
+                },
+                {
+                    "word": "Backups",
+                    "fact": "On average, 30% of people have never backed up their files. And when they lose something important, guess what they say? 'I should’ve backed it up!'"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why was the computer cold during the meeting?",
+                    "answer": "Because it left its Windows open!"
+                },
+                {
+                    "question": "Why did the computer keep freezing?",
+                    "answer": "It forgot to open its Windows!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Backup",
+                    "definition": "A copy of data from a computer or device that is stored separately to prevent loss.",
+                    "context": {
+                        "Context 1": "It's always a good idea to create a backup of your important files on an external hard drive.",
+                        "Context 2": "During the storm, I took a backup of my photos to ensure they were safe.",
+                        "Context 3": "I need to backup my favorite playlist before I lose my phone."
+                    }
+                },
+                {
+                    "word": "Server",
+                    "definition": "A computer or system that provides data, resources, or services to other computers.",
+                    "context": {
+                        "Context 1": "If the server crashes, we won't be able to access our files until it’s fixed.",
+                        "Context 2": "The restaurant's server was very attentive, bringing our drinks promptly.",
+                        "Context 3": "In science class, we learned about server cells and their functions in the body."
+                    }
+                },
+                {
+                    "word": "Storage",
+                    "definition": "The act of keeping or saving data on a device, or the capacity of a device to hold data.",
+                    "context": {
+                        "Context 1": "My laptop has enough storage for all my documents and photos.",
+                        "Context 2": "He rented a storage unit to keep his old furniture while moving.",
+                        "Context 3": "The fridge lacks storage space for all the food we bought."
+                    }
+                },
+                {
+                    "word": "Terabyte",
+                    "definition": "A unit of digital information storage equal to approximately one trillion bytes.",
+                    "context": {
+                        "Context 1": "My new external hard drive can hold 2 terabytes of data.",
+                        "Context 2": "In my physics class, we discussed the terabyte of data collected by the satellite.",
+                        "Context 3": "She has a terabyte of memories saved on her family photo album."
+                    }
+                },
+                {
+                    "word": "Update",
+                    "definition": "To make something more modern or up to date, often by adding new features or information.",
+                    "context": {
+                        "Context 1": "Make sure to update your software regularly to avoid security issues.",
+                        "Context 2": "The weather report will update every hour with new forecasts.",
+                        "Context 3": "He gave a quick update on his fitness progress during the group meeting."
+                    }
+                },
+                {
+                    "word": "Device",
+                    "definition": "An electronic tool or piece of equipment designed for a specific purpose.",
+                    "context": {
+                        "Context 1": "I need to charge my device before going to class.",
+                        "Context 2": "The magician pulled a device out of his hat that amazed the audience.",
+                        "Context 3": "We use a device to check the temperature of the oven while baking."
+                    }
+                },
+                {
+                    "word": "Conference call",
+                    "definition": "A telephone call in which multiple participants are involved.",
+                    "context": {
+                        "Context 1": "We scheduled a conference call to discuss the project with the entire team.",
+                        "Context 2": "He accidentally joined a conference call about marine biology while trying to call his friend.",
+                        "Context 3": "The conference call with his family turned into a fun virtual game night."
+                    }
+                },
+                {
+                    "word": "Storage space",
+                    "definition": "The amount of available storage for files on a computer or device.",
+                    "context": {
+                        "Context 1": "I need to clear some storage space on my phone to download new apps.",
+                        "Context 2": "The attic has very little storage space left after we moved our old books there.",
+                        "Context 3": "I made a sign to reserve the best storage space in the fridge for my leftovers."
+                    }
+                },
+                {
+                    "word": "MacBook",
+                    "definition": "A brand of laptop computers designed and marketed by Apple Inc.",
+                    "context": {
+                        "Context 1": "She loves her new MacBook, especially the retina display.",
+                        "Context 2": "He rode his bike to school, but his MacBook didn't fit in his backpack.",
+                        "Context 3": "In art class, we drew pictures of a MacBook as part of our still-life assignment."
+                    }
+                },
+                {
+                    "word": "Corporate",
+                    "definition": "Relating to a large company or group.",
+                    "context": {
+                        "Context 1": "He works in corporate finance, managing the funds of big companies.",
+                        "Context 2": "The corporate chef created a unique menu for the restaurant's opening night.",
+                        "Context 3": "During the corporate retreat, we played games to build better teamwork."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Backup",
+                    "fact": "Did you know that the term 'backup' originated from early computing when it was literally a 'back-up' copy of physical data?"
+                },
+                {
+                    "word": "Server",
+                    "fact": "Some of the world's largest server farms contain thousands of servers and use as much energy as a small town!"
+                },
+                {
+                    "word": "MacBook",
+                    "fact": "The first MacBook was released in 2006 and was praised for its sleek design. It was so popular that even the squirrels in Cupertino were impressed!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why was the computer cold?",
+                    "answer": "Because it left its Windows open!"
+                },
+                {
+                    "question": "What did the computer do at lunchtime?",
+                    "answer": "Had a byte!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Convenient",
+                    "definition": "Suited to one's personal ease or comfort; making life easier.",
+                    "context": {
+                        "Context 1": "Using online banking is convenient because you can manage your finances anytime.",
+                        "Context 2": "It's convenient to have a microwave, so you can heat food quickly.",
+                        "Context 3": "The convenient store is just around the corner, making it easy to buy snacks."
+                    }
+                },
+                {
+                    "word": "Anticipation",
+                    "definition": "The action of expecting something; a feeling of excitement about something that is going to happen.",
+                    "context": {
+                        "Context 1": "The anticipation of the concert was overwhelming as fans queued outside.",
+                        "Context 2": "He felt anticipation as he prepared for his job interview.",
+                        "Context 3": "The anticipation of a surprise birthday party filled her with joy."
+                    }
+                },
+                {
+                    "word": "Special",
+                    "definition": "Better, greater, or otherwise different from what is usual; unique.",
+                    "context": {
+                        "Context 1": "Her birthday party was special because all her friends were there.",
+                        "Context 2": "This dish is special as it is a family recipe passed down for generations.",
+                        "Context 3": "Their friendship is special; they've been through so much together."
+                    }
+                },
+                {
+                    "word": "Sophisticated",
+                    "definition": "Having a lot of experience and knowledge about the world; complex or intricate.",
+                    "context": {
+                        "Context 1": "The wine had a sophisticated flavor that impressed the experts.",
+                        "Context 2": "He wore a sophisticated suit to the interview to make a good impression.",
+                        "Context 3": "The technology in the latest smartphone is quite sophisticated."
+                    }
+                },
+                {
+                    "word": "Devastate",
+                    "definition": "To cause severe and overwhelming shock or grief; to destroy or ruin.",
+                    "context": {
+                        "Context 1": "The hurricane will devastate the coastal town if it makes landfall.",
+                        "Context 2": "The news of the accident devastated her family.",
+                        "Context 3": "The forest fire devastated hundreds of acres of land."
+                    }
+                },
+                {
+                    "word": "Elegant",
+                    "definition": "Graceful and stylish in appearance or manner; refined.",
+                    "context": {
+                        "Context 1": "The new restaurant has an elegant decor that attracts many customers.",
+                        "Context 2": "She wore an elegant dress to the gala, turning many heads.",
+                        "Context 3": "His writing style is elegant and eloquent, making it enjoyable to read."
+                    }
+                },
+                {
+                    "word": "Invasion",
+                    "definition": "An instance of invading a country or region; a large-scale assault.",
+                    "context": {
+                        "Context 1": "The invasion of Normandy was a turning point in World War II.",
+                        "Context 2": "The insect invasion in the garden required immediate pest control.",
+                        "Context 3": "Invasion of privacy occurs when someone misuses personal information."
+                    }
+                },
+                {
+                    "word": "Provide",
+                    "definition": "To supply or make available; to furnish.",
+                    "context": {
+                        "Context 1": "The shelter aims to provide food and shelter for the homeless.",
+                        "Context 2": "This service will provide a safe space for children to learn.",
+                        "Context 3": "He will provide the necessary equipment for the event."
+                    }
+                },
+                {
+                    "word": "Impression",
+                    "definition": "An effect produced on someone; a strong view or opinion of someone or something.",
+                    "context": {
+                        "Context 1": "The first impression is important during an interview.",
+                        "Context 2": "Her impression of the movie was that it was too long.",
+                        "Context 3": "He made a great impression on his new boss."
+                    }
+                },
+                {
+                    "word": "Culture",
+                    "definition": "The social behavior, norms, beliefs, and values of a particular group.",
+                    "context": {
+                        "Context 1": "Learning about Japanese culture can help you understand their customs.",
+                        "Context 2": "The festival highlights the vibrant culture of the local community.",
+                        "Context 3": "Cultural differences can influence communication styles."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Maison",
+                    "fact": "Did you know 'maison' means 'house' in French? But in a fancy restaurant, it might just mean 'where the wine is kept'!"
+                },
+                {
+                    "word": "Devastate",
+                    "fact": "The word 'devastate' originated from the Latin word 'devastare,' meaning 'to lay waste'—so basically, it sounds like a bad day for your garden!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the wine break up with the vodka?",
+                    "answer": "Because it found a grape new love!"
+                },
+                {
+                    "question": "Why don't scientists trust atoms?",
+                    "answer": "Because they make up everything, including wine recommendations!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Boring",
+                    "definition": "Not interesting; tedious.",
+                    "context": {
+                        "Context 1": "Lying on the beach is so boring; I prefer activities like hiking.",
+                        "Context 2": "The movie was so boring that I fell asleep halfway through.",
+                        "Context 3": "He found the lecture boring because he already knew the material well."
+                    }
+                },
+                {
+                    "word": "Exciting",
+                    "definition": "Causing great enthusiasm and eagerness.",
+                    "context": {
+                        "Context 1": "Once I got used to hiking, I found it really exciting.",
+                        "Context 2": "The thrilling roller coaster ride was so exciting that I wanted to go again.",
+                        "Context 3": "Winning the championship game was an exciting moment for the team."
+                    }
+                },
+                {
+                    "word": "Soaked",
+                    "definition": "Completely wet.",
+                    "context": {
+                        "Context 1": "After hiking for hours in the rain, I was completely soaked.",
+                        "Context 2": "The dog jumped into the pool and came out all soaked.",
+                        "Context 3": "She soaked the sponge in water before using it to clean the table."
+                    }
+                },
+                {
+                    "word": "Blisters",
+                    "definition": "Small bubbles on the skin filled with fluid, usually caused by friction or burning.",
+                    "context": {
+                        "Context 1": "I had blisters on my feet after hiking in the wrong shoes.",
+                        "Context 2": "He got blisters after spending the whole day in flip-flops.",
+                        "Context 3": "The sunburn created painful blisters on her shoulders."
+                    }
+                },
+                {
+                    "word": "Waterproof",
+                    "definition": "Impervious to water; designed to keep out moisture.",
+                    "context": {
+                        "Context 1": "Waterproof shoes are essential for hiking in the rain.",
+                        "Context 2": "She bought a waterproof phone case to protect her device while kayaking.",
+                        "Context 3": "The new coat is waterproof, perfect for wet weather."
+                    }
+                },
+                {
+                    "word": "Nutrient",
+                    "definition": "A substance that provides nourishment essential for growth and the maintenance of life.",
+                    "context": {
+                        "Context 1": "Peanuts are rich in nutrients and provide energy during hikes.",
+                        "Context 2": "The dietician recommended including more nutrient-dense foods in my meals.",
+                        "Context 3": "Fruits and vegetables contain a variety of nutrients that benefit health."
+                    }
+                },
+                {
+                    "word": "Backpack",
+                    "definition": "A bag with shoulder straps, carried on one's back, used for carrying items.",
+                    "context": {
+                        "Context 1": "I always bring my waterproof backpack on hikes to protect my supplies.",
+                        "Context 2": "He packed his textbooks into a large backpack for school.",
+                        "Context 3": "The hiker's backpack was filled with snacks and hydration for the trail."
+                    }
+                },
+                {
+                    "word": "Trail",
+                    "definition": "A path designed for walking or hiking.",
+                    "context": {
+                        "Context 1": "The mountain trail was steep and challenging, but the view was worth it.",
+                        "Context 2": "The forest trail was lined with beautiful wildflowers in the spring.",
+                        "Context 3": "They decided to map out a new running trail near the park."
+                    }
+                },
+                {
+                    "word": "Excursion",
+                    "definition": "A short journey or trip, especially one engaged in as a leisure activity.",
+                    "context": {
+                        "Context 1": "Our hiking excursion turned into a memorable adventure.",
+                        "Context 2": "The school planned an excursion to the museum for the students.",
+                        "Context 3": "They took an excursion to the nearby island during their vacation."
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "After hiking for years, I have a lot of experience in outdoor activities.",
+                        "Context 2": "Traveling abroad was an enriching experience for her.",
+                        "Context 3": "He gained valuable experience while working as an intern last summer."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Blisters",
+                    "fact": "Did you know that blisters were first known as 'water warts'? You can blame it on bad shoes!"
+                },
+                {
+                    "word": "Excursion",
+                    "fact": "In ancient Rome, excursions were often made for fun—like a family BBQ, but with more togas and less hotdogs!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the hiker bring a ladder on their hike?",
+                    "answer": "Because they wanted to reach new heights!"
+                },
+                {
+                    "question": "What do you call a mountain that loves to party?",
+                    "answer": "The Hill-arious Mountain!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Electrolyte",
+                    "definition": "A substance that produces an electrically conducting solution when dissolved in a polar solvent, such as water.",
+                    "context": {
+                        "Context 1": "Drinking sports drinks can help restore your body's electrolyte balance after exercising.",
+                        "Context 2": "The scientist explained how electrolytes in the ocean help fish swim better.",
+                        "Context 3": "An electrolyte is essential for batteries to function properly."
+                    }
+                },
+                {
+                    "word": "Alpinist",
+                    "definition": "A climber who specializes in high mountains or Alps; a mountain climber.",
+                    "context": {
+                        "Context 1": "An experienced alpinist climbed the treacherous peak with ease.",
+                        "Context 2": "The alpinist decided to take a break and enjoy the beautiful view from the summit.",
+                        "Context 3": "Alpinists often train in the gym to prepare for real mountain challenges."
+                    }
+                },
+                {
+                    "word": "Altitude",
+                    "definition": "The height of an object or point in relation to sea level or ground level.",
+                    "context": {
+                        "Context 1": "At high altitudes, the air has less oxygen, making it harder to breathe.",
+                        "Context 2": "The altitude of the kite festival was so high that the colorful kites looked like tiny dots in the sky.",
+                        "Context 3": "Astronauts experience microgravity at altitudes beyond the Earth's atmosphere."
+                    }
+                },
+                {
+                    "word": "Oxygen",
+                    "definition": "A chemical element (O) essential for respiration in most living organisms.",
+                    "context": {
+                        "Context 1": "Climbers often need supplemental oxygen at extreme altitudes due to the thin air.",
+                        "Context 2": "Plants produce oxygen during photosynthesis, which is crucial for life.",
+                        "Context 3": "A fish cannot survive out of water because it lacks access to oxygen."
+                    }
+                },
+                {
+                    "word": "Balance",
+                    "definition": "An even distribution of weight enabling someone or something to remain upright and steady.",
+                    "context": {
+                        "Context 1": "Maintaining a balance of salt and water is important for hydration, especially during exercise.",
+                        "Context 2": "The gymnast demonstrated incredible balance on the beam during her routine.",
+                        "Context 3": "Having a good work-life balance is essential for mental health."
+                    }
+                },
+                {
+                    "word": "Capture",
+                    "definition": "To take control of a situation or to record something in a way that preserves it.",
+                    "context": {
+                        "Context 1": "It's important to capture your emotions and experiences while climbing by taking photos.",
+                        "Context 2": "The artist used a camera to capture the beauty of nature in her paintings.",
+                        "Context 3": "Can you capture the magic of a concert with just audio recording?"
+                    }
+                },
+                {
+                    "word": "Post",
+                    "definition": "To publish or display information or content online.",
+                    "context": {
+                        "Context 1": "It's a great idea to post your climbing videos on social media to share your adventures.",
+                        "Context 2": "Don't forget to post your travel photos so we can see your adventures!",
+                        "Context 3": "He forgot to post his homework on the online platform for his class."
+                    }
+                },
+                {
+                    "word": "Telegram",
+                    "definition": "A messaging app that allows users to send messages and files to one another.",
+                    "context": {
+                        "Context 1": "I shared my climbing photos in our Telegram group for everyone to see.",
+                        "Context 2": "They used Telegram to organize the surprise party without anyone knowing.",
+                        "Context 3": "She prefers Telegram over traditional text messaging for its privacy features."
+                    }
+                },
+                {
+                    "word": "Channel",
+                    "definition": "A medium for communication or distribution; in this case, a place to share messages or content online.",
+                    "context": {
+                        "Context 1": "Starting a Telegram channel for climbing enthusiasts can help connect people with similar interests.",
+                        "Context 2": "She created a channel to promote her cooking classes to a bigger audience.",
+                        "Context 3": "Your favorite TV channel may have a new lineup this fall!"
+                    }
+                },
+                {
+                    "word": "Experience",
+                    "definition": "Practical contact with and observation of facts or events.",
+                    "context": {
+                        "Context 1": "Climbing the mountain gave him a truly unforgettable experience.",
+                        "Context 2": "She shared her experience at the conference with her coworkers afterward.",
+                        "Context 3": "Virtual reality can create an experience that feels very real to the users."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Electrolyte",
+                    "fact": "Did you know that when you drink sports drinks, they're better at hydrating you than plain water? It's like super water with electrolytes!"
+                },
+                {
+                    "word": "Alpinist",
+                    "fact": "The term 'alpinist' comes from the Alps, but you can find mountain climbers all over the world. They just like to sound fancy!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the mountain climber bring a ladder to the bar?",
+                    "answer": "Because he heard the drinks were on the house!"
+                },
+                {
+                    "question": "Why don't climbers ever get lost?",
+                    "answer": "Because they always find their way up!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! What are you up to today?"
+                },
+                {
+                    "Person 2": "Oh, just the usual. I'm sipping some tea. How about you?"
+                },
+                {
+                    "Person 1": "Nice, I’m drinking tea too! You know, I was thinking about getting a new laptop."
+                },
+                {
+                    "Person 2": "Oh really? Are you considering a MacBook?"
+                },
+                {
+                    "Person 1": "Yeah, actually. I heard they’ve got some great features. Do you use one?"
+                },
+                {
+                    "Person 2": "Yep! I have a MacBook Pro. This is my fourth one actually!"
+                },
+                {
+                    "Person 1": "Wow! You really like them then? What do you think makes them last so long?"
+                },
+                {
+                    "Person 2": "For me, it’s the build quality and how easy they are to use. I feel like they really age well."
+                },
+                {
+                    "Person 1": "That’s cool! How long do you usually keep one before upgrading?"
+                },
+                {
+                    "Person 2": "I’d say about five or six years. But sometimes I just want the latest features, you know?"
+                },
+                {
+                    "Person 1": "Totally get that! Do you have any other Apple products?"
+                },
+                {
+                    "Person 2": "Oh yeah, I have an iPhone and an iPad too. I’m kinda all in on the Apple ecosystem!"
+                },
+                {
+                    "Person 1": "Nice! I’ve always stuck to other brands. I mean, I have a gaming laptop from HP."
+                },
+                {
+                    "Person 2": "HP is solid! But I like how Apple devices connect seamlessly with each other. It’s pretty convenient."
+                },
+                {
+                    "Person 1": "I hear that! What’s one feature you love the most about your MacBook?"
+                },
+                {
+                    "Person 2": "The migration feature! You can easily transfer everything from your old device to a new one in like 30 minutes."
+                },
+                {
+                    "Person 1": "That sounds amazing! With my current setup, it takes forever to switch everything over."
+                },
+                {
+                    "Person 2": "Exactly! Imagine you lose your phone and need to get a new one fast. Apple makes it super easy."
+                },
+                {
+                    "Person 1": "True, I'd love that! So, you’ve never had an issue with losing your phone on vacation?"
+                },
+                {
+                    "Person 2": "Not me, but my wife did once at work. Luckily, we transferred everything to her new phone quickly."
+                },
+                {
+                    "Person 1": "That’s a relief! Do you do backups of your data often?"
+                },
+                {
+                    "Person 2": "Yeah, I back up to my computer, and it uploads to the cloud regularly. Just to be safe!"
+                },
+                {
+                    "Person 1": "Smart move! Maybe I should start looking into a MacBook after hearing all this."
+                },
+                {
+                    "Person 2": "You won’t regret it! Let me know if you have any questions while you’re shopping."
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about the latest MacBook release?"
+                },
+                {
+                    "Person 2": "Yeah, I saw it! It's crazy how expensive they are now."
+                },
+                {
+                    "Person 1": "I know, right? I mean, do they really have that many upgrades?"
+                },
+                {
+                    "Person 2": "Supposedly, the camera is amazing. But honestly, I just use mine for work."
+                },
+                {
+                    "Person 1": "Same here! I do some work on it, but I also watch movies. What about you?"
+                },
+                {
+                    "Person 2": "Nah, I prefer my TV for movies. I just need my laptop for text and images."
+                },
+                {
+                    "Person 1": "Makes sense. So you’re mostly working, huh?"
+                },
+                {
+                    "Person 2": "Yep! Lots of conference calls and chatting with clients. It’s pretty busy."
+                },
+                {
+                    "Person 1": "Sounds intense! How do you handle it all?"
+                },
+                {
+                    "Person 2": "I just stay organized. Plus, having a good computer helps a lot!"
+                },
+                {
+                    "Person 1": "For sure! I can’t imagine working on an old laptop."
+                },
+                {
+                    "Person 2": "Yeah, it would make things so much harder. Do you use backups?"
+                },
+                {
+                    "Person 1": "Oh, definitely! I backup everything. Can’t risk losing files."
+                },
+                {
+                    "Person 2": "Smart move! I always worry about that too."
+                },
+                {
+                    "Person 1": "So, do you think you’ll upgrade to the new MacBook?"
+                },
+                {
+                    "Person 2": "Maybe one day, but for now, I’m happy with mine. It gets the job done!"
+                },
+                {
+                    "Person 1": "That’s what matters! As long as it works for you."
+                },
+                {
+                    "Person 2": "Exactly! Plus, I’m not ready to shell out that much cash right now."
+                },
+                {
+                    "Person 1": "Totally get that! Let’s just wait for the prices to drop."
+                },
+                {
+                    "Person 2": "Agreed! Don’t need to rush into spending money like that."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, can you believe this weather? It's like a thunderstorm out there!"
+                },
+                {
+                    "Person 2": "I know, right? It went from a little drizzle to full-on pouring in minutes!"
+                },
+                {
+                    "Person 1": "It's wild! Makes me think, what if monks had YouTube centuries ago? They could've shared their wine-making secrets online."
+                },
+                {
+                    "Person 2": "That would be something! Imagine if they could just post videos instead of writing everything down and then some raiders came along and destroyed it all."
+                },
+                {
+                    "Person 1": "Exactly! YouTube would have saved a lot of history. We could have learned from those monks directly."
+                },
+                {
+                    "Person 2": "So true! Speaking of which, you’ve been busy with your wine stuff, right?"
+                },
+                {
+                    "Person 1": "Yeah, I’m connecting with a lot of wine producers lately. I feel like I could open my own wine tasting shop at this rate."
+                },
+                {
+                    "Person 2": "You definitely could! You do so much of the work; what’s your restaurant’s role in all that?"
+                },
+                {
+                    "Person 1": "They mostly just provide the space and the customers. I'm the one doing the heavy lifting!"
+                },
+                {
+                    "Person 2": "That’s cool though! So it's Wednesday—work day for you?"
+                },
+                {
+                    "Person 1": "Yep! Gotta head out later, but this rain is making me want to stay in."
+                },
+                {
+                    "Person 2": "Tell me about it! The noise from the rain is almost drowning out everything else."
+                },
+                {
+                    "Person 1": "And by the way, I thought your restaurant was French. You have Italian chefs?"
+                },
+                {
+                    "Person 2": "Yeah, two Italian chefs! It's a French restaurant, but those guys know their stuff."
+                },
+                {
+                    "Person 1": "Interesting mix! I guess wine is universal, no matter the cuisine."
+                },
+                {
+                    "Person 2": "Absolutely! So, which do you prefer: Italian wine or French wine?"
+                },
+                {
+                    "Person 1": "For me, French wine is where it’s at! What about you?"
+                },
+                {
+                    "Person 2": "I like both, but I see French wine as more special. It feels so elegant."
+                },
+                {
+                    "Person 1": "True! I think it has that sophisticated vibe people associate with French culture."
+                },
+                {
+                    "Person 2": "Yeah! Speaking of France, I think I want to visit someday. Have you been?"
+                },
+                {
+                    "Person 1": "Yeah, I went a couple of years ago! The culture is amazing, and the food is to die for."
+                },
+                {
+                    "Person 2": "Do you have any French friends? I'd love to hear more about their culture."
+                },
+                {
+                    "Person 1": "I have a few! They’re really passionate about everything—food, art, you name it!"
+                },
+                {
+                    "Person 2": "Sounds fantastic! I need to plan a trip myself. But right now, I’m just hoping this storm doesn’t last all day."
+                },
+                {
+                    "Person 1": "Same here! I really don't want to be stuck in the rain later."
+                },
+                {
+                    "Person 2": "You know, I was actually looking forward to getting a MacBook soon. That’s what excites me right now!"
+                },
+                {
+                    "Person 1": "Nice! I get that. I’m just thinking about my next vacation. I can’t wait for some sun!"
+                },
+                {
+                    "Person 2": "That’ll be amazing! Any dream destinations in mind?"
+                },
+                {
+                    "Person 1": "Not yet. I'm keeping my options open. Just want something relaxing, perhaps by the beach."
+                },
+                {
+                    "Person 2": "That sounds perfect! Just remember, we both need a getaway soon."
+                },
+                {
+                    "Person 1": "Definitely! Let’s plan for it once this storm clears up."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! So, do you like lying on the beach and relaxing?"
+                },
+                {
+                    "Person 2": "Not really! I find it boring. I'd rather go hiking or something more active."
+                },
+                {
+                    "Person 1": "Same here! I used to think I liked hiking, but then I did this tough trail up a mountain."
+                },
+                {
+                    "Person 2": "Oh man, those can be brutal! How did it go for you?"
+                },
+                {
+                    "Person 1": "The first few hours were rough! I thought, 'I’m not cut out for this!' But eventually, it got interesting."
+                },
+                {
+                    "Person 2": "Yeah, I get that! Sometimes it takes a while to find the fun in it."
+                },
+                {
+                    "Person 1": "Right? After a few hours, I was tired and drenched in rain, but I finally started enjoying the view."
+                },
+                {
+                    "Person 2": "It can definitely be rewarding once you push through. How often do you hike?"
+                },
+                {
+                    "Person 1": "Not too often, but I’d like to go more. How about you?"
+                },
+                {
+                    "Person 2": "I usually go every few weeks. I love it! What do you bring on your hikes?"
+                },
+                {
+                    "Person 1": "Good shoes are a must! What do you look for in hiking shoes?"
+                },
+                {
+                    "Person 2": "They should be sturdy and have a good grip, plus waterproof is a big plus!"
+                },
+                {
+                    "Person 1": "Definitely! I learned that the hard way when I got soaked during a hike before."
+                },
+                {
+                    "Person 2": "Oh no! Wet shoes can ruin a hike. What else do you pack?"
+                },
+                {
+                    "Person 1": "I usually throw in a waterproof jacket and some snacks for energy."
+                },
+                {
+                    "Person 2": "Snacks are essential! I usually bring trail mix. What do you like to munch on?"
+                },
+                {
+                    "Person 1": "Peanuts are my go-to! They're small but packed with energy."
+                },
+                {
+                    "Person 2": "Good choice! I’ve also taken cookies for a treat on the trail."
+                },
+                {
+                    "Person 1": "Nice! Just make sure they're not too salty, right?"
+                },
+                {
+                    "Person 2": "Exactly! Don't want to end up dehydrated from salty snacks."
+                },
+                {
+                    "Person 1": "True! So, think we should plan a hiking trip together sometime?"
+                },
+                {
+                    "Person 2": "Absolutely! Just need to make sure we pick an easy trail for starters!"
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! I heard something interesting the other day about hikers needing to drink salty water. Do you know anything about that?"
+                },
+                {
+                    "Person 2": "Oh, for sure! That’s because when you’re hiking at high altitudes, your body loses a lot of salt due to sweating."
+                },
+                {
+                    "Person 1": "Really? I didn’t know that. So that’s why they drink it?"
+                },
+                {
+                    "Person 2": "Exactly! It helps restore their electrolyte balance. It keeps them from getting too dehydrated."
+                },
+                {
+                    "Person 1": "That’s pretty wild. I guess regular hikers don’t really deal with that as much, huh?"
+                },
+                {
+                    "Person 2": "Not really. Most casual hikers stick to trails where you don’t need special equipment or extra oxygen."
+                },
+                {
+                    "Person 1": "Right, oxygen tanks are more for serious climbers and alpinists, right?"
+                },
+                {
+                    "Person 2": "Yeah, exactly! Alpinists tackle way tougher climbs than the average person would attempt."
+                },
+                {
+                    "Person 1": "You know, talking about this makes me want to see some of your climbing pictures or videos. You should share them!"
+                },
+                {
+                    "Person 2": "Definitely! I have some cool photos on my phone. I should post them somewhere, maybe start a channel."
+                },
+                {
+                    "Person 1": "That’d be awesome! You’ve got such amazing stories and experiences. I’d love to see that."
+                },
+                {
+                    "Person 2": "Thanks! I’ll dig up some photos and send them to you. I have a whole lot of them from my hikes."
+                },
+                {
+                    "Person 1": "Cool! Let’s check them out together this Friday. I can't wait!"
+                },
+                {
+                    "Person 2": "Sounds like a plan! I’ll make sure to show you the best ones."
+                },
+                {
+                    "Person 1": "Alright, see you then! Have a great day!"
+                },
+                {
+                    "Person 2": "You too! Looking forward to our chat on Friday. Bye!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
