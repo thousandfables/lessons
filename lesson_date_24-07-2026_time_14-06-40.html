@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 6,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "we just sitting on uh... a special chair and waiting the fish",
+                    "corrected": "we are just sitting on a special chair and waiting for the fish",
+                    "explanation": "The speaker omitted the verb 'are' in the present continuous tense, and 'waiting the fish' should be 'waiting for the fish.'",
+                    "context": "In the restaurant, we are preparing for the day ahead. We are just sitting on a special chair and waiting for the fish, which symbolizes potential customers."
+                },
+                {
+                    "original": "a rich customer",
+                    "corrected": "rich customers",
+                    "explanation": "The speaker used singular 'customer' when they were likely referring to customers in general, so the plural form is more appropriate.",
+                    "context": "During our conversation, we discussed the restaurant's appeal. We often attract rich customers, which is essential for our business."
+                },
+                {
+                    "original": "who frequently visit your restaurant on the weekend or on fridays maybe",
+                    "corrected": "who frequently visit your restaurant on weekends or on Fridays",
+                    "explanation": "The speaker used 'the weekend' instead of the plural 'weekends', and 'fridays' should be capitalized as it is a proper noun.",
+                    "context": "We talked about our regular clientele. We have customers who frequently visit your restaurant on weekends or on Fridays, enhancing our reputation."
+                },
+                {
+                    "original": "on the summer we have more travelers customers from another",
+                    "corrected": "in the summer, we have more traveler customers from other",
+                    "explanation": "'On the summer' should be 'in the summer' for correct preposition use, and 'another' should be 'other' as it refers to a group.",
+                    "context": "I shared how business changes with the seasons. In the summer, we have more traveler customers from other cities, which boosts our business."
+                },
+                {
+                    "original": "like how do the to do they know that you're good",
+                    "corrected": "like how do they know that you're good",
+                    "explanation": "The phrase 'the to do' is incorrect and unnecessary; it should simply be 'how do they know.'",
+                    "context": "We discussed customer awareness about our restaurant. I wondered how do they know that you're good as they've never visited before."
+                },
+                {
+                    "original": "in the searching machine what's your score on google maps",
+                    "corrected": "in the search engine, what's your score on Google Maps?",
+                    "explanation": "The term 'searching machine' should be 'search engine', and 'google' should be capitalized as it is a brand name.",
+                    "context": "While talking about online presence, I asked them about visibility. In the search engine, what's your score on Google Maps?"
+                },
+                {
+                    "original": "is it always open kitchen your restaurant",
+                    "corrected": "is your restaurant always an open kitchen?",
+                    "explanation": "The word order is incorrect; the subject should come before the verb for clarity.",
+                    "context": "I wanted to know more about their setup. I asked if your restaurant is always an open kitchen, as it intrigues me."
+                },
+                {
+                    "original": "it's a it's a it's a regular practice in europe",
+                    "corrected": "it's a regular practice in Europe",
+                    "explanation": "The repetition of 'it's a' is unnecessary, and 'europe' should be capitalized.",
+                    "context": "In discussing dining trends, I noted a general practice. It's a regular practice in Europe that many restaurants follow."
+                },
+                {
+                    "original": "the entire kitchen environment is very stressful like for for cooks",
+                    "corrected": "the entire kitchen environment is very stressful for cooks",
+                    "explanation": "The phrase 'like for for cooks' is incorrect; 'like' is unnecessary and 'for' should be used only once.",
+                    "context": "As we talked about the kitchen dynamics, I described the atmosphere. The entire kitchen environment is very stressful for cooks, affecting their performance."
+                },
+                {
+                    "original": "it's hard work but to to be a cookerman",
+                    "corrected": "it's hard work to be a cook",
+                    "explanation": "'Cookerman' is not a standard term; 'a cook' is the correct term, and 'to to' is a repetition error.",
+                    "context": "Reflecting on the kitchen challenges, I acknowledged the difficulties. It's hard work to be a cook, yet rewarding at the same time."
+                },
+                {
+                    "original": "it's uh... I think sometimes so express expressive",
+                    "corrected": "I think it's sometimes very expressive",
+                    "explanation": "The structure is awkward; placing 'I think' at the start clarifies the sentence and 'so' is unnecessary.",
+                    "context": "I shared my opinion on a popular chef's show. I think it's sometimes very expressive, making it entertaining."
+                },
+                {
+                    "original": "more like a film or like a cinema style",
+                    "corrected": "more like a film or a cinematic style",
+                    "explanation": "'Cinema style' is less common; 'cinematic style' is the more traditional phrase.",
+                    "context": "While discussing media portrayal of chefs, I compared the presentation. It's more like a film or a cinematic style than real-life kitchen work."
+                },
+                {
+                    "original": "let me look it up chief's table jamie oliver",
+                    "corrected": "let me look it up: Chef's Table with Jamie Oliver",
+                    "explanation": "Punctuation is needed for clarity, and 'chief' should be 'chef' for the correct term.",
+                    "context": "As the conversation shifted to culinary shows, I mentioned a popular series. Let me look it up: Chef's Table with Jamie Oliver was a favorite of mine."
+                },
+                {
+                    "original": "walking into the one of the best in italy massive about the world",
+                    "corrected": "walking into one of the best in Italy, it's massive on a global scale",
+                    "explanation": "The original phrasing is confusing and awkward; it needs restructuring for clarity and 'Italy' should be capitalized.",
+                    "context": "In closing the discussion on Italian cuisine, I shared my admiration. Walking into one of the best in Italy, it's massive on a global scale."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "it is boss yeah so like don't confuse them yeah sometimes chef it's owner on the restaurant",
+                    "corrected": "it is boss, yeah, so like don't confuse them. Sometimes a chef is the owner of the restaurant.",
+                    "explanation": "The sentence lacks articles and proper punctuation. 'A chef' and 'the owner' are needed for clarity, and punctuation is essential to separate thoughts.",
+                    "context": "In discussing the roles of a chef and an owner, I mentioned that a boss is essentially the person in charge. It's important to clarify that sometimes a chef is the owner of the restaurant."
+                },
+                {
+                    "original": "you know like when he worked at his own restaurant when he became chef people would come to his restaurant and if they wanted to complain like about the food",
+                    "corrected": "you know, like when he worked at his own restaurant, when he became the chef, people would come to his restaurant, and if they wanted to complain about the food",
+                    "explanation": "Punctuation is necessary to break this long sentence up into manageable parts, and 'the chef' should be used instead of 'chef' for specificity.",
+                    "context": "While recounting stories about a famous chef, I pointed out that when he had his own restaurant, customers would sometimes complain about the food. If they did, he had a very aggressive way of dealing with it."
+                },
+                {
+                    "original": "he does not want attention he does not want media coverage",
+                    "corrected": "he does not want attention; he does not want media coverage.",
+                    "explanation": "This sentence needs proper punctuation (a semicolon or period) to connect the two independent clauses.",
+                    "context": "Talking about the chef's personality, I mentioned his preference for privacy. He does not want attention; he does not want media coverage."
+                },
+                {
+                    "original": "but right now uh... he's only uh... a customer in our restaurant",
+                    "corrected": "but right now, he's just a customer in our restaurant.",
+                    "explanation": "The phrase 'only a customer' is awkward here; 'just a customer' sounds more natural. A comma is also needed after 'right now.'",
+                    "context": "Regarding the owner of the restaurant, I noted that he used to be a chef. But right now, he's just a customer in our restaurant."
+                },
+                {
+                    "original": "I believe he's one of the most uh... like famous maybe maybe he's not that famous on france",
+                    "corrected": "I believe he's one of the most famous, but maybe he's not that famous in France.",
+                    "explanation": "The phrase 'on France' is incorrect; it should be 'in France,' and 'like famous' should be simplified to just 'famous.'",
+                    "context": "When discussing a famous chef, I said that I believe he's one of the most famous. But maybe he's not that famous in France."
+                },
+                {
+                    "original": "and uh... the thing is that the record runs you worked under him",
+                    "corrected": "the thing is that Gordon Ramsay worked under him.",
+                    "explanation": "'Record runs' is incorrect and likely a miscommunication; it should be 'Gordon Ramsay.'",
+                    "context": "In the context of culinary mentorship, I wanted to highlight how renowned chefs learn from one another. The thing is that Gordon Ramsay worked under him."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "he says so uh... he's so logic he is uh... so uh... sometimes quiet he's so nice",
+                    "corrected": "he says he's so logical, he is sometimes quiet, and he's very nice.",
+                    "explanation": "The word 'logic' is a noun; 'logical' is the correct adjective form to describe a person. Additionally, 'sometimes quiet' should be properly punctuated, and 'so' can be omitted for clarity and conciseness.",
+                    "context": "Our chef is a great person. He says he's so logical, he is sometimes quiet, and he's very nice. His personality makes cooking with him enjoyable."
+                },
+                {
+                    "original": "he learned some funny words and uh... sometimes it's uh... he's learned bad words and use it it's uh... so fun",
+                    "corrected": "he has learned some funny words, and sometimes he learns bad words and uses them; it's really fun.",
+                    "explanation": "The present perfect tense 'has learned' is needed, and 'uses' must be in the correct form. Sequencing and clarity also improve with better conjunctions.",
+                    "context": "The chef often teaches us new vocabulary. He has learned some funny words, and sometimes he learns bad words and uses them; it's really fun. This adds a humorous twist in the kitchen."
+                },
+                {
+                    "original": "he took all the best from the russian language which is curse words yeah following yeah yeah yeah he doesn't care about anything else",
+                    "corrected": "he takes all the best from the Russian language, which includes curse words; he doesn’t care about anything else.",
+                    "explanation": "Switch from past tense ('took') to present tense ('takes') to imply a current action. Additionally, the structure 'which includes' is more precise than 'which is.' The flow can be improved with better punctuation.",
+                    "context": "Our chef is unique in his approach to language. He takes all the best from the Russian language, which includes curse words; he doesn’t care about anything else. This makes the kitchen atmosphere fun."
+                },
+                {
+                    "original": "when uh... two italian shifts uh... talked uh... on italian with russian curse words",
+                    "corrected": "when two Italian chefs talked in Italian using Russian curse words.",
+                    "explanation": "The word 'shifts' is incorrect; it should be 'chefs.' The preposition should be 'in' instead of 'on,' and 'with' can be replaced by 'using' for clarity.",
+                    "context": "I love the mix of cultures in our kitchen. Just the other day, when two Italian chefs talked in Italian using Russian curse words, it made everyone laugh. This blending of languages is what makes our environment lively."
+                },
+                {
+                    "original": "but your original name is not paul is it not like is it i said no it is by the right",
+                    "corrected": "but your original name is not Paul, is it? I said no, it is indeed.",
+                    "explanation": "Clarity requires better punctuation and proper sentence structure, including the use of 'indeed' for confirmation instead of 'by the right.'",
+                    "context": "When talking to a friend, I realized they confused my name. But your original name is not Paul, is it? I said no, it is indeed. This leads to interesting discussions about names and identities."
+                },
+                {
+                    "original": "there was no way we spoke with fucking less polish polish and russia very far from each other",
+                    "corrected": "there was no way we could understand each other since Polish and Russian are very far from each other.",
+                    "explanation": "The phrase 'we spoke with fucking less' is unclear and informal; it's better to say 'we could understand each other' to convey the meaning appropriately.",
+                    "context": "Language barriers can be challenging. There was no way we could understand each other since Polish and Russian are very far from each other. Miscommunication was a common theme during our conversations."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "this word is pronounced okay don't don't ok dot dot",
+                    "corrected": "this word is pronounced okay, don’t, don’t, okay, dot, dot.",
+                    "explanation": "Missing punctuation and unclear phrasing; clarity can be improved with proper structure.",
+                    "context": "We're discussing the pronunciation of certain words. This word is pronounced okay, don’t, don’t, okay, dot, dot. It's important to articulate clearly when communicating."
+                },
+                {
+                    "original": "all well best three this uh... slice of nuts oval pet oval all or is it cookie all",
+                    "corrected": "all well, best three, this slice of nuts, oval pet, oval, all, or is it a cookie?",
+                    "explanation": "The sentence lacks punctuation and proper structure, making it unclear and difficult to follow.",
+                    "context": "I am trying to explain a dessert. All well, best three, this slice of nuts, oval pet, oval, all, or is it a cookie? It's a little confusing, but I mean to ask about the nature of the dessert."
+                },
+                {
+                    "original": "you know this meeting yet a a small rounded cake",
+                    "corrected": "you know this word yet, a small rounded cake.",
+                    "explanation": "The word 'meeting' is incorrect in this context; it should be 'word' as it relates to definitions.",
+                    "context": "I'm trying to clarify what dessert I'm referring to. You know this word yet, a small rounded cake. I want to emphasize the term we’re discussing."
+                },
+                {
+                    "original": "he has like co-workers employees who like and he's he's their boss",
+                    "corrected": "he has co-workers, employees, and he's their boss.",
+                    "explanation": "Redundant phrases and awkward structure; 'like' is unnecessary here and affects sentence clarity.",
+                    "context": "We’re talking about the chef's position. He has co-workers, employees, and he's their boss. It’s important to clarify his role in the kitchen."
+                },
+                {
+                    "original": "making the recipe recipe yes making the recipes",
+                    "corrected": "making the recipe, yes, making the recipes.",
+                    "explanation": "Repetitive phrasing; the word 'recipe' is unnecessarily repeated.",
+                    "context": "I want to emphasize the chef's tasks. Making the recipe, yes, making the recipes is crucial for consistency in our dishes."
+                },
+                {
+                    "original": "he go into a market about some ingredients",
+                    "corrected": "he goes into a market about some ingredients.",
+                    "explanation": "Subject-verb agreement error; 'go' should be 'goes' to match the singular subject 'he.'",
+                    "context": "We were discussing the chef's process. He goes into a market about some ingredients to ensure the best quality for our dishes. It’s a vital part of his job."
+                },
+                {
+                    "original": "but you know the thing is that pastry and and he and after this he learned to share che a chef",
+                    "corrected": "but you know the thing is that pastry, and after this, he learned to share as a chef.",
+                    "explanation": "Unclear phrasing and redundancy; 'and' is repeated unnecessarily and affects clarity.",
+                    "context": "I’m explaining the chef's journey. But you know the thing is that pastry, and after this, he learned to share as a chef. It shows his growth in leadership."
+                },
+                {
+                    "original": "those restaurants all over russia and to all another countries",
+                    "corrected": "those restaurants all over Russia and to other countries.",
+                    "explanation": "Awkward phrasing; 'all another countries' is incorrect; 'other' is the proper term.",
+                    "context": "I’m emphasizing our restaurant's reach. Those restaurants all over Russia and to other countries show our expansion and popularity in various markets."
+                },
+                {
+                    "original": "i get that the germany a really arrest of the germany",
+                    "corrected": "I get that Germany is a really attractive place.",
+                    "explanation": "Grammatical errors and unclear phrasing; 'arrest' is incorrect in this context.",
+                    "context": "Reflecting on our international strategy, I get that Germany is a really attractive place. It’s important to know why we’re considering that market."
+                },
+                {
+                    "original": "why did you stop in germany why didn't he go like to france to the u k to uh... spain like all over europe",
+                    "corrected": "why did he stop in Germany? Why didn't he go to France, the UK, or Spain, like all over Europe?",
+                    "explanation": "Missing punctuation and structure; questions need clear separation for better understanding.",
+                    "context": "I am curious about our focus on Germany. Why did he stop in Germany? Why didn't he go to France, the UK, or Spain, like all over Europe? It's vital to understand our choices."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "we have uh... uh... executive chef and we have uh... chef worker on uh... in in the restaurant",
+                    "corrected": "we have an executive chef and we have a chef working in the restaurant",
+                    "explanation": "The phrase 'chef worker' is incorrect; 'chef' already implies a professional role, and 'on' is unnecessary in this context.",
+                    "context": "In our restaurant, we have an executive chef and a chef working alongside him. They collaborate to ensure everything runs smoothly in the kitchen."
+                },
+                {
+                    "original": "what what other teachers do you do have like in those other restaurants like or what what do they serve",
+                    "corrected": "What other chefs do you have in those other restaurants? What do they serve?",
+                    "explanation": "'Teachers' should be 'chefs' in this context, as we're discussing culinary professionals. The phrasing was also awkward and needed restructuring.",
+                    "context": "I'm curious about the variety in the culinary scene. What other chefs do you have in those other restaurants? What do they serve?"
+                },
+                {
+                    "original": "because we have uh... lebanon and chef lebanese near the end of the news",
+                    "corrected": "because we have a Lebanese chef near the end of the street",
+                    "explanation": "The phrase 'lebanon and chef lebanese' is confusing; it should specify 'a Lebanese chef.' 'Near the end of the news' is incorrect and should reference a physical location.",
+                    "context": "In our restaurant, we pride ourselves on authentic cuisine. We have a Lebanese chef near the end of the street."
+                },
+                {
+                    "original": "isn't it in africa weapon that's not",
+                    "corrected": "Isn't it in Africa? No, that's not correct.",
+                    "explanation": "The phrase 'africa weapon' is nonsensical; it should be separated into two correct statements for clarity.",
+                    "context": "I was clarifying geographic details. I questioned if Lebanon was in Africa, but that's not correct; it's actually near Israel."
+                },
+                {
+                    "original": "i don't hear you hear me want to want to want to want to want to",
+                    "corrected": "I don't hear you. Do you want to repeat that?",
+                    "explanation": "The repetition of 'want to' is unnecessarily verbose and confusing; it can be simplified.",
+                    "context": "When communication is unclear, it can become frustrating. I don't hear you. Do you want to repeat that for clarity?"
+                },
+                {
+                    "original": "it's a spanish it's a spanish no no it's a spanish it harmon it's a spanish dried uh... uh... pork meat",
+                    "corrected": "It's Spanish, yes, it’s a Spanish dish called 'jamón,' which is dried pork meat.",
+                    "explanation": "Repetitive the phrase 'it's a Spanish' was awkward and redundant; it needed clarification regarding the name of the dish.",
+                    "context": "I was trying to describe a traditional dish. It's Spanish, yes, it’s a Spanish dish called 'jamón,' which is dried pork meat."
+                },
+                {
+                    "original": "hummus yeah hummus yeah hummus one of these and the babaganush middle eastern cuisine",
+                    "corrected": "Hummus and babaganoush are both popular dishes in Middle Eastern cuisine.",
+                    "explanation": "The structure was informal and unclear. It should state both dishes are part of Middle Eastern cuisine.",
+                    "context": "When discussing cuisine, clarity is important. Hummus and babaganoush are both popular dishes in Middle Eastern cuisine."
+                },
+                {
+                    "original": "are there other restaurants in suburb of kusar middle eastern cuisine or like it's my thing is the only restaurants",
+                    "corrected": "Are there other restaurants in the suburbs of Kisar serving Middle Eastern cuisine, or is this the only one?",
+                    "explanation": "The phrase 'my thing is the only restaurants' is unclear and incorrect grammar; it requires proper phrasing.",
+                    "context": "I wanted to know about the local culinary scene. Are there other restaurants in the suburbs of Kisar serving Middle Eastern cuisine, or is this the only one?"
+                },
+                {
+                    "original": "because it's uh... uh... not uh... popular uh... kitchen but uh... our restaurants is so popular",
+                    "corrected": "because it's not a popular cuisine, but our restaurant is very popular.",
+                    "explanation": "The phrase 'kitchen' should be 'cuisine,' and 'our restaurants is' should be corrected to 'our restaurant is.'",
+                    "context": "There are many regional specialties. Although Middle Eastern cuisine is not very popular, our restaurant is very popular."
+                },
+                {
+                    "original": "it's doing well right and it also serves wines",
+                    "corrected": "It's doing well, right? It also serves wines.",
+                    "explanation": "The sentence structure was awkward. Punctuation with a question mark clarifies the pause and tone.",
+                    "context": "I want to emphasize our success. It's doing well, right? It also serves wines, which adds to our appeal."
+                },
+                {
+                    "original": "do you also like to come up with uh... like you know like what wine lists or like what other restaurants have to sell",
+                    "corrected": "Do you also come up with wine lists for other restaurants?",
+                    "explanation": "The sentence is overly wordy with repetitive 'like' phrases; it should be direct and concise.",
+                    "context": "I want to understand my role more clearly. Do you also come up with wine lists for other restaurants?"
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "i hope so if i'm ever if i if i ever find myself myself in some pittsburgh immersed in the sentence here",
+                    "corrected": "I hope so if I ever find myself in Pittsburgh immersed in the sentence here.",
+                    "explanation": "The repetition of 'if I' and 'myself' is unnecessary, and 'Pittsburgh' should be capitalized as it is a proper noun.",
+                    "context": "I’m looking forward to visiting soon. I hope so if I ever find myself in Pittsburgh. I’d love to immerse myself in the local culture."
+                },
+                {
+                    "original": "did you sleep well?",
+                    "corrected": "Did you sleep well?",
+                    "explanation": "The initial word should be capitalized to start the question correctly.",
+                    "context": "I was curious about how you felt after a good night's sleep. Did you sleep well? I hope you felt rested."
+                },
+                {
+                    "original": "can you say that you are slept like particularly well today",
+                    "corrected": "Can you say that you slept particularly well today?",
+                    "explanation": "'Are slept' should be corrected to 'slept,' which is the correct past tense form.",
+                    "context": "I'm interested in how your sleep was. Can you say that you slept particularly well today? I think that would indicate you’re feeling good."
+                },
+                {
+                    "original": "because of that uh... whether on the on the night and the day",
+                    "corrected": "because of that, the weather during the night and the day.",
+                    "explanation": "The phrase 'whether on the on the night and the day' is incorrect; it should be 'the weather during the night and the day.'",
+                    "context": "I understand how external factors can affect your sleep. Because of that, the weather during the night and the day can really play a role."
+                },
+                {
+                    "original": "you did do you do you track your sleep on your apple watch",
+                    "corrected": "Do you track your sleep on your Apple Watch?",
+                    "explanation": "The repetition of 'you do' is unnecessary and 'Apple Watch' needs to be capitalized.",
+                    "context": "I’m trying to gauge your habits related to sleep. Do you track your sleep on your Apple Watch? It might help you understand your patterns."
+                },
+                {
+                    "original": "that reflects how well you slept this night like eighty means okay ninety means great",
+                    "corrected": "that reflects how well you slept last night; eighty means okay and ninety means great.",
+                    "explanation": "'This night' should be corrected to 'last night,' and punctuation should be used to separate the clauses.",
+                    "context": "I was explaining the functionality of the Apple Watch. That reflects how well you slept last night; eighty means okay and ninety means great."
+                },
+                {
+                    "original": "your apple watch would show like nineteen five like very well rest of it",
+                    "corrected": "your Apple Watch would show something like ninety-five, indicating you are well-rested.",
+                    "explanation": "'Nineteen five' is incorrect; it should be 'ninety-five,' and the phrase needs refining for clarity.",
+                    "context": "I’m discussing potential sleep tracking results. Your Apple Watch would show something like ninety-five, indicating you are well-rested. It’s helpful for monitoring your health."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Apprentice",
+                    "definition": "A person who works for another to learn a trade or skill.",
+                    "context": {
+                        "Context 1": "Today you're working with your apprentice in the restaurant.",
+                        "Context 2": "He was an apprentice baker before opening his own pastry shop.",
+                        "Context 3": "In the movie, the young apprentice discovers the magic of cooking."
+                    }
+                },
+                {
+                    "word": "Client",
+                    "definition": "A person or organization that engages the services of a professional.",
+                    "context": {
+                        "Context 1": "You know, a lot of clients come to the restaurant on Fridays.",
+                        "Context 2": "The lawyer met her new client to discuss the case details.",
+                        "Context 3": "In the coffee shop, the barista greets each client with a smile."
+                    }
+                },
+                {
+                    "word": "Commission",
+                    "definition": "A fee paid to an employee or agent for services rendered, often a percentage of sales.",
+                    "context": {
+                        "Context 1": "You can earn pretty good commission from the sales today.",
+                        "Context 2": "He receives a 10% commission for every car he sells.",
+                        "Context 3": "The artist was proud to receive a commission for her mural."
+                    }
+                },
+                {
+                    "word": "Logistics",
+                    "definition": "The detailed coordination of complex operations involving people, facilities, and supplies.",
+                    "context": {
+                        "Context 1": "The logistics of running a restaurant can be quite challenging.",
+                        "Context 2": "The logistics of the event required careful planning and execution.",
+                        "Context 3": "In the military, logistics is crucial for timely deliveries of supplies."
+                    }
+                },
+                {
+                    "word": "Environment",
+                    "definition": "The surrounding conditions in which a person, animal, or plant lives or operates.",
+                    "context": {
+                        "Context 1": "The kitchen environment is very stressful and tense.",
+                        "Context 2": "A peaceful environment can greatly enhance focus when studying.",
+                        "Context 3": "The wildlife environment in that park is rich with diverse species."
+                    }
+                },
+                {
+                    "word": "Specialty",
+                    "definition": "A distinctive feature or highlight of a particular field or activity.",
+                    "context": {
+                        "Context 1": "The restaurant's specialty is seafood dishes and fine wines.",
+                        "Context 2": "His specialty is making traditional Italian pasta.",
+                        "Context 3": "The doctor's specialty is in childhood asthma and respiratory issues."
+                    }
+                },
+                {
+                    "word": "Culinary",
+                    "definition": "Related to cooking or the kitchen.",
+                    "context": {
+                        "Context 1": "Culinary skills are essential for working in a restaurant kitchen.",
+                        "Context 2": "She attended a culinary school to improve her cooking techniques.",
+                        "Context 3": "The culinary festival showcased dishes from around the world."
+                    }
+                },
+                {
+                    "word": "Travelers",
+                    "definition": "People who are on a journey, especially to new places.",
+                    "context": {
+                        "Context 1": "During summer, we get more travelers visiting the restaurant.",
+                        "Context 2": "Many travelers prefer hostels for budget accommodations.",
+                        "Context 3": "The travelers shared their experiences from various countries."
+                    }
+                },
+                {
+                    "word": "Social Media",
+                    "definition": "Websites and applications that enable users to create and share content or participate in social networking.",
+                    "context": {
+                        "Context 1": "They promote the restaurant on social media like Instagram and Facebook.",
+                        "Context 2": "Social media has revolutionized how brands interact with customers.",
+                        "Context 3": "He used social media to find local events happening this weekend."
+                    }
+                },
+                {
+                    "word": "Stressful",
+                    "definition": "Causing mental or emotional stress.",
+                    "context": {
+                        "Context 1": "The kitchen environment can be very stressful for cooks.",
+                        "Context 2": "Planning a wedding can be a stressful experience for many couples.",
+                        "Context 3": "His job in emergency services is often stressful but rewarding."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Apprentice",
+                    "fact": "Historically, apprenticeships often required a seven-year commitment—talk about a long learning curve!"
+                },
+                {
+                    "word": "Logistics",
+                    "fact": "The word 'logistics' originated from the French word 'loger,' which means 'to lodge'—so you could say it’s about making sure everyone has a place to stay!"
+                },
+                {
+                    "word": "Stressful",
+                    "fact": "Did you know that laughter is one of the best stress relievers? It's scientifically shown to lower cortisol levels!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the chef break up with his girlfriend?",
+                    "answer": "She kept asking him to spice things up, but he thought he was already on fire!"
+                },
+                {
+                    "question": "Why don’t chefs find arguments funny?",
+                    "answer": "Because they always end up in a heated debate!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Exaggeration",
+                    "definition": "A statement that represents something as better or worse than it really is.",
+                    "context": {
+                        "Context 1": "His story about cooking was pure exaggeration; he only made pasta, not a five-course meal.",
+                        "Context 2": "The exaggeration in her report made it hard to trust her findings.",
+                        "Context 3": "In fairy tales, there's often exaggeration about characters' abilities."
+                    }
+                },
+                {
+                    "word": "Intimidating",
+                    "definition": "Causing a frightening or scary feeling.",
+                    "context": {
+                        "Context 1": "Mark Pierre is described as intimidating because of his strict demeanor in the kitchen.",
+                        "Context 2": "The big dog was intimidating to the children who wanted to pet him.",
+                        "Context 3": "His towering height was intimidating to his opponents on the basketball court."
+                    }
+                },
+                {
+                    "word": "Relief",
+                    "definition": "A feeling of reassurance and relaxation following a stressful situation.",
+                    "context": {
+                        "Context 1": "For Mark Pierre, cooking was a relief from the difficulties of his past.",
+                        "Context 2": "He felt a great relief after finally finishing his final exams.",
+                        "Context 3": "The medicine provided immediate relief from her headache."
+                    }
+                },
+                {
+                    "word": "Prestigious",
+                    "definition": "Having high status and respect in society; admired.",
+                    "context": {
+                        "Context 1": "He trained at a prestigious culinary school in France.",
+                        "Context 2": "Winning the award was a prestigious honor for the scientist.",
+                        "Context 3": "The prestigious hotel is known for its luxurious accommodations."
+                    }
+                },
+                {
+                    "word": "Passion",
+                    "definition": "A strong feeling of enthusiasm or excitement for something.",
+                    "context": {
+                        "Context 1": "Cooking was Mark Pierre's only passion in life.",
+                        "Context 2": "Her passion for painting was evident in every brushstroke.",
+                        "Context 3": "He spoke about his passion for soccer with so much energy."
+                    }
+                },
+                {
+                    "word": "Customer",
+                    "definition": "A person who purchases goods or services from a store or business.",
+                    "context": {
+                        "Context 1": "In the restaurant, the owner once was a customer who loved the food.",
+                        "Context 2": "The customer complained about the noise in the café.",
+                        "Context 3": "A loyal customer always returns to her favorite bookshop for new releases."
+                    }
+                },
+                {
+                    "word": "Character",
+                    "definition": "The mental and moral qualities distinctive to an individual.",
+                    "context": {
+                        "Context 1": "Gordon Ramsay is a character on TV, but he isn't as fierce in real life.",
+                        "Context 2": "The main character in the book showed great resilience throughout her journey.",
+                        "Context 3": "The character of the town changed drastically after the new mayor was elected."
+                    }
+                },
+                {
+                    "word": "Observe",
+                    "definition": "To watch carefully, especially for details.",
+                    "context": {
+                        "Context 1": "The chef would observe his students closely to teach them properly.",
+                        "Context 2": "She enjoys observing wildlife during her hikes in the mountains.",
+                        "Context 3": "They decided to observe the celebration from a distance to avoid the crowd."
+                    }
+                },
+                {
+                    "word": "Ambition",
+                    "definition": "A strong desire to achieve something, typically requiring determination and hard work.",
+                    "context": {
+                        "Context 1": "Mark Pierre's ambition to become a chef drove him through tough times.",
+                        "Context 2": "Her ambition to travel the world led her to save money every month.",
+                        "Context 3": "His ambition to win the championship motivated the entire team."
+                    }
+                },
+                {
+                    "word": "Ignorance",
+                    "definition": "Lack of knowledge, awareness, or information.",
+                    "context": {
+                        "Context 1": "His comment was a product of exaggeration and ignorance about the subject.",
+                        "Context 2": "Ignorance of the law is not an excuse for breaking it.",
+                        "Context 3": "Her ignorance about electronics made it difficult for her to fix her phone."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Intimidating",
+                    "fact": "Studies have shown that dogs can appear more intimidating when they wear a tuxedo!"
+                },
+                {
+                    "word": "Passion",
+                    "fact": "Did you know that people who are passionate about their hobbies often live longer, happier lives?"
+                },
+                {
+                    "word": "Exaggeration",
+                    "fact": "The world record for the most significant exaggeration is held by... well, I can't even say it without lying!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the chef break up with his girlfriend?",
+                    "answer": "Because she kept trying to spice things up!"
+                },
+                {
+                    "question": "Why don’t chefs find their job stressful?",
+                    "answer": "Because they can always just take a whisk!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Archetype",
+                    "definition": "A very typical example of a certain person or thing.",
+                    "context": {
+                        "Context 1": "The chef we talked about fits into the archetype of a classic, charismatic cook.",
+                        "Context 2": "In movies, the hero is often an archetype that represents bravery and determination.",
+                        "Context 3": "Cats and dogs are archetypes of popular domestic pets."
+                    }
+                },
+                {
+                    "word": "Myth",
+                    "definition": "A traditional story that explains a natural or social phenomenon.",
+                    "context": {
+                        "Context 1": "We discussed myths surrounding famous chefs and their culinary techniques.",
+                        "Context 2": "Many cultures have myths explaining how the world was created.",
+                        "Context 3": "The myth of the phoenix rising from the ashes symbolizes rebirth."
+                    }
+                },
+                {
+                    "word": "Cuisine",
+                    "definition": "A style of cooking characterized by distinctive ingredients, techniques, and dishes.",
+                    "context": {
+                        "Context 1": "The chef specializes in Italian cuisine, blending it with Russian influences.",
+                        "Context 2": "When I travel, I love to explore the local cuisine of each area.",
+                        "Context 3": "Japanese cuisine is known for its sushi and minimalistic presentation."
+                    }
+                },
+                {
+                    "word": "Soft-spoken",
+                    "definition": "Having a gentle or quiet voice.",
+                    "context": {
+                        "Context 1": "Our chef is quite soft-spoken, making his cooking lessons soothing.",
+                        "Context 2": "Her soft-spoken demeanor made her a great teacher.",
+                        "Context 3": "Despite being soft-spoken, he has strong opinions on politics."
+                    }
+                },
+                {
+                    "word": "Bilingual",
+                    "definition": "Fluent in two languages.",
+                    "context": {
+                        "Context 1": "The chef is bilingual, mixing Russian and Italian in his conversations.",
+                        "Context 2": "Being bilingual gives you a significant edge in the job market.",
+                        "Context 3": "Many children in bilingual households grow up speaking both languages naturally."
+                    }
+                },
+                {
+                    "word": "Memorize",
+                    "definition": "To learn something so well that you can remember it perfectly.",
+                    "context": {
+                        "Context 1": "She memorized many names in Russian to communicate with her friends.",
+                        "Context 2": "Students often memorize formulas before exams.",
+                        "Context 3": "He can memorize songs quickly and often surprises his friends with trivia."
+                    }
+                },
+                {
+                    "word": "Cultural Exchange",
+                    "definition": "The process of sharing ideas, values, and traditions across cultures.",
+                    "context": {
+                        "Context 1": "The lesson about chefs demonstrates a cultural exchange of culinary traditions.",
+                        "Context 2": "Cultural exchange programs allow students to study abroad and experience new cultures.",
+                        "Context 3": "Food festivals often highlight cultural exchange by showcasing diverse culinary practices."
+                    }
+                },
+                {
+                    "word": "Sophisticated",
+                    "definition": "Having a refined knowledge of the world, often through education or experience.",
+                    "context": {
+                        "Context 1": "She finds the name 'Dasha' sophisticated and beautiful.",
+                        "Context 2": "His sophisticated taste in art impressed everyone at the gallery.",
+                        "Context 3": "The movie's sophisticated plot kept the audience engaged until the end."
+                    }
+                },
+                {
+                    "word": "Influence",
+                    "definition": "The capacity to have an effect on the character, development, or behavior of someone or something.",
+                    "context": {
+                        "Context 1": "The chef has influenced the way many people view Italian cooking.",
+                        "Context 2": "Peer pressure can greatly influence a teenager's choices.",
+                        "Context 3": "Her travels had a significant influence on her writing style."
+                    }
+                },
+                {
+                    "word": "Curse Word",
+                    "definition": "A profane or offensive word or phrase.",
+                    "context": {
+                        "Context 1": "The chef's use of Russian curse words added humor to his lessons.",
+                        "Context 2": "He accidentally let out a curse word when he stubbed his toe.",
+                        "Context 3": "In some cultures, using curse words in public is considered disrespectful."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Myth",
+                    "fact": "Did you know that many myths exist to explain everyday occurrences like rain or the changing seasons?"
+                },
+                {
+                    "word": "Cuisine",
+                    "fact": "The world's most complicated cuisine is often debated, but some say French cuisine takes the crown with its intricate techniques!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the chef break up with his girlfriend?",
+                    "answer": "Because she found him too kneady!"
+                },
+                {
+                    "question": "Why do chefs love to tell jokes?",
+                    "answer": "Because they always find the right punchline!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Donut",
+                    "definition": "A sweet fried dough pastry, often ring-shaped and usually glazed or filled with sweet filling.",
+                    "context": {
+                        "Context 1": "The chef surprised everyone with a batch of freshly made donuts topped with sprinkles.",
+                        "Context 2": "He preferred to eat a donut while reading his morning newspaper.",
+                        "Context 3": "During the party, they served donuts alongside coffee and tea."
+                    }
+                },
+                {
+                    "word": "Executive Chef",
+                    "definition": "The top chef in charge of all kitchen operations, responsible for menu creation and kitchen staff management.",
+                    "context": {
+                        "Context 1": "The executive chef designed a new winter menu featuring seasonal ingredients.",
+                        "Context 2": "She hoped to become an executive chef one day and run her own restaurant.",
+                        "Context 3": "In the movie, the executive chef faced unexpected challenges when his head waiter quit."
+                    }
+                },
+                {
+                    "word": "Sprinkle",
+                    "definition": "To scatter small bits or drops of something over a surface.",
+                    "context": {
+                        "Context 1": "He decided to sprinkle powdered sugar over the donuts before serving them.",
+                        "Context 2": "They like to sprinkle water on plants to keep them hydrated.",
+                        "Context 3": "Before the party, she would sprinkle confetti everywhere for decoration."
+                    }
+                },
+                {
+                    "word": "Recipe",
+                    "definition": "A set of instructions for preparing a particular dish.",
+                    "context": {
+                        "Context 1": "The executive chef created a detailed recipe to help the kitchen staff prepare the dish correctly.",
+                        "Context 2": "He found a recipe for chocolate cake online and decided to bake it for his friend's birthday.",
+                        "Context 3": "In her cooking class, the instructor shared unique family recipes that were passed down through generations."
+                    }
+                },
+                {
+                    "word": "Ingredients",
+                    "definition": "The items or substances needed to make a particular dish or product.",
+                    "context": {
+                        "Context 1": "The chef went to the market to buy fresh ingredients for the special dish.",
+                        "Context 2": "She always checked the ingredients list on food labels to ensure they were healthy.",
+                        "Context 3": "For her art project, she used various ingredients like paper and paint."
+                    }
+                },
+                {
+                    "word": "Pastry",
+                    "definition": "A type of dough used for making baked goods, typically flaky and light.",
+                    "context": {
+                        "Context 1": "He took baking classes to master the art of pastry making.",
+                        "Context 2": "The bakery was famous for its delicate pastry creations, attracting customers from all over town.",
+                        "Context 3": "During the festival, they showcased pastry art that amazed everyone."
+                    }
+                },
+                {
+                    "word": "Menu",
+                    "definition": "A list of dishes available for order at a restaurant.",
+                    "context": {
+                        "Context 1": "The restaurant changed its menu to include more vegan options.",
+                        "Context 2": "He looked at the menu carefully before deciding what to order.",
+                        "Context 3": "In her new café, she designed a unique menu featuring global cuisine."
+                    }
+                },
+                {
+                    "word": "Culinary",
+                    "definition": "Relating to cooking or the kitchen.",
+                    "context": {
+                        "Context 1": "She enrolled in culinary school to pursue her dream of becoming a professional chef.",
+                        "Context 2": "The culinary arts program includes pastry making, grilling, and international cuisines.",
+                        "Context 3": "He had a culinary experience when he visited local markets abroad."
+                    }
+                },
+                {
+                    "word": "Team",
+                    "definition": "A group of individuals working together toward a common goal.",
+                    "context": {
+                        "Context 1": "The restaurant staff worked as a team to ensure everything ran smoothly during service.",
+                        "Context 2": "In school, they formed a study team to help prepare for exams.",
+                        "Context 3": "His favorite baseball team won the championship for the third consecutive year."
+                    }
+                },
+                {
+                    "word": "Seasonal",
+                    "definition": "Occurring in, suitable for, or typical of a particular season.",
+                    "context": {
+                        "Context 1": "The chef highlighted the seasonal ingredients in the new menu items.",
+                        "Context 2": "They love to decorate their house with seasonal decorations throughout the year.",
+                        "Context 3": "The store offers seasonal discounts during holidays like Christmas and Easter."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Donut",
+                    "fact": "The world's largest donut weighed over 1.7 tons and was approximately 16 feet in diameter!"
+                },
+                {
+                    "word": "Pastry",
+                    "fact": "In France, there’s an annual “Pizza and Pastry Festival” where chefs compete to create the best pastry-inspired pizzas!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the baker go to therapy?",
+                    "answer": "Because he kneaded to talk about his dough problems!"
+                },
+                {
+                    "question": "What do you call pastry that tells jokes?",
+                    "answer": "A pun pastry!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Executive Chef",
+                    "definition": "The chief chef who manages the kitchen and is responsible for creating the menu and overseeing kitchen staff.",
+                    "context": {
+                        "Context 1": "The executive chef created a new menu for all the restaurants under his command.",
+                        "Context 2": "During the holiday season, the executive chef often gives cooking classes to share his skills.",
+                        "Context 3": "In film, the character of the executive chef is often portrayed as the dramatic leader of the kitchen."
+                    }
+                },
+                {
+                    "word": "Sommelier",
+                    "definition": "A wine steward who is responsible for the wine service and pairing wines with dishes.",
+                    "context": {
+                        "Context 1": "The sommelier recommended a perfect wine pairing for each course of the meal.",
+                        "Context 2": "At the art gallery, the sommelier served wine to guests during the opening night.",
+                        "Context 3": "In a movie about a vineyard, the sommelier was the main character who dreamed of becoming a wine connoisseur."
+                    }
+                },
+                {
+                    "word": "Cuisine",
+                    "definition": "A style or method of cooking, especially as characteristic of a particular country, region, or establishment.",
+                    "context": {
+                        "Context 1": "The restaurant specializes in Lebanese cuisine, offering various traditional dishes.",
+                        "Context 2": "His favorite cuisine is Italian because he loves pasta.",
+                        "Context 3": "In an international festival, cuisine from various countries was showcased, attracting many visitors."
+                    }
+                },
+                {
+                    "word": "Apprentice",
+                    "definition": "A trainee who works for a skilled professional to learn the trade or profession.",
+                    "context": {
+                        "Context 1": "The young chef started as an apprentice to a famous executive chef.",
+                        "Context 2": "In medieval times, apprentices learned their craft by working in a master’s shop.",
+                        "Context 3": "In a fictional story, an apprentice magician learned spells from the greatest wizard in the kingdom."
+                    }
+                },
+                {
+                    "word": "Menu",
+                    "definition": "A list of food and drink items available in a restaurant.",
+                    "context": {
+                        "Context 1": "The new menu features several innovative dishes crafted by the executive chef.",
+                        "Context 2": "In a family gathering, they created a menu that included everyone's favorite dishes.",
+                        "Context 3": "In a fantasy novel, the menu offered magical potions instead of traditional food."
+                    }
+                },
+                {
+                    "word": "Gastronomy",
+                    "definition": "The art or science of good eating; the practice or study of preparing food and eating it.",
+                    "context": {
+                        "Context 1": "Gastronomy is important in our culture, and we take pride in our culinary traditions.",
+                        "Context 2": "He studies gastronomy and dreams of opening a high-end restaurant in the future.",
+                        "Context 3": "In the movie, the story revolves around a gastronomy competition between rival chefs."
+                    }
+                },
+                {
+                    "word": "Kitchen",
+                    "definition": "A room or area where food is prepared and cooked.",
+                    "context": {
+                        "Context 1": "The kitchen was buzzing with activity as the chefs prepared for the dinner rush.",
+                        "Context 2": "In a circus, there was a kitchen tent where performers would get their meals.",
+                        "Context 3": "In a magical world, the kitchen of the castle was run by enchanted talking utensils."
+                    }
+                },
+                {
+                    "word": "Nutritious",
+                    "definition": "Food that is healthy and contains the substances necessary for growth and health.",
+                    "context": {
+                        "Context 1": "The chef focuses on creating nutritious meals that enhance well-being.",
+                        "Context 2": "During the health conference, they discussed the importance of nutritious food for school children.",
+                        "Context 3": "In a science fiction story, people relied on nutritious food made from algae for survival."
+                    }
+                },
+                {
+                    "word": "Spices",
+                    "definition": "Natural substances used to add flavor, aroma, or color to food and drinks.",
+                    "context": {
+                        "Context 1": "The chef used various spices to enhance the flavors of his dishes.",
+                        "Context 2": "In her garden, she grew spices like basil and thyme for her cooking.",
+                        "Context 3": "In a fantasy book, a powerful spice could enhance magical abilities."
+                    }
+                },
+                {
+                    "word": "Popular",
+                    "definition": "Widely liked or appreciated; admired or sought after by many.",
+                    "context": {
+                        "Context 1": "The restaurant became popular because of its unique menu and excellent service.",
+                        "Context 2": "This game is so popular that it often sells out during the holidays.",
+                        "Context 3": "In high school, she was the most popular student, known for her kindness and creativity."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Cuisine",
+                    "fact": "Did you know that the word 'cuisine' comes from the Latin word 'coquina,’ which means kitchen?"
+                },
+                {
+                    "word": "Sommelier",
+                    "fact": "The word 'sommelier' was originally used for someone responsible for carrying wine, kind of like a wine Uber!"
+                },
+                {
+                    "word": "Apprentice",
+                    "fact": "In medieval guilds, apprentices often started working as young as 12 years old, marking the original ‘youth employment’ era."
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the chef break up with his girlfriend?",
+                    "answer": "Because she kept making him feel unthyme!"
+                },
+                {
+                    "question": "How does a chef ask someone to marry them?",
+                    "answer": "They say, 'Lettuce get married!'"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Localization",
+                    "definition": "The process of adapting a product or content to meet the language, cultural, and other requirements of a specific target market.",
+                    "context": {
+                        "Context 1": "The restaurant chose localization to better cater to the local cuisine preferences.",
+                        "Context 2": "Localization of software can significantly improve user experience in different countries.",
+                        "Context 3": "When expanding globally, companies must consider localization to respect cultural differences."
+                    }
+                },
+                {
+                    "word": "Extraordinary",
+                    "definition": "Very unusual or remarkable.",
+                    "context": {
+                        "Context 1": "Her performance was extraordinary, earning her a round of applause from the audience.",
+                        "Context 2": "The scientist made an extraordinary discovery that changed our understanding of physics.",
+                        "Context 3": "His extraordinary ability to solve complex puzzles impressed everyone at the competition."
+                    }
+                },
+                {
+                    "word": "Cognitive",
+                    "definition": "Relating to the mental processes of perception, memory, judgment, and reasoning.",
+                    "context": {
+                        "Context 1": "Sleep greatly affects our cognitive abilities and overall mental performance.",
+                        "Context 2": "Cognitive skills like problem-solving are vital for success in mathematics.",
+                        "Context 3": "Cognitive therapy focuses on changing unhelpful thoughts to improve mental health."
+                    }
+                },
+                {
+                    "word": "Track",
+                    "definition": "To follow the progress or development of something.",
+                    "context": {
+                        "Context 1": "You can track your sleep patterns with the help of an Apple Watch.",
+                        "Context 2": "They decided to track the sales data to identify trends and improve their marketing strategy.",
+                        "Context 3": "He used GPS to track his running distance and improve his performance."
+                    }
+                },
+                {
+                    "word": "Correlation",
+                    "definition": "A mutual relationship or connection between two or more things.",
+                    "context": {
+                        "Context 1": "The teacher explained the correlation between sleep quality and academic performance.",
+                        "Context 2": "Researchers found a correlation between exercise and improved mental health.",
+                        "Context 3": "There is no correlation between eating chocolate and receiving good grades."
+                    }
+                },
+                {
+                    "word": "Analyze",
+                    "definition": "To examine something in detail for purposes of explanation and interpretation.",
+                    "context": {
+                        "Context 1": "We will analyze your sleep data to find patterns and optimize your rest.",
+                        "Context 2": "She plans to analyze the survey results to understand customer preferences better.",
+                        "Context 3": "They need to analyze the security footage from last night’s incident."
+                    }
+                },
+                {
+                    "word": "Ordinary",
+                    "definition": "With no special or distinctive features; normal.",
+                    "context": {
+                        "Context 1": "The apartment looks very ordinary compared to the fancy designs around it.",
+                        "Context 2": "In an ordinary day, I like to sit down with a cup of coffee and read.",
+                        "Context 3": "His ordinary story about a trip became extraordinary when he added a surprise element."
+                    }
+                },
+                {
+                    "word": "Rested",
+                    "definition": "Having recovered energy after sleep or relaxation.",
+                    "context": {
+                        "Context 1": "He felt very rested after a good night’s sleep.",
+                        "Context 2": "After a short vacation, they returned feeling rested and ready to work.",
+                        "Context 3": "She always looks rested after spending the weekend at her cabin in the woods."
+                    }
+                },
+                {
+                    "word": "Metrics",
+                    "definition": "A standard of measurement.",
+                    "context": {
+                        "Context 1": "The Apple watch provides various metrics to evaluate your sleep quality.",
+                        "Context 2": "Companies often look at sales metrics to gauge performance.",
+                        "Context 3": "The fitness app tracks metrics like distance, calories burned, and exercise minutes."
+                    }
+                },
+                {
+                    "word": "Immerse",
+                    "definition": "To involve oneself deeply in a particular activity or interest.",
+                    "context": {
+                        "Context 1": "He wants to immerse himself in the local culture during his travels.",
+                        "Context 2": "She decided to immerse herself in learning the violin this summer.",
+                        "Context 3": "They immerse new employees in training to prepare them for their roles."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Cognitive",
+                    "fact": "Cognitive psychologists reckon that we can only consciously think about 7 ± 2 things at once—good luck remembering that number!"
+                },
+                {
+                    "word": "Ordinary",
+                    "fact": "The word 'ordinary' is derived from Latin 'ordinarius', which means 'arranged or set in order.' So, even your ordinary routines have a certain charm!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the smartphone go to school?",
+                    "answer": "Because it wanted to improve its 'app'titude!"
+                },
+                {
+                    "question": "What do you call a watch that runs on a flat tire?",
+                    "answer": "A 'tire'-less watch!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going? Ready for the big dinner rush at the restaurant today?"
+                },
+                {
+                    "Person 2": "Absolutely! Fridays are always busy, but I'm excited. How do you usually prepare for it?"
+                },
+                {
+                    "Person 1": "Honestly, I just try to stay organized. Make sure everything's prepped, you know? How about you? You working with your apprentice again?"
+                },
+                {
+                    "Person 2": "Yeah, we’re going to tackle it together. It feels a bit like fishing sometimes, just waiting for the right customers to come in!"
+                },
+                {
+                    "Person 1": "Haha, so who's the big fish today, then? Are you expecting any regulars?"
+                },
+                {
+                    "Person 2": "We’ve got a mix today! A lot of new faces since it's summer, but I hope our regulars swing by for their usual orders."
+                },
+                {
+                    "Person 1": "Nice! How do travelers usually find out about your restaurant?"
+                },
+                {
+                    "Person 2": "Mostly through social media, like Instagram. It really helps us reach new customers."
+                },
+                {
+                    "Person 1": "That’s great! Do you also show up on any restaurant guides?"
+                },
+                {
+                    "Person 2": "Yeah, I think we ranked pretty well on a couple of lists online. People seem to enjoy coming here."
+                },
+                {
+                    "Person 1": "What’s the name of the place again? I always forget!"
+                },
+                {
+                    "Person 2": "It's called ‘Broke Out’. Kind of a quirky name, right?"
+                },
+                {
+                    "Person 1": "Definitely memorable! Where are you guys located?"
+                },
+                {
+                    "Person 2": "We're right in the city center, close to the zoo. Makes it easy for people to find us."
+                },
+                {
+                    "Person 1": "Perfect spot! Do you have an open kitchen there?"
+                },
+                {
+                    "Person 2": "Yep! It’s open so guests can see their food being made. Adds a nice touch, but it’s pretty chaotic in there!"
+                },
+                {
+                    "Person 1": "I can imagine! I’ve seen shows like Gordon Ramsay’s, and those kitchens look intense."
+                },
+                {
+                    "Person 2": "They really do! But I think those shows can be super dramatic. The real kitchen life is tough, but not always like that!"
+                },
+                {
+                    "Person 1": "Right? Have you seen ‘Chef's Table’? That show gives a great insight into different chefs."
+                },
+                {
+                    "Person 2": "Yeah! It’s inspiring to see how chefs around the world create their masterpieces."
+                },
+                {
+                    "Person 1": "Totally! We should probably get back to work soon, huh?"
+                },
+                {
+                    "Person 2": "Yep! Let’s make today a great one!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that cooking show last night?"
+                },
+                {
+                    "Person 2": "Yeah, I did! Wasn't that chef just wild with the way he handles criticism?"
+                },
+                {
+                    "Person 1": "Right? I mean, tossing people out for not liking the food? That’s some serious attitude."
+                },
+                {
+                    "Person 2": "Totally! I guess if you're that passionate about your cooking, you expect people to appreciate it."
+                },
+                {
+                    "Person 1": "True! I wouldn’t want someone complaining about my food either. But wow, that was extreme."
+                },
+                {
+                    "Person 2": "Yeah, I heard he's got a tough reputation. I wonder how he became that way?"
+                },
+                {
+                    "Person 1": "I think he had a rough past. Cooking was his escape, you know?"
+                },
+                {
+                    "Person 2": "That makes sense. It's like he found his passion and refused to compromise."
+                },
+                {
+                    "Person 1": "Exactly! Did you hear about his mentor too? Supposedly, he’s even scarier!"
+                },
+                {
+                    "Person 2": "I didn’t catch that part! What’s his story?"
+                },
+                {
+                    "Person 1": "Well, he’s from France and trained under one of the top chefs. Apparently, he’s intimidating in real life."
+                },
+                {
+                    "Person 2": "Wow, it’s always interesting to see how different chefs get their style."
+                },
+                {
+                    "Person 1": "For sure! I think our chef at the restaurant has a bit of that fierceness too."
+                },
+                {
+                    "Person 2": "Oh yeah? Does he kick people out too?"
+                },
+                {
+                    "Person 1": "Not really, but he definitely has high standards. You can tell he takes pride in his dishes."
+                },
+                {
+                    "Person 2": "That’s good! It’s nice to see chefs who really care about their food."
+                },
+                {
+                    "Person 1": "Definitely! It makes dining out feel special, don’t you think?"
+                },
+                {
+                    "Person 2": "Absolutely! So where should we eat next? Somewhere with a real chef experience!"
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you ever try making pasta from scratch?"
+                },
+                {
+                    "Person 2": "Yeah! I did once, and it was a disaster. Flour everywhere!"
+                },
+                {
+                    "Person 1": "Haha, same! I thought I could be like those chefs on TV, but it turned out to be a mess."
+                },
+                {
+                    "Person 2": "Right? It looked so easy when they did it. How do they make it look so perfect?"
+                },
+                {
+                    "Person 1": "I guess practice makes perfect. I just end up with blobs of dough."
+                },
+                {
+                    "Person 2": "And don’t get me started on the sauce! Mine always ends up tasting like cardboard."
+                },
+                {
+                    "Person 1": "Exactly! I think I used too much garlic once. My roommate was like, 'Whoa, what's happening here?'"
+                },
+                {
+                    "Person 2": "Haha, garlic overload! I had to apologize to mine for the smell."
+                },
+                {
+                    "Person 1": "So, have you ever thought about taking a cooking class?"
+                },
+                {
+                    "Person 2": "I have! It would be fun to learn proper techniques, instead of winging it at home."
+                },
+                {
+                    "Person 1": "Yeah, and maybe we'll actually impress someone with our cooking."
+                },
+                {
+                    "Person 2": "Exactly! Plus, I could finally learn how to make a real marinara sauce."
+                },
+                {
+                    "Person 1": "Count me in! Let’s find a class and keep our fingers crossed that we don’t burn the place down."
+                },
+                {
+                    "Person 2": "Deal! Worst case, we'll just order pizza afterward!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you try that new dessert place downtown?"
+                },
+                {
+                    "Person 2": "Not yet! But I heard they have the best donuts in the area."
+                },
+                {
+                    "Person 1": "Yeah, I tried one last weekend. It was sprinkled with nuts and everything!"
+                },
+                {
+                    "Person 2": "Sounds amazing! What flavors do they have?"
+                },
+                {
+                    "Person 1": "They’ve got the classic glazed, but they also have some wild flavors like maple bacon."
+                },
+                {
+                    "Person 2": "Maple bacon? Wow, that’s unique! I love when places get creative with their treats."
+                },
+                {
+                    "Person 1": "For sure! I think it’s awesome how chefs experiment. Do you think they come up with new recipes often?"
+                },
+                {
+                    "Person 2": "I hope so! Seasonal flavors sound fun too. Like, they could have a pumpkin spice donut in the fall."
+                },
+                {
+                    "Person 1": "Yes! Limited time offers make it feel special. I know some restaurants do that for their menus."
+                },
+                {
+                    "Person 2": "Exactly! My favorite spot does that, and I always get excited to see what’s new."
+                },
+                {
+                    "Person 1": "Speaking of which, how’s your new favorite restaurant doing?"
+                },
+                {
+                    "Person 2": "They're thriving! The chef just introduced a summer menu, and it's been a hit."
+                },
+                {
+                    "Person 1": "That's great to hear! Do they have any desserts on that menu?"
+                },
+                {
+                    "Person 2": "Yes! Their chocolate lava cake is to die for. I definitely recommend it!"
+                },
+                {
+                    "Person 1": "Sounds delicious! I need to head there soon. Thanks for the tip!"
+                },
+                {
+                    "Person 2": "No problem! Let me know when you go; I might join you!"
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, have you ever tried that new Lebanese restaurant in town?"
+                },
+                {
+                    "Person 2": "No, I haven't! What's it like?"
+                },
+                {
+                    "Person 1": "It's amazing! They serve all kinds of dishes, like hummus and baba ghanoush. So flavorful!"
+                },
+                {
+                    "Person 2": "Sounds delicious! I've been wanting to try more Middle Eastern food."
+                },
+                {
+                    "Person 1": "You definitely should! They also have this great herbal salad that I loved."
+                },
+                {
+                    "Person 2": "Nice! Do they have a good selection of wines too?"
+                },
+                {
+                    "Person 1": "Yeah, they do! The wine list is pretty impressive. Perfect for pairing with the food."
+                },
+                {
+                    "Person 2": "That’s awesome! How do you like to choose a wine when you’re at a restaurant?"
+                },
+                {
+                    "Person 1": "I usually ask the waiter for recommendations. It's fun exploring new flavors."
+                },
+                {
+                    "Person 2": "Exactly! I feel like pairing food and wine can really change the meal."
+                },
+                {
+                    "Person 1": "For sure! By the way, do you know any good spots for dessert?"
+                },
+                {
+                    "Person 2": "I heard that place down the street has amazing pastries! We should check it out sometime."
+                },
+                {
+                    "Person 1": "Count me in! A meal isn’t complete without dessert, right?"
+                },
+                {
+                    "Person 2": "Absolutely! Let’s plan for this weekend!"
+                },
+                {
+                    "Person 1": "Sounds like a plan! I'm looking forward to it."
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, have you ever thought about how much sleep affects our day-to-day life?"
+                },
+                {
+                    "Person 2": "Oh for sure! I always feel so much better when I get a good night's sleep."
+                },
+                {
+                    "Person 1": "Exactly! I remember last week, I only slept like five hours and I was a total mess."
+                },
+                {
+                    "Person 2": "Yeah, I can relate. I’ve been using my Apple Watch to track my sleep lately."
+                },
+                {
+                    "Person 1": "That sounds smart! Does it actually help?"
+                },
+                {
+                    "Person 2": "Definitely! It gives you a score based on how well you slept. It’s kind of fun to see."
+                },
+                {
+                    "Person 1": "I might need to get one of those. What score do you usually get?"
+                },
+                {
+                    "Person 2": "Most nights, I hit around 85 or 90, which feels great!"
+                },
+                {
+                    "Person 1": "Nice! I’d be happy with anything above 80. Last night, I think I was around 60."
+                },
+                {
+                    "Person 2": "Oof, that’s rough. What kept you up?"
+                },
+                {
+                    "Person 1": "Just scrolling on my phone, you know how it goes."
+                },
+                {
+                    "Person 2": "Ugh, I get that. It’s like once you start, it’s hard to stop."
+                },
+                {
+                    "Person 1": "Right? Maybe I should set some limits on my phone before bed."
+                },
+                {
+                    "Person 2": "That could definitely help! Or maybe just track your sleep for a week and see how it goes?"
+                },
+                {
+                    "Person 1": "Good idea! Let's catch up next week and see how we both did."
+                },
+                {
+                    "Person 2": "Sounds like a plan! Have a good day!"
+                },
+                {
+                    "Person 1": "You too! Catch you later!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
