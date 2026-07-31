@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 2,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "There is the one place that we can go is Istanbul because we are from Russia and only Istanbul is available for us.",
+                    "corrected": "The only place we can go is Istanbul because we are from Russia.",
+                    "explanation": "The sentence contains awkward phrasing and grammatical structure; 'there is the one place that' can be simplified to 'the only place'.",
+                    "context": "My mom and I wanted to go for a trip, but due to our situation, the only place we can go is Istanbul. We're from Russia, and our options are limited."
+                },
+                {
+                    "original": "But you didn't want to simply swim in the sea.",
+                    "corrected": "But you didn't just want to swim in the sea.",
+                    "explanation": "'Didn't want to simply' suggests a vague or unnecessary complexity; 'didn't just want to' is clearer and more natural.",
+                    "context": "We didn't go to Turkey for a relaxing beach vacation. But you didn't just want to swim in the sea, did you? You were looking for something more cultural."
+                },
+                {
+                    "original": "There are a lot of litter and bags with rubbish and garbage are just on the streets with cats and children are playing with litter.",
+                    "corrected": "There is a lot of litter, and bags of rubbish and garbage are just on the streets, where cats and children are playing.",
+                    "explanation": "The subject 'there is' must agree with 'a lot of litter'; use 'is' instead of 'are'.",
+                    "context": "The streets were very messy. There is a lot of litter, and bags of rubbish and garbage are just on the streets, where cats and children are playing."
+                },
+                {
+                    "original": "In Turkey, by the way, there are a lot of castles that look like Red Square.",
+                    "corrected": "In Turkey, by the way, there are many castles that look like Red Square.",
+                    "explanation": "The use of 'a lot of' is informal; 'many' is more appropriate in a descriptive context.",
+                    "context": "I found the architecture interesting. In Turkey, by the way, there are many castles that look like Red Square."
+                },
+                {
+                    "original": "Copy paste.",
+                    "corrected": "Copy-paste.",
+                    "explanation": "The phrase 'copy-paste' should be hyphenated as it's a compound verb.",
+                    "context": "I felt the architecture was repetitive. There are so many places that just copy-paste the same designs."
+                },
+                {
+                    "original": "They are very colorful, like, like rainbow.",
+                    "corrected": "They are very colorful, like a rainbow.",
+                    "explanation": "The phrase 'like, like rainbow' is not correctly structured; use 'like a rainbow' for clarity.",
+                    "context": "The streets in Europe were vibrant. They are very colorful, like a rainbow."
+                },
+                {
+                    "original": "There are three shores.",
+                    "corrected": "There are three areas.",
+                    "explanation": "The term 'shores' is misleading here; 'areas' better describes the concept intended.",
+                    "context": "In Istanbul, I noticed some distinct regions. There are three areas: Asian, European, and the old city."
+                },
+                {
+                    "original": "Can you describe the idea, the idea of a shore?",
+                    "corrected": "Can you describe the concept of a shore?",
+                    "explanation": "The repetition of 'the idea' is unnecessary; 'the concept of' is more concise.",
+                    "context": "I wanted to see if you understood the term. Can you describe the concept of a shore?"
+                },
+                {
+                    "original": "I'm sorry. Okay, what's that?",
+                    "corrected": "I'm sorry. What is that?",
+                    "explanation": "The phrase 'what's that' is too informal for the context; 'what is that' is more appropriate.",
+                    "context": "When I was confused about the terminology, I apologized. I'm sorry. What is that?"
+                },
+                {
+                    "original": "Is it for hair? I don't know.",
+                    "corrected": "Is it for hair? I'm not sure.",
+                    "explanation": "Using 'I don't know' can be misleading; 'I'm not sure' expresses uncertainty better during the discussion.",
+                    "context": "As we tried to identify items, I questioned the purpose. Is it for hair? I'm not sure."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "You said it's far from the router.",
+                    "corrected": "You said it was far from the router.",
+                    "explanation": "The speaker used the present tense 'is' instead of the correct past tense 'was' for reported speech.",
+                    "context": "During our discussion about cable length, you mentioned the distance. You said it was far from the router. This is why I suggested longer cables."
+                },
+                {
+                    "original": "It's better to throw a screenshot in the cart.",
+                    "corrected": "It's better to throw a screenshot in the chat.",
+                    "explanation": "'Cart' is incorrect here; it should be 'chat' to refer to the online messaging interface.",
+                    "context": "After checking your internet speed, I advised you on how to share your findings. It's better to throw a screenshot in the chat. This way, we can all see the results."
+                },
+                {
+                    "original": "Tell me what was I trying to do.",
+                    "corrected": "Tell me what I was trying to do.",
+                    "explanation": "The word order is incorrect; 'was I' should be 'I was' in a statement.",
+                    "context": "As we discussed your actions in the game, I wanted clarification on your objectives. Tell me what I was trying to do. I need to understand the situation better."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "VPN",
+                    "definition": "A Virtual Private Network, enabling secure connections to the internet.",
+                    "context": {
+                        "Context 1": "I should have used a VPN to ensure my connection was secure during the lesson.",
+                        "Context 2": "He used a VPN to access restricted content while on vacation abroad.",
+                        "Context 3": "Many professionals rely on a VPN for remote work to protect company data."
+                    }
+                },
+                {
+                    "word": "Excursion",
+                    "definition": "A short trip or outing to a specific place for a particular purpose.",
+                    "context": {
+                        "Context 1": "We planned an excursion to visit historical sites in Istanbul.",
+                        "Context 2": "Our school organized an excursion to the local science museum.",
+                        "Context 3": "The hikers embarked on an excursion to explore the national park's beauty."
+                    }
+                },
+                {
+                    "word": "Litter",
+                    "definition": "Trash that is improperly disposed of in public places.",
+                    "context": {
+                        "Context 1": "The streets of Istanbul were filled with litter, making it look unkempt.",
+                        "Context 2": "They organized a community cleanup to reduce the litter in their neighborhood.",
+                        "Context 3": "Animals are often seen rummaging through litter for food in urban areas."
+                    }
+                },
+                {
+                    "word": "Impress",
+                    "definition": "To have a strong effect on someone's feelings, often in a positive way.",
+                    "context": {
+                        "Context 1": "The architecture in Istanbul truly impressed me during my visit.",
+                        "Context 2": "He wanted to impress his friends with his cooking skills at the dinner party.",
+                        "Context 3": "Her artistic talent impressed the judges in the competition."
+                    }
+                },
+                {
+                    "word": "Cultural",
+                    "definition": "Relating to the ideas, customs, and social behavior of a particular people or society.",
+                    "context": {
+                        "Context 1": "They chose Istanbul for its rich cultural history and landmarks.",
+                        "Context 2": "The museum features cultural exhibitions from around the world.",
+                        "Context 3": "Cultural differences can lead to misunderstandings during international travels."
+                    }
+                },
+                {
+                    "word": "Accessible",
+                    "definition": "Able to be reached or entered; easy to approach or use.",
+                    "context": {
+                        "Context 1": "Only Istanbul is accessible for travelers from Russia at the moment.",
+                        "Context 2": "The new building design included ramps to make it accessible for everyone.",
+                        "Context 3": "Her blog is accessible to readers of all ages and backgrounds."
+                    }
+                },
+                {
+                    "word": "Ruins",
+                    "definition": "The remains of a structure that has fallen into a state of disrepair.",
+                    "context": {
+                        "Context 1": "The ruins of ancient castles were fascinating to explore in Istanbul.",
+                        "Context 2": "The archaeologists uncovered ruins that dated back thousands of years.",
+                        "Context 3": "After the storm, the ruins of the old barn were all that remained."
+                    }
+                },
+                {
+                    "word": "Colorful",
+                    "definition": "Full of color; vivid and bright.",
+                    "context": {
+                        "Context 1": "European streets were described as very colorful, contrasting with others.",
+                        "Context 2": "The artist used colorful paints to bring the mural to life.",
+                        "Context 3": "Her colorful wardrobe always drew attention at the office."
+                    }
+                },
+                {
+                    "word": "Accessory",
+                    "definition": "An additional item used to complement or enhance something else.",
+                    "context": {
+                        "Context 1": "A rubber band was used as an accessory to hold the money together.",
+                        "Context 2": "She wore a beautiful necklace as an accessory to her dress.",
+                        "Context 3": "The car came with several high-tech accessories included."
+                    }
+                },
+                {
+                    "word": "Network",
+                    "definition": "A group or system of interconnected people or things.",
+                    "context": {
+                        "Context 1": "Using a VPN, you can access a broader network safely and securely.",
+                        "Context 2": "Attending conferences is a great way to network with industry professionals.",
+                        "Context 3": "They built a network of friends while traveling around the world."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "VPN",
+                    "fact": "Did you know that some people use VPNs to watch Netflix from countries where it's not available? That's streaming ingenuity!"
+                },
+                {
+                    "word": "Excursion",
+                    "fact": "The longest officially recorded excursion was 7 years long when a group of students decided to tour the world—just kidding, but wouldn’t that be fun?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer bring a ladder to class?",
+                    "answer": "Because it wanted to reach the next level!"
+                },
+                {
+                    "question": "Why are ghosts such bad liars?",
+                    "answer": "Because you can see right through them!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Cable",
+                    "definition": "A thick wire or a bundle of wires that can carry electric current or signals.",
+                    "context": {
+                        "Context 1": "You need a five-meter cable to connect your console to the router.",
+                        "Context 2": "The electrician installed a new cable to improve the building's electrical system.",
+                        "Context 3": "The fisherman used a strong cable to secure his boat at the dock."
+                    }
+                },
+                {
+                    "word": "Router",
+                    "definition": "A device that connects multiple computer networks and routes data between them.",
+                    "context": {
+                        "Context 1": "The router distributes the internet connection to all devices in the house.",
+                        "Context 2": "The chef used a router to organize his kitchen supplies efficiently.",
+                        "Context 3": "In the garden, the plants have grown like a router, spreading out across the plot."
+                    }
+                },
+                {
+                    "word": "VPN",
+                    "definition": "A Virtual Private Network that encrypts your internet connection for secure browsing.",
+                    "context": {
+                        "Context 1": "You should turn off the VPN to check your internet speed correctly.",
+                        "Context 2": "The detective decided to use a VPN to keep his activities confidential.",
+                        "Context 3": "To avoid traffic, he took a VPN route through the back roads."
+                    }
+                },
+                {
+                    "word": "Wi-Fi",
+                    "definition": "A technology that allows electronic devices to connect to the internet wirelessly.",
+                    "context": {
+                        "Context 1": "You need to connect to Wi-Fi to join the online conference.",
+                        "Context 2": "The cat managed to find a cozy spot near the Wi-Fi router.",
+                        "Context 3": "They hosted a barbecue, and the Wi-Fi password was the secret ingredient for fun!"
+                    }
+                },
+                {
+                    "word": "Setup",
+                    "definition": "The way something is arranged or organized for a specific purpose.",
+                    "context": {
+                        "Context 1": "Your gaming setup determines how well you can play online.",
+                        "Context 2": "The setup for the wedding ceremony was absolutely beautiful and elegant.",
+                        "Context 3": "He had a spontaneous setup for his surprise party, which ended up being a huge success."
+                    }
+                },
+                {
+                    "word": "Connect",
+                    "definition": "To join or link together, especially in terms of technology or communication.",
+                    "context": {
+                        "Context 1": "Make sure to connect your device to Wi-Fi before the meeting starts.",
+                        "Context 2": "The artist wanted to connect with her audience through the exhibition.",
+                        "Context 3": "They planned to connect with friends during their vacation in Europe."
+                    }
+                },
+                {
+                    "word": "Measure",
+                    "definition": "To ascertain the size, amount, or degree of something, usually with a standard unit.",
+                    "context": {
+                        "Context 1": "You need to measure the speed of your internet connection.",
+                        "Context 2": "She had to measure the ingredients carefully for the recipe to turn out right.",
+                        "Context 3": "The carpenter used a ruler to measure the wood before cutting it."
+                    }
+                },
+                {
+                    "word": "Task",
+                    "definition": "A piece of work that needs to be done or completed.",
+                    "context": {
+                        "Context 1": "Your task is to check the speed of your internet.",
+                        "Context 2": "Her task for the day was to organize the office supplies.",
+                        "Context 3": "The astronauts had a critical task to repair the satellite."
+                    }
+                },
+                {
+                    "word": "Console",
+                    "definition": "A device or panel for controlling equipment, often associated with gaming.",
+                    "context": {
+                        "Context 1": "You will connect the cable to the console for online gaming.",
+                        "Context 2": "He sat down at the console to play his favorite video game.",
+                        "Context 3": "She used the console to manage the lighting during the concert."
+                    }
+                },
+                {
+                    "word": "Screenshot",
+                    "definition": "An image taken of the display on a computer or device screen.",
+                    "context": {
+                        "Context 1": "You should send a screenshot of your speed test result.",
+                        "Context 2": "After the long meeting, he took a screenshot of the important notes.",
+                        "Context 3": "The artist captured a screenshot of the city skyline for inspiration."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Router",
+                    "fact": "The word 'router' comes from the idea of routing data, but it sounds like a great pet name for a family dog!"
+                },
+                {
+                    "word": "Wi-Fi",
+                    "fact": "Did you know that the term 'Wi-Fi' doesn't stand for anything? It was made up to sound like 'Hi-Fi'!"
+                },
+                {
+                    "word": "Screenshot",
+                    "fact": "Screenshots were initially called 'screen grabs'—so, who would have thought we could capture images with a simple key combination?"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer break up with the Wi-Fi?",
+                    "answer": "Because it couldn't connect anymore!"
+                },
+                {
+                    "question": "How do you make a computer scream?",
+                    "answer": "Just go to its 'Settings' and change the volume to maximum!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Pretty good! Just got back from a trip to Istanbul."
+                },
+                {
+                    "Person 1": "Oh cool! I've always wanted to go there. What was it like?"
+                },
+                {
+                    "Person 2": "It was amazing! We didn’t do the typical beach stuff; we were all about the culture."
+                },
+                {
+                    "Person 1": "Nice! Did you see any famous places?"
+                },
+                {
+                    "Person 2": "Yeah, we visited the Blue Mosque and Hagia Sophia. The architecture was stunning!"
+                },
+                {
+                    "Person 1": "Those are on my bucket list for sure! Were the streets safe?"
+                },
+                {
+                    "Person 2": "For the most part, yeah. But a bit of litter here and there. It’s a busy city."
+                },
+                {
+                    "Person 1": "Sounds like a real city experience! Did you try any local food?"
+                },
+                {
+                    "Person 2": "Oh yes! The kebabs were incredible! I could eat those every day."
+                },
+                {
+                    "Person 1": "Yum! I’m getting hungry just thinking about it. What else did you do?"
+                },
+                {
+                    "Person 2": "We took a boat ride on the Bosphorus. The views are breathtaking!"
+                },
+                {
+                    "Person 1": "That sounds picturesque! I need to plan a trip."
+                },
+                {
+                    "Person 2": "Absolutely! Let’s go together! It’ll be fun."
+                },
+                {
+                    "Person 1": "I’m in! We’ll start planning all the cultural spots."
+                },
+                {
+                    "Person 2": "And check out some great food places while we’re at it!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you catch that game last night?"
+                },
+                {
+                    "Person 2": "Oh man, I missed it! How was it?"
+                },
+                {
+                    "Person 1": "It was intense! Went into overtime. My heart was racing!"
+                },
+                {
+                    "Person 2": "No way! That sounds exciting! Which teams were playing?"
+                },
+                {
+                    "Person 1": "It was the Eagles vs. the Cowboys. A classic rivalry."
+                },
+                {
+                    "Person 2": "I can imagine! Those games are always nail-biters."
+                },
+                {
+                    "Person 1": "For sure! The last-minute plays had me jumping off my couch!"
+                },
+                {
+                    "Person 2": "I can't believe I missed that! Did they have any crazy plays?"
+                },
+                {
+                    "Person 1": "Oh, definitely! There was this one interception that turned the whole game around."
+                },
+                {
+                    "Person 2": "Wow, I need to catch the highlights. Who scored the winning touchdown?"
+                },
+                {
+                    "Person 1": "It was a rookie! Everyone was going wild."
+                },
+                {
+                    "Person 2": "That's awesome! You have to send me the link to the highlights!"
+                },
+                {
+                    "Person 1": "Definitely! And let's catch a game together next week?"
+                },
+                {
+                    "Person 2": "Sounds like a plan! I’ll bring the snacks!"
+                },
+                {
+                    "Person 1": "Perfect! I’ll bring the drinks. It’s going to be fun!"
+                },
+                {
+                    "Person 2": "For sure! Can’t wait!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
