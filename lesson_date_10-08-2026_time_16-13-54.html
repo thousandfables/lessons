@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 4,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "And catching up all that...",
+                    "corrected": "And catching up on all that...",
+                    "explanation": "'Catching up on' is the correct phrase; it indicates the act of updating oneself about something.",
+                    "context": "I occasionally dive into this environment. And I’m catching up on all that. I check the news from my friends and my social media feeds."
+                },
+                {
+                    "original": "Just on feed my requirements.",
+                    "corrected": "Just on my feed for my requirements.",
+                    "explanation": "The phrasing is incorrect; it should include 'my' to clarify ownership of the feed.",
+                    "context": "I scroll through my social media regularly. I check not only my friends but also on my feed for my requirements. It's important for me to stay updated."
+                },
+                {
+                    "original": "It's not my room. In my room, very bad.",
+                    "corrected": "It's not my room. In my room, the connection is very bad.",
+                    "explanation": "The sentence lacks a verb; adding 'is' clarifies the state of the connection.",
+                    "context": "I moved to another room temporarily. It's not my room. In my room, the connection is very bad, which affects my online activities."
+                },
+                {
+                    "original": "I struggled today to wake up at 7.",
+                    "corrected": "I struggled to wake up at 7 today.",
+                    "explanation": "The adverb 'today' should be placed at the end of the sentence for better flow.",
+                    "context": "I usually wake up early, but I struggled to wake up at 7 today. It’s been hard to maintain my routine recently."
+                },
+                {
+                    "original": "My schedule. After work, maybe I used to... To wake up at 7 or at 6.",
+                    "corrected": "Maybe I used to wake up at 7 or at 6 after work.",
+                    "explanation": "The clause was fragmented; rearranging it creates a complete idea.",
+                    "context": "My sleeping habits have changed over time. Maybe I used to wake up at 7 or at 6 after work, but now it’s quite different."
+                },
+                {
+                    "original": "The assessor is liking two sentences.",
+                    "corrected": "The assessor likes two sentences.",
+                    "explanation": "The simple present tense 'likes' is proper here instead of 'is liking' which suggests ongoing action.",
+                    "context": "When writing an essay, we need to meet requirements. The assessor likes two sentences to meet the word count."
+                },
+                {
+                    "original": "Because they wanted to just express their point of view.",
+                    "corrected": "Because they want to just express their point of view.",
+                    "explanation": "The present tense 'want' should be used to reflect an ongoing intent.",
+                    "context": "When people write, it's often for a reason. Because they want to just express their point of view, their writing serves a purpose."
+                },
+                {
+                    "original": "The person understands that every sentence will be clear to understand.",
+                    "corrected": "The person expects that every sentence will be clear to understand.",
+                    "explanation": "'Understands' is incorrect in this context; 'expects' is more appropriate as it refers to the reader's anticipation.",
+                    "context": "When writing, clarity is essential. The person expects that every sentence will be clear to understand to ensure effective communication."
+                },
+                {
+                    "original": "Just children should be under their parents' control.",
+                    "corrected": "Children should be under their parents' control.",
+                    "explanation": "The word 'just' is unnecessary and can make the sentence awkward.",
+                    "context": "When it comes to child supervision, we need to prioritize their safety. Children should be under their parents' control to ensure they are well cared for."
+                },
+                {
+                    "original": "Today all children from birth have an access to the Internet.",
+                    "corrected": "Today all children from birth have access to the Internet.",
+                    "explanation": "'An access' is incorrect; 'access' is an uncountable noun and should not have 'an' before it.",
+                    "context": "In today's digital world, we see many changes. Today, all children from birth have access to the Internet, which raises concerns about safety."
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "Well, Internet is hard to paraphrase, but still.",
+                    "corrected": "Well, the Internet is hard to paraphrase, but still.",
+                    "explanation": "Missing definite article; we normally say 'the Internet.'",
+                    "context": "I said it would be great if you could paraphrase the word 'children'. Well, the Internet is hard to paraphrase, but still. Many men believe that."
+                },
+                {
+                    "original": "Are women not a part of the word people?",
+                    "corrected": "Are women not part of the word 'people'?",
+                    "explanation": "Awkward phrasing; use 'part of the word' and quote the word being discussed.",
+                    "context": "You asked, 'You don't like women, do you?' Are women not part of the word 'people'? The word 'men' is often used to mean ordinary people."
+                },
+                {
+                    "original": "Men are often used as ordinary people.",
+                    "corrected": "The word 'men' is often used to mean ordinary people.",
+                    "explanation": "Clarify that you're talking about the word 'men' and use 'to mean' for definition.",
+                    "context": "I wanted to clarify my point. The word 'men' is often used to mean ordinary people. But it's usually only in very old-fashioned or dated contexts."
+                },
+                {
+                    "original": "Yeah, men are sometimes used this way, but in very, very old-fashioned, old-dated context.",
+                    "corrected": "Yes, 'men' is sometimes used this way, but in a very old-fashioned or dated context.",
+                    "explanation": "Remove redundancy and use 'a ... context' or plural 'contexts'; 'old-dated' is not idiomatic.",
+                    "context": "I explained the usage difference. Yes, 'men' is sometimes used this way, but in a very old-fashioned or dated context. It appears mainly in fixed expressions."
+                },
+                {
+                    "original": "it is used in very, very limited context.",
+                    "corrected": "it is used in very limited contexts.",
+                    "explanation": "Countable/uncountable issue: use plural 'contexts' or add 'a' for singular.",
+                    "context": "I suggested 'Persons' as an option. It is used in very limited contexts. So this option does not work well here."
+                },
+                {
+                    "original": "Then it will be all in the biological context, right?",
+                    "corrected": "Then it will be in the biological context, right?",
+                    "explanation": "'All' is unnecessary and awkward here; simplify phrasing.",
+                    "context": "You asked if 'humans' fits. Then it will be in the biological context, right? Yes, of course."
+                },
+                {
+                    "original": "Yeah, but like there is no individuals before, so we can use people.",
+                    "corrected": "Yeah, but there are no 'individuals' before, so we can use 'people'.",
+                    "explanation": "Subject-verb agreement: use 'there are' for plural; quote the word being referenced.",
+                    "context": "I asked if we could say 'individuals under 18'. Yeah, but there are no 'individuals' before, so we can use 'people'."
+                },
+                {
+                    "original": "Should not use the internet.",
+                    "corrected": "They should not use the Internet.",
+                    "explanation": "Sentence fragment missing a subject; also capitalize 'Internet'.",
+                    "context": "There is probably a lag of two or three seconds. They should not use the Internet. Yeah, great."
+                },
+                {
+                    "original": "And shouldn't use the internet independently means exactly the same as like the sentence.",
+                    "corrected": "'Shouldn't use the Internet independently' means exactly the same thing.",
+                    "explanation": "Word order and filler words are awkward; simplify to a clear quoted phrase and 'means exactly the same thing'.",
+                    "context": "It's more important to paraphrase the whole sentence and meaning. 'Shouldn't use the Internet independently' means exactly the same thing. That's fine for the essay."
+                },
+                {
+                    "original": "But your different parts of your body paragraph, they don't agree with each other.",
+                    "corrected": "The different parts of your body paragraph don't agree with each other.",
+                    "explanation": "Redundant phrasing and punctuation: remove extra pronouns and tighten word order.",
+                    "context": "I see your point and your explanation makes sense. The different parts of your body paragraph don't agree with each other. You talk about restrictions and violent content but your example is about scammers."
+                },
+                {
+                    "original": "Like all this, there is not a single sentence, not a single mistake here.",
+                    "corrected": "In all of this, there is not a single mistake.",
+                    "explanation": "'Like all this' is informal/awkward and 'sentence' is wrong in context; simplify to 'In all of this' and use 'mistake' singular or plural appropriately.",
+                    "context": "You said you didn't use AI to help. In all of this, there is not a single mistake. How's that possible? I checked for errors."
+                },
+                {
+                    "original": "You should analyze the mistakes that you made with ChadGPT.",
+                    "corrected": "You should analyze the mistakes that you made with ChatGPT.",
+                    "explanation": "Misspelling of the tool's name; correct proper noun.",
+                    "context": "I asked whether you analyzed your work. You should analyze the mistakes that you made with ChatGPT. Did you actually review them?"
+                },
+                {
+                    "original": "You don't have any mistake.",
+                    "corrected": "You don't have any mistakes.",
+                    "explanation": "Number agreement: use plural 'mistakes' after 'any'.",
+                    "context": "I asked how you checked it and you said you rarely use it. You don't have any mistakes. I'm just asking how you checked it with ChatGPT."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "If you work with neural network incorrectly, you will get less benefit from it.",
+                    "corrected": "If you work with the neural network incorrectly, you will get less benefit from it.",
+                    "explanation": "Missing article 'the' before 'neural network' makes the sentence grammatically incorrect.",
+                    "context": "When using technology like a neural network, it's important to understand how to interact correctly. If you work with the neural network incorrectly, you will get less benefit from it. Better guidance leads to better outcomes."
+                },
+                {
+                    "original": "They can't give you a topic that interests you.",
+                    "corrected": "They can't give you a topic that interests you.",
+                    "explanation": "No correction needed; the sentence is already correct.",
+                    "context": "In certain learning environments, instructors may assign topics that are not aligned with students' interests. They can't give you a topic that interests you. This makes it challenging to engage fully."
+                },
+                {
+                    "original": "Not bad explanations.",
+                    "corrected": "These are not bad explanations.",
+                    "explanation": "The original lacks a subject and a verb, which are needed for clarity.",
+                    "context": "When evaluating responses, it’s crucial to provide constructive feedback. These are not bad explanations. Still, there's room for improvement in clarity and detail."
+                },
+                {
+                    "original": "An example of a person who ate 3 kg of sweets every day, he had it all.",
+                    "corrected": "An example of a person who ate 3 kg of sweets every day would be someone who had it all.",
+                    "explanation": "The original sentence lacks a proper verb, making it a fragment instead of a complete sentence.",
+                    "context": "When discussing the implications of diet, examples can clarify extreme cases. An example of a person who ate 3 kg of sweets every day would be someone who had it all. But such cases are rare and often don't hold up under scrutiny."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "Everything will be super lexical, everything will be good in vocabulary and grammar.",
+                    "corrected": "Everything will be very lexical, everything will be good in vocabulary and grammar.",
+                    "explanation": "\"Super\" is informal and not typically used in this context; \"very\" is more appropriate to describe the level of lexical quality.",
+                    "context": "I'm emphasizing the importance of quality in your writing. Everything will be very lexical, and you should ensure that your vocabulary and grammar are on point."
+                },
+                {
+                    "original": "There is such a phenomenon as addiction, like gaming addiction.",
+                    "corrected": "There is such a phenomenon as addiction, such as gaming addiction.",
+                    "explanation": "Using 'like' is less formal; 'such as' is more appropriate for providing examples in an academic context.",
+                    "context": "In discussing various issues, I mentioned addiction. There is such a phenomenon as addiction, such as gaming addiction."
+                },
+                {
+                    "original": "You can just say, for example, in Russia, children ... But it's not easy, of course.",
+                    "corrected": "You can simply say, for example, in Russia, children ... But it's not easy, of course.",
+                    "explanation": "'Just' implies a dismissive attitude; 'simply' conveys the same idea but is more neutral and appropriate for academic discussion.",
+                    "context": "I want you to engage with the topic meaningfully. You can simply say, for example, in Russia, children ... But it's a complex issue."
+                },
+                {
+                    "original": "But this is still a problem.",
+                    "corrected": "However, this is still a problem.",
+                    "explanation": "'But' typically contrasts statements; 'however' is more appropriate for indicating a continuation of thought.",
+                    "context": "I was explaining the situation in China regarding children. However, this is still a problem that needs to be addressed."
+                },
+                {
+                    "original": "We can not mention escapism, we can say that in China there is such a problem.",
+                    "corrected": "We cannot mention escapism; we can say that in China there is such a problem.",
+                    "explanation": "The phrase 'can not' should be written as 'cannot' as a single word in this context for clarity.",
+                    "context": "In crafting your essay, keep your focus clear. We cannot mention escapism; we can say that in China there is such a problem."
+                },
+                {
+                    "original": "To introduce some kind of restriction.",
+                    "corrected": "To introduce some restrictions.",
+                    "explanation": "Using 'some kind of' is vague; 'some restrictions' is more specific and precise.",
+                    "context": "I highlighted the need for measures. Parents should introduce some restrictions to manage their children's gaming habits."
+                },
+                {
+                    "original": "To think about some real things that happen in life.",
+                    "corrected": "To think about real things that happen in life.",
+                    "explanation": "The phrase 'some real things' can be simplified to just 'real things,' which is more direct.",
+                    "context": "I encouraged you to focus on tangible issues. Think about real things that happen in life before writing."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Catching up",
+                    "definition": "To reach or come up to something after a period of time; to become updated.",
+                    "context": {
+                        "Context 1": "I was catching up on social media after being away for a month.",
+                        "Context 2": "After the summer break, I need to catch up on my homework.",
+                        "Context 3": "The dog was catching up to the ball that was thrown far away."
+                    }
+                },
+                {
+                    "word": "Established",
+                    "definition": "To set up on a firm or permanent basis.",
+                    "context": {
+                        "Context 1": "She established a new Wi-Fi connection to improve her internet speed.",
+                        "Context 2": "He established a new personal record in the marathon last weekend.",
+                        "Context 3": "The company was established in 1995 and has grown ever since."
+                    }
+                },
+                {
+                    "word": "Schedule",
+                    "definition": "A plan for carrying out a process or procedure, giving lists of intended events and times.",
+                    "context": {
+                        "Context 1": "My schedule allowed me to wake up early today and have a productive morning.",
+                        "Context 2": "The school schedule was modified to include more study periods.",
+                        "Context 3": "His schedule was packed with social events and parties this weekend."
+                    }
+                },
+                {
+                    "word": "Count",
+                    "definition": "To determine the total number of something.",
+                    "context": {
+                        "Context 1": "You should count your words to ensure your essay meets the minimum length.",
+                        "Context 2": "She can count to 100 in three languages.",
+                        "Context 3": "The kids started to count how many stars were in the sky."
+                    }
+                },
+                {
+                    "word": "Fundamental",
+                    "definition": "Forming a necessary base or core; of central importance.",
+                    "context": {
+                        "Context 1": "Having enough words is a fundamental requirement for your essay.",
+                        "Context 2": "The fundamental principle of gravity affects every object with mass.",
+                        "Context 3": "The train station is a fundamental part of the city’s transportation system."
+                    }
+                },
+                {
+                    "word": "Express",
+                    "definition": "To convey (a thought or feeling) in words, gestures, or actions.",
+                    "context": {
+                        "Context 1": "You should express your ideas clearly in your essay.",
+                        "Context 2": "Artists often use paint to express their emotions.",
+                        "Context 3": "She quickly needed to express her excitement when she received the good news."
+                    }
+                },
+                {
+                    "word": "Introduce",
+                    "definition": "To bring something into use or operation for the first time.",
+                    "context": {
+                        "Context 1": "You need to introduce the problem before stating your opinion in the essay.",
+                        "Context 2": "The manager will introduce the new product at the meeting next week.",
+                        "Context 3": "He decided to introduce himself to the new students at school."
+                    }
+                },
+                {
+                    "word": "Peer",
+                    "definition": "A person of the same age, status, or ability as another specified person.",
+                    "context": {
+                        "Context 1": "When writing, consider how your peers will interpret your essay.",
+                        "Context 2": "He enjoys spending time with his peers at the local skate park.",
+                        "Context 3": "In ancient times, being a peer often meant being part of the nobility."
+                    }
+                },
+                {
+                    "word": "Clear",
+                    "definition": "Easy to perceive, understand, or interpret.",
+                    "context": {
+                        "Context 1": "The sentences in your essay need to be clear for the reader.",
+                        "Context 2": "She gave a clear explanation of the rules before the game started.",
+                        "Context 3": "On a clear day, you can see the mountains from the city."
+                    }
+                },
+                {
+                    "word": "Agitated",
+                    "definition": "Feeling or appearing troubled or nervous.",
+                    "context": {
+                        "Context 1": "Do you feel agitated when you think about writing essays?",
+                        "Context 2": "He became agitated during the long queue at the DMV.",
+                        "Context 3": "An agitated cat may scratch if it feels threatened."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Schedule",
+                    "fact": "The longest word in the English language without a vowel is 'rhythms', but it might take a lifetime to fit into your schedule!"
+                },
+                {
+                    "word": "Count",
+                    "fact": "Humans find it harder to count when they hear the word 'count' in a sing-song voice—try it!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the computer keep its secrets?",
+                    "answer": "Because it had a lot of cache!"
+                },
+                {
+                    "question": "What did the essay say when it was rejected?",
+                    "answer": "I guess I didn't make the right 'point'!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Paraphrase",
+                    "definition": "To express the meaning of something written or spoken using different words.",
+                    "context": {
+                        "Context 1": "It's important to paraphrase the original text to avoid plagiarism.",
+                        "Context 2": "In class, we learned how to paraphrase famous quotes to make them relevant.",
+                        "Context 3": "When making a recipe, it's helpful to paraphrase the steps in your own words."
+                    }
+                },
+                {
+                    "word": "Opinion",
+                    "definition": "A view or judgment formed about something, not necessarily based on fact or knowledge.",
+                    "context": {
+                        "Context 1": "Many individuals have an opinion on whether children should use the Internet independently.",
+                        "Context 2": "Her opinion on the movie was quite different from mine, as she loves romantic comedies.",
+                        "Context 3": "He expressed his opinion on climate change during the school assembly."
+                    }
+                },
+                {
+                    "word": "Context",
+                    "definition": "The circumstances or setting surrounding an event, statement, or idea which helps to clarify its meaning.",
+                    "context": {
+                        "Context 1": "The context of our discussion was about children's internet use.",
+                        "Context 2": "In historical context, many wars were fought over territory.",
+                        "Context 3": "Understanding the context of a joke can help in making it even funnier."
+                    }
+                },
+                {
+                    "word": "Restriction",
+                    "definition": "A limitation or control over something, often imposed by rules or regulations.",
+                    "context": {
+                        "Context 1": "Some people believe there should be restrictions on children's internet access.",
+                        "Context 2": "Age restrictions are common for watching certain movies.",
+                        "Context 3": "The speed restriction in the school zone helps to keep children safe."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude or way of considering something.",
+                    "context": {
+                        "Context 1": "Her perspective on children's internet use is influenced by her experiences as a teacher.",
+                        "Context 2": "Traveling to diverse cultures broadened my perspective on life.",
+                        "Context 3": "His perspective on the painting changed after learning about the artist's background."
+                    }
+                },
+                {
+                    "word": "Individuals",
+                    "definition": "Single human beings as distinct from a group.",
+                    "context": {
+                        "Context 1": "Many individuals have differing views on how children should access the internet.",
+                        "Context 2": "The experiment focused on individuals rather than groups to get accurate data.",
+                        "Context 3": "She enjoys meeting individuals from different backgrounds during her travels."
+                    }
+                },
+                {
+                    "word": "Contraction",
+                    "definition": "The shortening of a word or group of words by omission of a sound or letter.",
+                    "context": {
+                        "Context 1": "In formal writing, avoid using contractions such as 'don't' and 'it's'.",
+                        "Context 2": "People often use contractions in speech to sound more casual.",
+                        "Context 3": "In texting, contractions are common to save space and time."
+                    }
+                },
+                {
+                    "word": "Essay",
+                    "definition": "A short piece of writing on a particular subject.",
+                    "context": {
+                        "Context 1": "We are learning how to structure an essay about children's internet usage.",
+                        "Context 2": "His essay on the impact of climate change won several awards.",
+                        "Context 3": "Writing a personal essay helped her reflect on her life experiences."
+                    }
+                },
+                {
+                    "word": "Analyze",
+                    "definition": "To examine something methodically and in detail, typically for purposes of explanation and interpretation.",
+                    "context": {
+                        "Context 1": "It's important to analyze the mistakes you made in your essays for improvement.",
+                        "Context 2": "Scientists analyze data to draw conclusions about their experiments.",
+                        "Context 3": "He loves to analyze movies to understand their themes and character arcs."
+                    }
+                },
+                {
+                    "word": "Belief",
+                    "definition": "An acceptance that something exists or is true, especially one without proof.",
+                    "context": {
+                        "Context 1": "There is a belief among some that children should not use the internet unsupervised.",
+                        "Context 2": "His strong belief in honesty guided his actions throughout life.",
+                        "Context 3": "People's belief systems can greatly influence their choices and lifestyle."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Paraphrase",
+                    "fact": "In academic circles, paraphrasing is often referred to as 'creative borrowing'!"
+                },
+                {
+                    "word": "Opinion",
+                    "fact": "Fun fact: Everyone has an opinion, and most of them change when they’re offered pizza!"
+                },
+                {
+                    "word": "Restriction",
+                    "fact": "In some places, restraining orders have nothing to do with relationships but everything to do with your favorite burger joint's opening hours!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the dictionary break up with the thesaurus?",
+                    "answer": "Because it found someone who could really spell it out!"
+                },
+                {
+                    "question": "What did one pencil say to the other pencil?",
+                    "answer": "You’re looking sharp today!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Correct",
+                    "definition": "To make something accurate or free from errors.",
+                    "context": {
+                        "Context 1": "I corrected my mistakes after reviewing the lesson.",
+                        "Context 2": "The teacher asked me to correct my homework by the next class.",
+                        "Context 3": "He needs to correct his spelling before submitting his essay."
+                    }
+                },
+                {
+                    "word": "Prompt",
+                    "definition": "An instruction or cue to guide someone in their response.",
+                    "context": {
+                        "Context 1": "The instruction is called a prompt that helps the neural network understand the input.",
+                        "Context 2": "The writing prompt inspired her to create a story about adventure.",
+                        "Context 3": "When teaching, the teacher gave prompts to encourage students to participate."
+                    }
+                },
+                {
+                    "word": "Analyze",
+                    "definition": "To examine something in detail to understand it better.",
+                    "context": {
+                        "Context 1": "I need to analyze my mistakes to improve my writing skills.",
+                        "Context 2": "She will analyze the data from the experiment before drawing conclusions.",
+                        "Context 3": "To prepare for the exam, we must analyze the themes of each chapter."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A specific instance that illustrates a larger idea.",
+                    "context": {
+                        "Context 1": "Let's come up with an example about movies to illustrate the topic.",
+                        "Context 2": "I gave an example of a famous painting to explain the artist's style.",
+                        "Context 3": "If you need an example of a good habit, consider reading every day."
+                    }
+                },
+                {
+                    "word": "Explanation",
+                    "definition": "A statement that makes something clear by describing it in detail.",
+                    "context": {
+                        "Context 1": "This part is the explanation of why the mind can be fragile.",
+                        "Context 2": "Can you provide a clear explanation of how this machine works?",
+                        "Context 3": "The teacher's explanation of the concept helped everyone understand better."
+                    }
+                },
+                {
+                    "word": "Restrictions",
+                    "definition": "Rules that limit what can be done.",
+                    "context": {
+                        "Context 1": "Age restrictions are in place for certain games and movies.",
+                        "Context 2": "The school has some restrictions on cell phone use during class.",
+                        "Context 3": "Travel restrictions were enforced during the pandemic for safety."
+                    }
+                },
+                {
+                    "word": "Debate",
+                    "definition": "A formal discussion on a particular topic where opposing arguments are presented.",
+                    "context": {
+                        "Context 1": "We must debate whether children need restrictions or not.",
+                        "Context 2": "The school organized a debate on climate change issues.",
+                        "Context 3": "A healthy debate can lead to new perspectives on old ideas."
+                    }
+                },
+                {
+                    "word": "Competence",
+                    "definition": "The ability to do something successfully or efficiently.",
+                    "context": {
+                        "Context 1": "Your language competence is tested during the exam.",
+                        "Context 2": "She joined a course to improve her competence in graphic design.",
+                        "Context 3": "Employers often look for candidates with demonstrated competence in their field."
+                    }
+                },
+                {
+                    "word": "Justify",
+                    "definition": "To show or prove to be right or reasonable.",
+                    "context": {
+                        "Context 1": "You need to justify your thoughts with examples.",
+                        "Context 2": "He tried to justify his lateness with a long explanation.",
+                        "Context 3": "Sometimes, we must justify our decisions to others."
+                    }
+                },
+                {
+                    "word": "Perspective",
+                    "definition": "A particular attitude or way of regarding something.",
+                    "context": {
+                        "Context 1": "From my perspective, restrictions are sometimes necessary.",
+                        "Context 2": "She has a unique perspective on art that challenges conventional views.",
+                        "Context 3": "Travel can broaden your perspective by exposing you to different cultures."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Prompt",
+                    "fact": "In the world of computers, a prompt can be anything from a simple message to a complex algorithm—it's basically a computer's way of saying 'please!'"
+                },
+                {
+                    "word": "Analyze",
+                    "fact": "Did you know that the word 'analyze' comes from the Greek word 'analuein' which means 'to unloosen'? So, in a way, when we analyze something, we're 'unloosening' it to understand it better!"
+                },
+                {
+                    "word": "Restrictions",
+                    "fact": "In Venice, it's illegal to feed pigeons—so, if you're ever there, make sure your breadcrumbs stay in your pocket!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the student bring a ladder to class?",
+                    "answer": "Because they wanted to go to high school!"
+                },
+                {
+                    "question": "Why did the computer go to therapy?",
+                    "answer": "Because it had too many bytes!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Ideological",
+                    "definition": "Relating to a system of ideas and ideals, especially concerning economic or political theory and policy.",
+                    "context": {
+                        "Context 1": "The ideological divide between the two political parties often leads to heated debates.",
+                        "Context 2": "The company's ideological framework influenced its corporate social responsibility policies.",
+                        "Context 3": "While discussing philosophy, he realized that many ideological beliefs are deeply rooted in culture."
+                    }
+                },
+                {
+                    "word": "Escapism",
+                    "definition": "The tendency to seek distraction and relief from unpleasant realities, especially by engaging in fantasy or entertainment.",
+                    "context": {
+                        "Context 1": "Many teenagers turn to escapism through video games to cope with academic pressure.",
+                        "Context 2": "Reading novels can be a healthy form of escapism that allows people to explore different worlds.",
+                        "Context 3": "His escapism took the form of lavish vacations that he couldn’t afford but enjoyed immensely."
+                    }
+                },
+                {
+                    "word": "Addiction",
+                    "definition": "The fact or condition of being addicted to a particular substance or activity.",
+                    "context": {
+                        "Context 1": "Gaming addiction has become a serious issue affecting children and their academic performance.",
+                        "Context 2": "Her coffee addiction made it difficult for her to function without her daily caffeine fix.",
+                        "Context 3": "Addiction to social media can lead to feelings of isolation and anxiety."
+                    }
+                },
+                {
+                    "word": "Parental Control",
+                    "definition": "Software or tools that allow parents to restrict or monitor their children's internet access and activities.",
+                    "context": {
+                        "Context 1": "Implementing parental control can help parents manage their children's gaming habits effectively.",
+                        "Context 2": "The parental control feature on their devices helped them feel more secure about their children's online activities.",
+                        "Context 3": "She set up a parental control app to ensure her kids weren't accessing inappropriate content."
+                    }
+                },
+                {
+                    "word": "Criteria",
+                    "definition": "Principles or standards by which something may be judged or decided.",
+                    "context": {
+                        "Context 1": "The criteria for the essay outlined both content and organization as key points to consider.",
+                        "Context 2": "He struggled to meet the criteria for selection in the prestigious art program.",
+                        "Context 3": "Different cultures have different criteria for what makes a successful marriage."
+                    }
+                },
+                {
+                    "word": "Super lexical",
+                    "definition": "Referring to an extensive use of vocabulary or language.",
+                    "context": {
+                        "Context 1": "The professor praised her for her super lexical approach to writing, showcasing diverse vocabulary.",
+                        "Context 2": "His super lexical style in poetry captivated many readers with its complexity.",
+                        "Context 3": "The student's super lexical responses impressed the judges of the debate competition."
+                    }
+                },
+                {
+                    "word": "Component",
+                    "definition": "A part or element of a larger whole.",
+                    "context": {
+                        "Context 1": "The ideological component of the discussion played a crucial role in shaping their arguments.",
+                        "Context 2": "The battery is a key component of any electronic device.",
+                        "Context 3": "Trust is a vital component of a successful relationship."
+                    }
+                },
+                {
+                    "word": "Fact",
+                    "definition": "A thing that is known or proven to be true.",
+                    "context": {
+                        "Context 1": "It is a fact that excessive gaming can negatively impact physical health.",
+                        "Context 2": "The fact that summer often leads to increased travel can affect hotel prices.",
+                        "Context 3": "Many people enjoy collecting random facts about wildlife and nature."
+                    }
+                },
+                {
+                    "word": "Idea",
+                    "definition": "A thought or suggestion as to a possible course of action.",
+                    "context": {
+                        "Context 1": "In order to write the essay, an idea about the topic must first be formulated.",
+                        "Context 2": "He had a brilliant idea for a new invention that could revolutionize transportation.",
+                        "Context 3": "The idea of going camping this weekend excited everyone in the group."
+                    }
+                },
+                {
+                    "word": "Phenomenon",
+                    "definition": "An observable fact or event, especially something unusual or remarkable.",
+                    "context": {
+                        "Context 1": "The phenomenon of gaming addiction has sparked widespread debate among educators and parents.",
+                        "Context 2": "The Northern Lights are a natural phenomenon that attracts tourists from all over the world.",
+                        "Context 3": "The phenomenon of spontaneous human combustion remains a mystery to scientists."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Addiction",
+                    "fact": "Did you know that in ancient Greece, people used the word 'binge' to describe their addiction to the popular game of dice and wine?"
+                },
+                {
+                    "word": "Criteria",
+                    "fact": "The word 'criteria' comes from Greek, where it means 'to judge.' So when you meet criteria, you’re just judging yourself with style!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why don't scientists trust atoms?",
+                    "answer": "Because they make up everything!"
+                },
+                {
+                    "question": "How do computers get drunk?",
+                    "answer": "They take screenshots!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! What’s up? Did you catch up with your friends lately?"
+                },
+                {
+                    "Person 2": "Not really. I checked my Instagram feed a few days ago, but it’s hard to keep up!"
+                },
+                {
+                    "Person 1": "I know what you mean! Sometimes I find posts that are weeks old. It’s surprising!"
+                },
+                {
+                    "Person 2": "Right? Like, how did I miss all this? But honestly, I've been focused on other things."
+                },
+                {
+                    "Person 1": "That makes sense! By the way, how’s your internet connection been lately? I remember you had some issues before."
+                },
+                {
+                    "Person 2": "It's great now! I messed around with my Wi-Fi settings, and it seems to be working much better."
+                },
+                {
+                    "Person 1": "Nice! Did you end up getting that LAN cable we talked about?"
+                },
+                {
+                    "Person 2": "No, I didn’t. But I’m in a different room now, and it’s much more stable!"
+                },
+                {
+                    "Person 1": "Awesome! So, did you get enough sleep last night?"
+                },
+                {
+                    "Person 2": "I did, actually. Woke up around 7. How about you?"
+                },
+                {
+                    "Person 1": "I wish! I rolled out of bed at 8 today. What’s your secret to waking up so early?"
+                },
+                {
+                    "Person 2": "I guess it's just my routine. I try to wake up at the same time during the week and weekends."
+                },
+                {
+                    "Person 1": "That’s impressive! I have a hard time sticking to that kind of schedule."
+                },
+                {
+                    "Person 2": "It’s not always easy, but I feel more productive when I do."
+                },
+                {
+                    "Person 1": "That's true! So, are you feeling excited about studying English today?"
+                },
+                {
+                    "Person 2": "Definitely! I find it fun, especially when we get to discuss interesting topics."
+                },
+                {
+                    "Person 1": "Same here! Let’s make sure we keep improving our writing skills too."
+                },
+                {
+                    "Person 2": "For sure! I’ll be checking word counts and everything like a pro!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Have you seen all the debates about kids and the internet lately?"
+                },
+                {
+                    "Person 2": "Yeah, I heard some people think kids shouldn’t use it alone at all."
+                },
+                {
+                    "Person 1": "Right? Like, do they really think that’s gonna stop them?"
+                },
+                {
+                    "Person 2": "Exactly! Kids today are growing up with technology. It's like a part of their life."
+                },
+                {
+                    "Person 1": "Totally! I get the concern about safety and all, but kids need to learn how to navigate it too."
+                },
+                {
+                    "Person 2": "For sure. I mean, supervision is one thing, but banning it entirely seems extreme."
+                },
+                {
+                    "Person 1": "Agreed! Plus, there’s so much educational content out there. It could actually help them."
+                },
+                {
+                    "Person 2": "That’s a good point! But then again, there’s a lot of misinformation as well."
+                },
+                {
+                    "Person 1": "True! So, maybe it’s about finding a balance. Teach them what to look for?"
+                },
+                {
+                    "Person 2": "Yeah, and maybe set some limits on screen time so they don't get overwhelmed."
+                },
+                {
+                    "Person 1": "Definitely! Kids should learn responsibility, but they need guidance to do that."
+                },
+                {
+                    "Person 2": "Exactly! A little supervision goes a long way, but cutting them off entirely? Not the way to go."
+                },
+                {
+                    "Person 1": "So, what's the best approach then? Just more education?"
+                },
+                {
+                    "Person 2": "I think so! And maybe parents should also get educated on using tech with their kids."
+                },
+                {
+                    "Person 1": "That’s a great idea! It’s a team effort, after all."
+                },
+                {
+                    "Person 2": "Absolutely! We just need to make sure they feel safe exploring."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that movie that everyone's been talking about lately?"
+                },
+                {
+                    "Person 2": "Yeah, the one with the crazy plot twist? I think it's called 'The Unexpected.'"
+                },
+                {
+                    "Person 1": "Exactly! I watched it last night and I'm still trying to wrap my head around it. What did you think?"
+                },
+                {
+                    "Person 2": "I haven't seen it yet, but I've heard from a few friends that you really need to pay attention to the details."
+                },
+                {
+                    "Person 1": "For sure! There are so many clues hidden throughout the film. I almost want to watch it again just to catch what I missed."
+                },
+                {
+                    "Person 2": "That's the mark of a great movie! It keeps you thinking. Do you remember the last film that did that for us?"
+                },
+                {
+                    "Person 1": "Oh, definitely! 'Inception'! I had to explain the ending to my friends for days."
+                },
+                {
+                    "Person 2": "Right? There’s nothing like a film that gets your brain working. But what about when they have all these age restrictions? Do you think they’re necessary?"
+                },
+                {
+                    "Person 1": "I think some are, but not all. Kids can handle a lot more than we give them credit for, right?"
+                },
+                {
+                    "Person 2": "Totally! But at the same time, there are definitely some films that I wouldn't want younger kids to see."
+                },
+                {
+                    "Person 1": "Yeah, definitely. It’s about finding that balance, I guess. What about video games? Same thing?"
+                },
+                {
+                    "Person 2": "Pretty much! I mean, I've seen kids play games that are way too mature for them. It can lead to some bad consequences."
+                },
+                {
+                    "Person 1": "Totally agree. But then again, if the parents are watching and guiding them, it might not be so bad."
+                },
+                {
+                    "Person 2": "Exactly! Communication is key. Anyway, have you tried checking out any new TV series lately?"
+                },
+                {
+                    "Person 1": "Yeah! I just started one called 'Mystery Haven.' It's super intriguing."
+                },
+                {
+                    "Person 2": "Nice! I’ve heard good things about that one. I’ll have to add it to my list."
+                },
+                {
+                    "Person 1": "For sure! Let's plan a movie night soon to catch up on all these flicks!"
+                },
+                {
+                    "Person 2": "Absolutely! I’m all in!"
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you catch that new movie that just came out?"
+                },
+                {
+                    "Person 2": "Not yet! I've been hearing a lot about it, though. Is it worth watching?"
+                },
+                {
+                    "Person 1": "Definitely! It's got everything: action, humor, and a bit of drama. You'd love it."
+                },
+                {
+                    "Person 2": "Sounds like my kind of movie! I just need to find some time to go."
+                },
+                {
+                    "Person 1": "Right? With work and everything, it can be hard to fit in a movie. Have you seen anything good lately?"
+                },
+                {
+                    "Person 2": "Actually, I just watched a documentary about nature. It was really eye-opening."
+                },
+                {
+                    "Person 1": "Nice! I’ve been trying to watch more documentaries. They really put things into perspective."
+                },
+                {
+                    "Person 2": "For sure! It's easy to get wrapped up in just entertainment. I like mixing it up."
+                },
+                {
+                    "Person 1": "Exactly! Balance is key. Maybe we could have a documentary night sometime?"
+                },
+                {
+                    "Person 2": "That sounds awesome! I'll bring the popcorn!"
+                },
+                {
+                    "Person 1": "Deal! Let’s set a date. How about this weekend?"
+                },
+                {
+                    "Person 2": "Perfect! Can’t wait! I’ll look for a good one to watch."
+                },
+                {
+                    "Person 1": "Awesome! I’m excited to see what you pick."
+                },
+                {
+                    "Person 2": "Me too! It'll be fun, like a movie night but with a twist."
+                },
+                {
+                    "Person 1": "Exactly! It’s a plan then. See you this weekend!"
+                },
+                {
+                    "Person 2": "See you then!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
