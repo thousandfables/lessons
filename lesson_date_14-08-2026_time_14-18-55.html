@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 6,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I have a night train.",
+                    "corrected": "I have a night train.",
+                    "explanation": "The sentence is correct, but the context suggests confusion with 'night' and 'ordinary' implying more information was needed.",
+                    "context": "On Wednesday morning, there was confusion about train types. I have a night train, which isn't like a regular or fast train."
+                },
+                {
+                    "original": "But like fast train takes four hours to get back to St. Petersburg.",
+                    "corrected": "But a fast train takes four hours to get back to St. Petersburg.",
+                    "explanation": "The sentence is missing an article; 'a' is needed before 'fast train' to indicate a single type of train.",
+                    "context": "Discussing the duration of various trains, I said, 'But a fast train takes four hours to get back to St. Petersburg.'"
+                },
+                {
+                    "original": "Fast trains. It's a red arrow.",
+                    "corrected": "Fast trains are the Red Arrow.",
+                    "explanation": "The subject 'Fast trains' requires a verb; 'are' should be used for clarity in identification.",
+                    "context": "Listing the types of trains, I clarified, 'Fast trains are the Red Arrow.'"
+                },
+                {
+                    "original": "It's a city when leaving my family, other, other part of my family.",
+                    "corrected": "It's a city where I leave my family, the other part of my family.",
+                    "explanation": "The word 'when' should be replaced with 'where' for proper context; additional clarity is also needed.",
+                    "context": "Talking about my home city, I mentioned, 'It's a city where I leave my family, the other part of my family.'"
+                },
+                {
+                    "original": "Because it's interesting that whenever I meet Vietnamese guys and I tell them that I've been everywhere in Vietnam...",
+                    "corrected": "It's interesting that whenever I meet Vietnamese guys and tell them I've been everywhere in Vietnam...",
+                    "explanation": "The phrase 'that I tell them' is unnecessarily complicated; it can be simplified for smoother flow.",
+                    "context": "I shared my travel experiences, stating, 'It's interesting that whenever I meet Vietnamese guys and tell them I've been everywhere in Vietnam...'"
+                },
+                {
+                    "original": "Yeah. Sometimes I'm going to Armenia.",
+                    "corrected": "Yeah, sometimes I go to Armenia.",
+                    "explanation": "Incorrect tense; 'going' should be replaced with 'go' for present habitual action.",
+                    "context": "Discussing my travels, I said, 'Yeah, sometimes I go to Armenia.'"
+                },
+                {
+                    "original": "I don't know all of all of my charge.",
+                    "corrected": "I don't know all of my charges.",
+                    "explanation": "Repetition and incorrect word; 'charge' should better be 'charges' to refer to responsibilities.",
+                    "context": "Talking about my responsibilities, I mentioned, 'I don't know all of my charges.'"
+                },
+                {
+                    "original": "Are you like a cult leader to have your own church.",
+                    "corrected": "Are you like a cult leader because you have your own church?",
+                    "explanation": "Question format and clarity; rephrased for better understanding of the intent.",
+                    "context": "After mentioning my responsibilities, someone joked, 'Are you like a cult leader because you have your own church?'"
+                },
+                {
+                    "original": "Because we have a different wine wine programs and wine lists for.",
+                    "corrected": "Because we have different wine programs and wine lists.",
+                    "explanation": "Repetition of 'wine' is unnecessary; 'a' is not needed before 'different.'",
+                    "context": "Discussing the restaurant's needs, I said, 'Because we have different wine programs and wine lists.'"
+                },
+                {
+                    "original": "A different restaurant have a different customers.",
+                    "corrected": "A different restaurant has different customers.",
+                    "explanation": "Agreement error; 'have' should be 'has' to match the singular subject 'restaurant.'",
+                    "context": "In explaining variations, I stated, 'A different restaurant has different customers.'"
+                },
+                {
+                    "original": "And. In our restaurants. Just. I think. About. Fifty. Fifteen. To. Twenty. Percent. Of. The. Same. Position.",
+                    "corrected": "In our restaurants, I think about fifteen to twenty percent of the same positions.",
+                    "explanation": "Overuse of periods creates fragments; a more fluid sentence structure is necessary.",
+                    "context": "I reflected on staffing, saying, 'In our restaurants, I think about fifteen to twenty percent of the same positions.'"
+                }
+            ]
+        },
+        "mistakes_2": {
+            "mistakes_list": [
+                {
+                    "original": "In the main it's.",
+                    "corrected": "In the main, it is.",
+                    "explanation": "The phrase is missing a comma before 'it's,' and 'it's' should be fully stated as 'it is.'",
+                    "context": "When discussing the restaurant's ambiance and offerings, I mentioned that in the main, it is a small cozy wine bar. It focuses more on wine service and fine glasses for pouring wines."
+                },
+                {
+                    "original": "With a special dishes only just for this concept.",
+                    "corrected": "With special dishes only for this concept.",
+                    "explanation": "Omitting 'a' is necessary here because 'dishes' is plural and doesn't require the article.",
+                    "context": "As I described the restaurant, I mentioned it has a small kitchen menu with special dishes only for this concept. This highlights the unique offerings that reflect the main theme."
+                },
+                {
+                    "original": "It's a yeah it's a main idea.",
+                    "corrected": "It's the main idea.",
+                    "explanation": "'A main idea' should be 'the main idea' to specify that it is the primary concept of the restaurant.",
+                    "context": "I was clarifying the focus of the bar when I stated that it's the main idea behind the establishment. This helps convey the restaurant's concept effectively."
+                },
+                {
+                    "original": "Wine by glass.",
+                    "corrected": "Wine by the glass.",
+                    "explanation": "The phrase needs 'the' to specify the type of service being discussed.",
+                    "context": "During our discussion about the wine options, I noted there are choices for wine by the glass. This is an important detail for patrons who prefer smaller servings."
+                },
+                {
+                    "original": "Like glasses of wine right you sell glasses of wine.",
+                    "corrected": "Like glasses of wine; you sell glasses of wine.",
+                    "explanation": "A semicolon is required instead of a comma to properly separate the two independent clauses.",
+                    "context": "When someone asked for clarification, I affirmed that we indeed sell glasses of wine. It's essential to make it clear to avoid confusion."
+                },
+                {
+                    "original": "It's just for a half of a year.",
+                    "corrected": "It's just for half a year.",
+                    "explanation": "The article 'a' is unnecessary before 'half' when used in this context.",
+                    "context": "While explaining the duration of the pop-up restaurant, I mentioned that it's just for half a year. This timeframe helps set expectations for potential customers."
+                },
+                {
+                    "original": "And after that we are closed this place for a short time.",
+                    "corrected": "And after that, we will close this place for a short time.",
+                    "explanation": "The sentence requires 'will' to indicate a future action, and a comma after 'that' for clarity.",
+                    "context": "As I outlined the restaurant's plans, I stated that after the initial period, we will close this place for a short time. This closure is part of the planned operational strategy."
+                },
+                {
+                    "original": "I think it's because propka wines.",
+                    "corrected": "I think it's because of Propka wines.",
+                    "explanation": "The phrase requires 'because of' to link to the reason clearly and should capitalize 'Propka' if it's a name.",
+                    "context": "In discussing the future of the restaurant, I reflected on why it would be called Propka. This name ties into the wine theme they are developing."
+                },
+                {
+                    "original": "They cannot order.",
+                    "corrected": "They cannot order the same items.",
+                    "explanation": "The sentence lacks context; specifying 'the same items' clarifies what they cannot order.",
+                    "context": "While discussing customer expectations, I noted that they cannot order the same items after the transformation. This emphasizes the changes that will occur."
+                },
+                {
+                    "original": "Like how does it work you rent a building.",
+                    "corrected": "Like, how does it work? You rent a building.",
+                    "explanation": "The sentence needs punctuation; a question mark is needed after 'how does it work' and a comma after 'Like.'",
+                    "context": "I posed a question about the operational structure and noted that to run a restaurant, you rent a building. Clear communication is crucial to understanding the business model."
+                },
+                {
+                    "original": "I thought that it's one of the most important thing in a restaurant.",
+                    "corrected": "I thought that it's one of the most important things in a restaurant.",
+                    "explanation": "'Thing' should be pluralized to 'things' to match 'one of the most important.'",
+                    "context": "I expressed my belief that having windows is one of the most important things in a restaurant. This is related to creating a pleasant atmosphere for guests."
+                }
+            ]
+        },
+        "mistakes_3": {
+            "mistakes_list": [
+                {
+                    "original": "when it's already have some customers",
+                    "corrected": "when it already has some customers",
+                    "explanation": "The subject 'it' requires 'has' for the present tense, not 'have'.",
+                    "context": "The restaurant seems to be gaining popularity now. It is important to scale only when it already has some customers. This will help ensure that the business can handle the demand."
+                },
+                {
+                    "original": "he wants to scale it, right?",
+                    "corrected": "he wants to scale it, doesn't he?",
+                    "explanation": "The correct tag question here should be 'doesn't he?', as 'wants' is in the third person present tense.",
+                    "context": "Once the restaurant starts getting customers, scaling becomes essential. He wants to scale it, doesn't he? It's a logical step for success."
+                },
+                {
+                    "original": "he wants to scale it, right? Yeah, yeah, of course.",
+                    "corrected": "he wants to scale it, doesn't he? Yeah, yeah, of course.",
+                    "explanation": "The conversational agreement should match the question format, using 'doesn't he?' instead of 'right?'.",
+                    "context": "Scaling is crucial for businesses to grow. He wants to scale it, doesn't he? Of course, it's an essential strategy."
+                },
+                {
+                    "original": "who who have friends with other famous person",
+                    "corrected": "who has friends with other famous people",
+                    "explanation": "The subject 'who' relates to 'has', and 'person' should be plural for agreement.",
+                    "context": "The owner's fame plays a significant role in attracting customers. He is someone who has friends with other famous people."
+                },
+                {
+                    "original": "And I think that guy and you think I trust him.",
+                    "corrected": "And I think that guy knows what he wants, and I trust him.",
+                    "explanation": "The original sentence lacks clarity; it should clearly express trust and knowledge.",
+                    "context": "Trust in a leader is important for business growth. I think that guy knows what he wants, and I trust him."
+                },
+                {
+                    "original": "fame that got your customers, not your social media",
+                    "corrected": "It's fame that got your customers, not your social media.",
+                    "explanation": "The correct structure requires 'It's' for clarity and emphasis.",
+                    "context": "Social media can play a part, but the main factor is often the reputation. It's fame that got your customers, not your social media."
+                },
+                {
+                    "original": "I got a tested.",
+                    "corrected": "I got tested.",
+                    "explanation": "The verb 'tested' does not need 'a' before it.",
+                    "context": "It’s important to monitor your learning progress. I got tested to evaluate my skills."
+                },
+                {
+                    "original": "I think every week practice with you.",
+                    "corrected": "I think practicing with you every week is good for me.",
+                    "explanation": "The sentence structure is incorrect; it needs a gerund for clarity.",
+                    "context": "Regular practice is crucial for improvement. I think practicing with you every week is good for me."
+                },
+                {
+                    "original": "just didn't understand what was happening, because I saw that my English kind of dipped",
+                    "corrected": "just didn't understand what was happening because I felt that my English had kind of dipped",
+                    "explanation": "The phrase needs 'felt' for clarity and past perfect 'had' for time reference.",
+                    "context": "Traveling can interfere with language skills. When I went to Vietnam, I just didn't understand what was happening because I felt that my English had kind of dipped."
+                },
+                {
+                    "original": "operating at my lowest capacity",
+                    "corrected": "operating at my lowest capacity level",
+                    "explanation": "Adding 'level' improves clarity in describing the extent of capacity.",
+                    "context": "When under stress, my abilities diminish. I find myself operating at my lowest capacity level."
+                },
+                {
+                    "original": "Like, dry it. Like a plum.",
+                    "corrected": "Like, dry it out, like a dried plum.",
+                    "explanation": "The phrase needs 'out' for a complete verb and 'dried plum' for clarity.",
+                    "context": "I’m comparing my learning process to how fruit can lose moisture. Like, dry it out, like a dried plum."
+                },
+                {
+                    "original": "it's totally justified, because again, you did a lot of things",
+                    "corrected": "it's completely justified because, again, you have done a lot of things",
+                    "explanation": "The structure should use 'completely' and 'have done' for accuracy.",
+                    "context": "Finding balance is important. It's completely justified because, again, you have done a lot of things."
+                }
+            ]
+        },
+        "mistakes_4": {
+            "mistakes_list": [
+                {
+                    "original": "I returned at Wednesday.",
+                    "corrected": "I returned on Wednesday.",
+                    "explanation": "The preposition 'at' is incorrect here; 'on' should be used with days of the week.",
+                    "context": "I recently returned from Moscow. I returned on Wednesday. It was a great trip."
+                },
+                {
+                    "original": "I went in Germany in 2020.",
+                    "corrected": "I went to Germany in 2020.",
+                    "explanation": "'In' is incorrect; 'to' should be used to indicate direction or destination.",
+                    "context": "When was the last time you went to Germany? I went to Germany in 2020. It was a memorable experience."
+                }
+            ]
+        },
+        "mistakes_5": {
+            "mistakes_list": [
+                {
+                    "original": "we need to add this as somewhere at the end.",
+                    "corrected": "we need to add 's' somewhere at the end.",
+                    "explanation": "'as' is incorrect here; it should be 's' to indicate third person singular verbs.",
+                    "context": "In explaining verb forms, I mentioned that we need to add 's' to certain verbs. Specifically, he, she, and it require this addition."
+                },
+                {
+                    "original": "This rule only applies to the first word.",
+                    "corrected": "This rule only applies to the first verb.",
+                    "explanation": "'word' is incorrect; it should be 'verb' to describe where the 's' is added.",
+                    "context": "I was emphasizing the importance of knowing where to add 's' in verbs. This rule only applies to the first verb, not just any word."
+                },
+                {
+                    "original": "when we say he drinks, he, we should say, we should put S at the end.",
+                    "corrected": "when we say he drinks, we should put 's' at the end.",
+                    "explanation": "The repetition of 'he' is unnecessary; it should be removed for clarity.",
+                    "context": "While discussing verb conjugation in the present tense, I clarified that when using 'he' with drink, we put 's' at the end of 'drink' to form 'drinks.'"
+                },
+                {
+                    "original": "And we can say, I drink coffee.",
+                    "corrected": "And we can say, 'I drink coffee.'",
+                    "explanation": "Quotation marks are needed around 'I drink coffee' to indicate it's a spoken example.",
+                    "context": "During the lesson, I illustrated the difference between how verbs are used in positive sentences. An example is 'I drink coffee.'"
+                },
+                {
+                    "original": "Like, we remove the does, we only leave drink, but again, the S should go to the first verb.",
+                    "corrected": "We remove 'does,' we only leave 'drink,' but again, the 's' should go to the first verb.",
+                    "explanation": "The word 'like' is unnecessary and informal for instructional context and should be omitted.",
+                    "context": "As I was summarizing how to form positive sentences, I noted that we remove 'does' in informal speech and keep 'drink,' while remembering to add 's' to the verb."
+                },
+                {
+                    "original": "But when we say he drinks, he, we should say, we should put S at the end.",
+                    "corrected": "But when we say he drinks, we should put 's' at the end.",
+                    "explanation": "Repetition of 'he' is unnecessary and disrupts the flow of the explanation.",
+                    "context": "In emphasizing the rule for third person singular verbs in the present tense, I reiterated that we need to add 's' for verbs like 'drink'."
+                },
+                {
+                    "original": "And in the past, it's even more simple.",
+                    "corrected": "And in the past, it's even simpler.",
+                    "explanation": "'more simple' is incorrect; the comparative form should be 'simpler.'",
+                    "context": "I was contrasting the rules for present and past tense. In the past, it's even simpler than in the present tense."
+                },
+                {
+                    "original": "This is not this tense that we're talking about.",
+                    "corrected": "This is not the tense that we're talking about.",
+                    "explanation": "The phrase 'this tense' is poorly structured; it should be 'the tense' for clarity.",
+                    "context": "When discussing the complexities of verb tenses, I remarked that some examples don’t relate directly to the tense being explained."
+                },
+                {
+                    "original": "Like, you know, have you heard of the names of the tenses?",
+                    "corrected": "Have you heard of the names of the tenses?",
+                    "explanation": "'Like' is unnecessary and informal in this context; it creates a conversational tone that might detract from the lesson.",
+                    "context": "To engage the audience, I asked whether they were familiar with the names of the tenses, which is essential knowledge in English."
+                },
+                {
+                    "original": "and that's it.",
+                    "corrected": "And that's it.",
+                    "explanation": "Consistency in capitalization is needed; the beginning of the sentence should start with a capital 'A.'",
+                    "context": "As I wrapped up the lesson, I emphasized that this is the core rule regarding present tense verbs. And that's it."
+                }
+            ]
+        },
+        "mistakes_6": {
+            "mistakes_list": [
+                {
+                    "original": "It's two of the most hard working days for you.",
+                    "corrected": "It's two of the hardest working days for you.",
+                    "explanation": "'Most hard working' is incorrect; 'hardest' should be used as it's the superlative form describing the days.",
+                    "context": "I know you've been very busy lately. It's two of the hardest working days for you. I'm sure you'll manage to get through them."
+                },
+                {
+                    "original": "Monday. It's going to be a weekend.",
+                    "corrected": "Monday. It's going to be a workday.",
+                    "explanation": "A weekend refers to Saturday and Sunday, while Monday is a workday; the term used is incorrect.",
+                    "context": "Today is Friday, and I can see you're excited. Monday. It's going to be a workday. Then you can enjoy your weekend following that."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Bullet Train",
+                    "definition": "A high-speed train that travels at significantly faster speeds than traditional trains.",
+                    "context": {
+                        "Context 1": "In our discussion, we talked about the differences between a bullet train and an ordinary train.",
+                        "Context 2": "The bullet train in Japan can reach speeds of up to 320 km/h.",
+                        "Context 3": "I wish we had a bullet train in our city; traffic would be so much easier!"
+                    }
+                },
+                {
+                    "word": "Irregular",
+                    "definition": "Not following a regular pattern; uneven or unpredictable.",
+                    "context": {
+                        "Context 1": "Irregular trains make many stops along their routes, as we noted in the conversation.",
+                        "Context 2": "The weather has been quite irregular lately, alternating between sunny and rainy days.",
+                        "Context 3": "He has an irregular sleep schedule, often staying awake until early morning."
+                    }
+                },
+                {
+                    "word": "Concept",
+                    "definition": "An idea or principle that is typically abstract and forms the basis of something.",
+                    "context": {
+                        "Context 1": "We discussed the concept of different themes for new restaurants during our lesson.",
+                        "Context 2": "The concept of gravity was first explained by Isaac Newton.",
+                        "Context 3": "She couldn’t wrap her head around the concept of infinity."
+                    }
+                },
+                {
+                    "word": "Extra Fast",
+                    "definition": "Describing something that is faster than usual or expected.",
+                    "context": {
+                        "Context 1": "We compared the extra fast trains to regular ones during our class discussion.",
+                        "Context 2": "The extra fast internet connection made downloading movies a breeze.",
+                        "Context 3": "He decided to buy an extra fast car for the upcoming race."
+                    }
+                },
+                {
+                    "word": "Passenger",
+                    "definition": "A person who travels in a vehicle, such as a train, but is not the driver.",
+                    "context": {
+                        "Context 1": "The number of passengers on the train fluctuates depending on the time of day.",
+                        "Context 2": "As a passenger, you must stay seated while the plane is taking off.",
+                        "Context 3": "The train saw a drop in passengers due to the recent fare increase."
+                    }
+                },
+                {
+                    "word": "Wine List",
+                    "definition": "A menu that lists the various wines available at a restaurant.",
+                    "context": {
+                        "Context 1": "We discussed our process for creating a wine list for the new restaurant.",
+                        "Context 2": "At the dinner, I was impressed by the extensive wine list they offered.",
+                        "Context 3": "He couldn’t decide which wine to order because the wine list was so overwhelming."
+                    }
+                },
+                {
+                    "word": "Charge",
+                    "definition": "The responsibility or duty to take care of something.",
+                    "context": {
+                        "Context 1": "In our lesson, we spoke about who is in charge of the restaurant's operations.",
+                        "Context 2": "She was put in charge of organizing the annual company retreat.",
+                        "Context 3": "He felt a sense of charge when he took on the leadership role."
+                    }
+                },
+                {
+                    "word": "Travel",
+                    "definition": "To make a journey from one place to another, typically over a distance.",
+                    "context": {
+                        "Context 1": "We discussed how far you can travel across Russia by train.",
+                        "Context 2": "My dream is to travel around the world and visit every continent.",
+                        "Context 3": "She loves to travel during the summer, exploring new cultures."
+                    }
+                },
+                {
+                    "word": "Kitchen",
+                    "definition": "A room or area where food is prepared and cooked.",
+                    "context": {
+                        "Context 1": "During the lesson, we mentioned how different kitchens create different dishes.",
+                        "Context 2": "His kitchen is equipped with the latest appliances for gourmet cooking.",
+                        "Context 3": "In cooking class, I learned the importance of keeping the kitchen clean."
+                    }
+                },
+                {
+                    "word": "Document",
+                    "definition": "A written or digital record that provides information.",
+                    "context": {
+                        "Context 1": "We talked about preparing all the necessary documents for the restaurant's opening.",
+                        "Context 2": "She scanned the document to send it over email for faster delivery.",
+                        "Context 3": "The historical document was written centuries ago and is kept in a museum."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Bullet Train",
+                    "fact": "Did you know that the first bullet train was introduced in Japan in 1964? It’s been making headlines ever since!"
+                },
+                {
+                    "word": "Document",
+                    "fact": "Some people take their documents so seriously that they organize them by color and size, creating a rainbow effect!"
+                },
+                {
+                    "word": "Passenger",
+                    "fact": "In the UK, a passenger once named their pet goldfish 'Mr. Bubbles' on their train ticket, just for fun!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the train break up with its partner?",
+                    "answer": "Because they kept losing track of each other!"
+                },
+                {
+                    "question": "What do you call a train that eats too much?",
+                    "answer": "A chew-chew train!"
+                }
+            ]
+        },
+        "vocabulary_2": {
+            "vocabulary_list": [
+                {
+                    "word": "Bring up",
+                    "definition": "To mention or introduce a topic in conversation.",
+                    "context": {
+                        "Context 1": "In our last meeting, I wanted to bring up the new project deadlines.",
+                        "Context 2": "He brought up the fact that it was raining during the picnic.",
+                        "Context 3": "She brings up her pet cat every time we discuss our favorite animals."
+                    }
+                },
+                {
+                    "word": "Theme",
+                    "definition": "A subject or topic that is the main idea of something, often expressed in art or literature.",
+                    "context": {
+                        "Context 1": "The theme of the party was the 1980s, so everyone wore retro clothes.",
+                        "Context 2": "The movie's theme revolves around the battle between good and evil.",
+                        "Context 3": "At the art gallery, the theme of the exhibit was nature's beauty."
+                    }
+                },
+                {
+                    "word": "Concept",
+                    "definition": "An abstract idea or a plan that is not tied to a specific instance.",
+                    "context": {
+                        "Context 1": "The concept of a wine bar is centered around providing a cozy atmosphere for wine lovers.",
+                        "Context 2": "The teacher introduced the concept of gravity in the science class.",
+                        "Context 3": "My friend has a brilliant concept for a new mobile app!"
+                    }
+                },
+                {
+                    "word": "Pop-up",
+                    "definition": "A temporary event or store that opens for a short duration.",
+                    "context": {
+                        "Context 1": "The restaurant is a pop-up that will only be open for three months.",
+                        "Context 2": "She organized a pop-up market showcasing local artists last weekend.",
+                        "Context 3": "The pop-up museum attracted a lot of attention during the art fair."
+                    }
+                },
+                {
+                    "word": "Fan base",
+                    "definition": "A group of enthusiastic supporters or fans of a particular activity or entity.",
+                    "context": {
+                        "Context 1": "The wine bar hopes to build a loyal fan base over the next few months.",
+                        "Context 2": "The band has a huge fan base that follows them on tour.",
+                        "Context 3": "She built a fan base by sharing her baking recipes online."
+                    }
+                },
+                {
+                    "word": "Rental",
+                    "definition": "The payment made for the temporary use of an asset, such as property.",
+                    "context": {
+                        "Context 1": "The rental price for the bar's space is very competitive.",
+                        "Context 2": "He found a great deal on a rental car for his vacation.",
+                        "Context 3": "The apartment's rental agreement is one year long."
+                    }
+                },
+                {
+                    "word": "Underground",
+                    "definition": "Something located below the surface, often used to describe a level beneath ground level.",
+                    "context": {
+                        "Context 1": "The wine bar has an underground section that adds to its charm.",
+                        "Context 2": "They discovered an underground river while digging for a new pool.",
+                        "Context 3": "The underground music scene is thriving in the city."
+                    }
+                },
+                {
+                    "word": "Vibe",
+                    "definition": "A distinctive emotional atmosphere or feeling associated with a place or situation.",
+                    "context": {
+                        "Context 1": "The wine bar has a relaxing vibe that makes it perfect for unwinding.",
+                        "Context 2": "The cafe’s vibe is artistic, attracting many creative people.",
+                        "Context 3": "The wedding had a joyful vibe, filled with laughter and dancing."
+                    }
+                },
+                {
+                    "word": "Cozy",
+                    "definition": "Comfortable and warm; inviting and homely.",
+                    "context": {
+                        "Context 1": "The small wine bar is cozy, making it a perfect date night spot.",
+                        "Context 2": "I love spending winter evenings curled up in a cozy blanket.",
+                        "Context 3": "The cabin in the woods felt cozy with its fireplace and soft lighting."
+                    }
+                },
+                {
+                    "word": "Dishes",
+                    "definition": "Prepared food items, often used to refer to a particular recipe or service.",
+                    "context": {
+                        "Context 1": "The wine bar offers a few special dishes that pair well with the wine selection.",
+                        "Context 2": "My favorite homemade dishes are spaghetti and meatballs.",
+                        "Context 3": "At the buffet, there were dishes from various cuisines around the world."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Pop-up",
+                    "fact": "Did you know that the term 'pop-up' was originally used for pop-up books before it became fashionable for temporary stores?"
+                },
+                {
+                    "word": "Cozy",
+                    "fact": "The world's coziest city, according to a recent survey, is Reykjavik in Iceland, where cozy cafes abound!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the wine bottle go to school?",
+                    "answer": "Because it wanted to improve its cork-versation skills!"
+                },
+                {
+                    "question": "What did the wine glass say to the water bottle?",
+                    "answer": "You're just not my type, I'm looking for something with more 'spirit'!"
+                }
+            ]
+        },
+        "vocabulary_3": {
+            "vocabulary_list": [
+                {
+                    "word": "Client base",
+                    "definition": "The group of customers who regularly purchase from a business.",
+                    "context": {
+                        "Context 1": "Building a solid client base is essential for the restaurant's success.",
+                        "Context 2": "The new software helped them manage their client base more effectively.",
+                        "Context 3": "He started a blog to expand his client base in the financial sector."
+                    }
+                },
+                {
+                    "word": "Scale",
+                    "definition": "To increase the size, number, or extent of something.",
+                    "context": {
+                        "Context 1": "The owner plans to scale the business after gaining more customers.",
+                        "Context 2": "They decided to scale back their production to meet demand.",
+                        "Context 3": "The artist hopes to scale up her exhibitions next year."
+                    }
+                },
+                {
+                    "word": "Word of mouth",
+                    "definition": "The passing of information from person to person, often through conversation.",
+                    "context": {
+                        "Context 1": "Word of mouth marketing played a big role in the restaurant’s popularity.",
+                        "Context 2": "The local store thrived on word of mouth rather than advertising.",
+                        "Context 3": "He relied on word of mouth to promote his upcoming concert."
+                    }
+                },
+                {
+                    "word": "Fame",
+                    "definition": "The state of being known or recognized by many people.",
+                    "context": {
+                        "Context 1": "The restaurant's fame attracted many eager customers.",
+                        "Context 2": "His fame as an author grew after his first novel was published.",
+                        "Context 3": "She enjoyed her fame as a pop singer but found it overwhelming."
+                    }
+                },
+                {
+                    "word": "Vibe",
+                    "definition": "A distinctive feeling or atmosphere that something gives off.",
+                    "context": {
+                        "Context 1": "The vibe of the restaurant is welcoming and friendly.",
+                        "Context 2": "The party had a fun and energetic vibe that everyone enjoyed.",
+                        "Context 3": "He loved the calming vibe of the beach at sunset."
+                    }
+                },
+                {
+                    "word": "Evokes",
+                    "definition": "To bring a feeling, memory, or image into the mind.",
+                    "context": {
+                        "Context 1": "The restaurant's decor evokes a rustic charm.",
+                        "Context 2": "The film evokes feelings of nostalgia for childhood.",
+                        "Context 3": "The song evokes memories of last summer."
+                    }
+                },
+                {
+                    "word": "Trust",
+                    "definition": "Firm belief in the reliability or truth of someone or something.",
+                    "context": {
+                        "Context 1": "Customers are more likely to visit if they trust the restaurant’s brand.",
+                        "Context 2": "It takes time to build trust in a new relationship.",
+                        "Context 3": "He learned to trust his instincts when making decisions."
+                    }
+                },
+                {
+                    "word": "Reinforcement",
+                    "definition": "The process of encouraging or establishing a behavior or belief.",
+                    "context": {
+                        "Context 1": "Daily practice provides the reinforcement needed to improve language skills.",
+                        "Context 2": "Positive reinforcement can motivate employees to perform well.",
+                        "Context 3": "Teachers use reinforcement to help students remember their lessons."
+                    }
+                },
+                {
+                    "word": "Content",
+                    "definition": "The information or topics presented in a book, program, or other medium.",
+                    "context": {
+                        "Context 1": "The restaurant’s social media content attracted new customers.",
+                        "Context 2": "She spent hours creating content for her online course.",
+                        "Context 3": "The documentary featured content about climate change."
+                    }
+                },
+                {
+                    "word": "Scattered",
+                    "definition": "Spread out over a wide area; not concentrated.",
+                    "context": {
+                        "Context 1": "His ideas were clear and focused, not scattered like before.",
+                        "Context 2": "The scattered leaves created a beautiful autumn scene.",
+                        "Context 3": "Her thoughts were scattered after a long day."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Client base",
+                    "fact": "Did you know that the first restaurant with a client base was opened in Paris in the 18th century?"
+                },
+                {
+                    "word": "Scattered",
+                    "fact": "In a scientific study, it was found that we spend 70% of our conversations talking about ourselves, often scattered as we jump from topic to topic!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the restaurant hire a mathematician?",
+                    "answer": "Because they needed help with their pi rates!"
+                },
+                {
+                    "question": "What did the waiter say to the angry customer?",
+                    "answer": "I’m sorry, but I can’t take your order; I’ll just take your problems!"
+                }
+            ]
+        },
+        "vocabulary_4": {
+            "vocabulary_list": [
+                {
+                    "word": "Regular verbs",
+                    "definition": "Verbs that follow a predictable pattern when conjugated.",
+                    "context": {
+                        "Context 1": "In English, regular verbs like 'to walk' add '-ed' for the past tense, making them easy to conjugate.",
+                        "Context 2": "The teacher explained that regular verbs are fun because they have consistent rules.",
+                        "Context 3": "During the game, players were encouraged to use regular verbs to make their sentences clearer."
+                    }
+                },
+                {
+                    "word": "Short form",
+                    "definition": "A contracted version of a longer phrase, usually used in informal speech.",
+                    "context": {
+                        "Context 1": "Instead of saying 'I would', we can simply say 'I’d' as its short form.",
+                        "Context 2": "The short form of 'going to' is often just 'gonna' in casual conversations.",
+                        "Context 3": "He preferred using the short form of his name, Sam, instead of Samuel."
+                    }
+                },
+                {
+                    "word": "Negate",
+                    "definition": "To make a statement negative or to deny something.",
+                    "context": {
+                        "Context 1": "In grammar, we negate sentences by adding 'not', like 'I do not drink coffee.'",
+                        "Context 2": "He tried to negate the rumor about him, but it spread quickly anyway.",
+                        "Context 3": "During the game, she chose to negate her previous decision to keep playing."
+                    }
+                },
+                {
+                    "word": "Conjugation",
+                    "definition": "The modification of a verb from its base form to express tense, mood, or subject.",
+                    "context": {
+                        "Context 1": "In English, verbs typically do not undergo much conjugation compared to other languages.",
+                        "Context 2": "He filled out a conjugation chart for French verbs before the test.",
+                        "Context 3": "The music lesson focused more on the harmony than on the conjugation of the lyrics."
+                    }
+                },
+                {
+                    "word": "Past form",
+                    "definition": "The version of a verb that indicates an action took place in the past.",
+                    "context": {
+                        "Context 1": "The past form of 'drink' is 'drank', changing its structure whenever we talk about the past.",
+                        "Context 2": "He wrote about his travels in the past form to share his experiences.",
+                        "Context 3": "When asked about her favorite childhood memories, she used the past form to describe them."
+                    }
+                },
+                {
+                    "word": "Model verbs",
+                    "definition": "Auxiliary verbs that express modality, such as ability, possibility, or necessity.",
+                    "context": {
+                        "Context 1": "Model verbs like 'can', 'could', and 'should' play a crucial role in building sentences.",
+                        "Context 2": "They decided to use model verbs to create stronger recommendations in their report.",
+                        "Context 3": "In the joke, the model verb 'could' implied a missed opportunity in a humorous way."
+                    }
+                },
+                {
+                    "word": "Statement",
+                    "definition": "A definite expression or declaration of an idea or belief.",
+                    "context": {
+                        "Context 1": "She made a clear statement about her love for coffee during the presentation.",
+                        "Context 2": "His statement about the weather was humorous even though it was a serious topic.",
+                        "Context 3": "The statement on the paper confused the students, leading to an unexpected discussion."
+                    }
+                },
+                {
+                    "word": "Assert",
+                    "definition": "To state or express something confidently or forcefully.",
+                    "context": {
+                        "Context 1": "The student asserted that English grammar is simpler than it seems.",
+                        "Context 2": "In the meeting, he asserted his opinion on the project direction with confidence.",
+                        "Context 3": "She asserted her authority over the debate team with a spirited argument."
+                    }
+                },
+                {
+                    "word": "Example",
+                    "definition": "A representative form or illustration of a concept or principle.",
+                    "context": {
+                        "Context 1": "The teacher provided an example of a regular verb to illustrate the lesson.",
+                        "Context 2": "He used an example from his life to explain the theory effectively.",
+                        "Context 3": "In the sketch, the characters represented an exaggerated example of typical family life."
+                    }
+                },
+                {
+                    "word": "Clarify",
+                    "definition": "To make a statement or situation less confusing and more comprehensible.",
+                    "context": {
+                        "Context 1": "She asked the teacher to clarify the rules about using negative forms in sentences.",
+                        "Context 2": "In the cookbook, the author used photographs to clarify the cooking steps.",
+                        "Context 3": "During the debate, he had to clarify his position after a misunderstanding arose."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Conjugation",
+                    "fact": "The term conjugation comes from the Latin 'conjugare,' which means 'to join together'. So conjugating verbs is actually like creating a verb family!"
+                },
+                {
+                    "word": "Regular verbs",
+                    "fact": "In English, regular verbs are like LEGO bricks: you can stick '-ed' on them to create new forms without much hassle!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the grammar teacher break up with the sentence?",
+                    "answer": "Because it was too complicated and had too many issues!"
+                },
+                {
+                    "question": "Why did the student bring a ladder to the English class?",
+                    "answer": "Because they heard the course was about higher-level grammar!"
+                }
+            ]
+        },
+        "vocabulary_5": {
+            "vocabulary_list": [
+                {
+                    "word": "Verb",
+                    "definition": "A word used to describe an action, state, or occurrence.",
+                    "context": {
+                        "Context 1": "In the lesson, we learned that verbs change form when used with he, she, or it.",
+                        "Context 2": "The dog loves to bark; barking is the verb in that sentence.",
+                        "Context 3": "In yoga, to breathe deeply is a crucial verb to calm the mind."
+                    }
+                },
+                {
+                    "word": "Present tense",
+                    "definition": "A verb tense that describes actions happening now or habitual actions.",
+                    "context": {
+                        "Context 1": "We focused on how to form sentences in the present tense during the lesson.",
+                        "Context 2": "She reads a book every night; reading is in the present tense.",
+                        "Context 3": "I usually go to the gym in the morning; 'go' here is in the present tense."
+                    }
+                },
+                {
+                    "word": "Negative sentence",
+                    "definition": "A sentence that states something is not true or does not happen.",
+                    "context": {
+                        "Context 1": "To form a negative sentence, we learned to use 'does not' for he or she.",
+                        "Context 2": "An example of a negative sentence is: 'He does not like broccoli.'",
+                        "Context 3": "In a way, a negative sentence can be fun, like saying, 'The cat does not fly.'"
+                    }
+                },
+                {
+                    "word": "Question",
+                    "definition": "A sentence that seeks information, often requiring an answer.",
+                    "context": {
+                        "Context 1": "We practiced how to form yes or no questions during the lesson.",
+                        "Context 2": "The teacher asked, 'What is your favorite color?' to get to know us.",
+                        "Context 3": "During the game, she posed a question: 'Who dares to jump into the lake?'"
+                    }
+                },
+                {
+                    "word": "Positive sentence",
+                    "definition": "A sentence that states something is true or happens.",
+                    "context": {
+                        "Context 1": "In class, we learned that a positive sentence for he or she includes an 's' at the end of the verb.",
+                        "Context 2": "A positive sentence about traveling could be, 'She enjoys exploring new cities.'",
+                        "Context 3": "He has a great sense of humor is a positive sentence about him."
+                    }
+                },
+                {
+                    "word": "Short form",
+                    "definition": "A condensed way of expressing a phrase or sentence, often used in informal speech.",
+                    "context": {
+                        "Context 1": "We discussed how the short form is often used in positive sentences without 'does.'",
+                        "Context 2": "In texting, 'u' is the short form of 'you.'",
+                        "Context 3": "In the song, the phrase 'I’m gonna' is a short form of 'I am going to.'"
+                    }
+                },
+                {
+                    "word": "Rule",
+                    "definition": "A prescribed guide for conduct or action, often governing grammatical structure.",
+                    "context": {
+                        "Context 1": "The lesson emphasized the rule of adding 's' for he, she, or it in the present tense.",
+                        "Context 2": "The teacher enforced a rule that all students must raise their hands to speak.",
+                        "Context 3": "In soccer, one rule is that the ball must go into the net to score."
+                    }
+                },
+                {
+                    "word": "Aspect",
+                    "definition": "A grammatical feature that conveys the completeness or ongoing nature of an action.",
+                    "context": {
+                        "Context 1": "We briefly touched upon aspect when discussing various verb tenses.",
+                        "Context 2": "In storytelling, the aspect of the plot influences how the characters interact.",
+                        "Context 3": "The aspect of the cake decoration is what makes it appealing to customers."
+                    }
+                },
+                {
+                    "word": "Tense",
+                    "definition": "A form of a verb that indicates the time of the action or state.",
+                    "context": {
+                        "Context 1": "This lesson focused on understanding how the present tense works with different subjects.",
+                        "Context 2": "Past tense verbs describe actions that have already happened.",
+                        "Context 3": "In poetry, the tense used often creates a unique style and rhythm."
+                    }
+                },
+                {
+                    "word": "Replace",
+                    "definition": "To take the place of something or someone.",
+                    "context": {
+                        "Context 1": "In the lesson, we learned to replace certain nouns with he, she, or it.",
+                        "Context 2": "If your phone is broken, you might want to replace it with a new model.",
+                        "Context 3": "In a game of chess, you can replace a lost piece with a pawn."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Verb",
+                    "fact": "Did you know that in the English language, the most commonly used verb is 'to be'? You could even say it's the verb of all verbs!"
+                },
+                {
+                    "word": "Present tense",
+                    "fact": "In many languages, present tense verbs occupy more than half of the sentences; they are the workhorses of communication!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the grammar teacher go to jail?",
+                    "answer": "Because she kept correcting everyone's sentences in public!"
+                },
+                {
+                    "question": "Why did the student eat his homework?",
+                    "answer": "Because his teacher said it was a piece of cake!"
+                }
+            ]
+        },
+        "vocabulary_6": {
+            "vocabulary_list": [
+                {
+                    "word": "Regular verb",
+                    "definition": "A verb that follows a standard pattern in its conjugation, typically by adding -ed for the past tense.",
+                    "context": {
+                        "Context 1": "In English, a regular verb like 'walk' becomes 'walked' in the past tense.",
+                        "Context 2": "The teacher explained that irregular verbs do not follow the rules that regular verbs do.",
+                        "Context 3": "Regular verbs make it easier for beginners to learn verb forms."
+                    }
+                },
+                {
+                    "word": "Special verb",
+                    "definition": "A verb that behaves differently from regular verbs in terms of conjugation or usage.",
+                    "context": {
+                        "Context 1": "The verb 'to be' is considered a special verb because it has unique forms.",
+                        "Context 2": "She pointed out that special verbs often create confusion for students learning English.",
+                        "Context 3": "In Spanish, the verb 'ir' is a special verb because its conjugation changes significantly."
+                    }
+                },
+                {
+                    "word": "Exercise",
+                    "definition": "An activity designed to practice or test a skill or knowledge.",
+                    "context": {
+                        "Context 1": "The teacher will create an exercise for us to practice regular and special verbs.",
+                        "Context 2": "I did my morning exercise routine to stay fit and healthy.",
+                        "Context 3": "The exercise of writing a book took many years for the author."
+                    }
+                },
+                {
+                    "word": "File",
+                    "definition": "A digital document or collection of data stored on a computer.",
+                    "context": {
+                        "Context 1": "I will send you the file that contains the exercises on verbs.",
+                        "Context 2": "He saved his presentation file on a USB drive for easy access.",
+                        "Context 3": "The bird file in my backyard includes a variety of species."
+                    }
+                },
+                {
+                    "word": "Point of reference",
+                    "definition": "An object or standard used to compare or evaluate something.",
+                    "context": {
+                        "Context 1": "The file serves as a point of reference for understanding verb conjugations.",
+                        "Context 2": "When traveling, having a map can be a good point of reference for navigation.",
+                        "Context 3": "She looked at the original painting as a point of reference before her own artwork."
+                    }
+                },
+                {
+                    "word": "Hard-working",
+                    "definition": "Characterized by diligent work and effort.",
+                    "context": {
+                        "Context 1": "You are one of the most hard-working students in the class.",
+                        "Context 2": "The employees were praised for being hard-working during the busy season.",
+                        "Context 3": "My dog is hard-working when he helps me find lost toys!"
+                    }
+                },
+                {
+                    "word": "Looking forward",
+                    "definition": "To feel excited and eager about something that will happen in the future.",
+                    "context": {
+                        "Context 1": "I'm looking forward to the weekend when we can rest and have fun.",
+                        "Context 2": "She is looking forward to her birthday party next month.",
+                        "Context 3": "The cat is looking forward to catching a new toy mouse."
+                    }
+                },
+                {
+                    "word": "Weekend",
+                    "definition": "The period from Friday evening to Sunday evening, often used for rest or activities.",
+                    "context": {
+                        "Context 1": "I hope you enjoy your weekend before we meet again on Monday.",
+                        "Context 2": "During the weekend, they always go hiking in the mountains.",
+                        "Context 3": "The weekend is when the plants take a break from growing!"
+                    }
+                },
+                {
+                    "word": "See you",
+                    "definition": "A casual phrase used to indicate a farewell, implying a future meeting.",
+                    "context": {
+                        "Context 1": "I’ll see you on Monday after the weekend.",
+                        "Context 2": "After the meeting, he said, 'See you later!' to his colleagues.",
+                        "Context 3": "The magician waved goodbye, saying, 'See you next time, if you can find me!'"
+                    }
+                },
+                {
+                    "word": "Thank you",
+                    "definition": "A phrase used to express gratitude.",
+                    "context": {
+                        "Context 1": "Thank you for the help with the lesson on verbs.",
+                        "Context 2": "The customer said thank you to the cashier after paying.",
+                        "Context 3": "The dog looked grateful and said, 'Thank you!' for the treat—at least, in my imagination!"
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Exercise",
+                    "fact": "Did you know that the word 'exercise' comes from Latin 'exercere,' meaning 'to keep awake' or 'to keep busy'?"
+                },
+                {
+                    "word": "File",
+                    "fact": "In a digital sense, a 'file' used to be called a 'folder' in physical form; so, we just took the paperwork out of the office!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the English book look sad?",
+                    "answer": "Because it had too many problems!"
+                },
+                {
+                    "question": "What do you call a teacher who never farts in public?",
+                    "answer": "A private tutor!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you take the train this morning to get here?"
+                },
+                {
+                    "Person 2": "Yeah, I took a night train. It was pretty chill."
+                },
+                {
+                    "Person 1": "Oh nice! Was it one of those super fast ones?"
+                },
+                {
+                    "Person 2": "Nah, just an ordinary train. Not a bullet train or anything."
+                },
+                {
+                    "Person 1": "Got it! I always wonder how long those regular trains take."
+                },
+                {
+                    "Person 2": "Well, this one took me about eight hours to get back."
+                },
+                {
+                    "Person 1": "Eight hours! Wow, that’s a long time."
+                },
+                {
+                    "Person 2": "Yeah, but it was a smooth ride. I just slept most of the way."
+                },
+                {
+                    "Person 1": "Really? I have a hard time sleeping on trains. I feel all cramped up."
+                },
+                {
+                    "Person 2": "I get that. I used to struggle with it too, but now I guess I just got used to it."
+                },
+                {
+                    "Person 1": "That’s a skill! I just end up tossing and turning."
+                },
+                {
+                    "Person 2": "But hey, it's not as bad as some buses I've been on. Those are the worst!"
+                },
+                {
+                    "Person 1": "For sure! I can't believe how long it takes to go across the country sometimes."
+                },
+                {
+                    "Person 2": "Tell me about it! I once traveled for six days just to get from one side of the U.S. to the other."
+                },
+                {
+                    "Person 1": "Six days? That's impressive! Were you just on trains the whole time?"
+                },
+                {
+                    "Person 2": "Yeah, a mix of trains and buses. It was exhausting but kind of fun!"
+                },
+                {
+                    "Person 1": "I bet! Did you get to see a lot of cool sights along the way?"
+                },
+                {
+                    "Person 2": "Definitely! I saw so many landscapes and met interesting people."
+                },
+                {
+                    "Person 1": "That sounds amazing! I should plan a long trip like that someday."
+                },
+                {
+                    "Person 2": "You totally should! Just make sure to pack snacks. Those train food options aren’t great!"
+                }
+            ]
+        },
+        "dialogue_2": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, have you heard about that new wine bar downtown?"
+                },
+                {
+                    "Person 2": "Yeah! I think it's called Nikitskaya 16.5, right?"
+                },
+                {
+                    "Person 1": "Exactly! I heard they're doing a pop-up thing. Pretty cool concept."
+                },
+                {
+                    "Person 2": "What’s a pop-up, though? Is it just there for a short time?"
+                },
+                {
+                    "Person 1": "Yeah, it’s like they set it up for a little while, get people excited, then change it up later."
+                },
+                {
+                    "Person 2": "That's interesting! I love the idea of tasting different wines by the glass."
+                },
+                {
+                    "Person 1": "Me too! It’s a nice way to try out new flavors without committing to a whole bottle."
+                },
+                {
+                    "Person 2": "Right? And I’ve heard they have a small food menu that pairs perfectly with the wines."
+                },
+                {
+                    "Person 1": "Sounds perfect. I’m always looking for a cozy spot to hang out and enjoy good food."
+                },
+                {
+                    "Person 2": "Same here! It’s nice to have a place where you can taste quality wines and relax."
+                },
+                {
+                    "Person 1": "So, are we planning to check it out this weekend?"
+                },
+                {
+                    "Person 2": "Absolutely! Let’s gather a few friends and make a night of it."
+                },
+                {
+                    "Person 1": "Great idea! I can't wait to try that place!"
+                },
+                {
+                    "Person 2": "Me too! It'll be fun to see what the vibe is like."
+                },
+                {
+                    "Person 1": "For sure! A new spot always brings excitement."
+                }
+            ]
+        },
+        "dialogue_3": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you hear about that new restaurant that opened downtown?"
+                },
+                {
+                    "Person 2": "Oh yeah, I saw it on Instagram! It’s been getting a lot of buzz."
+                },
+                {
+                    "Person 1": "Right? I think it’s owned by someone famous. That definitely helps with the crowd."
+                },
+                {
+                    "Person 2": "For sure! It's interesting how social media can blow up a place like that."
+                },
+                {
+                    "Person 1": "Totally! People rave about the food, but I think a lot comes from the publicity too."
+                },
+                {
+                    "Person 2": "Absolutely. I feel like if a place has good vibes, it gets more word-of-mouth marketing."
+                },
+                {
+                    "Person 1": "Exactly! Plus, if you see your favorite influencer posting about it, you're more likely to check it out."
+                },
+                {
+                    "Person 2": "Yeah, it’s almost like you trust their taste. Have you been there yet?"
+                },
+                {
+                    "Person 1": "Not yet, but I’m planning to go this weekend! How about you?"
+                },
+                {
+                    "Person 2": "Same! I’m curious to see if it lives up to the hype."
+                },
+                {
+                    "Person 1": "We should go together! It’ll be fun to check it out."
+                },
+                {
+                    "Person 2": "Great idea! Let’s make a day of it—maybe try a few dishes and share."
+                },
+                {
+                    "Person 1": "Perfect! I’ll grab us a reservation. I don’t want to miss out on the waiting list."
+                },
+                {
+                    "Person 2": "Smart move! I can't wait to taste whatever’s trending there."
+                },
+                {
+                    "Person 1": "Same! I’ll message you the details later."
+                },
+                {
+                    "Person 2": "Looking forward to it! It’s always fun discovering new spots."
+                }
+            ]
+        },
+        "dialogue_4": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Did you get a chance to check out that new coffee shop downtown?"
+                },
+                {
+                    "Person 2": "Not yet! I've heard good things about it, though. Have you been?"
+                },
+                {
+                    "Person 1": "Yeah, I went last weekend. Their cold brew is amazing!"
+                },
+                {
+                    "Person 2": "Nice! Are they doing anything special?"
+                },
+                {
+                    "Person 1": "They have a happy hour where you get a discount on pastries if you buy a drink."
+                },
+                {
+                    "Person 2": "That sounds like a great deal. What kind of pastries do they have?"
+                },
+                {
+                    "Person 1": "I tried their chocolate croissant, and it was so good. You should definitely go!"
+                },
+                {
+                    "Person 2": "I’m sold! Let's plan to go together next weekend."
+                },
+                {
+                    "Person 1": "For sure! We can try a few different drinks too."
+                },
+                {
+                    "Person 2": "Perfect! Coffee tasting it is! What time were you thinking?"
+                },
+                {
+                    "Person 1": "Maybe around 10? That way we can beat the crowd."
+                },
+                {
+                    "Person 2": "Sounds great! I’ll bring my book too, in case we have to wait."
+                },
+                {
+                    "Person 1": "Good idea! I can’t wait!"
+                },
+                {
+                    "Person 2": "Me neither! It's going to be fun."
+                }
+            ]
+        },
+        "dialogue_5": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey, did you catch the game last night?"
+                },
+                {
+                    "Person 2": "I did! That last-minute goal was insane!"
+                },
+                {
+                    "Person 1": "Right? I couldn't believe it! I thought they were going to lose."
+                },
+                {
+                    "Person 2": "Same here! But you know, that player has been on fire lately."
+                },
+                {
+                    "Person 1": "Yeah, he really has. It seems like he scores every game."
+                },
+                {
+                    "Person 2": "Totally! And I heard he's the league's top scorer now."
+                },
+                {
+                    "Person 1": "That's awesome! Do you think they can keep this up for the playoffs?"
+                },
+                {
+                    "Person 2": "I hope so! It would be great to see them go deep this year."
+                },
+                {
+                    "Person 1": "For sure! Plus, the energy in the stadium is just electric."
+                },
+                {
+                    "Person 2": "Absolutely! I love going to the games. The crowd really gets you hyped."
+                },
+                {
+                    "Person 1": "Speaking of games, are you going to the next home match?"
+                },
+                {
+                    "Person 2": "Definitely! I got my tickets already. You should come with me!"
+                },
+                {
+                    "Person 1": "Count me in! It’s going to be a blast!"
+                },
+                {
+                    "Person 2": "For sure! Let’s meet up before and grab some food."
+                },
+                {
+                    "Person 1": "Great idea! I can’t wait."
+                },
+                {
+                    "Person 2": "Me neither! It’s going to be a fun night!"
+                }
+            ]
+        },
+        "dialogue_6": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! Got any plans for the weekend?"
+                },
+                {
+                    "Person 2": "Not much, just planning to relax a bit. What about you?"
+                },
+                {
+                    "Person 1": "Same here! I might binge-watch a new series. Heard about that one everyone’s talking about?"
+                },
+                {
+                    "Person 2": "Oh, you mean the one with the time travel and all the twists? Yeah, I've seen a few episodes!"
+                },
+                {
+                    "Person 1": "Exactly! I can’t believe how wild it gets. Each episode leaves you wanting more!"
+                },
+                {
+                    "Person 2": "Right? I was up way too late watching it the other night. Totally worth it though!"
+                },
+                {
+                    "Person 1": "For sure! I’ve been trying to cut back on my screen time, but it’s so addictive."
+                },
+                {
+                    "Person 2": "Tell me about it! I set limits, but then I find myself just one more episode in."
+                },
+                {
+                    "Person 1": "Haha! I relate to that! Hey, do you think we should do something outdoors this weekend too?"
+                },
+                {
+                    "Person 2": "That’s a great idea! A hike or maybe a picnic?"
+                },
+                {
+                    "Person 1": "I’m down for a picnic! We can bring snacks and enjoy the weather."
+                },
+                {
+                    "Person 2": "Perfect! Let’s aim for Sunday. I’ll bring the drinks!"
+                },
+                {
+                    "Person 1": "Awesome! I’ll bring some snacks. Looking forward to it!"
+                },
+                {
+                    "Person 2": "Me too! It’ll be nice to catch up and enjoy the outdoors."
+                },
+                {
+                    "Person 1": "Definitely! Alright, I’ll see you then!"
+                },
+                {
+                    "Person 2": "See you soon! Have a great weekend!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+</body>
+
+</html>
