@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Parts</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background: linear-gradient(145deg, #eaeaea, #ffffff);
+            padding: 12px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.8),
+                inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+
+
+        #left {
+            width: 100%;
+            padding: 20px;
+            border-right: 2px solid #ccc;
+        }
+
+        #right {
+            display: none background-color: #f4f4f4;
+        }
+
+        .part-buttons,
+        .content-buttons {
+            margin-bottom: 10px;
+        }
+
+        .part-buttons button,
+        .content-buttons button {
+            margin-right: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .part-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .content-buttons button.loading {
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .content-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: #ffd700;
+            }
+
+            100% {
+                background-color: #ffa500;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-content {
+            margin-top: 1px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        /* Vocabulary Entry */
+        .entry-box {
+            font-weight: bold;
+            font-size: 1.4em;
+            display: inline-block;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 2px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* Definition Box */
+        .definition-box {
+            background-color: #f4f4f4;
+            padding: 8px 12px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        /* Word Styling */
+        .word {
+            font-weight: bold;
+            color: #000000;
+            font-size: 1.2em;
+        }
+
+        .example {
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Fact Box */
+        .fact-box {
+            background-color: rgba(142, 68, 173, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(142, 68, 173, 0.15);
+            max-width: 500px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 8px 12px;
+            display: inline-block;
+            border-left: 6px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Section Colors */
+        .purple-section {
+            background-color: #8e44ad;
+            border-left-color: #6a1b9a;
+            box-shadow: 3px 3px 8px rgba(142, 68, 173, 0.3);
+        }
+
+        .joke-box {
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 2px 2px 5px rgba(52, 152, 219, 0.15);
+            max-width: 500px;
+        }
+
+
+        /* Text Formatting */
+        .fact {
+            color: black;
+        }
+
+        /* Joke Text */
+        .joke {
+            color: #6d1b9a;
+            /* Deeper purple for better readability */
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Joke Question Styling */
+        .joke-question {
+            font-weight: bold;
+            font-size: 1.2em;
+            font-style: italic;
+            color: #2c3e50;
+            /* Dark gray-blue for a classy contrast */
+            margin-bottom: 5px;
+        }
+
+        /* Enhanced Typography */
+        .bold {
+            font-weight: 600;
+            color: #000000;
+            /* Darker shade for better contrast */
+        }
+
+        .italic {
+            font-style: italic;
+            color: #000000;
+            /* Slightly darker gray for better readability */
+        }
+
+        .bold-italic {
+            font-weight: 600;
+            font-style: italic;
+            color: #222;
+            /* More emphasis on bold-italic text */
+        }
+
+        /* Joke Box - Adds a soft neumorphic effect */
+        .joke-box {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                -5px -5px 10px rgba(255, 255, 255, 0.5);
+            max-width: 550px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Joke Box Hover Effect */
+        .joke-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15),
+                -6px -6px 12px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Dialogue Container - Left Centered */
+        /* Dialogue Container - Auto Width Based on Content */
+        .dialogue-container {
+            display: inline-block;
+            /* Shrinks width to fit content */
+            max-width: 800px;
+            /* Prevents it from becoming too wide */
+            margin: 20px 0;
+            /* Aligns it to the left with some spacing */
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        /* Individual Dialogue Lines */
+        .line {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Styling for Different Speakers */
+        .person-1 {
+            background: linear-gradient(145deg, #dde5ed, #c9d6e2);
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .person-2 {
+            background: linear-gradient(145deg, #d1e8ff, #b9dfff);
+            text-align: left;
+            color: #1d3557;
+        }
+
+        /* Speaker Name Styling */
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 5px;
+
+            font-size: 1.1em;
+            color: #000;
+        }
+
+/* Static, phone-first voice controls. Injected into each generated lesson. */
+:root {
+    color-scheme: light;
+    --sv-blue: #155eef;
+    --sv-blue-dark: #0b46b8;
+    --sv-ink: #172033;
+    --sv-muted: #5d687a;
+    --sv-border: #dce2ea;
+    --sv-danger: #c9372c;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background: #eef2f7;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    margin: 0;
+    overflow-x: hidden;
+    color: var(--sv-ink);
+    background: linear-gradient(180deg, #eef3fa 0, #f8fafc 260px, #f8fafc 100%);
+    line-height: 1.55;
+}
+
+body.static-voice-tray-visible {
+    padding-bottom: 245px;
+}
+
+#left {
+    width: min(100%, 1120px);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 20px clamp(14px, 3vw, 32px) 48px;
+    border-right: 0;
+}
+
+#right {
+    display: none;
+}
+
+h2,
+h3,
+p {
+    overflow-wrap: anywhere;
+}
+
+h3 {
+    font-size: clamp(2rem, 7vw, 3.125rem);
+    line-height: 1.1;
+}
+
+button,
+select {
+    min-height: 44px;
+    font: inherit;
+}
+
+.part-buttons,
+.content-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.part-buttons button,
+.content-buttons button {
+    min-width: 92px;
+    margin: 0;
+    padding: 10px 16px;
+    border: 1px solid #bcc7d6;
+    border-radius: 10px;
+    background: #fff;
+    color: #1f2937;
+    font-weight: 700;
+    touch-action: manipulation;
+}
+
+.part-buttons button.active,
+.content-buttons button.active {
+    border-color: var(--sv-blue);
+    background: var(--sv-blue);
+    color: #fff;
+}
+
+.section-content {
+    margin-top: 12px;
+    padding: clamp(18px, 4vw, 30px);
+    border: 1px solid var(--sv-border);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 12px 30px rgba(30, 51, 84, 0.08);
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+.definition-box,
+.fact-box,
+.joke-box,
+.dialogue-container {
+    max-width: 100%;
+}
+
+::selection {
+    background: #b9d2ff;
+    color: #0d2146;
+}
+
+[data-no-speech] {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.static-voice-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 12px;
+    padding: 12px 14px;
+    border: 1px solid rgba(21, 94, 239, 0.18);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 8px 24px rgba(30, 51, 84, 0.08);
+}
+
+.static-voice-title {
+    display: block;
+    color: var(--sv-ink);
+    font-size: 1rem;
+}
+
+.static-voice-ready {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 2px;
+    color: var(--sv-muted);
+    font-size: 0.84rem;
+}
+
+.static-voice-ready::before {
+    width: 9px;
+    height: 9px;
+    content: "";
+    border-radius: 50%;
+    background: #18794e;
+    box-shadow: 0 0 0 4px rgba(24, 121, 78, 0.14);
+}
+
+.static-voice-hint {
+    margin: 0 0 18px;
+    padding: 10px 14px;
+    border-left: 4px solid var(--sv-blue);
+    border-radius: 8px;
+    background: #eaf1ff;
+    color: #24416f;
+    font-size: 0.94rem;
+}
+
+.static-voice-tray {
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    bottom: 14px;
+    width: min(720px, calc(100% - 24px));
+    padding: 14px;
+    transform: translateX(-50%);
+    border: 1px solid rgba(17, 36, 68, 0.14);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 18px 50px rgba(20, 35, 60, 0.24);
+    backdrop-filter: blur(14px);
+}
+
+.static-voice-tray[hidden] {
+    display: none;
+}
+
+.static-voice-tray-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.static-voice-selection-label {
+    margin-bottom: 2px;
+    color: var(--sv-blue-dark);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.static-voice-selection-preview {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: #28354a;
+    font-size: 0.94rem;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.static-voice-close,
+.static-voice-replay,
+.static-voice-stop {
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.static-voice-close {
+    width: 44px;
+    flex: 0 0 44px;
+    padding: 0;
+    border: 1px solid #d4dbe5;
+    background: #f7f9fc;
+    color: #334056;
+    font-size: 1.15rem;
+}
+
+.static-voice-control-grid {
+    display: grid;
+    grid-template-columns: minmax(150px, 1.25fr) minmax(100px, 0.75fr) 1fr auto;
+    gap: 9px;
+    align-items: end;
+}
+
+.static-voice-field {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+    color: var(--sv-muted);
+    font-size: 0.77rem;
+    font-weight: 700;
+}
+
+.static-voice-field select {
+    width: 100%;
+    padding: 8px 30px 8px 10px;
+    border: 1px solid #bdc8d7;
+    border-radius: 10px;
+    background: #fff;
+    color: #202b3c;
+}
+
+.static-voice-field select:disabled {
+    color: #202b3c;
+    opacity: 1;
+}
+
+.static-voice-replay {
+    min-width: 126px;
+    padding: 9px 16px;
+    border: 1px solid var(--sv-blue);
+    background: var(--sv-blue);
+    color: #fff;
+}
+
+.static-voice-stop {
+    width: 48px;
+    padding: 9px 0;
+    border: 1px solid #e1a29d;
+    background: #fff3f2;
+    color: #a52920;
+}
+
+.static-voice-replay:disabled,
+.static-voice-stop:disabled {
+    cursor: not-allowed;
+    opacity: 0.52;
+}
+
+.static-voice-progress {
+    min-height: 20px;
+    margin-top: 8px;
+    color: var(--sv-muted);
+    font-size: 0.82rem;
+}
+
+.static-voice-progress.error {
+    color: var(--sv-danger);
+    font-weight: 700;
+}
+
+@media (max-width: 700px) {
+    body.static-voice-tray-visible {
+        padding-bottom: 325px;
+    }
+
+    #left {
+        padding: 12px 12px 40px;
+    }
+
+    h2 {
+        width: 100%;
+        margin: 8px 0 14px;
+        font-size: 1.45rem;
+    }
+
+    .static-voice-banner {
+        position: sticky;
+        z-index: 20;
+        top: 0;
+        margin: -12px -12px 12px;
+        padding: max(10px, env(safe-area-inset-top)) 12px 10px;
+        border-width: 0 0 1px;
+        border-radius: 0;
+    }
+
+    .part-buttons,
+    .content-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .part-buttons button,
+    .content-buttons button {
+        min-width: 0;
+        padding-inline: 6px;
+        font-size: 0.9rem;
+    }
+
+    .section-content {
+        padding: 16px;
+        border-radius: 13px;
+    }
+
+    .dialogue-container {
+        display: block;
+        margin: 12px 0;
+        padding: 10px;
+    }
+
+    .line {
+        padding: 10px 11px;
+        font-size: 1rem;
+    }
+
+    .static-voice-tray {
+        bottom: 0;
+        width: 100%;
+        padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+        border-width: 1px 0 0;
+        border-radius: 18px 18px 0 0;
+    }
+
+    .static-voice-control-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+    }
+
+    .static-voice-replay,
+    .static-voice-stop {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+    <div id="left">
+
+        <div class="static-voice-banner" data-no-speech>
+            <div>
+                <strong class="static-voice-title">Pre-rendered lesson voice</strong>
+                <span class="static-voice-ready">American English ready</span>
+            </div>
+        </div>
+        <p class="static-voice-hint" data-no-speech>
+            Select any lesson text and it will play automatically. On a phone, press and hold a word, then drag the selection handles.
+        </p>
+
+        <h2>Lesson Parts</h2>
+        <div id="partsSection" class="part-buttons"></div>
+        <div id="contentSection" class="content-buttons hidden"></div>
+        <div id="displaySection"></div>
+    </div>
+
+    <div id="right">
+        <!-- Reserved for later use -->
+    </div>
+
+
+    <section id="staticVoiceTray" class="static-voice-tray" data-no-speech aria-label="Selected text speech controls" hidden>
+        <div class="static-voice-tray-head">
+            <div>
+                <div id="staticVoiceSelectionLabel" class="static-voice-selection-label">Selected text</div>
+                <p id="staticVoiceSelectionPreview" class="static-voice-selection-preview"></p>
+            </div>
+            <button id="staticVoiceClose" class="static-voice-close" type="button" aria-label="Close speech controls">×</button>
+        </div>
+        <div class="static-voice-control-grid">
+            <label class="static-voice-field">
+                Voice
+                <select aria-label="American English voice" disabled>
+                    <option>Heart — female</option>
+                </select>
+            </label>
+            <label class="static-voice-field">
+                Speed
+                <select id="staticVoiceSpeed" aria-label="Speech speed">
+                    <option value="0.85">0.85×</option>
+                    <option value="1" selected>1×</option>
+                    <option value="1.1">1.1×</option>
+                    <option value="1.2">1.2×</option>
+                </select>
+            </label>
+            <button id="staticVoiceReplay" class="static-voice-replay" type="button">Replay selection</button>
+            <button id="staticVoiceStop" class="static-voice-stop" type="button" aria-label="Stop speaking" disabled>Stop</button>
+        </div>
+        <div id="staticVoiceProgress" class="static-voice-progress" role="status" aria-live="polite">Select text to begin.</div>
+    </section>
+
+    <script>
+        // Declare json_content but do not fill it
+        let json_content = {
+    "parts_number": 1,
+    "mistakes": {
+        "mistakes_1": {
+            "mistakes_list": [
+                {
+                    "original": "I'm recording this message as a test for the model to create an HTML and we'll see how it works now.",
+                    "corrected": "I'm recording this message as a test for the model to create HTML and we'll see how it works.",
+                    "explanation": "The article 'an' is unnecessary before 'HTML'; it should just be 'create HTML.'",
+                    "context": "I'm currently testing the model's ability to create HTML. I'm recording this message as a test for the model to create HTML, and we'll see how it works."
+                },
+                {
+                    "original": "I see around me a lot of mountains, the weather is great, a lot of bikes are driving around me, there is a lot of noise outside, it's quite comfortable though to sit here and code.",
+                    "corrected": "I see a lot of mountains around me; the weather is great, and many bikes are driving by. There's a lot of noise outside, but it's quite comfortable to sit here and code.",
+                    "explanation": "The original sentence is too long and needs punctuation to separate ideas; 'around me' should come after 'mountains,' and 'a lot of' can be replaced with 'many' for variety.",
+                    "context": "As I look around, the view is filled with mountains. I see a lot of mountains around me; the weather is great, and many bikes are driving by."
+                }
+            ]
+        }
+    },
+    "vocabulary": {
+        "vocabulary_1": {
+            "vocabulary_list": [
+                {
+                    "word": "Transcript",
+                    "definition": "A written or printed version of material originally presented in another medium.",
+                    "context": {
+                        "Context 1": "The transcript of the lesson helped me review what we learned.",
+                        "Context 2": "I received a transcript of my grandmother’s diary from her interviews.",
+                        "Context 3": "The court's transcript detailed everything said during the trial."
+                    }
+                },
+                {
+                    "word": "Weather",
+                    "definition": "The state of the atmosphere at a particular place and time, including temperature, humidity, and conditions.",
+                    "context": {
+                        "Context 1": "The weather was perfect for our outdoor coding session.",
+                        "Context 2": "I used to think the weather was always sunny in California until I visited during winter.",
+                        "Context 3": "During the weather report, they warned about a snowstorm approaching."
+                    }
+                },
+                {
+                    "word": "Comfortable",
+                    "definition": "Providing physical ease and relaxation; not causing discomfort.",
+                    "context": {
+                        "Context 1": "It’s quite comfortable to sit here and code.",
+                        "Context 2": "The sofa in my living room is so comfortable that I might doze off!",
+                        "Context 3": "Wearing comfortable shoes is essential for a long day walking in the city."
+                    }
+                },
+                {
+                    "word": "Mountains",
+                    "definition": "Large landforms that rise prominently above their surroundings.",
+                    "context": {
+                        "Context 1": "I see around me a lot of mountains outside my window.",
+                        "Context 2": "The mountains were covered in snow during the winter months.",
+                        "Context 3": "Mountains are often climbing destinations for adventurous hikers."
+                    }
+                },
+                {
+                    "word": "Bikes",
+                    "definition": "A two-wheeled vehicle that is powered by pedaling.",
+                    "context": {
+                        "Context 1": "A lot of bikes are driving around me as I sit here.",
+                        "Context 2": "He rode his bikes to the park every Saturday morning.",
+                        "Context 3": "In the city, bikes are a popular means of transportation during the summer."
+                    }
+                },
+                {
+                    "word": "Noise",
+                    "definition": "A sound, especially one that is loud or unpleasant.",
+                    "context": {
+                        "Context 1": "There is a lot of noise outside, but it's manageable.",
+                        "Context 2": "The noise from the construction site kept me awake last night.",
+                        "Context 3": "Listening to nature's noise can be quite calming and peaceful."
+                    }
+                },
+                {
+                    "word": "Coding",
+                    "definition": "The process of writing instructions for computers using programming languages.",
+                    "context": {
+                        "Context 1": "I find it quite comfortable to sit here and code.",
+                        "Context 2": "After learning coding, she created her own video game.",
+                        "Context 3": "He started coding websites in high school and turned it into a career."
+                    }
+                },
+                {
+                    "word": "Session",
+                    "definition": "A meeting or period devoted to a particular activity.",
+                    "context": {
+                        "Context 1": "The coding session went longer than expected due to interesting discussions.",
+                        "Context 2": "She scheduled a yoga session to relax after a stressful week.",
+                        "Context 3": "The conference had multiple session topics to choose from."
+                    }
+                },
+                {
+                    "word": "Driving around",
+                    "definition": "The act of operating a vehicle while moving in various directions.",
+                    "context": {
+                        "Context 1": "There were many people driving around on their bikes.",
+                        "Context 2": "Driving around the city gives you a good feel for its layout.",
+                        "Context 3": "He spends his weekends driving around the countryside to explore new places."
+                    }
+                },
+                {
+                    "word": "Great",
+                    "definition": "Of an extent, amount, or intensity considerably above the normal or average.",
+                    "context": {
+                        "Context 1": "The weather is great, making it a perfect day to be outside.",
+                        "Context 2": "He had a great time at the theme park last summer.",
+                        "Context 3": "The meal was great, better than any restaurant I've been to."
+                    }
+                }
+            ],
+            "funny_facts": [
+                {
+                    "word": "Weather",
+                    "fact": "Did you know that meteorologists can predict the weather with a level of accuracy comparable to flipping a coin?"
+                },
+                {
+                    "word": "Bikes",
+                    "fact": "The longest bike ride in a single session on record is over 1,200 miles — that’s like biking from New York City to Miami!"
+                }
+            ],
+            "jokes": [
+                {
+                    "question": "Why did the coding student bring a ladder to class?",
+                    "answer": "Because they heard the course was all about higher-level programming!"
+                },
+                {
+                    "question": "Why did the mountain break up with the hill?",
+                    "answer": "Because it found someone who really elevated its status!"
+                }
+            ]
+        }
+    },
+    "dialogue": {
+        "dialogue_1": {
+            "dialogue_list": [
+                {
+                    "Person 1": "Hey! How's it going?"
+                },
+                {
+                    "Person 2": "Pretty good! Just enjoying the nice weather. How about you?"
+                },
+                {
+                    "Person 1": "Same here! I was just outside taking a walk. The mountains look amazing today."
+                },
+                {
+                    "Person 2": "Oh, I know! I can see them from my place too. It really makes you appreciate the outdoors."
+                },
+                {
+                    "Person 1": "Right? I love when everything is green like this. Do you ride bikes or anything?"
+                },
+                {
+                    "Person 2": "Yeah, I try to go biking on weekends. It’s a blast. How about you?"
+                },
+                {
+                    "Person 1": "I used to bike a lot, but lately, I've been hooked on hiking. There's just something relaxing about it."
+                },
+                {
+                    "Person 2": "Totally! Hiking gives you such a good sense of adventure. Any trails you’d recommend?"
+                },
+                {
+                    "Person 1": "Actually, there's this beautiful trail up by the lake. The view is stunning."
+                },
+                {
+                    "Person 2": "Sounds perfect! We should plan a trip there sometime."
+                },
+                {
+                    "Person 1": "Absolutely! Let’s look for a weekend soon."
+                },
+                {
+                    "Person 2": "Great! I’ll bring snacks!"
+                },
+                {
+                    "Person 1": "Deal! I can’t wait. It’ll be so much fun!"
+                },
+                {
+                    "Person 2": "For sure! Alright, I’ll see you later then."
+                },
+                {
+                    "Person 1": "See you later!"
+                }
+            ]
+        }
+    }
+}
+
+
+            // Set parts_number from json_content
+            let parts_number = json_content.parts_number || 0;
+
+        // References to sections
+        const partsSection = document.getElementById('partsSection');
+        const contentSection = document.getElementById('contentSection');
+        const displaySection = document.getElementById('displaySection');
+
+        let activePart = null; // Track the active part
+
+        // Function to create Part buttons
+        function createPartButtons() {
+            for (let i = 1; i <= parts_number; i++) {
+                let button = document.createElement("button");
+                button.textContent = "Part " + i;
+                button.onclick = () => showContentButtons(i, button);
+                partsSection.appendChild(button);
+            }
+        }
+
+        // Function to show Mistakes, Vocabulary, and Dialogue buttons
+        function showContentButtons(part, button) {
+            // Reset previous part selection
+            document.querySelectorAll(".part-buttons button").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            // Clear previous content buttons and displayed content
+            contentSection.innerHTML = "";
+            contentSection.classList.remove("hidden");
+            displaySection.innerHTML = "";
+
+            activePart = part; // Update active part
+
+            let sections = ["Mistakes", "Vocabulary", "Dialogue"];
+            sections.forEach(section => {
+                let secButton = document.createElement("button");
+                secButton.textContent = section;
+                secButton.onclick = () => {
+                    secButton.classList.add("loading"); // Add flashing effect
+                    displayContent(section, part, secButton);
+                };
+                contentSection.appendChild(secButton);
+            });
+        }
+
+        // Function to display selected content
+        function displayContent(type, part, button) {
+            let dataKey = type.toLowerCase(); // "mistakes", "vocabulary", "dialogue"
+            let partKey = dataKey + "_" + part; // e.g., "mistakes_1"
+
+            if (json_content[dataKey] && json_content[dataKey][partKey]) {
+                let contentData = json_content[dataKey][partKey];
+
+                if (dataKey === "mistakes") {
+                    appendContent(displayMistakes(contentData), part, type, button);
+                } else if (dataKey === "vocabulary") {
+                    appendContent(displayVocabulary(contentData), part, type, button);
+                } else if (dataKey === "dialogue") {
+                    appendContent(displayDialogue(contentData), part, type, button);
+                }
+            }
+        }
+
+        // Append content while keeping existing sections
+        function appendContent(html, part, type, button) {
+            let sectionID = `part${part}-${type}`;
+            let existingSection = document.getElementById(sectionID);
+
+            if (!existingSection) {
+                let newSection = document.createElement("div");
+                newSection.id = sectionID;
+                newSection.classList.add("section-content");
+                newSection.innerHTML = html;
+                displaySection.appendChild(newSection);
+
+                // Remove animation, keep the button highlighted
+                button.classList.remove("loading");
+                button.classList.add("active");
+            }
+        }
+
+        // Function to display Mistakes content
+        function displayMistakes(data) {
+            let html = "<h3>Mistakes</h3>";
+            data.mistakes_list.forEach(mistake => {
+                html += `<p><b>Original:</b> ${mistake.original}</p>`;
+                html += `<p><b>Corrected:</b> <b> ${mistake.corrected}</b></p>`;
+                html += `<p><b>Explanation:</b> ${mistake.explanation}</p>`;
+                html += `<p><b>Context:</b> <i> ${mistake.context}</i></p>`;
+                html += `<hr><br>`; /* Adds an extra blank line */
+            });
+            return html;
+        }
+
+
+
+
+
+        // Function to display Vocabulary content
+        function displayVocabulary(data) {
+            let html = "<h3>Vocabulary</h3>";
+
+            // Helper function: Preserve case in context replacement
+            function formatContextSentence(sentence, word) {
+                const regex = new RegExp(`\\b${word}\\b`, "gi"); // Case-insensitive exact word match
+                return sentence.replace(regex, (match) => {
+                    return `<span class="bold-italic">${match}</span>`; // Keeps match's case
+                });
+            }
+
+            // Vocabulary Section
+            data.vocabulary_list.forEach((entry, index) => {
+                // Word Entry
+                html += `<p class="entry-box"> <span class="word">${index + 1}. ${entry.word}</span></p>`;
+
+                // Definition Box
+                html += `<div class="definition-box"><span class="bold">Definition:</span> ${entry.definition}</div>`;
+
+                // Context Sentences
+                html += "<p>";
+                Object.values(entry.context).forEach((sentence, i) => {
+                    const formattedSentence = formatContextSentence(sentence, entry.word);
+                    html += `<br><span class="bold">Context ${i + 1}:</span> <span class="italic">${formattedSentence}</span>`;
+                });
+                html += "</p>";
+            });
+
+            // Funny Facts Section
+            if (data.funny_facts.length > 0) {
+                html += `<div class="section-title purple-section">Funny Facts</div>`;
+                data.funny_facts.forEach((fact, index) => {
+                    html += `<div class="fact-box">
+                <p class="fact"><span class="bold">${index + 1}. ${fact.word}:</span> ${fact.fact}</p>
+             </div>`;
+                });
+            }
+
+            // Jokes Section
+            if (data.jokes.length > 0) {
+                html += `<div class="section-title purple-section">Jokes</div>`;
+                data.jokes.forEach((joke, index) => {
+                    html += `<div class="joke-box">
+                <p class="joke-question">${index + 1}. ${joke.question}</p>
+                <p class="italic joke">${joke.answer}</p>
+             </div>`;
+                });
+            }
+
+            return html; // Returning the generated HTML instead of inserting it directly
+        }
+
+        function displayDialogue(data) {
+            let html = `<div class="dialogue-container">`;
+            html += "<h3>Dialogue</h3>";
+
+            data.dialogue_list.forEach(entry => {
+                const speaker = Object.keys(entry)[0];
+                const line = entry[speaker];
+
+                html += `<div class="line ${speaker === "Person 1" ? 'person-1' : 'person-2'}">
+                    <span class="speaker">${speaker}:</span> ${line}
+                 </div>`;
+            });
+
+            html += `</div>`;
+            return html;
+        }
+
+
+
+
+
+        // Initialize part buttons
+        createPartButtons();
+    </script>
+
+
+    <script>
+        window.STATIC_VOICE_MANIFEST = {"1":"voice_audio/af_heart/98d0f491765bef0d3d9cd7cc.mp3","10":"voice_audio/af_heart/09bea7247485fe9471f75e16.mp3","11":"voice_audio/af_heart/4af6946d81d0e77e73804783.mp3","12":"voice_audio/af_heart/bbf9d8a173f2f49321799d6a.mp3","13":"voice_audio/af_heart/a3eb8fcec5d42a30be7da123.mp3","14":"voice_audio/af_heart/3894a9c1385ef8d1b0200dbc.mp3","15":"voice_audio/af_heart/99d57ce9205512aa31717542.mp3","16":"voice_audio/af_heart/a9c3962a3f0c43933909b273.mp3","17":"voice_audio/af_heart/bda489c9dfac9a8a7f96a1f6.mp3","18":"voice_audio/af_heart/15715aab37d5f6f4e39b3b90.mp3","19":"voice_audio/af_heart/3c01ec6ef5f2e77d2b4bb3cb.mp3","2":"voice_audio/af_heart/1ce74a2e3f7b5548cbdeb285.mp3","20":"voice_audio/af_heart/4138dd5b9adc3bee2ed241a7.mp3","200":"voice_audio/af_heart/79991fa3f7532ee3eeacd448.mp3","21":"voice_audio/af_heart/ef760be25de972cdb60e6e0e.mp3","22":"voice_audio/af_heart/14670999834ddbae15a57d50.mp3","23":"voice_audio/af_heart/5a37d4e22865f68a96e949ac.mp3","24":"voice_audio/af_heart/3e6c08a2f33a8fd356f80f89.mp3","25":"voice_audio/af_heart/360d2aa1043abbe9abff295e.mp3","26":"voice_audio/af_heart/beebefd22a602fd0c751abca.mp3","27":"voice_audio/af_heart/2f5be329034e7e6b986b67cd.mp3","28":"voice_audio/af_heart/bb680d8b17c558a84527c858.mp3","29":"voice_audio/af_heart/9ca913de6d38fac4b76d62f2.mp3","3":"voice_audio/af_heart/f32d382b4ec77259075fee42.mp3","30":"voice_audio/af_heart/2a6d6c71d9251bc63c89bff2.mp3","4":"voice_audio/af_heart/696d3ecefb9ef1db777301fd.mp3","5":"voice_audio/af_heart/20239f1daf6c7ef6fe9ea5ab.mp3","6":"voice_audio/af_heart/c1ff6c02a781603e8ca59220.mp3","7":"voice_audio/af_heart/bfdb38c727e6e16743718291.mp3","8":"voice_audio/af_heart/9347f059383edc01b1369241.mp3","9":"voice_audio/af_heart/897bda104bd2907de69068ed.mp3","a":"voice_audio/af_heart/0739646cdf96956598090cd2.mp3","ability":"voice_audio/af_heart/fe64648df0e4215377658c2d.mp3","about":"voice_audio/af_heart/fa43ca294981711119a8147e.mp3","above":"voice_audio/af_heart/52d947f87af5777bb3d9b19a.mp3","absolutely":"voice_audio/af_heart/98f0465f66f1c247008abb0f.mp3","accuracy":"voice_audio/af_heart/eb5746733adf24898bbbea71.mp3","act":"voice_audio/af_heart/18f550b205643d2a721cddf0.mp3","activity":"voice_audio/af_heart/32db5e6e5768e52557155b0c.mp3","actually":"voice_audio/af_heart/299590af2b6518e553e2ae02.mp3","adventure":"voice_audio/af_heart/3812d09b704e26cf1875d0e5.mp3","adventurous":"voice_audio/af_heart/6ae7c666b1f5fd25b8367917.mp3","after":"voice_audio/af_heart/1e1d6fb3fab02b1489f3a3cf.mp3","all":"voice_audio/af_heart/4495582e02c6916b45e4118a.mp3","alright":"voice_audio/af_heart/248cf2470e55e8d7411ec4a2.mp3","always":"voice_audio/af_heart/2853bf19ce39b9dfe841f2be.mp3","amazing":"voice_audio/af_heart/70b9a32eec4aa76529e55a5e.mp3","amount":"voice_audio/af_heart/a1609d0e0faf276a55575698.mp3","an":"voice_audio/af_heart/6dea3c706197397fba96ff77.mp3","and":"voice_audio/af_heart/eb8f97edec2b6bab07c50d06.mp3","another":"voice_audio/af_heart/da35ae6380741ac35aa3ea15.mp3","any":"voice_audio/af_heart/853ef281ffbc1dff17b25cc8.mp3","anything":"voice_audio/af_heart/6a5b251c0b0ae4095f58535c.mp3","appreciate":"voice_audio/af_heart/3ddc80da3cfba0d081d4ab8d.mp3","approaching":"voice_audio/af_heart/c97e4f1039ab9e38bb5a8056.mp3","are":"voice_audio/af_heart/346d09bcaa78d4595aa3baf0.mp3","around":"voice_audio/af_heart/7b19f0ab536ae7c1e39484d7.mp3","article":"voice_audio/af_heart/5f287f8f062b1426476f0208.mp3","as":"voice_audio/af_heart/3b5315649009c9bbb82fd6df.mp3","at":"voice_audio/af_heart/808d8ddee904c26a80c46c14.mp3","atmosphere":"voice_audio/af_heart/cc7d1de80d21c76bd55c8f23.mp3","average":"voice_audio/af_heart/3ce3148c47d76cd77ea34788.mp3","awake":"voice_audio/af_heart/186848309ec71453e3f140f2.mp3","be":"voice_audio/af_heart/4ea9d4c8ab308961f1d720fe.mp3","beautiful":"voice_audio/af_heart/2ac7b43d9ec2f82e3311ff02.mp3","because":"voice_audio/af_heart/afd88fee58aff47635ae58ee.mp3","been":"voice_audio/af_heart/09dc764b6b96c810694eb246.mp3","before":"voice_audio/af_heart/70f317b512d8e5f285353946.mp3","better":"voice_audio/af_heart/239ffc25693502f1d8ee45eb.mp3","bike":"voice_audio/af_heart/3358fbfc209b2a999864e26a.mp3","bikes":"voice_audio/af_heart/ff4a3ebb51f7e57f8fa1c679.mp3","biking":"voice_audio/af_heart/8d15eb98ded5604623ff1c30.mp3","blast":"voice_audio/af_heart/7bb2bef4b577c11b0ac6e952.mp3","break":"voice_audio/af_heart/ffaa4d0d743eb5f7675423f6.mp3","bring":"voice_audio/af_heart/ccbee3bf9047792fa4551565.mp3","but":"voice_audio/af_heart/54d676d832f3449e04c712d4.mp3","by":"voice_audio/af_heart/2fa79db98b2af5766b529332.mp3","california":"voice_audio/af_heart/041fc526012f11c57e025520.mp3","calming":"voice_audio/af_heart/193d00eef95cf4a88c897ccb.mp3","can":"voice_audio/af_heart/be64a0184aae87f435fd4ee7.mp3","can't":"voice_audio/af_heart/23e8dd5fb93f04f03db17b66.mp3","career":"voice_audio/af_heart/f5577cf30842472015f757bd.mp3","causing":"voice_audio/af_heart/b682bf1fb1bab8573c7b7342.mp3","choose":"voice_audio/af_heart/10bb7f5542a22ead583b5874.mp3","city":"voice_audio/af_heart/888d601cdb0f6f16e01c9a6f.mp3","class":"voice_audio/af_heart/1c77acbcfcf7b2709cea1a5a.mp3","climbing":"voice_audio/af_heart/df202a65f1533afcd20b8a5c.mp3","code":"voice_audio/af_heart/363d09d0e9a9d6669841e47c.mp3","coding":"voice_audio/af_heart/cabd33b7cda63ccb3136608c.mp3","coin":"voice_audio/af_heart/e5bae98c18cec6282113f20c.mp3","come":"voice_audio/af_heart/45e529bd0af91e8cf86e9976.mp3","comfortable":"voice_audio/af_heart/f2d479ad587335d722120326.mp3","comparable":"voice_audio/af_heart/78f6b7dcb9ba098478e8b616.mp3","computers":"voice_audio/af_heart/3de9d313605339fe8fd18c3b.mp3","conditions":"voice_audio/af_heart/95518b50f3e6400e3632a77f.mp3","conference":"voice_audio/af_heart/b63f7effd6b3f53d665d5cc4.mp3","considerably":"voice_audio/af_heart/1dcc30aa1197782058bc3873.mp3","construction":"voice_audio/af_heart/cbe8a6fe8b40a602166d98c9.mp3","context":"voice_audio/af_heart/dfa88d78b15c0bca1074334b.mp3","corrected":"voice_audio/af_heart/3a4c2a36cfff4208323e0ac9.mp3","countryside":"voice_audio/af_heart/db052d66223e9d551bc1d261.mp3","course":"voice_audio/af_heart/f3137d988e696e34f5aaa870.mp3","court's":"voice_audio/af_heart/a515cdeaece57df1044db282.mp3","covered":"voice_audio/af_heart/52b9edc22304999195587c59.mp3","create":"voice_audio/af_heart/01dfd300ea486d177cdfeec8.mp3","created":"voice_audio/af_heart/c442860e261d585c126a6322.mp3","currently":"voice_audio/af_heart/9d2c67ab059e8110224c4ea4.mp3","day":"voice_audio/af_heart/03ce66432fcb34894365c69d.mp3","deal":"voice_audio/af_heart/3ca0159176868388f6d5a22f.mp3","definition":"voice_audio/af_heart/69644e7f75de797f5d755fbf.mp3","destinations":"voice_audio/af_heart/995478876fbcc7553251ef06.mp3","detailed":"voice_audio/af_heart/b74cefea96be06e35ef6c758.mp3","devoted":"voice_audio/af_heart/5ac28af6ac202c4926198f2d.mp3","dialogue":"voice_audio/af_heart/e288170318632fd957211b80.mp3","diary":"voice_audio/af_heart/f932406d8d3e9d051a2e4e18.mp3","did":"voice_audio/af_heart/94005f8e8924e13a53721765.mp3","directions":"voice_audio/af_heart/519ab6449e93d38b319683f7.mp3","discomfort":"voice_audio/af_heart/769a0679c6f29e61777e1781.mp3","discussions":"voice_audio/af_heart/07f77080fcd6338ab29d1a5f.mp3","do":"voice_audio/af_heart/960ab837dbc1f12ce22434a0.mp3","doze":"voice_audio/af_heart/1dbc9535b1e1fa04c20eb13a.mp3","driving":"voice_audio/af_heart/94ebe681452f35f080efc802.mp3","due":"voice_audio/af_heart/2ed2d1b8778730a0530f355b.mp3","during":"voice_audio/af_heart/1cf5c9943346ca012695fdb7.mp3","ease":"voice_audio/af_heart/0e4eadf2b7dfe8530760b442.mp3","elevated":"voice_audio/af_heart/d28138ec9a154529fdf8b6f0.mp3","enjoying":"voice_audio/af_heart/44040aea8c3a7138584f7b97.mp3","especially":"voice_audio/af_heart/aa97553f12d68fa1a094b7b7.mp3","essential":"voice_audio/af_heart/daa7e52ecabd16ba0e569ed2.mp3","every":"voice_audio/af_heart/c3d49b347554e8b90cb86817.mp3","everything":"voice_audio/af_heart/be9a378ce680ec40ee027a7b.mp3","expected":"voice_audio/af_heart/02fcc3e1aa204d3c14057d88.mp3","explanation":"voice_audio/af_heart/3866733a00c9dbb6e9bc3665.mp3","explore":"voice_audio/af_heart/31ce37c96f3cc71f4d6ebfb3.mp3","extent":"voice_audio/af_heart/0ca194e1b8cfe7ad51e31007.mp3","facts":"voice_audio/af_heart/619834718c2eeb93a26d352c.mp3","feel":"voice_audio/af_heart/b5a9685d3313f6e7bae6789f.mp3","filled":"voice_audio/af_heart/91a7dd229dfabe08657da083.mp3","find":"voice_audio/af_heart/13c7f621e91d91c9037f9ace.mp3","flipping":"voice_audio/af_heart/4d8c0fba85326caf364f06ef.mp3","for":"voice_audio/af_heart/c134bcd45f88eee2bf7a924c.mp3","found":"voice_audio/af_heart/b2f575a648dea9574eb0112c.mp3","from":"voice_audio/af_heart/9c9d3d66d4c2c352541b7534.mp3","fun":"voice_audio/af_heart/0e52a053e55e0e2fc4c9009b.mp3","funny":"voice_audio/af_heart/a42a6792e021834eaf6a0609.mp3","game":"voice_audio/af_heart/27ddf93c0562a0963c9a15c2.mp3","gives":"voice_audio/af_heart/5be28279bccd0e781a32f0d4.mp3","go":"voice_audio/af_heart/750875422c25aa674403942d.mp3","going":"voice_audio/af_heart/0462b8d25670810dcb81f90d.mp3","good":"voice_audio/af_heart/359fd4d087f6a193ab573760.mp3","grandmother's":"voice_audio/af_heart/8e08da74e2e24e32fe22789a.mp3","great":"voice_audio/af_heart/31d136c7bb34b7aeb27cf90f.mp3","green":"voice_audio/af_heart/692762645938abade7d01f62.mp3","had":"voice_audio/af_heart/6c283feaee55ddcfd1cbf0ac.mp3","he":"voice_audio/af_heart/6e374d1e567f26585b606a4c.mp3","heard":"voice_audio/af_heart/e355f40bc8aa05856143f2cd.mp3","helped":"voice_audio/af_heart/2d24745d1a38f380b8d2a0b0.mp3","her":"voice_audio/af_heart/ce355114ad8ba54bfe8cb7ec.mp3","here":"voice_audio/af_heart/17aebc9657956b0eaf84ca15.mp3","hey":"voice_audio/af_heart/56cf1f00ba731eeb386dcc70.mp3","high":"voice_audio/af_heart/1aa01ee16314f01dbe46c0e6.mp3","higher-level":"voice_audio/af_heart/023974b4193fcb21b36efccf.mp3","hikers":"voice_audio/af_heart/b6e3a52c3a072ffecb3122dd.mp3","hiking":"voice_audio/af_heart/782b95d444cfa8e7780adc0c.mp3","hill":"voice_audio/af_heart/51e45b9a9b975ded5739d6c4.mp3","his":"voice_audio/af_heart/788e35172f8f314f23378c37.mp3","hooked":"voice_audio/af_heart/0b4f684d61a808983532727c.mp3","how":"voice_audio/af_heart/5262187291a44432f37717ba.mp3","how's":"voice_audio/af_heart/05cf77ecd4272ebee1e64222.mp3","html":"voice_audio/af_heart/f68f8b2956ff71b9700cb48e.mp3","humidity":"voice_audio/af_heart/789c7a77a9ca58bc1b6b616c.mp3","i":"voice_audio/af_heart/4d237d99d597b42b1c7333de.mp3","i'll":"voice_audio/af_heart/42e25a627c2c670433076d99.mp3","i'm":"voice_audio/af_heart/6e7c9a0082b5bead7fcf51aa.mp3","i've":"voice_audio/af_heart/98c2b63aa96325256f4ecb4e.mp3","ideas":"voice_audio/af_heart/7999c6f62ab6deebd077ba8d.mp3","in":"voice_audio/af_heart/245c50775b57025de08ecb33.mp3","including":"voice_audio/af_heart/ddd529f1a8bbbdbd47d29f60.mp3","instructions":"voice_audio/af_heart/ea4cfc2b08e616f28d32e44a.mp3","intensity":"voice_audio/af_heart/2e400833d9636a5d58de1a05.mp3","interesting":"voice_audio/af_heart/b2242756008e9c8f91c1f60a.mp3","interviews":"voice_audio/af_heart/f69b47b2288026914e7b19ee.mp3","into":"voice_audio/af_heart/72613237e9d2527eef192e04.mp3","is":"voice_audio/af_heart/02402cb6730488fd4f41bc4b.mp3","it":"voice_audio/af_heart/eef8df6e0667bf2b64a067e3.mp3","it'll":"voice_audio/af_heart/784d6ddb1bad5565326e63b0.mp3","it's":"voice_audio/af_heart/55b609c102fab2c071d08e02.mp3","its":"voice_audio/af_heart/12d79d7881b30131aa1a3565.mp3","jokes":"voice_audio/af_heart/99f2e8d2991ec5f74a735bd6.mp3","just":"voice_audio/af_heart/569e69243dcce2f13fc2587b.mp3","kept":"voice_audio/af_heart/5b2320697c1f0ec3eb8d976b.mp3","know":"voice_audio/af_heart/720a48fbade721805bc04e89.mp3","ladder":"voice_audio/af_heart/b210c3e9ec15c415bfb0be2d.mp3","lake":"voice_audio/af_heart/1d7545780e9fce69d0cf548f.mp3","landforms":"voice_audio/af_heart/b1878e66bbcb39b9b8984ee1.mp3","languages":"voice_audio/af_heart/1173dd01e2f5f15ef964d656.mp3","large":"voice_audio/af_heart/6f63ba864b7493d3634bb2ab.mp3","last":"voice_audio/af_heart/59599c5d774aacea1b939471.mp3","lately":"voice_audio/af_heart/c009a276aa3492fd5291219f.mp3","later":"voice_audio/af_heart/5c39386aa999c09a71cd5bb2.mp3","layout":"voice_audio/af_heart/a03abd4ba73ec449a1094944.mp3","learned":"voice_audio/af_heart/49e852c6367b797718ae15de.mp3","learning":"voice_audio/af_heart/3bced694af86718eb0171c77.mp3","lesson":"voice_audio/af_heart/cc6b29f00f525be743de9b8e.mp3","let's":"voice_audio/af_heart/bc1e424869ef0c503c146aa4.mp3","level":"voice_audio/af_heart/2ce1a3f6c0d441a2ff57a876.mp3","like":"voice_audio/af_heart/4740370ee927b9982007f030.mp3","listening":"voice_audio/af_heart/c8e25b993899709bafc87e5d.mp3","living":"voice_audio/af_heart/66a86ea0a2021a47057aad8f.mp3","long":"voice_audio/af_heart/f33fb648ffa30393fec9695a.mp3","longer":"voice_audio/af_heart/a1569ec69a798aa655c9c74a.mp3","longest":"voice_audio/af_heart/678366b707ce40f4b2a19f0e.mp3","look":"voice_audio/af_heart/d7418364bec5e74180116f00.mp3","lot":"voice_audio/af_heart/26f025d710f0fa8d6476705c.mp3","loud":"voice_audio/af_heart/9979a5f8dcf7234136ca141c.mp3","love":"voice_audio/af_heart/af330e76e807d3242026c638.mp3","makes":"voice_audio/af_heart/b4295a065c7053ea61b48ff4.mp3","making":"voice_audio/af_heart/c923aff99e16210623924f1e.mp3","manageable":"voice_audio/af_heart/97fc418f876d58bca7ef0d89.mp3","many":"voice_audio/af_heart/bc1676a744b31d9983b726ae.mp3","material":"voice_audio/af_heart/2ce2a12efc76f04aa3c32197.mp3","me":"voice_audio/af_heart/947bbb08d4490f504e591fa3.mp3","meal":"voice_audio/af_heart/8a0b05657331742f4c349f6c.mp3","means":"voice_audio/af_heart/bafaac4ca5d75ca135d66f02.mp3","medium":"voice_audio/af_heart/6cdb8ef073df902b76594ca6.mp3","meeting":"voice_audio/af_heart/30ef1db90fbd8dcf2c957b0d.mp3","message":"voice_audio/af_heart/006b123e592cc50e5d090870.mp3","meteorologists":"voice_audio/af_heart/899469b7501bcd027223a6b6.mp3","miami":"voice_audio/af_heart/e24ab9a5ccf01d9a0729fe5e.mp3","might":"voice_audio/af_heart/6e51908c0eee40ec09ba5ad5.mp3","miles":"voice_audio/af_heart/d1bee2e4e515790bfdfc139d.mp3","mistakes":"voice_audio/af_heart/c04f03a132e194bb3e839986.mp3","model":"voice_audio/af_heart/d01dce02e9b0ddf8bcf1daf7.mp3","model's":"voice_audio/af_heart/84f08e7dd840476e61fcecf9.mp3","months":"voice_audio/af_heart/29b95d87c501164763f7a8e1.mp3","morning":"voice_audio/af_heart/9b36fd3aa98ef392b1662882.mp3","mountain":"voice_audio/af_heart/c8313e1b0a2fe9d5758cb267.mp3","mountains":"voice_audio/af_heart/61121a069fd95502bf2dc900.mp3","moving":"voice_audio/af_heart/7f0ad5905ac9e4506d2c907e.mp3","much":"voice_audio/af_heart/f649663b548da2ac3b952d05.mp3","multiple":"voice_audio/af_heart/9ec8e9a14b373e89579cfcbd.mp3","my":"voice_audio/af_heart/9891f1e15e232e7334cc5a4f.mp3","nature's":"voice_audio/af_heart/11d6b08d14e208139b99f36c.mp3","needs":"voice_audio/af_heart/300462b044345f794168b753.mp3","new":"voice_audio/af_heart/d69eb4216e330b15f64efbb3.mp3","nice":"voice_audio/af_heart/5922d89f22f12f70299f6ec3.mp3","night":"voice_audio/af_heart/457e476f6ab125ee386032b2.mp3","noise":"voice_audio/af_heart/8ad3563a81cbb63e954443a3.mp3","normal":"voice_audio/af_heart/d00c6acc69cd9e7c2d79cc46.mp3","not":"voice_audio/af_heart/bc73a196bd4e8defe01f6d4f.mp3","now":"voice_audio/af_heart/62bdadb74fbb08f64cc8414b.mp3","of":"voice_audio/af_heart/88ae3c84d74f743622c31753.mp3","off":"voice_audio/af_heart/1791347675c9ec2242feeacb.mp3","often":"voice_audio/af_heart/adf8d3c43418aecfb8bc0ff0.mp3","oh":"voice_audio/af_heart/cc85303be71d256d9d47c56c.mp3","on":"voice_audio/af_heart/a2014cea33c8e122fc57e0f2.mp3","one":"voice_audio/af_heart/95a2438f7ad9a3c5f9ec34b9.mp3","operating":"voice_audio/af_heart/becf670312c5a3e254b1440a.mp3","or":"voice_audio/af_heart/ff4ad1ba74bf6ba84aa6f8c2.mp3","original":"voice_audio/af_heart/b8c2f165546566ffd5c84d98.mp3","originally":"voice_audio/af_heart/2cce7900983a0e2f99122f1a.mp3","our":"voice_audio/af_heart/b4389e251f693ef168d78bdf.mp3","outdoor":"voice_audio/af_heart/de3cc26a75f5afd9f8b22001.mp3","outdoors":"voice_audio/af_heart/9c40d7e12b00fb7f3b186532.mp3","outside":"voice_audio/af_heart/ca910d38264449df034464a6.mp3","over":"voice_audio/af_heart/1e9208912e146be76793d466.mp3","own":"voice_audio/af_heart/0b7a07fed04faa3f58af6553.mp3","park":"voice_audio/af_heart/d7c312fa0632ffa2e89f4c82.mp3","part":"voice_audio/af_heart/a8b6bcfcff9d533c44cf32e9.mp3","particular":"voice_audio/af_heart/7b56556ee6e6b83c1f952186.mp3","parts":"voice_audio/af_heart/dad12172d6016d35df23e4fb.mp3","peaceful":"voice_audio/af_heart/46fef7fcd02664989c20ef50.mp3","pedaling":"voice_audio/af_heart/63aea3fcdf05f11b85cccb34.mp3","people":"voice_audio/af_heart/14d2dffdf9818f315df91072.mp3","perfect":"voice_audio/af_heart/f6ea4ec744db019b0e46bbb7.mp3","period":"voice_audio/af_heart/1a3e90d41825c4e02772a722.mp3","person":"voice_audio/af_heart/7bbba972ef5cf499851e56f5.mp3","physical":"voice_audio/af_heart/e295419e18684cc1fe05664c.mp3","place":"voice_audio/af_heart/fb040d3bfc0ccdfcfeb6423d.mp3","places":"voice_audio/af_heart/dc7b6e1da15bb37e1a95076e.mp3","plan":"voice_audio/af_heart/7c040efb79fe84ad8dd41894.mp3","popular":"voice_audio/af_heart/2ce8d3bcfe322a0f1ae37578.mp3","powered":"voice_audio/af_heart/1a55920512b41267c8bb53b4.mp3","predict":"voice_audio/af_heart/4081846c36ac9c8ae1fca3b1.mp3","presented":"voice_audio/af_heart/ea84186d54ea95b5737452b0.mp3","pretty":"voice_audio/af_heart/bf91d3371c714538f1c593ba.mp3","printed":"voice_audio/af_heart/132a20948c83d387f0699125.mp3","process":"voice_audio/af_heart/a9a888596d3938e173bde3d9.mp3","programming":"voice_audio/af_heart/ba985f2ae1be7b72fccc21e3.mp3","prominently":"voice_audio/af_heart/a8aec050ac61f7748cf7851f.mp3","providing":"voice_audio/af_heart/baef81b481c62ecc144fda11.mp3","punctuation":"voice_audio/af_heart/ba044705dc656c0ac9cf7d45.mp3","quite":"voice_audio/af_heart/f13d421f1e7ce78067297e3f.mp3","really":"voice_audio/af_heart/3db0488b9f8cf2c01ca35d99.mp3","received":"voice_audio/af_heart/c427794617a275a00c810fe3.mp3","recommend":"voice_audio/af_heart/54c28efb2081dc6b5543bedf.mp3","record":"voice_audio/af_heart/c11d80e18daa239dec0a7322.mp3","recording":"voice_audio/af_heart/e7922660fa4ce2021d8b5c15.mp3","relax":"voice_audio/af_heart/3c215daa59665c325cfc9f43.mp3","relaxation":"voice_audio/af_heart/5deeb5f961b9c299ee894e4e.mp3","relaxing":"voice_audio/af_heart/bccb549b0c028a3d13a07116.mp3","replaced":"voice_audio/af_heart/e77c5a6e096dcd4bc4fbaa03.mp3","report":"voice_audio/af_heart/485160597fef5765ee8bdac9.mp3","restaurant":"voice_audio/af_heart/9560e16b68a978635f46e80b.mp3","review":"voice_audio/af_heart/65b4e89b5224cd7bad59f874.mp3","ride":"voice_audio/af_heart/00e479038cb39bf7e5a63ac6.mp3","right":"voice_audio/af_heart/5b8bf6a6f5038ac32021ab04.mp3","rise":"voice_audio/af_heart/b67b2c131c15e031e7de480d.mp3","rode":"voice_audio/af_heart/259a12d2e74d3b78aae7b2aa.mp3","room":"voice_audio/af_heart/f64a98da2ca37df4318d5a12.mp3","said":"voice_audio/af_heart/309dd81ba055dc1f749afde9.mp3","same":"voice_audio/af_heart/3123d95d1014791353c48427.mp3","saturday":"voice_audio/af_heart/e5ce67958e2b2273f94447bd.mp3","scheduled":"voice_audio/af_heart/5cff859c28ca285a3043a08a.mp3","school":"voice_audio/af_heart/50ffc2e1e300807707bfa797.mp3","see":"voice_audio/af_heart/d0982d8014674aad0230f71f.mp3","sense":"voice_audio/af_heart/307f1b991d357671db3cd478.mp3","sentence":"voice_audio/af_heart/c9679c802e57d85ca782e659.mp3","separate":"voice_audio/af_heart/a0a6559ce1d2963ce59109da.mp3","session":"voice_audio/af_heart/df15be35a7426d6f6f26a2ac.mp3","she":"voice_audio/af_heart/e7b76d48e31fd0f3774b80aa.mp3","shoes":"voice_audio/af_heart/269c45a07275fa09f68e9fc2.mp3","should":"voice_audio/af_heart/52737f05d1836b729e55eacd.mp3","single":"voice_audio/af_heart/b97e2fe8533e3d2b918ef151.mp3","sit":"voice_audio/af_heart/d2c1ac4737c7f6f79b7f79dc.mp3","site":"voice_audio/af_heart/dfbf337eeda05ce6ec1fac03.mp3","snacks":"voice_audio/af_heart/aaefcc856504d776ef42c7d7.mp3","snow":"voice_audio/af_heart/98fb5578486a78f2de0c551a.mp3","snowstorm":"voice_audio/af_heart/ed220294a0847ae5173aca2b.mp3","so":"voice_audio/af_heart/93bbaedda6339caddcde6c9b.mp3","sofa":"voice_audio/af_heart/9db303563a6c8df8ce8a9e6c.mp3","someone":"voice_audio/af_heart/9f20ba3d5d35eeeee44c67bf.mp3","something":"voice_audio/af_heart/9fe3cc139791ab18129e7f6c.mp3","sometime":"voice_audio/af_heart/70c907bba0af18c8a9aca3c5.mp3","soon":"voice_audio/af_heart/8890f8d852db7fccf5ae765c.mp3","sound":"voice_audio/af_heart/00f48f0f83309c0b31ab5c84.mp3","sounds":"voice_audio/af_heart/5a888d27f68824939635c5e1.mp3","spends":"voice_audio/af_heart/7f141708a8f3f5c5e01f8475.mp3","started":"voice_audio/af_heart/f08cbf09f34738606b1ccd4c.mp3","state":"voice_audio/af_heart/f162abb9cf5c2885c975d401.mp3","status":"voice_audio/af_heart/6a4cc31c0f1b572b26e651d0.mp3","stressful":"voice_audio/af_heart/d684b62cf38fc017adaf9567.mp3","student":"voice_audio/af_heart/7d5fff97eb37b526d464dd53.mp3","stunning":"voice_audio/af_heart/d3d3b7629ced1c228137a00a.mp3","such":"voice_audio/af_heart/825f832e1e8213a38480a846.mp3","summer":"voice_audio/af_heart/f33271f5ec0f6b92e90ff646.mp3","sunny":"voice_audio/af_heart/daa594a4ca02fb7b74f91158.mp3","sure":"voice_audio/af_heart/46c41daa4acec2ec8d89be10.mp3","surroundings":"voice_audio/af_heart/3adb345b50cac401f6584f1c.mp3","taking":"voice_audio/af_heart/8e8dc48734c21ec338c0b23e.mp3","temperature":"voice_audio/af_heart/323fd6d09774e0a5f94a7dd4.mp3","test":"voice_audio/af_heart/e6ad64a985e3f7647d1c1a7b.mp3","testing":"voice_audio/af_heart/d60864ee321e6dda1e8a327f.mp3","than":"voice_audio/af_heart/502d6e59d5427788458e0d7a.mp3","that":"voice_audio/af_heart/1d8ca2d064d546bdd0dd5c49.mp3","that's":"voice_audio/af_heart/f912c7a9af8fc76a73179e7d.mp3","the":"voice_audio/af_heart/f5c24963135b61885ecc7c7c.mp3","their":"voice_audio/af_heart/8ab362e6b0e8564b236ee83d.mp3","them":"voice_audio/af_heart/bfc253493385cef25b629f72.mp3","theme":"voice_audio/af_heart/cdb04a97bbf5f792120f02b1.mp3","then":"voice_audio/af_heart/57f82343e3f8ed56be6a8345.mp3","there":"voice_audio/af_heart/3ba919f829ae86f7687088c8.mp3","there's":"voice_audio/af_heart/38bebdb5c1a26fbd1918c246.mp3","they":"voice_audio/af_heart/a43ba6075959e4343790ba14.mp3","think":"voice_audio/af_heart/e0d80b914dd84ed55f3334d0.mp3","this":"voice_audio/af_heart/2b8f486e30dc40ac20b24e7a.mp3","though":"voice_audio/af_heart/18e983de12aad625dc3ee4c2.mp3","time":"voice_audio/af_heart/9d1393f977b0a0871512ca70.mp3","to":"voice_audio/af_heart/b667f5f406d3cd793a1c5431.mp3","today":"voice_audio/af_heart/ed2e1b08eb01a1480667ffdc.mp3","too":"voice_audio/af_heart/850088f1c801bf8b8b8e2a07.mp3","topics":"voice_audio/af_heart/b7f0f9ad7ecf5a7a7e519e61.mp3","totally":"voice_audio/af_heart/2533fe9bedd7909e8c9dd0b6.mp3","trail":"voice_audio/af_heart/4e52eacb1cfba869c3e89d0b.mp3","trails":"voice_audio/af_heart/cc876f5da77d7553d7d9fc0d.mp3","transcript":"voice_audio/af_heart/77988ba6325647347f5c1154.mp3","transportation":"voice_audio/af_heart/767307ffbd911bb619503f62.mp3","trial":"voice_audio/af_heart/7c3ef2d9983b36445472dcaf.mp3","trip":"voice_audio/af_heart/5a1801b324100e59eb7da18c.mp3","try":"voice_audio/af_heart/958c14770aa4627a4ab34a79.mp3","turned":"voice_audio/af_heart/4096c0bbea04b20676917af1.mp3","two-wheeled":"voice_audio/af_heart/f7212236b284f9d4730b307c.mp3","unnecessary":"voice_audio/af_heart/3d53847e9d3a9693202a74b8.mp3","unpleasant":"voice_audio/af_heart/dec2d6d0eb4a653f6e9e514c.mp3","until":"voice_audio/af_heart/6fcdf11d454d6518eeac1f9f.mp3","up":"voice_audio/af_heart/173460f36e2d66fa9f82bd98.mp3","used":"voice_audio/af_heart/35113673c8fde924c29a9a0b.mp3","using":"voice_audio/af_heart/679ce64def362e3c13060180.mp3","variety":"voice_audio/af_heart/7c93d17b0f2c720afc4c096d.mp3","various":"voice_audio/af_heart/63e5a9f205b28ad3f19421a7.mp3","vehicle":"voice_audio/af_heart/6edb6c264c9481a8416a02f5.mp3","version":"voice_audio/af_heart/0bc1f81698c3fa843217d06f.mp3","video":"voice_audio/af_heart/1ef87ac029d2b29602327979.mp3","view":"voice_audio/af_heart/8f0df8605ee735655d7672a1.mp3","visited":"voice_audio/af_heart/2f246517dc5acda9330bb5b5.mp3","vocabulary":"voice_audio/af_heart/3d3bbae4867a6fe9de96d817.mp3","wait":"voice_audio/af_heart/63afae061d72da96b4302a78.mp3","walk":"voice_audio/af_heart/5ab3b9a5f3367a4c018ebc16.mp3","walking":"voice_audio/af_heart/62c203d912c76bbce4512ac1.mp3","warned":"voice_audio/af_heart/d38323bb16fcf2b0bf7f54b3.mp3","was":"voice_audio/af_heart/8e8fc402c385778a64136030.mp3","we":"voice_audio/af_heart/0daa093111c1ec0a5cd0e5af.mp3","we'll":"voice_audio/af_heart/ac5c03304fad4aac4f652459.mp3","wearing":"voice_audio/af_heart/332d2eac38c29791270fee4b.mp3","weather":"voice_audio/af_heart/1299aec86c407226719a3cbb.mp3","websites":"voice_audio/af_heart/06434d5084ae45a9c779d5cd.mp3","week":"voice_audio/af_heart/caa4424aa43845420361ee07.mp3","weekend":"voice_audio/af_heart/b6a36fb32425f4173e74e949.mp3","weekends":"voice_audio/af_heart/cd89ba1eee11dcabcb5dd037.mp3","went":"voice_audio/af_heart/88282be34c6522043978140a.mp3","were":"voice_audio/af_heart/9c7653a749dbd88fdc921831.mp3","what":"voice_audio/af_heart/278c4208ff9221aedfc3f19f.mp3","when":"voice_audio/af_heart/3bb108d8263ffe28e395dc21.mp3","while":"voice_audio/af_heart/d7459438673819b76bd3a9ab.mp3","who":"voice_audio/af_heart/33d92d6ba31fecfd4a64fb18.mp3","why":"voice_audio/af_heart/36891ba61c07bbb20bdea921.mp3","window":"voice_audio/af_heart/a94f91ca60f9911d1ef9bd4b.mp3","winter":"voice_audio/af_heart/cc1a7bd2caf088ba6623f3a4.mp3","with":"voice_audio/af_heart/6668d3e0695581b655f076bb.mp3","works":"voice_audio/af_heart/32ff79d0179e84d413f26481.mp3","writing":"voice_audio/af_heart/e6fe2910ae0c318ef4f0da6e.mp3","written":"voice_audio/af_heart/7ccda6887c0e25b2e3776a08.mp3","yeah":"voice_audio/af_heart/d51f29b65e1286476a49d54b.mp3","yoga":"voice_audio/af_heart/d5113c15169a0390c7c7d31c.mp3","york":"voice_audio/af_heart/a197bee6005c9ad875259031.mp3","you":"voice_audio/af_heart/56ae16de93c637edc5b5ced4.mp3","you'd":"voice_audio/af_heart/c4ac169f72821390a13016fa.mp3"};
+(() => {
+    'use strict';
+
+    const manifest = window.STATIC_VOICE_MANIFEST || {};
+    const tray = document.getElementById('staticVoiceTray');
+    const closeButton = document.getElementById('staticVoiceClose');
+    const selectionLabel = document.getElementById('staticVoiceSelectionLabel');
+    const selectionPreview = document.getElementById('staticVoiceSelectionPreview');
+    const speedChoice = document.getElementById('staticVoiceSpeed');
+    const replayButton = document.getElementById('staticVoiceReplay');
+    const stopButton = document.getElementById('staticVoiceStop');
+    const progress = document.getElementById('staticVoiceProgress');
+
+    if (!tray || !replayButton || !stopButton || !speedChoice) return;
+
+    const state = {
+        selectedText: '',
+        lastCapturedSelection: '',
+        audioContext: null,
+        currentSource: null,
+        bufferCache: new Map(),
+        session: 0,
+        speaking: false,
+        selectionTimer: null,
+        pointerActive: false,
+        pauseTimer: null,
+        pauseResolve: null
+    };
+
+    function normalizeKey(value) {
+        return value
+            .normalize('NFKC')
+            .replace(/’/g, "'")
+            .toLocaleLowerCase('en-US');
+    }
+
+    function normalizeSelectedText(value) {
+        return value
+            .replace(/\u00a0/g, ' ')
+            .replace(/\r/g, '')
+            .split(/\n+/)
+            .map(line => line.replace(/[ \t]+/g, ' ').trim())
+            .filter(Boolean)
+            .join('\n')
+            .trim();
+    }
+
+    function nodeInsideControls(node) {
+        if (!node) return false;
+        const element = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+        return Boolean(element && element.closest('[data-no-speech]'));
+    }
+
+    function tokenize(text) {
+        const expression = /[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu;
+        const matches = Array.from(text.matchAll(expression));
+
+        return matches.map((match, index) => {
+            const end = match.index + match[0].length;
+            const nextStart = index + 1 < matches.length ? matches[index + 1].index : text.length;
+            return {
+                key: normalizeKey(match[0]),
+                display: match[0],
+                after: text.slice(end, nextStart)
+            };
+        });
+    }
+
+    function showTray(text) {
+        const words = tokenize(text);
+        const preview = text.length > 180 ? `${text.slice(0, 177)}…` : text;
+        selectionLabel.textContent = `${words.length} ${words.length === 1 ? 'word' : 'words'} selected`;
+        selectionPreview.textContent = preview;
+        tray.hidden = false;
+        document.body.classList.add('static-voice-tray-visible');
+    }
+
+    function setProgress(message, isError = false) {
+        progress.textContent = message;
+        progress.classList.toggle('error', isError);
+    }
+
+    function setPlaybackControls(speaking) {
+        state.speaking = speaking;
+        replayButton.disabled = speaking;
+        stopButton.disabled = !speaking;
+        replayButton.textContent = speaking ? 'Playing…' : 'Replay selection';
+    }
+
+    function getAudioContext() {
+        if (!state.audioContext) {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextClass) throw new Error('This browser cannot play lesson audio.');
+            state.audioContext = new AudioContextClass();
+        }
+        return state.audioContext;
+    }
+
+    function resolvePendingPause() {
+        if (state.pauseTimer) window.clearTimeout(state.pauseTimer);
+        state.pauseTimer = null;
+        if (state.pauseResolve) state.pauseResolve();
+        state.pauseResolve = null;
+    }
+
+    function cancelPlayback(announce = true) {
+        state.session += 1;
+        resolvePendingPause();
+        if (state.currentSource) {
+            try {
+                state.currentSource.stop();
+            } catch (_error) {
+                // The word may have ended between the check and stop call.
+            }
+            state.currentSource = null;
+        }
+        setPlaybackControls(false);
+        if (announce) setProgress('Playback stopped.');
+    }
+
+    async function loadBuffer(path) {
+        if (state.bufferCache.has(path)) return state.bufferCache.get(path);
+
+        const promise = (async () => {
+            const response = await fetch(path, { cache: 'force-cache' });
+            if (!response.ok) throw new Error(`An audio word could not be loaded (${response.status}).`);
+            const data = await response.arrayBuffer();
+            return getAudioContext().decodeAudioData(data.slice(0));
+        })();
+
+        state.bufferCache.set(path, promise);
+        try {
+            return await promise;
+        } catch (error) {
+            state.bufferCache.delete(path);
+            throw error;
+        }
+    }
+
+    function playBuffer(buffer, session, speed) {
+        return new Promise((resolve, reject) => {
+            if (session !== state.session) {
+                resolve();
+                return;
+            }
+
+            const source = getAudioContext().createBufferSource();
+            source.buffer = buffer;
+            source.playbackRate.value = speed;
+            source.connect(state.audioContext.destination);
+            state.currentSource = source;
+            source.onended = () => {
+                if (state.currentSource === source) state.currentSource = null;
+                resolve();
+            };
+
+            try {
+                source.start(0);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    function punctuationPause(text) {
+        if (/[.!?]/.test(text)) return 230;
+        if (/[;:]/.test(text)) return 145;
+        if (/,/.test(text)) return 105;
+        if (/\n/.test(text)) return 170;
+        return 28;
+    }
+
+    function waitForPause(milliseconds, session) {
+        return new Promise(resolve => {
+            if (session !== state.session || milliseconds <= 0) {
+                resolve();
+                return;
+            }
+            state.pauseResolve = resolve;
+            state.pauseTimer = window.setTimeout(() => {
+                state.pauseTimer = null;
+                state.pauseResolve = null;
+                resolve();
+            }, milliseconds);
+        });
+    }
+
+    async function speakSelectedText() {
+        if (!state.selectedText) {
+            setProgress('Select some lesson text first.', true);
+            return;
+        }
+
+        try {
+            const audioContext = getAudioContext();
+            const resumePromise = audioContext.resume();
+            cancelPlayback(false);
+            const session = state.session;
+            const speed = Number(speedChoice.value) || 1;
+            const tokens = tokenize(state.selectedText);
+            const playable = tokens.filter(token => manifest[token.key]);
+            const missingCount = tokens.length - playable.length;
+
+            if (!playable.length) {
+                setProgress('No pre-rendered audio was found for this selection.', true);
+                return;
+            }
+
+            setPlaybackControls(true);
+            await resumePromise;
+            setProgress(`Loading 1 of ${playable.length}…`);
+
+            const prefetch = index => {
+                for (let offset = 0; offset < 8; offset += 1) {
+                    const item = playable[index + offset];
+                    if (item) loadBuffer(manifest[item.key]).catch(() => {});
+                }
+            };
+
+            prefetch(0);
+            for (let index = 0; index < playable.length; index += 1) {
+                if (session !== state.session) return;
+                prefetch(index + 1);
+                const token = playable[index];
+                const buffer = await loadBuffer(manifest[token.key]);
+                if (session !== state.session) return;
+                setProgress(`Playing ${index + 1} of ${playable.length}…`);
+                await playBuffer(buffer, session, speed);
+                await waitForPause(punctuationPause(token.after) / speed, session);
+            }
+
+            if (session === state.session) {
+                setPlaybackControls(false);
+                const suffix = missingCount ? ` ${missingCount} unavailable ${missingCount === 1 ? 'word was' : 'words were'} skipped.` : '';
+                setProgress(`Finished.${suffix} Tap Replay selection to hear it again.`);
+            }
+        } catch (error) {
+            setPlaybackControls(false);
+            setProgress(error.message || 'Lesson audio could not be played.', true);
+        }
+    }
+
+    function captureSelection(autoPlay = true) {
+        window.clearTimeout(state.selectionTimer);
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+            state.lastCapturedSelection = '';
+            return false;
+        }
+        if (nodeInsideControls(selection.anchorNode) || nodeInsideControls(selection.focusNode)) return false;
+
+        const text = normalizeSelectedText(selection.toString());
+        if (!text) return false;
+        const changed = text !== state.lastCapturedSelection;
+        state.selectedText = text;
+        state.lastCapturedSelection = text;
+        showTray(text);
+        if (autoPlay && changed) {
+            setProgress('Starting automatically…');
+            speakSelectedText();
+        }
+        return true;
+    }
+
+    function primeAudio() {
+        const selection = window.getSelection();
+        if (!selection || selection.isCollapsed) return;
+        try {
+            getAudioContext().resume();
+        } catch (_error) {
+            // Playback reports a useful browser error if needed.
+        }
+    }
+
+    function hideTray() {
+        cancelPlayback(false);
+        state.lastCapturedSelection = '';
+        tray.hidden = true;
+        document.body.classList.remove('static-voice-tray-visible');
+        window.getSelection()?.removeAllRanges();
+    }
+
+    document.addEventListener('selectionchange', () => {
+        window.clearTimeout(state.selectionTimer);
+        if (state.pointerActive) return;
+        state.selectionTimer = window.setTimeout(() => captureSelection(true), 350);
+    });
+    document.addEventListener('pointerdown', event => {
+        if (nodeInsideControls(event.target)) return;
+        state.pointerActive = true;
+        window.clearTimeout(state.selectionTimer);
+    });
+    document.addEventListener('pointerup', event => {
+        state.pointerActive = false;
+        if (nodeInsideControls(event.target)) return;
+        primeAudio();
+        window.setTimeout(() => captureSelection(true), 40);
+    });
+    document.addEventListener('pointercancel', () => {
+        state.pointerActive = false;
+    });
+    document.addEventListener('touchstart', event => {
+        if (nodeInsideControls(event.target)) return;
+        state.pointerActive = true;
+        window.clearTimeout(state.selectionTimer);
+    }, { passive: true });
+    document.addEventListener('touchend', event => {
+        state.pointerActive = false;
+        if (nodeInsideControls(event.target)) return;
+        primeAudio();
+        window.setTimeout(() => captureSelection(true), 70);
+    }, { passive: true });
+    document.addEventListener('keyup', event => {
+        if (event.key === 'Shift' || event.shiftKey) captureSelection(true);
+    });
+
+    replayButton.addEventListener('click', speakSelectedText);
+    stopButton.addEventListener('click', () => cancelPlayback(true));
+    closeButton.addEventListener('click', hideTray);
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && state.speaking) cancelPlayback(true);
+    });
+
+    try {
+        const savedSpeed = localStorage.getItem('staticLessonVoiceSpeed');
+        if (savedSpeed && Array.from(speedChoice.options).some(option => option.value === savedSpeed)) {
+            speedChoice.value = savedSpeed;
+        }
+        speedChoice.addEventListener('change', () => {
+            localStorage.setItem('staticLessonVoiceSpeed', speedChoice.value);
+        });
+    } catch (_error) {
+        // The player also works when private browsing disables storage.
+    }
+})();
+
+    </script>
+</body>
+
+</html>
