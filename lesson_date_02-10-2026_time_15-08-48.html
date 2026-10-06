@@ -615,9 +615,8 @@
         .quiz-source summary { cursor: pointer; color: var(--accent); font-size: .85rem; font-weight: 650; }
         .quiz-source-title { margin: 10px 0 5px; color: var(--muted); font-size: .8rem; }
         .quiz-source blockquote { margin: 0; font-size: .9rem; line-height: 1.6; }
-        .quiz-source-jump { margin-top: 10px; }
-        mark.quiz-dialogue-hit { padding: 0 2px; border-radius: 3px; background: var(--mark-bg); color: var(--text); box-shadow: inset 0 -2px var(--accent); }
-        mark.quiz-dialogue-hit:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+        .quiz-source-link { color: inherit; text-decoration: none; border-radius: 4px; }
+        .quiz-source-link:focus-visible, mark.quiz-dialogue-hit:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
         .quiz-review-item { margin-top: 10px; text-align: left; }
         .game-head { display: flex; gap: 8px; justify-content: space-between; margin: 0 0 8px; color: var(--muted); font-size: 0.85rem; font-weight: 700; }
 
@@ -2399,9 +2398,16 @@ body:has(.back-to-quiz:not([hidden])) .review-search-return { bottom: calc(72px 
                 const dialogue = dialogues[entry.dialogue_index];
                 const line = dialogue?.lines?.[entry.line_index];
                 if (!line) return '';
+                const quote = entry.quote || entry.gap?.answer || entry.term;
+                const start = line.text.indexOf(quote);
+                const index = dialogueGapItems.findIndex(item => item.entry === entry);
+                const reference = quote && start >= 0 && index >= 0
+                    ? esc(line.text.slice(0, start))
+                        + `<a class="quiz-source-link" href="#panel-dialogues" data-no-speech data-quiz-source="${index}" aria-label="Go to ${esc(quote)} in Dialogues" title="Go to this word in Dialogues"><mark class="expr">${esc(line.text.slice(start, start + quote.length))}</mark></a>`
+                        + esc(line.text.slice(start + quote.length))
+                    : esc(line.text);
                 return `<details class="quiz-source"><summary data-no-speech>See it in the dialogue</summary>`
-                    + `<p class="quiz-source-title">${esc(dialogue.title)}</p><blockquote>${esc(line.text)}</blockquote>`
-                    + `<button class="game-btn secondary quiz-source-jump" type="button" data-no-speech data-quiz-source="${dialogueGapItems.findIndex(item => item.entry === entry)}" aria-label="Go to ${esc(entry.quote || entry.term)} in Dialogues">Go to word in Dialogues</button></details>`;
+                    + `<p class="quiz-source-title">${esc(dialogue.title)}</p><blockquote>${reference}</blockquote></details>`;
             }
 
             function renderGap(game, level = 1) {
@@ -2571,6 +2577,7 @@ body:has(.back-to-quiz:not([hidden])) .review-search-return { bottom: calc(72px 
                 panel.addEventListener('click', event => {
                     const source = event.target.closest('[data-quiz-source]');
                     if (source) {
+                        event.preventDefault();
                         const entry = dialogueGapItems[Number(source.dataset.quizSource)]?.entry;
                         if (entry) openQuizDialogue(entry);
                         return;
@@ -3472,7 +3479,7 @@ body:has(.back-to-quiz:not([hidden])) .review-search-return { bottom: calc(72px 
                         range.setStart(textNode, left);
                         range.setEnd(textNode, right);
                         const mark = document.createElement('mark');
-                        mark.className = 'quiz-dialogue-hit';
+                        mark.className = 'expr quiz-dialogue-hit';
                         range.surroundContents(mark);
                         marks.push(mark);
                     }
