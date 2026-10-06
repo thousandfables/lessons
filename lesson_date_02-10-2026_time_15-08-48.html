@@ -615,6 +615,9 @@
         .quiz-source summary { cursor: pointer; color: var(--accent); font-size: .85rem; font-weight: 650; }
         .quiz-source-title { margin: 10px 0 5px; color: var(--muted); font-size: .8rem; }
         .quiz-source blockquote { margin: 0; font-size: .9rem; line-height: 1.6; }
+        .quiz-source-jump { margin-top: 10px; }
+        mark.quiz-dialogue-hit { padding: 0 2px; border-radius: 3px; background: var(--mark-bg); color: var(--text); box-shadow: inset 0 -2px var(--accent); }
+        mark.quiz-dialogue-hit:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
         .quiz-review-item { margin-top: 10px; text-align: left; }
         .game-head { display: flex; gap: 8px; justify-content: space-between; margin: 0 0 8px; color: var(--muted); font-size: 0.85rem; font-weight: 700; }
 
@@ -2397,7 +2400,8 @@ body:has(.back-to-quiz:not([hidden])) .review-search-return { bottom: calc(72px 
                 const line = dialogue?.lines?.[entry.line_index];
                 if (!line) return '';
                 return `<details class="quiz-source"><summary data-no-speech>See it in the dialogue</summary>`
-                    + `<p class="quiz-source-title">${esc(dialogue.title)}</p><blockquote>${esc(line.text)}</blockquote></details>`;
+                    + `<p class="quiz-source-title">${esc(dialogue.title)}</p><blockquote>${esc(line.text)}</blockquote>`
+                    + `<button class="game-btn secondary quiz-source-jump" type="button" data-no-speech data-quiz-source="${dialogueGapItems.findIndex(item => item.entry === entry)}" aria-label="Go to ${esc(entry.quote || entry.term)} in Dialogues">Go to word in Dialogues</button></details>`;
             }
 
             function renderGap(game, level = 1) {
@@ -2565,6 +2569,12 @@ body:has(.back-to-quiz:not([hidden])) .review-search-return { bottom: calc(72px 
                 };
 
                 panel.addEventListener('click', event => {
+                    const source = event.target.closest('[data-quiz-source]');
+                    if (source) {
+                        const entry = dialogueGapItems[Number(source.dataset.quizSource)]?.entry;
+                        if (entry) openQuizDialogue(entry);
+                        return;
+                    }
                     const difficulty = event.target.closest('[data-quiz-level]');
                     if (difficulty) {
                         const level = Number(difficulty.dataset.quizLevel);
@@ -3400,7 +3410,7 @@ body:has(.back-to-quiz:not([hidden])) .review-search-return { bottom: calc(72px 
             // the item made visible (the mistakes filter back to All, a quiz
             // waiting behind "Back to the quiz"), in the middle of the screen
             // and lit up briefly.
-            function openSection(section, item) {
+            function openSection(section, item, focusTarget = null) {
                 const from = placeNow();
                 cancelAnimationFrame(glideFrame);
                 savePlace();
@@ -3411,14 +3421,64 @@ body:has(.back-to-quiz:not([hidden])) .review-search-return { bottom: calc(72px 
                     if (places[section] !== undefined) window.scrollTo(0, places[section]);
                 }
                 const element = revealItem(section, item);
-                if (element && element.getClientRects().length) {
-                    window.scrollTo(0, centerGoal(element));
-                    flashItem(element);
+                const target = focusTarget?.isConnected ? focusTarget : element;
+                if (target && target.getClientRects().length) {
+                    window.scrollTo(0, centerGoal(target));
+                    flashItem(element || target);
+                    if (focusTarget) {
+                        target.setAttribute('tabindex', '-1');
+                        target.focus({ preventScroll: true });
+                    }
                 }
                 savePlace();
                 showHere();
                 placeTimeline();
                 if (switching) navigated(from);
+            }
+
+            // Jump to the recorded source line, even when a quiz target's
+            // dictionary form differs from the words used in the dialogue.
+            function openQuizDialogue(entry) {
+                const id = `d-${entry.dialogue_index}-${entry.line_index}`;
+                let line = itemElement({ id });
+                if (!line) { showDialogueSearchView(); line = itemElement({ id }); }
+                if (!line) return;
+                document.querySelectorAll('mark.quiz-dialogue-hit').forEach(mark => {
+                    const parent = mark.parentNode;
+                    mark.replaceWith(...mark.childNodes);
+                    parent.normalize();
+                });
+                const bubble = line.querySelector('.bubble');
+                const nodes = [];
+                const walker = document.createTreeWalker(bubble, NodeFilter.SHOW_TEXT, {
+                    acceptNode(node) {
+                        return node.parentElement.closest('.line-tools, [data-no-speech], button')
+                            ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+                    }
+                });
+                let node;
+                while ((node = walker.nextNode())) nodes.push(node);
+                const quote = entry.quote || entry.gap?.answer || entry.term;
+                const text = nodes.map(n => n.data).join('');
+                const start = text.indexOf(quote);
+                const marks = [];
+                let offset = 0;
+                if (quote && start >= 0) for (const textNode of nodes) {
+                    const length = textNode.length;
+                    const left = Math.max(0, start - offset);
+                    const right = Math.min(length, start + quote.length - offset);
+                    if (left < right) {
+                        const range = document.createRange();
+                        range.setStart(textNode, left);
+                        range.setEnd(textNode, right);
+                        const mark = document.createElement('mark');
+                        mark.className = 'quiz-dialogue-hit';
+                        range.surroundContents(mark);
+                        marks.push(mark);
+                    }
+                    offset += length;
+                }
+                openSection('dialogues', { id }, marks[0] || bubble);
             }
 
             document.addEventListener('click', event => {
